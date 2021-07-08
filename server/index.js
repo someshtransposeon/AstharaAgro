@@ -96,13 +96,11 @@ app.use('/', delete_grn);
 app.use('/', retrive_grn);
 app.use('/', update_grn);
 
-
 app.use('/', create_order);
 app.use('/', retrive_order);
 app.use('/', retrive_all_order);
 app.use('/', delete_order);
 app.use('/', update_order);
-
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
