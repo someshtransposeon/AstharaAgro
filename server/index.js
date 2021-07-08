@@ -12,6 +12,7 @@ const update_user_category = require('./routes/userCategory/update_user_category
 
 const create_user = require('./routes/user/create_user');
 const delete_user = require('./routes/user/delete_user');
+const login_user = require('./routes/user/login_user');
 const retrive_user = require('./routes/user/retrive_user');
 const update_user = require('./routes/user/update_user');
 
@@ -43,6 +44,7 @@ app.use('/', retrive_user_category);
 app.use('/', update_user_category);
 
 app.use('/', create_user);
+app.use('/', login_user);
 app.use('/', delete_user);
 app.use('/', retrive_user);
 app.use('/', update_user);

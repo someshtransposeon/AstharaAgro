@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     email: { 
         type: String,
         required: true,
+        unique: true,
     },
     mobile_no: {
         type: Number,
@@ -28,7 +29,11 @@ const userSchema = new mongoose.Schema({
     bank_details: {
         type: Object,
         default: {},
-    }
+    },
+    password: {
+        type: String,
+        required: true,
+    },
 });
 
 const User = mongoose.model('User', userSchema);
