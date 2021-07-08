@@ -26,6 +26,17 @@ const delete_item = require('./routes/item/delete_item');
 const retrive_item = require('./routes/item/retrive_item');
 const update_item = require('./routes/item/update_item');
 
+const create_indent = require('./routes/indent/create_indent');
+const delete_indent = require('./routes/indent/delete_indent');
+const retrive_indent = require('./routes/indent/retrive_indent');
+const update_indent = require('./routes/indent/update_indent');
+
+const create_invoice = require('./routes/invoice/generate_invoice');
+const delete_invoice = require('./routes/invoice/delete_invoice');
+const retrive_invoice =require('./routes/invoice/retrive_invoice');
+const update_invoice = require('./routes/invoice/update_invoice');
+
+
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -58,6 +69,16 @@ app.use('/', create_item);
 app.use('/', delete_item);
 app.use('/', retrive_item);
 app.use('/', update_item);
+
+app.use('/', create_indent);
+app.use('/', delete_indent);
+app.use('/', retrive_indent);
+app.use('/', update_indent);
+
+app.use('/', create_invoice);
+app.use('/', delete_invoice);
+app.use('/', retrive_invoice);
+app.use('/', update_invoice);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
