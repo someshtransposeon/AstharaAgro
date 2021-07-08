@@ -36,6 +36,11 @@ const delete_invoice = require('./routes/invoice/delete_invoice');
 const retrive_invoice =require('./routes/invoice/retrive_invoice');
 const update_invoice = require('./routes/invoice/update_invoice');
 
+const create_grn = require('./routes/invoice/create_grn');
+const delete_grn = require('./routes/invoice/delete_grn');
+const retrive_grn =require('./routes/invoice/retrive_grn');
+const update_grn = require('./routes/invoice/update_grn');
+
 
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -79,6 +84,11 @@ app.use('/', create_invoice);
 app.use('/', delete_invoice);
 app.use('/', retrive_invoice);
 app.use('/', update_invoice);
+
+app.use('/', create_grn);
+app.use('/', delete_grn);
+app.use('/', retrive_grn);
+app.use('/', update_grn);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
