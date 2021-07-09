@@ -19,16 +19,16 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     address: {
-        type: Object,
-        default: {},
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
     },
     gst_no: {
         type: String,
         default:"",
     },
     bank_details: {
-        type: Object,
-        default: {},
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Bank',
     },
     password: {
         type: String,

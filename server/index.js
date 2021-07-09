@@ -26,6 +26,16 @@ const delete_item = require('./routes/item/delete_item');
 const retrive_item = require('./routes/item/retrive_item');
 const update_item = require('./routes/item/update_item');
 
+const create_address = require('./routes/address/create_address');
+const delete_address = require('./routes/address/delete_address');
+const retrive_address = require('./routes/address/retrive_address');
+const update_address = require('./routes/address/update_address');
+
+const create_bank = require('./routes/bankDetails/create_bank');
+const delete_bank = require('./routes/bankDetails/delete_bank');
+const retrive_bank = require('./routes/bankDetails/retrive_bank');
+const update_bank = require('./routes/bankDetails/update_bank');
+
 const create_indent = require('./routes/indent/create_indent');
 const delete_indent = require('./routes/indent/delete_indent');
 const retrive_indent = require('./routes/indent/retrive_indent');
@@ -36,10 +46,10 @@ const delete_invoice = require('./routes/invoice/delete_invoice');
 const retrive_invoice =require('./routes/invoice/retrive_invoice');
 const update_invoice = require('./routes/invoice/update_invoice');
 
-const create_grn = require('./routes/invoice/create_grn');
-const delete_grn = require('./routes/invoice/delete_grn');
-const retrive_grn =require('./routes/invoice/retrive_grn');
-const update_grn = require('./routes/invoice/update_grn');
+// const create_grn = require('./routes/invoice/create_grn');
+// const delete_grn = require('./routes/invoice/delete_grn');
+// const retrive_grn =require('./routes/invoice/retrive_grn');
+// const update_grn = require('./routes/invoice/update_grn');
 
 const create_order = require('./routes/order/createorder');
 const retrive_order = require('./routes/order/retrive_order');
@@ -81,6 +91,16 @@ app.use('/', delete_item);
 app.use('/', retrive_item);
 app.use('/', update_item);
 
+app.use('/', create_address);
+app.use('/', delete_address);
+app.use('/', retrive_address);
+app.use('/', update_address);
+
+app.use('/', create_bank);
+app.use('/', delete_bank);
+app.use('/', retrive_bank);
+app.use('/', update_bank);
+
 app.use('/', create_indent);
 app.use('/', delete_indent);
 app.use('/', retrive_indent);
@@ -91,10 +111,10 @@ app.use('/', delete_invoice);
 app.use('/', retrive_invoice);
 app.use('/', update_invoice);
 
-app.use('/', create_grn);
-app.use('/', delete_grn);
-app.use('/', retrive_grn);
-app.use('/', update_grn);
+// app.use('/', create_grn);
+// app.use('/', delete_grn);
+// app.use('/', retrive_grn);
+// app.use('/', update_grn);
 
 app.use('/', create_order);
 app.use('/', retrive_order);
