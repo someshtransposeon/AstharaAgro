@@ -64,8 +64,6 @@ const retrive_all_purchase_order = require('./routes/purchase_order/retrive_purc
 const update_purchase_order = require('./routes/purchase_order/update_purchase_order');
 const delete_purchase_order = require('./routes/purchase_order/delete_purchase_order');
 
-const retrive_inventory_type = require('./routes/inventoryType/retrive_inventory_type');
-const retrive_all_inventory_type = require('./routes/inventoryType/retrive_inventory_type');
 const retrive_inventory = require('./routes/inventory/retrive_inventory');
 const update_inventory = require('./routes/inventory/update_inventory');
 
@@ -151,8 +149,7 @@ app.use('/', retrive_all_purchase_order);
 app.use('/', delete_purchase_order);
 app.use('/', update_purchase_order);
 
-app.use('/', retrive_inventory_type);
-app.use('/', retrive_all_inventory_type);
+
 app.use('/', retrive_inventory);
 app.use('/', update_inventory);
 
