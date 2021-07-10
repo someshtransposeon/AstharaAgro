@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const inventoryType = require('../../models/inventoryType/inventoryType');
 
-router.get('/display_inventory_type',(req, res)=>{
+router.get('/retrive_all_inventory_type',(req, res)=>{
         inventoryType.find({}, function(err, inventorytype){
         if(err){
             console.log(err);
@@ -13,7 +13,7 @@ router.get('/display_inventory_type',(req, res)=>{
     });
 });
 
-router.get('/display_inventory_type/:id',(req, res)=>{
+router.get('/retrive_inventory_type/:id',(req, res)=>{
         inventoryType.find({'_id':req.params.id}, function(err, inventorytype){
         if(err){
             console.log(err);

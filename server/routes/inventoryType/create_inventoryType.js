@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const inventoryType = require('../../models/inventoryType/inventoryType');
 
-router.post('/inventory_type',(req,res)=>{
+router.post('/create_inventory_type',(req,res)=>{
     var newInventoryType = new inventoryType({
-        inventory_type: req.params.inventory_type,
+        inventory_type: req.body.inventory_type,
     })
     newInventoryType.save()
     .then(inventorytype => {

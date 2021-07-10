@@ -4,7 +4,7 @@ const inventoryType = require('../../models/inventoryType/inventoryType');
 
 router.put('/update_inventory_type/:id',(req, res) =>{ 
     var newupdate = {
-        inventory_type: req.params.inventory_type,
+        inventory_type: req.body.inventory_type,
     }
     inventoryType.findOneAndUpdate({'_id':req.params.id},newupdate)
     .then((inventorytype) => {
