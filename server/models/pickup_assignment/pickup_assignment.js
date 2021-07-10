@@ -1,13 +1,21 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
-const orderSchema = new mongoose.Schema({
-    customer_id:{
+const pickup_assignmentSchema = new mongoose.Schema({
+    pickup_assign_date:{
+        type:Date,
+        default: Date.now,
+    },
+    puchase_order_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Customer'
-    }, 
+        ref:'PuchaseOrder'
+    },
     user_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
+    }, 
+    vendor_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Vendor'
     },
     item_description:[{
         itemId:{
@@ -18,9 +26,6 @@ const orderSchema = new mongoose.Schema({
             type:Number,
             default:0,
         },
-        griding:{
-            type:String,
-        },
         unit_of_measurement:{
             type:String,
         },
@@ -29,19 +34,22 @@ const orderSchema = new mongoose.Schema({
             required:true,
         },
     }],
-    inventory_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Inventory'
-    },
     address_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Address'
     },
+    address_location:{
+        type:String,
+    },
     status: {
         type: String,
         default:"pending",
-    }
-});
+    },
+},
+{
+    timestamps: true
+}
+);
 
-const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+const Pickup_assignment = mongoose.model('Pickup_assignment', pickup_assignmentSchema);
+module.exports = Pickup_assignment;

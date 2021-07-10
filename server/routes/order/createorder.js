@@ -7,7 +7,7 @@ router.post('/create_order', (req, res)=>{
         
         customer_id: req.body.customer_id,
         user_id: req.body.user_id,
-        item_id: req.body.item_id,
+        item_description:req.body.item_description,
         inventory_id: req.body.inventory_id,
         address_id: req.body.address_id,
         status: req.body.status,
