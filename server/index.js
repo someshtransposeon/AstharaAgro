@@ -46,10 +46,10 @@ const delete_invoice = require('./routes/invoice/delete_invoice');
 const retrive_invoice =require('./routes/invoice/retrive_invoice');
 const update_invoice = require('./routes/invoice/update_invoice');
 
-// const create_grn = require('./routes/invoice/create_grn');
-// const delete_grn = require('./routes/invoice/delete_grn');
-// const retrive_grn =require('./routes/invoice/retrive_grn');
-// const update_grn = require('./routes/invoice/update_grn');
+const create_grn = require('./routes/grn/create_grn');
+const delete_grn = require('./routes/grn/delete_grn');
+const retrive_grn =require('./routes/grn/retrive_grn');
+const update_grn = require('./routes/grn/update_grn');
 
 const create_order = require('./routes/order/createorder');
 const retrive_order = require('./routes/order/retrive_order');
@@ -111,10 +111,10 @@ app.use('/', delete_invoice);
 app.use('/', retrive_invoice);
 app.use('/', update_invoice);
 
-// app.use('/', create_grn);
-// app.use('/', delete_grn);
-// app.use('/', retrive_grn);
-// app.use('/', update_grn);
+app.use('/', create_grn);
+app.use('/', delete_grn);
+app.use('/', retrive_grn);
+app.use('/', update_grn);
 
 app.use('/', create_order);
 app.use('/', retrive_order);

@@ -14,7 +14,7 @@ router.post('/newindent',(req,res)=>{
     newPost.save()
     .then(post => {
         res.json(post);
-        console.log("save in data base");
+        console.log("save in data base"+Indent);
     })
     .catch(err => res.json(err))
 });

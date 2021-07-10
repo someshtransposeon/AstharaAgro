@@ -65,5 +65,5 @@ const grnSchema = new mongoose.Schema({
     }, {
     timestamps: true
 });
-const Grn = mongoose.model('Invoice', grnSchema);
+const Grn = mongoose.model('Grn', grnSchema);
 module.exports = Grn;

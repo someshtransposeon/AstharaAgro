@@ -7,7 +7,7 @@ const invoiceSchema = new mongoose.Schema({
     },
     customerId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer',
+        ref: 'User',
     },
     createddBy:{
         type: mongoose.Schema.Types.ObjectId,
@@ -15,19 +15,19 @@ const invoiceSchema = new mongoose.Schema({
     },
     purchaseOrder:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'purchaseOrder',
+        ref: 'Order',
     },
     orderId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'order',
+        ref: 'Order',
     },
     vendorId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'vendor',
+        ref: 'User',
     },
     indentId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'indent',
+        ref: 'Indent',
     },
     item_description:[{
         itemId:{
