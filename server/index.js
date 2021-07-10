@@ -36,6 +36,11 @@ const delete_bank = require('./routes/bankDetails/delete_bank');
 const retrive_bank = require('./routes/bankDetails/retrive_bank');
 const update_bank = require('./routes/bankDetails/update_bank');
 
+const create_inventoryType = require('./routes/inventoryType/create_inventoryType');
+const delete_inventoryType = require('./routes/inventoryType/delete_inventoryType');
+const retrive_inventoryType = require('./routes/inventoryType/retrive_inventoryType');
+const update_inventoryType = require('./routes/inventoryType/update_inventoryType');
+
 const create_indent = require('./routes/indent/create_indent');
 const delete_indent = require('./routes/indent/delete_indent');
 const retrive_indent = require('./routes/indent/retrive_indent');
@@ -120,6 +125,11 @@ app.use('/', create_bank);
 app.use('/', delete_bank);
 app.use('/', retrive_bank);
 app.use('/', update_bank);
+
+app.use('/', create_inventoryType);
+app.use('/', delete_inventoryType);
+app.use('/', retrive_inventoryType);
+app.use('/', update_inventoryType);
 
 app.use('/', create_indent);
 app.use('/', delete_indent);
