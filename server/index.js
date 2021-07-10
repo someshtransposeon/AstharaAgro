@@ -56,7 +56,6 @@ const delete_grn = require('./routes/grn/delete_grn');
 const retrive_grn =require('./routes/grn/retrive_grn');
 const update_grn = require('./routes/grn/update_grn');
 
-
 const create_order = require('./routes/order/createorder');
 const retrive_order = require('./routes/order/retrive_order');
 const retrive_all_order = require('./routes/order/retrive_order');
@@ -72,7 +71,6 @@ const delete_purchase_order = require('./routes/purchase_order/delete_purchase_o
 const retrive_inventory = require('./routes/inventory/retrive_inventory');
 const update_inventory = require('./routes/inventory/update_inventory');
 
-
 const create_payment = require('./routes/payment/create_payment');
 const update_payment = require('./routes/payment/update_payment');
 const retrive_payment = require('./routes/payment/retrive_payment');
@@ -80,8 +78,6 @@ const retrive_all_payment = require('./routes/payment/retrive_payment');
 
 const pickup_assignment = require('./routes/pickup_assignment/pickup_assignment');
 const delivery_assignment = require('./routes/delivery_assignment/delivery_assignment');
-
-
 
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -146,7 +142,6 @@ app.use('/', delete_grn);
 app.use('/', retrive_grn);
 app.use('/', update_grn);
 
-
 app.use('/', create_order);
 app.use('/', retrive_order);
 app.use('/', retrive_all_order);
@@ -159,7 +154,6 @@ app.use('/', retrive_all_purchase_order);
 app.use('/', delete_purchase_order);
 app.use('/', update_purchase_order);
 
-
 app.use('/', retrive_inventory);
 app.use('/', update_inventory);
 
@@ -170,7 +164,6 @@ app.use('/', update_payment);
 
 app.use('/', pickup_assignment);
 app.use('/', delivery_assignment);
-
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
