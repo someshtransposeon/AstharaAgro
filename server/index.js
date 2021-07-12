@@ -77,7 +77,13 @@ const retrive_payment = require('./routes/payment/retrive_payment');
 const retrive_all_payment = require('./routes/payment/retrive_payment');
 
 const pickup_assignment = require('./routes/pickup_assignment/pickup_assignment');
+const retrive_pickup_assignment = require('./routes/pickup_assignment/retrive_pickup_assignment');
+const retrive_all_pickup_assignments = require('./routes/pickup_assignment/retrive_pickup_assignment');
+
+
 const delivery_assignment = require('./routes/delivery_assignment/delivery_assignment');
+const retrive_delivery_assignment = require('./routes/delivery_assignment/retrive_delivery_assignment');
+const retrive_all_delivery_assignments = require('./routes/delivery_assignment/retrive_delivery_assignment');
 
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -163,7 +169,13 @@ app.use('/', retrive_all_payment);
 app.use('/', update_payment);
 
 app.use('/', pickup_assignment);
+app.use('/', retrive_pickup_assignment);
+app.use('/', retrive_all_pickup_assignments);
+
 app.use('/', delivery_assignment);
+app.use('/', retrive_delivery_assignment);
+app.use('/', retrive_all_delivery_assignments);
+
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
