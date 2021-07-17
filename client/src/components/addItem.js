@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Text} from 'react-native';
-
+import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 
 const theme = {
@@ -59,14 +58,36 @@ export default function AddItem({ navigation }) {
 
 const styles = StyleSheet.create({
     card: {
-        marginTop: '10%',
         alignSelf: 'center',
         padding: '1%',
-        width: '90%',
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                marginTop: '10%',
+                width: '90%',
+            },
+            default: {
+                marginTop: '4%',
+                width: '50%',
+            }
+        })
     },
     input: {
         marginTop: '2%',
         width: '100%',
         backgroundColor: 'white',
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                
+            },
+            default: {
+                border: '1px solid gray',
+            }
+        })
     },
 }); 

@@ -1,6 +1,7 @@
-import React, {useState, UseEffect} from 'react';
-import { View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import { View, StyleSheet,Platform } from 'react-native';
 import { Provider, DefaultTheme, DataTable, Button } from 'react-native-paper';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const theme = {
     ...DefaultTheme,
@@ -35,47 +36,101 @@ export default function AllItems({ navigation }) {
                 <DataTable.Row>
                     <DataTable.Cell>Tomato</DataTable.Cell>
                     <DataTable.Cell>Vegitable</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Apple</DataTable.Cell>
                     <DataTable.Cell>Fruits</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Chili</DataTable.Cell>
                     <DataTable.Cell>Vegitable</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Mango</DataTable.Cell>
                     <DataTable.Cell>Fruits</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Potato</DataTable.Cell>
                     <DataTable.Cell>Vegitable</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Orange</DataTable.Cell>
                     <DataTable.Cell>Fruits</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Tomato</DataTable.Cell>
                     <DataTable.Cell>Vegitable</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Apple</DataTable.Cell>
                     <DataTable.Cell>Fruits</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
                     <DataTable.Cell>Chili</DataTable.Cell>
                     <DataTable.Cell>Vegitable</DataTable.Cell>
-                    <DataTable.Cell><Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button></DataTable.Cell>
+                    <DataTable.Cell>
+                        {Platform.OS=='android' ?
+                        <Button mode="outlined" color="blue" onPress={() => {navigation.navigate('EditItem')}}>Edit</Button>
+                        :
+                        <Button mode="outlined" color="blue"><Link to="/edititem">Edit</Link></Button>
+                        }
+                    </DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Pagination
                     page={page}
@@ -96,6 +151,17 @@ export default function AllItems({ navigation }) {
 
 const styles = StyleSheet.create({
     datatable: {
-        width: '90%',
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                width: '90%',
+            },
+            default: {
+                width: '60%',
+                marginTop: '4%',
+            }
+        })
     }
 }); 
