@@ -1,31 +1,32 @@
 const mongoose = require('mongoose');
 
-const bankSchema = new mongoose.Schema({
+const vendorSchema = new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
     },
-    bank_name: { 
+    full_name: {
         type: String,
         required: true,
     },
-    branch_name: {
+    email: { 
         type: String,
         required: true,
+         unique: true,
     },
-    account_number: {
+    mobile_no: {
         type: Number,
         required: true,
     },
-    account_holder_name: {
+    gst_no: {
         type: String,
-        required: true,
+        default:"",
     },
-    ifsc_code: { 
+    password: {
         type: String,
         required: true,
     },
 });
 
-const Bank = mongoose.model('Bank', bankSchema);
-module.exports = Bank;
+const Vendor = mongoose.model('Vendor', vendorSchema);
+module.exports = Vendor;

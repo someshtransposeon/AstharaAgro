@@ -18,17 +18,9 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    address: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Address',
-    },
     gst_no: {
         type: String,
         default:"",
-    },
-    bank_details: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Bank',
     },
     password: {
         type: String,

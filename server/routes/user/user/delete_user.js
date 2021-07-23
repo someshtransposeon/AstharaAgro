@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/user/user');
+const User = require('../../../models/user/user');
 
 router.get('/delete_user/:id',(req, res) =>{ 
     User.findOneAndRemove({'_id':req.params.id})

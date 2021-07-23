@@ -1,31 +1,28 @@
 const mongoose = require('mongoose');
 
-const bankSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
     },
-    bank_name: { 
+    full_name: {
         type: String,
         required: true,
     },
-    branch_name: {
+    email: { 
         type: String,
         required: true,
+         unique: true,
     },
-    account_number: {
+    mobile_no: {
         type: Number,
         required: true,
     },
-    account_holder_name: {
-        type: String,
-        required: true,
-    },
-    ifsc_code: { 
+    password: {
         type: String,
         required: true,
     },
 });
 
-const Bank = mongoose.model('Bank', bankSchema);
-module.exports = Bank;
+const Customer = mongoose.model('Customer', customerSchema);
+module.exports = Customer;

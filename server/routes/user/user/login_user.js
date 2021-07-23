@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
-const User = require('../../models/user/user');
+const User = require('../../../models/user/user');
 
 router.post('/login_user', (req, res)=>{
     User.findOne({ email: req.body.email}, function(err, user){

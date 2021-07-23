@@ -12,11 +12,14 @@ const delete_user_category = require('./routes/userCategory/delete_user_category
 const retrive_user_category = require('./routes/userCategory/retrive_user_category');
 const update_user_category = require('./routes/userCategory/update_user_category');
 
-const create_user = require('./routes/user/create_user');
-const delete_user = require('./routes/user/delete_user');
-const login_user = require('./routes/user/login_user');
-const retrive_user = require('./routes/user/retrive_user');
-const update_user = require('./routes/user/update_user');
+const create_user = require('./routes/user/user/create_user');
+const delete_user = require('./routes/user/user/delete_user');
+const login_user = require('./routes/user/user/login_user');
+const retrive_user = require('./routes/user/user/retrive_user');
+const update_user = require('./routes/user/user/update_user');
+
+const retrive_vendor = require('./routes/user/vendor/retrive_vendor');
+
 
 const create_item_category = require('./routes/itemCategory/create_item_category');
 const delete_item_category = require('./routes/itemCategory/delete_item_category');
@@ -103,6 +106,9 @@ app.use('/', create_user_category);
 app.use('/', delete_user_category);
 app.use('/', retrive_user_category);
 app.use('/', update_user_category);
+
+app.use('/', retrive_vendor);
+
 
 app.use('/', create_user);
 app.use('/', login_user);

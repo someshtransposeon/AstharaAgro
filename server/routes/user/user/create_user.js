@@ -1,0 +1,72 @@
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const User = require('../../../models/user/user');
+const Vendor=require('../../../models/user/vendor');
+const Customer=require('../../../models/user/customer');
+const Sales_person=require('../../../models/user/sales_person');
+const Buyer=require('../../../models/user/buyer');
+const Manager=require('../../../models/user/manager');
+const Accountant=require('../../../models/user/accountant');
+const UserCategory = require('../../../models/userCategory/user_category');
+
+
+router.post('/create_user', async (req, res)=>{
+    if(req.body.password==req.body.confirm_password){
+        bcrypt.hash(req.body.password, 12, function(err, hash){
+            const category=req.body.category;
+            const full_name= req.body.full_name;
+            const  email= req.body.email;
+            const  mobile_no= req.body.mobile_no;
+            const address= req.body.address;
+            const gst_no= req.body.gst_no;
+            const bank_details= req.body.bank_details;
+            const password= hash;
+            var newUser = new User({category,full_name,email,mobile_no,gst_no,password})
+            newUser.save()
+            .then(user => {
+                res.json(user);
+                const userId=user._id;
+                UserCategory.findById({'_id': req.body.category }, (err, users) => {
+                    if (users.category_name=="vendor") {
+                        var newVendor = new Vendor({userId,full_name,email,mobile_no,gst_no,password})
+                        newVendor.save()
+                    }
+                    else if(users.category_name=="customer")
+                    {
+                        var newCustomer = new Customer({userId,full_name,email,mobile_no,gst_no,password})
+                        newCustomer.save()
+                    }
+                    else if(users.category_name=="manager")
+                    {
+                        var newManager = new Manager({userId,full_name,email,mobile_no,password})
+                        newManager.save()
+                    }
+                    else if(users.category_name=="sales_person")
+                    {
+                        var newSales_person = new Sales_person({userId,full_name,email,mobile_no,password})
+                        newSales_person.save()
+                    }
+                    else if(users.category_name=="accountant")
+                    {
+                        var newAccountant = new Accountant({userId,full_name,email,mobile_no,password})
+                        newAccountant.save()
+                    }
+                    else if(users.category_name=="buyer")
+                    {
+                        var newBuyer = new Buyer({userId,full_name,email,mobile_no,password})
+                        newBuyer.save()
+                    }
+
+                });   
+            })
+            .catch(err => res.json(err));
+        });
+    }
+    else{
+        var message = { success:"password and confirm password not equal" };
+        res.json(message);
+    }
+});
+
+module.exports = router;
