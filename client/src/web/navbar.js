@@ -13,7 +13,10 @@ import CreateOrder from '../components/order/createorder';
 import EditItem from '../components/item/edititem';
 import Login from '../components/user/login';
 import Register from '../components/user/register';
-
+import Buyer_add_vendor from '../components/buyer/add_vendor';
+import Vendor_details from '../components/buyer/vendor_details';
+import Add_customer from '../components/sales_person/add_customer';
+import Customer_details from '../components/sales_person/customer_detail';
 export default function NavBar() {
 
     const Logout = async (value) => {
@@ -54,7 +57,7 @@ export default function NavBar() {
                             </InputGroup>
                         </Form>
                         <Nav>
-                            {AsyncStorage.getItem('@token') ?
+                            {!AsyncStorage.getItem('@token') ?
                                 <>
                                     <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> Profile</Button>{' '}</Nav.Link>
                                     <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
@@ -83,8 +86,11 @@ export default function NavBar() {
                                 <NavDropdown.Item to="/allitems" as={Link}>Add User</NavDropdown.Item>
                                 <NavDropdown.Item to="/allitems" as={Link}>All Users</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item to="/allitems" as={Link}>Add Vendor</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>All Vendors</NavDropdown.Item>
+                                <NavDropdown.Item to="/addvendor" as={Link}>Add Vendor</NavDropdown.Item>
+                                <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item to="/addcustomer" as={Link}>Add Customer</NavDropdown.Item>
+                                <NavDropdown.Item to="/customerdetails" as={Link}>All Customers</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Reports" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/allitems" as={Link}>Items</NavDropdown.Item>
@@ -119,6 +125,18 @@ export default function NavBar() {
                 </Route>
                 <Route path="/register">
                     <Register/>
+                </Route>
+                <Route path="/addvendor">
+                    <Buyer_add_vendor/>
+                </Route>
+                <Route path="/vendordetails">
+                    <Vendor_details/>
+                </Route>
+                <Route path="/addcustomer">
+                    <Add_customer/>
+                </Route>
+                <Route path="/customerdetails">
+                    <Customer_details/>
                 </Route>
                 <Route path="/">
                     <Home/>
