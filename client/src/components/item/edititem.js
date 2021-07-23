@@ -15,8 +15,8 @@ const theme = {
 
 export default function EditItem({ route, navigation }) {
 
-    const {itemId} = useParams();
-    // const {itemId} = route.params;
+    //const {itemId} = useParams();
+    const {itemId} = route.params;
 
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
