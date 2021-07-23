@@ -3,11 +3,11 @@ import { Image, Text } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faBars } from '@fortawesome/free-solid-svg-icons';
-import HomeScreen from '../components/home';
-import AddItem from '../components/addItem';
-import AllItems from '../components/allitems';
-import EditItem from '../components/edititem';
-import CreateOrder from '../components/createorder';
+import Home from '../components/home/home';
+import AddItem from '../components/item/addItem';
+import AllItems from '../components/item/allitems';
+import CreateOrder from '../components/order/createorder';
+import EditItem from '../components/item/edititem';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +23,7 @@ export default function Stacks({navigation}){
                 fontWeight: 'bold',
             },
         }}>
-            <Stack.Screen name="Home" component={HomeScreen} options={{
+            <Stack.Screen name="Home" component={Home} options={{
             headerTitle: () => (
                 <>
                     {/* <Image

@@ -1,17 +1,27 @@
 import React from 'react';
 import { Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {  faUserPlus, faSignInAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {  faUserPlus, faUser, faSignInAlt, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Button, FormControl, Form, InputGroup } from 'react-bootstrap';
-import Home from '../components/home';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AddItem from '../components/addItem';
-import AllItems from '../components/allitems';
-import CreateOrder from '../components/createorder';
-import EditItem from '../components/edititem';
+import Home from '../components/home/home';
+import AddItem from '../components/item/addItem';
+import AllItems from '../components/item/allitems';
+import CreateOrder from '../components/order/createorder';
+import EditItem from '../components/item/edititem';
+import Login from '../components/user/login';
+import Register from '../components/user/register';
 
 export default function NavBar() {
+
+    const Logout = async (value) => {
+        await AsyncStorage.clear()
+        console.log("Logout Success");
+        console.log(AsyncStorage.getItem('@token'));
+    }
+
     return(
         <Router>
                 <Navbar collapseOnSelect expand="lg" style={{paddingLeft: '2%', paddingRight: '2%'}}>
@@ -44,9 +54,18 @@ export default function NavBar() {
                             </InputGroup>
                         </Form>
                         <Nav>
-                            <Nav.Link to="/allitems" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUserPlus } color={'#04FAA1'}/> Register</Button>{' '}</Nav.Link>
-                            <Nav.Link to="/allitems" as={Link}><Button variant="outline-danger"><FontAwesomeIcon icon={ faSignInAlt } color={'#04FAA1'}/> Login</Button>{' '}</Nav.Link>
-                        </Nav>
+                            {AsyncStorage.getItem('@token') ?
+                                <>
+                                    <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> Profile</Button>{' '}</Nav.Link>
+                                    <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
+                                </>
+                                :
+                                <>
+                                    <Nav.Link to="/register" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUserPlus } color={'#04FAA1'}/> Register</Button>{' '}</Nav.Link>
+                                    <Nav.Link to="/login" as={Link}><Button variant="outline-danger"><FontAwesomeIcon icon={ faSignInAlt } color={'#04FAA1'}/> Login</Button>{' '}</Nav.Link>
+                                </>
+                            }
+                            </Nav>
                     </Navbar.Collapse>
                 </Navbar>
                 <Navbar collapseOnSelect expand="lg" style={{backgroundColor:'#04FAA1', border: '1px solid gray', paddingLeft: '2%', paddingRight: '2%'}}>
@@ -89,11 +108,17 @@ export default function NavBar() {
                 <Route path="/allitems">
                     <AllItems/>
                 </Route>
-                <Route path="/edititem">
+                <Route path="/edititem/:itemId">
                     <EditItem/>
                 </Route>
                 <Route path="/createorder">
                     <CreateOrder/>
+                </Route>
+                <Route path="/login">
+                    <Login/>
+                </Route>
+                <Route path="/register">
+                    <Register/>
                 </Route>
                 <Route path="/">
                     <Home/>
