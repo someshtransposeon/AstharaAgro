@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {  faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {  faMinus, faPlusCircle,faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 
 const theme = {
@@ -19,7 +19,7 @@ export default function CreateOrder({ navigation }) {
     const [visible1, setVisible1] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 }]);
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -40,27 +40,30 @@ export default function CreateOrder({ navigation }) {
         .then(item => setItem(item));
     }, [item,host]);
 
+
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
 
-    const ItemChange = (index, fieldname, fieldvalue, itemId) => {
+    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
             values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
             closeMenu1();
         }
         else{
             values[index].quantity = fieldvalue;
         }
         setItems(values);
-        console.log(items);
+        console.log(unit);
     };
 
     const handleAddFields = () => {
         const values = [...items];
         values.push({ itemId: '', itemName: 'Choose Item', quantity: 0 });
         setItems(values);
+        
     };
     
     const handleRemoveFields = index => {
@@ -109,16 +112,20 @@ export default function CreateOrder({ navigation }) {
                                 {item ?
                                     item.map((item)=>{
                                         return (
-                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id)}/>
+                                            <>
+                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit)}/>
+                                            </>
                                         )
                                     })
                                     :
                                     <Menu.Item title="No items are available" />
                                 }
+                                
                             </Menu>
-                            <TextInput style={{flex: 1, marginTop: '2%',}} keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                            <Button mode="outlined" style={{flex: 1, marginTop: '3%',}} onPress={() => handleRemoveFields(index)}><FontAwesomeIcon icon={ faMinus } color={ 'red' }/></Button>
-                            <Button mode="outlined" style={{flex: 1, marginTop: '3%',}} onPress={() => handleAddFields()}><FontAwesomeIcon icon={ faPlus } color={ 'blue' }/></Button>
+                            <TextInput style={styles.sizeinput} mode="outlined" label="unit of each item" value={it.itemUnit} />
+                            <TextInput  style={styles.sizeinput} keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
+                            <Button onPress={() => handleRemoveFields(index)}><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
+                            <Button  onPress={() => handleAddFields()}><FontAwesomeIcon icon={faPlusCircle   } color={ 'green' } size={30} /></Button>
                         </View>
                     ))}
                     <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()} >Create Order</Button>
@@ -162,10 +169,14 @@ const styles = StyleSheet.create({
             },
             default: {
                 
+                
             }
         })
     },
     items: {
         flexDirection: 'row',
+    },
+    sizeinput:{
+        width:"30%"
     }
 }); 

@@ -16,11 +16,16 @@ export default function AddItem({ navigation }) {
 
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
+    const [visible3, setVisible3] = useState(false);
+
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
+    const openMenu3 = () => setVisible3(true);
+    const closeMenu3 = () => setVisible3(false);
+
 
     const [itemCategory, setItemCategory] = useState();
     const [category, setCategory] = useState("Choose Category");
@@ -28,6 +33,7 @@ export default function AddItem({ navigation }) {
     const [itemName, setItemName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
     const [itemDescription, setDescription,] = useState("");
+    const [unit,setUnit]=useState("Select unit of each item");
     const [host, setHost] = useState("");
 
     useEffect(() => {
@@ -55,7 +61,11 @@ export default function AddItem({ navigation }) {
         setGrade(name);
         closeMenu2();
     }
-
+    function chooseUnit(name) {
+        setUnit(name);
+        closeMenu3();
+    }
+    
     function submitForm() {
         fetch(`http://${host}:5000/create_item`, {
             method: 'POST',
@@ -67,6 +77,7 @@ export default function AddItem({ navigation }) {
                 item_name: itemName,
                 grade: grade,
                 description: itemDescription,
+                unit : unit,
             })
         })
         .then(res => res.json())
@@ -78,6 +89,7 @@ export default function AddItem({ navigation }) {
             setCategoryId("");
             setItemName("");
             setDescription("");
+            setUnit("select unit of each");
         }); 
     }
 
@@ -88,7 +100,7 @@ export default function AddItem({ navigation }) {
                     <Card.Title title="ADD ITEM"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
-                    <Menu
+                    <Menu key={1}
                     visible={visible1}
                     onDismiss={closeMenu1}
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{category}</Button>}>
@@ -102,7 +114,7 @@ export default function AddItem({ navigation }) {
                             <Menu.Item title="No item Category Available" />
                         }
                     </Menu>
-                    <Menu
+                    <Menu key={2}
                     visible={visible2}
                     onDismiss={closeMenu2}
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{grade}</Button>}>
@@ -110,6 +122,18 @@ export default function AddItem({ navigation }) {
                         <Menu.Item title="B Grade" onPress={()=>chooseGrade("B")} />
                         <Menu.Item title="C Grade" onPress={()=>chooseGrade("C")} />
                         <Menu.Item title="D Grade" onPress={()=>chooseGrade("D")} />
+                    </Menu>
+                    <Menu key={3}
+                    visible={visible3}
+                    onDismiss={closeMenu3}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu3}>{unit}</Button>}>
+                        <Menu.Item title="100g" onPress={()=>chooseUnit("100g")} />
+                        <Menu.Item title="250g" onPress={()=>chooseUnit("250g")} />
+                        <Menu.Item title="500g" onPress={()=>chooseUnit("500g")} />
+                        <Menu.Item title="1kg" onPress={()=>chooseUnit("1kg")} />
+                        <Menu.Item title="5kg" onPress={()=>chooseUnit("5kg")} />
+                        <Menu.Item title="10kg" onPress={()=>chooseUnit("10kg")} />
+                        <Menu.Item title="1packet = 20kg" onPress={()=>chooseUnit("1packet = 20kg")} />
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add Item</Button>

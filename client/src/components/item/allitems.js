@@ -41,7 +41,7 @@ export default function AllItems({ navigation }) {
                 {allItems ?
                     allItems.map((item)=>{
                         return (
-                            <Card style={styles.card}>
+                            <Card style={styles.card} key={item._id}>
                                 <Card.Title title={item.item_name} subtitle={item.category_name}/>
                                 <Card.Content>
                                     <Paragraph>Grade: {item.grade}</Paragraph>
@@ -50,7 +50,7 @@ export default function AllItems({ navigation }) {
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>View</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>View</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={{pathname:"/edititem/"+item._id,id:item._id }}>View</Link></Button>
                                     }
                                 </Card.Actions>
                             </Card>

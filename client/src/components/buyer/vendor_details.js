@@ -5,7 +5,7 @@ import { faInfoCircle,faTrash,faEdit} from '@fortawesome/free-solid-svg-icons'
 import {Text,View,StyleSheet,Platform} from 'react-native';
 import {Link} from 'react-router-dom';
 
-export default function  Vendor_details(){
+export default function  Vendor_details({ navigation }){
      const optionsPerPage = [2, 3, 4];
     const [page, setPage] = React.useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(optionsPerPage[0]);
@@ -40,27 +40,25 @@ export default function  Vendor_details(){
                 <DataTable.Cell >{item.mobile_no}</DataTable.Cell>
                 <DataTable.Cell >{item.gst_no}</DataTable.Cell>
                 <DataTable.Cell >
-                  <Link to="/addvendor" >
+                  <Link to="/particularvendor" >
                   <FontAwesomeIcon icon={ faInfoCircle } 
                     color="green" 
                     secondaryColor="red" 
-                    secondaryOpacity={ 0.4 } 
-                   />
+                    />
                    </Link>
-                   <Link to="/addvendor" >
+                   <Link to="/deactivevendor" >
                    <FontAwesomeIcon 
                     icon={ faTrash }  
                     color="red" 
                     secondaryColor="red" 
-                    secondaryOpacity={ 0.4 } 
+                    
                     />
                   </Link>
-                  <Link to="/addvendor" >
+                  <Link to={"/editvendor/"+item._id}>
                    <FontAwesomeIcon 
                     icon={ faEdit }  
                     color="blue" 
                     secondaryColor="red" 
-                    secondaryOpacity={ 0.4 }
                      />
                   </Link>
                   </DataTable.Cell>
