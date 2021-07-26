@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {  faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 
 const theme = {
@@ -16,9 +17,78 @@ const theme = {
 export default function CreateOrder({ navigation }) {
 
     const [visible1, setVisible1] = useState(false);
+    const [item, setItem] = useState();
+    const [host, setHost] = useState("");
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 }]);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [mobileNo, setMobileNo] = useState("");
+    const [address, setAddress] = useState("");
+
+    useEffect(() => {
+        if(Platform.OS=="android"){
+            setHost("10.0.2.2");
+        }
+        else{
+            setHost("localhost");
+        }
+        fetch(`http://${host}:5000/retrive_all_item`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(item => setItem(item));
+    }, [item,host]);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
+
+    const ItemChange = (index, fieldname, fieldvalue, itemId) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            closeMenu1();
+        }
+        else{
+            values[index].quantity = fieldvalue;
+        }
+        setItems(values);
+        console.log(items);
+    };
+
+    const handleAddFields = () => {
+        const values = [...items];
+        values.push({ itemId: '', itemName: 'Choose Item', quantity: 0 });
+        setItems(values);
+    };
+    
+    const handleRemoveFields = index => {
+        const values = [...items];
+        values.splice(index, 1);
+        setItems(values);
+    };
+
+    function submitForm() {
+        fetch(`http://${host}:5000/create_order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                mobile_no: mobileNo,
+                address: address,
+                items: items,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            console.log(data);
+        }); 
+    }
 
     return (
         <Provider theme={theme}>
@@ -26,25 +96,32 @@ export default function CreateOrder({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="Create Order"/>
                     <Card.Content>
-                    <TextInput style={styles.input} label="Full Name" />
-                    <TextInput style={styles.input} label="Email" />
-                    <TextInput style={styles.input} label="Mobile no" />
-                    <TextInput style={styles.input} label="Address" multiline />
-                    <Menu
-                    visible={visible1}
-                    onDismiss={closeMenu1}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>Choose Item</Button>}>
-                        <Menu.Item title="Apple" />
-                        <Menu.Item title="Potato" />
-                        <Menu.Item title="Tomato" />
-                        <Menu.Item title="Mango" />
-                        <Menu.Item title="Apple" />
-                        <Menu.Item title="Potato" />
-                        <Menu.Item title="Tomato" />
-                        <Menu.Item title="Mango" />
-                    </Menu>
-                    <TextInput style={styles.input} label="Quantity" />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}}>Create Order</Button>
+                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
+                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
+                    <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                    <TextInput style={styles.input} mode="outlined" label="Address" multiline value={address} onChangeText={address => setAddress(address)} />
+                    {items.map((it, index) => (
+                        <View style={styles.items}>
+                            <Menu
+                            visible={visible1}
+                            onDismiss={closeMenu1}
+                            anchor={<Button style={{flex: 1, marginTop: '15%'}}mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
+                                {item ?
+                                    item.map((item)=>{
+                                        return (
+                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id)}/>
+                                        )
+                                    })
+                                    :
+                                    <Menu.Item title="No items are available" />
+                                }
+                            </Menu>
+                            <TextInput style={{flex: 1, marginTop: '2%',}} keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
+                            <Button mode="outlined" style={{flex: 1, marginTop: '3%',}} onPress={() => handleRemoveFields(index)}><FontAwesomeIcon icon={ faMinus } color={ 'red' }/></Button>
+                            <Button mode="outlined" style={{flex: 1, marginTop: '3%',}} onPress={() => handleAddFields()}><FontAwesomeIcon icon={ faPlus } color={ 'blue' }/></Button>
+                        </View>
+                    ))}
+                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()} >Create Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -61,18 +138,21 @@ const styles = StyleSheet.create({
                 
             },
             android: {
+                marginTop: '10%',
+                marginBottom: '10%',
                 width: '90%',
             },
             default: {
-                width: '60%',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
+                marginBottom: '4%',
+                width: '50%',
             }
         })
     },
     input: {
         marginTop: '2%',
         width: '100%',
-        backgroundColor: 'white',
         ...Platform.select({
             ios: {
                 
@@ -81,8 +161,11 @@ const styles = StyleSheet.create({
                 
             },
             default: {
-                border: '1px solid gray',
+                
             }
         })
     },
+    items: {
+        flexDirection: 'row',
+    }
 }); 

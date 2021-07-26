@@ -8,6 +8,10 @@ import AddItem from '../components/item/addItem';
 import AllItems from '../components/item/allitems';
 import CreateOrder from '../components/order/createorder';
 import EditItem from '../components/item/edititem';
+import AddItemCategory from '../components/itemCategory/add_item_category';
+import AddUserCategory from '../components/userCategory/add_user_category';
+import AddAddress from '../components/address/add_address';
+import AddBankDetails from '../components/bank/add_bank_details';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +57,26 @@ export default function Stacks({navigation}){
             ),
             }}/>
             <Stack.Screen name="CreateOrder" component={CreateOrder} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AddItemCategory" component={AddItemCategory} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AddUserCategory" component={AddUserCategory} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AddAddress" component={AddAddress} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AddBankDetails" component={AddBankDetails} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),

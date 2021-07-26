@@ -87,7 +87,7 @@ export default function AddItem({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="ADD ITEM"/>
                     <Card.Content>
-                    <TextInput style={styles.input} label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
+                    <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
                     <Menu
                     visible={visible1}
                     onDismiss={closeMenu1}
@@ -111,7 +111,7 @@ export default function AddItem({ navigation }) {
                         <Menu.Item title="C Grade" onPress={()=>chooseGrade("C")} />
                         <Menu.Item title="D Grade" onPress={()=>chooseGrade("D")} />
                     </Menu>
-                    <TextInput style={styles.input} label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
+                    <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>
@@ -130,10 +130,13 @@ const styles = StyleSheet.create({
             },
             android: {
                 marginTop: '10%',
+                marginBottom: '10%',
                 width: '90%',
             },
             default: {
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
+                marginBottom: '4%',
                 width: '50%',
             }
         })
@@ -141,7 +144,6 @@ const styles = StyleSheet.create({
     input: {
         marginTop: '2%',
         width: '100%',
-        backgroundColor: 'white',
         ...Platform.select({
             ios: {
                 
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
                 
             },
             default: {
-                border: '1px solid gray',
+                
             }
         })
     },

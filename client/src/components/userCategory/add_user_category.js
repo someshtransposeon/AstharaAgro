@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, StyleSheet, Platform} from 'react-native';
+import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 
 const theme = {
     ...DefaultTheme,
@@ -13,48 +12,46 @@ const theme = {
     },
 };
 
-export default function Login({ navigation }) {
+export default function AddUserCategory({ navigation }) {
 
-    const [message, setMessage] = useState();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [userCategoryName, setUserCategoryName] = useState("");
+    const [host, setHost] = useState("");
+
+    useEffect(() => {
+        if(Platform.OS=="android"){
+            setHost("10.0.2.2");
+        }
+        else{
+            setHost("localhost");
+        }
+    }, [host]);
 
     function submitForm() {
-        fetch('http://localhost:5000/login_user', {
+        fetch(`http://${host}:5000/create_user_category`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email:email,
-                password:password,
+                category_name: userCategoryName,
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             console.log(data);
-            try {
-                AsyncStorage.setItem('@token', data.token);
-                AsyncStorage.setItem('@loginuserid', data.user_id);
-                AsyncStorage.setItem('@loginemail', data.email);
-            }catch (e) {
-                console.log(e);
-            }
-            setEmail("");
-            setPassword("");
+            setUserCategoryName("");
         }); 
     }
 
     return (
         <Provider theme={theme}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignUsers: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Login User"/>
+                    <Card.Title title="ADD User Category"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Login</Button>
+                    <TextInput style={styles.input} mode="outlined" label="User Category Name" value={userCategoryName} onChangeText={userCategoryName => setUserCategoryName(userCategoryName)} />
+                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add User Category</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
         })
     },
     input: {
-        margin: '2%',
+        marginTop: '2%',
         width: '100%',
         ...Platform.select({
             ios: {

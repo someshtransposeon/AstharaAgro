@@ -17,6 +17,11 @@ import Buyer_add_vendor from '../components/buyer/add_vendor';
 import Vendor_details from '../components/buyer/vendor_details';
 import Add_customer from '../components/sales_person/add_customer';
 import Customer_details from '../components/sales_person/customer_detail';
+import AddItemCategory from '../components/itemCategory/add_item_category';
+import AddUserCategory from '../components/userCategory/add_user_category';
+import AddAddress from '../components/address/add_address';
+import AddBankDetails from '../components/bank/add_bank_details';
+
 export default function NavBar() {
 
     const Logout = async (value) => {
@@ -79,12 +84,20 @@ export default function NavBar() {
                                 <NavDropdown.Item to="/additem" as={Link}>Add Item</NavDropdown.Item>
                                 <NavDropdown.Item to="/allitems" as={Link}>All Items</NavDropdown.Item>
                                 <NavDropdown.Divider />
+                                <NavDropdown.Item to="/additemcategory" as={Link}>Add Item Category</NavDropdown.Item>
+                                <NavDropdown.Item to="/allitemcategories" as={Link}>All Item Categories</NavDropdown.Item>
+                                <NavDropdown.Divider />
                                 <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
                                 <NavDropdown.Item to="/allitems" as={Link}>All Orders</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                <NavDropdown.Item to="/allitems" as={Link}>Add User</NavDropdown.Item>
+                                <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
+                                <NavDropdown.Item to="/addaddress" as={Link}>Add Address</NavDropdown.Item>
+                                <NavDropdown.Item to="/addbankdetails" as={Link}>Add Bank Details</NavDropdown.Item>
                                 <NavDropdown.Item to="/allitems" as={Link}>All Users</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item to="/addusercategory" as={Link}>Add User Category</NavDropdown.Item>
+                                <NavDropdown.Item to="/allusercategories" as={Link}>All User Categories</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item to="/addvendor" as={Link}>Add Vendor</NavDropdown.Item>
                                 <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
@@ -138,8 +151,20 @@ export default function NavBar() {
                 <Route path="/customerdetails">
                     <Customer_details/>
                 </Route>
-                <Route path="/">
+                <Route path="/" exact>
                     <Home/>
+                </Route>
+                <Route path="/additemcategory" exact>
+                <AddItemCategory/>
+                </Route>
+                <Route path="/addusercategory" exact>
+                    <AddUserCategory/>
+                </Route>
+                <Route path="/addaddress" exact>
+                    <AddAddress/>
+                </Route>
+                <Route path="/addbankdetails" exact>
+                    <AddBankDetails/>
                 </Route>
                 </Switch>
         </Router>

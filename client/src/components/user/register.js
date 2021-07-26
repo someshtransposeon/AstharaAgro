@@ -92,11 +92,11 @@ export default function Register({ navigation }) {
                             <Menu.Item title="No User Category Available" />
                         }
                     </Menu>
-                    <TextInput style={styles.input} label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
-                    <TextInput style={styles.input} label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    <TextInput style={styles.input} label="Password" value={password} onChangeText={password => setPassword(password)} />
-                    <TextInput style={styles.input} label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} />
+                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
+                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
+                    <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} />
+                    <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} />
                     <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Register</Button>
                     </Card.Content>
                 </Card>
@@ -107,7 +107,6 @@ export default function Register({ navigation }) {
 
 const styles = StyleSheet.create({
     card: {
-        boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
         alignSelf: 'center',
         padding: '1%',
         ...Platform.select({
@@ -116,10 +115,13 @@ const styles = StyleSheet.create({
             },
             android: {
                 marginTop: '10%',
+                marginBottom: '10%',
                 width: '90%',
             },
             default: {
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
+                marginBottom: '4%',
                 width: '50%',
             }
         })
@@ -127,7 +129,6 @@ const styles = StyleSheet.create({
     input: {
         margin: '2%',
         width: '100%',
-        backgroundColor: 'white',
         ...Platform.select({
             ios: {
                 
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
                 
             },
             default: {
-                border: '1px solid gray',
+                
             }
         })
     },
