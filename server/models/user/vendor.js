@@ -26,6 +26,10 @@ const vendorSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type:String,
+        default:"",
+    }
 });
 
 const Vendor = mongoose.model('Vendor', vendorSchema);

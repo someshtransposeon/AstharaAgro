@@ -19,6 +19,7 @@ const retrive_user = require('./routes/user/user/retrive_user');
 const update_user = require('./routes/user/user/update_user');
 
 const retrive_vendor = require('./routes/user/vendor/retrive_vendor');
+const deactivate_vendor=require('./routes/user/vendor/deactivated_vendor');
 
 
 const create_item_category = require('./routes/itemCategory/create_item_category');
@@ -93,7 +94,8 @@ const retrive_all_delivery_assignments = require('./routes/delivery_assignment/r
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 })
 .then(() => console.log('Database Connected Successfully'))
 .catch((err) => console.error('Database Connection Failed'));
@@ -108,6 +110,7 @@ app.use('/', retrive_user_category);
 app.use('/', update_user_category);
 
 app.use('/', retrive_vendor);
+app.use('/', deactivate_vendor);
 
 
 app.use('/', create_user);

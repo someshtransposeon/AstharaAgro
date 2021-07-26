@@ -11,6 +11,7 @@ router.put('/update_item/:id',(req, res) =>{
         description: req.body.description,
         price: req.body.price,
         remark: req.body.remark,
+        unit:req.body.unit,
         status: req.body.status,
     }
     Item.findOneAndUpdate({'_id':req.params.id}, item_update)

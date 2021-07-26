@@ -22,6 +22,10 @@ const managerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type:String,
+        default:"",
+    }
 });
 
 const Manager = mongoose.model('Manager', managerSchema);

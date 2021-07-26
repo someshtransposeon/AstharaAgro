@@ -11,6 +11,7 @@ router.post('/create_item', (req, res)=>{
         description: req.body.description,
         price: req.body.price,
         remark: req.body.remark,
+        unit:req.body.unit,
         status: req.body.status,
     })
     newItem.save()

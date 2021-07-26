@@ -42,10 +42,6 @@ const purchaseorderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
-    emp_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'employee'
-    },
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Vendor'

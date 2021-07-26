@@ -22,6 +22,10 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type:String,
+        default:"",
+    }
 });
 
 const Customer = mongoose.model('Customer', customerSchema);

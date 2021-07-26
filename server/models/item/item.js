@@ -17,6 +17,9 @@ const itemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    unit:{
+        type:String,
+    },
     description: {
         type: String,
         default:"",

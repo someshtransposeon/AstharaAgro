@@ -22,6 +22,10 @@ const sales_personSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type:String,
+        default:"",
+    }
 });
 
 const Sales_person = mongoose.model('Sales_person', sales_personSchema);

@@ -22,6 +22,10 @@ const buyerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type:String,
+        default:"",
+    }
 });
 
 const Buyer = mongoose.model('Buyer', buyerSchema);

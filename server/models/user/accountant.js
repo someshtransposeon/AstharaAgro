@@ -22,6 +22,10 @@ const accountantSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type:String,
+        default:"",
+    }
 });
 
 const Accountant = mongoose.model('Accountant', accountantSchema);
