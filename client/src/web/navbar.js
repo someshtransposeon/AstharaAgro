@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faUserPlus, faUser, faSignInAlt, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -22,12 +22,27 @@ import AddUserCategory from '../components/userCategory/add_user_category';
 import AddAddress from '../components/address/add_address';
 import AddBankDetails from '../components/bank/add_bank_details';
 
-export default function NavBar() {
+const NavBar =()  => {
+
+    const [email, setEmail] = useState("");
+
+    useEffect(() => {
+        async function fetchData() {
+            await AsyncStorage.getItem('loginemail')
+            .then((loginemail) => {
+                setEmail(loginemail);
+            })
+            console.log(email);
+        }
+        fetchData();
+    }, [email]);
 
     const Logout = async (value) => {
-        await AsyncStorage.clear()
+        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('loginemail');
+        await AsyncStorage.removeItem('loginuserid');
+        setEmail("");
         console.log("Logout Success");
-        console.log(AsyncStorage.getItem('@token'));
     }
 
     return(
@@ -62,8 +77,9 @@ export default function NavBar() {
                             </InputGroup>
                         </Form>
                         <Nav>
-                            {!AsyncStorage.getItem('@token') ?
+                            {email!=null && email!="" ?
                                 <>
+                                    <Nav.Link to="/" as={Link}><Button variant="outline-primary">{email}</Button>{' '}</Nav.Link>
                                     <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> Profile</Button>{' '}</Nav.Link>
                                     <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
                                 </>
@@ -170,3 +186,5 @@ export default function NavBar() {
         </Router>
     )
 }
+
+export default NavBar;

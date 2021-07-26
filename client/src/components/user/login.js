@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Redirect } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,6 @@ const theme = {
 
 export default function Login({ navigation }) {
 
-    const [message, setMessage] = useState();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -34,15 +34,19 @@ export default function Login({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             console.log(data);
-            try {
-                AsyncStorage.setItem('@token', data.token);
-                AsyncStorage.setItem('@loginuserid', data.user_id);
-                AsyncStorage.setItem('@loginemail', data.email);
-            }catch (e) {
-                console.log(e);
+            if(data.token){
+                AsyncStorage.setItem('token', data.token);
+                AsyncStorage.setItem('loginuserid', data.user_id);
+                AsyncStorage.setItem('loginemail', data.email);
+                setEmail("");
+                setPassword("");
+                if(Platform.OS=='android'){
+                    navigation.navigate('Home');
+                }
+                else{
+                    <Redirect to="/"/>
+                }
             }
-            setEmail("");
-            setPassword("");
         }); 
     }
 
