@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
     ...DefaultTheme,
@@ -14,22 +15,30 @@ const theme = {
 
 export default function AddAddress({ navigation }) {
 
-    const [address, setAddress] = useState("");
-    const [landmark, setLandmark] = useState("");
-    const [district, setDistrict] = useState("");
-    const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
-    const [pincode, setPincode] = useState("");
-    const [host, setHost] = useState("");
+    const [userId, setUserId] = useState('');
+    const [address, setAddress] = useState('');
+    const [landmark, setLandmark] = useState('');
+    const [district, setDistrict] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [pincode, setPincode] = useState('');
+    const [host, setHost] = useState('');
 
     useEffect(() => {
-        if(Platform.OS=="android"){
+        async function fetchData() {
+            await AsyncStorage.getItem('loginuserid')
+            .then((userid) => {
+                setUserId(userid);
+            })
+        }
+        fetchData();
+        if (Platform.OS === 'android'){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
-    }, [host]);
+    }, [host, userId]);
 
     function submitForm() {
         fetch(`http://${host}:5000/create_address`, {
@@ -38,6 +47,7 @@ export default function AddAddress({ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                userId: userId,
                 address: address,
                 landmark: landmark,
                 district: district,

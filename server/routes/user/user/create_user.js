@@ -15,14 +15,13 @@ router.post('/create_user', async (req, res)=>{
     if(req.body.password==req.body.confirm_password){
         bcrypt.hash(req.body.password, 12, function(err, hash){
             const category=req.body.category;
+            const role=req.body.role;
             const full_name= req.body.full_name;
-            const  email= req.body.email;
-            const  mobile_no= req.body.mobile_no;
-            const address= req.body.address;
+            const email= req.body.email;
+            const mobile_no= req.body.mobile_no;
             const gst_no= req.body.gst_no;
-            const bank_details= req.body.bank_details;
             const password= hash;
-            var newUser = new User({category,full_name,email,mobile_no,gst_no,password})
+            var newUser = new User({category,role,full_name,email,mobile_no,gst_no,password})
             newUser.save()
             .then(user => {
                 res.json(user);

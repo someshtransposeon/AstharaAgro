@@ -51,11 +51,12 @@ export default function Register({ navigation }) {
             },
             body: JSON.stringify({
                 category: categoryId,
+                role: category,
                 full_name: fullName,
-                email:email,
-                mobile_no:mobileNo,
-                password:password,
-                confirm_password:confirmPassword,
+                email: email,
+                mobile_no: mobileNo,
+                password: password,
+                confirm_password: confirmPassword,
             })
         })
         .then(res => res.json())

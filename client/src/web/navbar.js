@@ -25,6 +25,9 @@ import AddBankDetails from '../components/bank/add_bank_details';
 const NavBar =()  => {
 
     const [email, setEmail] = useState("");
+    const [role, setRole] = useState("");
+    const [roleas, setRoleas] = useState("");
+    const [flag, setFlag] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -32,10 +35,21 @@ const NavBar =()  => {
             .then((loginemail) => {
                 setEmail(loginemail);
             })
-            console.log(email);
+            if(flag==false) {
+                await AsyncStorage.getItem('role')
+                .then((role) => {
+                    setRole(role);
+                    setRoleas(role);
+                    setFlag(true);
+                })
+            }
         }
         fetchData();
-    }, [email]);
+    }, [email, role, flag]);
+
+    function changeRole(r){
+        setRoleas(r);
+    }
 
     const Logout = async (value) => {
         await AsyncStorage.removeItem('token');
@@ -79,8 +93,24 @@ const NavBar =()  => {
                         <Nav>
                             {email!=null && email!="" ?
                                 <>
-                                    <Nav.Link to="/" as={Link}><Button variant="outline-primary">{email}</Button>{' '}</Nav.Link>
-                                    <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> Profile</Button>{' '}</Nav.Link>
+                                    {role!=null && role=="manager" ?
+                                        <NavDropdown title={roleas} id="collasible-nav-dropdown" style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
+                                            <NavDropdown.Item onClick={()=>changeRole("Manager")}>Manager</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={()=>changeRole("Sales")}>Sales</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={()=>changeRole("Buyer")}>Buyer</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={()=>changeRole("Accountant")}>Accountant</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={()=>changeRole("Customer")}>Customer</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={()=>changeRole("Vendor")}>Vendor</NavDropdown.Item>
+                                        </NavDropdown>
+                                        :
+                                        <Nav.Link to="/profile" as={Link}><Button variant="outline-secondary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> {role}</Button>{' '}</Nav.Link>
+                                    }
+                                    <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> {email}</Button>{' '}</Nav.Link>
                                     <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
                                 </>
                                 :

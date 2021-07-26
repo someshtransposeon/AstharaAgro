@@ -38,6 +38,7 @@ export default function Login({ navigation }) {
                 AsyncStorage.setItem('token', data.token);
                 AsyncStorage.setItem('loginuserid', data.user_id);
                 AsyncStorage.setItem('loginemail', data.email);
+                AsyncStorage.setItem('role', data.role);
                 setEmail("");
                 setPassword("");
                 if(Platform.OS=='android'){

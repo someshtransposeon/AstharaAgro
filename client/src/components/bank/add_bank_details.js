@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
     ...DefaultTheme,
@@ -14,6 +15,7 @@ const theme = {
 
 export default function AddBankDetails({ navigation }) {
 
+    const [userId, setUserId] = useState('');
     const [bankName, setBankName] = useState("");
     const [branchName, setBranchName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
@@ -22,6 +24,13 @@ export default function AddBankDetails({ navigation }) {
     const [host, setHost] = useState("");
 
     useEffect(() => {
+        async function fetchData() {
+            await AsyncStorage.getItem('loginuserid')
+            .then((userid) => {
+                setUserId(userid);
+            })
+        }
+        fetchData();
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
@@ -37,6 +46,7 @@ export default function AddBankDetails({ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                userId: userId,
                 bank_name: bankName,
                 branch_name: branchName,
                 account_number: accountNumber,

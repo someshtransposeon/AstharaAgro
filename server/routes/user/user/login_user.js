@@ -21,6 +21,7 @@ router.post('/login_user', (req, res)=>{
                         token:token, 
                         email:user.email, 
                         user_id:user._id, 
+                        role:user.role, 
                         success: "successfully login_user"
                     }
                     res.json(output);

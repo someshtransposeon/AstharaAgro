@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { TextInput, DefaultTheme, Card, Button, Provider  } from 'react-native-paper';
-import { View, StyleSheet, Platform, ScrollView } from 'react-native';
+import { View, StyleSheet, Platform, ScrollView, ImageBackground } from 'react-native';
 
 const theme = {
     ...DefaultTheme,
