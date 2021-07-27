@@ -22,6 +22,19 @@ import AddUserCategory from '../components/userCategory/add_user_category';
 import AddAddress from '../components/address/add_address';
 import AddBankDetails from '../components/bank/add_bank_details';
 
+import All_Indents from '../components/indent/All_Indents';
+import Create_Indent from '../components/indent/Create_Indent';
+import Edit_Indent from '../components/indent/Edit_Indent';
+
+import Create_Purchase_Order from '../components/purchase_order/Create_Purchase_Order';
+import All_Purchase_Orders from '../components/purchase_order/All_Purchase_Orders';
+import Edit_Purchase_Order from '../components/purchase_order/Edit_Purchase_Order';
+
+import Create_Sales_Order from '../components/sales_order/Create_Sales_Order';
+import All_Sales_Orders from '../components/sales_order/All_Sales_Orders';
+import Edit_Sales_Order from '../components/sales_order/Edit_Sales_Order';
+
+
 const NavBar =()  => {
 
     const [email, setEmail] = useState("");
@@ -135,7 +148,23 @@ const NavBar =()  => {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
                                 <NavDropdown.Item to="/allitems" as={Link}>All Orders</NavDropdown.Item>
+                                
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
+                                <NavDropdown.Item to="/All_Indents" as={Link}>All Indents</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item to="/Create_Purchase_Order" as={Link}>Create Purchase Order</NavDropdown.Item>
+                                <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item to="/Create_Sales_Order" as={Link}>Create Sales Order</NavDropdown.Item>
+                                <NavDropdown.Item to="/All_Sales_Orders" as={Link}>All Sales Orders</NavDropdown.Item>
+                                
+
+                            
                             </NavDropdown>
+
+
+
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
                                 <NavDropdown.Item to="/addaddress" as={Link}>Add Address</NavDropdown.Item>
@@ -212,6 +241,38 @@ const NavBar =()  => {
                 <Route path="/addbankdetails" exact>
                     <AddBankDetails/>
                 </Route>
+
+
+                <Route path="/Create_Indent">
+                    <Create_Indent/>
+                </Route>
+                <Route path="/All_Indents">
+                    <All_Indents/>
+                </Route>
+                <Route path="/Create_Purchase_Order">
+                    <Create_Purchase_Order/>
+                </Route>
+                <Route path="/Edit_Indent">
+                    <Edit_Indent/>
+                </Route>                
+                <Route path="/All_Purchase_Orders">
+                    <All_Purchase_Orders/>
+                </Route>
+                <Route path="/Edit_Purchase_Order">
+                    <Edit_Purchase_Order/>
+                </Route>
+                <Route path="/Create_Sales_Order">
+                    <Create_Sales_Order/>
+                </Route>
+                <Route path="/All_Sales_Orders">
+                    <All_Sales_Orders/>
+                </Route>
+
+                <Route path="/Edit_Sales_Order">
+                    <Edit_Sales_Order/>
+                </Route>
+                                
+
                 </Switch>
         </Router>
     )

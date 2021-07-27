@@ -13,6 +13,20 @@ import AddUserCategory from '../components/userCategory/add_user_category';
 import AddAddress from '../components/address/add_address';
 import AddBankDetails from '../components/bank/add_bank_details';
 
+import All_Indents from '../components/indent/All_Indents';
+import Create_Indent from '../components/indent/Create_Indent';
+import Edit_Indent from '../components/indent/Edit_Indent';
+
+import Create_Purchase_Order from '../components/purchase_order/Create_Purchase_Order';
+import All_Purchase_Orders from '../components/purchase_order/All_Purchase_Orders';
+import Edit_Purchase_Order from '../components/purchase_order/Edit_Purchase_Order';
+
+import Create_Sales_Order from '../components/sales_order/Create_Sales_Order';
+import All_Sales_Orders from '../components/sales_order/All_Sales_Orders';
+import Edit_Sales_Order from '../components/sales_order/Edit_Sales_Order';
+
+
+
 const Stack = createStackNavigator();
 
 export default function Stacks({navigation}){
@@ -77,6 +91,54 @@ export default function Stacks({navigation}){
             ),
             }}/>
             <Stack.Screen name="AddBankDetails" component={AddBankDetails} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+
+
+
+            <Stack.Screen name="Create_Indent" component={Create_Indent} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="All_Indents" component={All_Indents} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Edit_Indent" component={Edit_Indent} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Create_Purchase_Order" component={Create_Purchase_Order} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="All_Purchase_Orders" component={All_Purchase_Orders} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Edit_Purchase_Order" component={Edit_Purchase_Order} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Create_Sales_Order" component={Create_Sales_Order} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="All_Sales_Orders" component={All_Sales_Orders} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Edit_Sales_Order" component={Edit_Sales_Order} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),

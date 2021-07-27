@@ -86,6 +86,15 @@ function CustomDrawerContent({navigation}) {
                 <Menu.Item title="Delivery" onPress={() => {navigation.navigate('AddItem')}} />
                 <Menu.Item title="Show All Delivery" onPress={() => {navigation.navigate('Home')}} />
             </Menu>
+
+            <Button style={styles.drawerbutton} mode="outlined" onPress={() => {navigation.navigate('Create_Indent')}}>Create Indent</Button>
+            <Button style={styles.drawerbutton} mode="outlined" onPress={() => {navigation.navigate('All_Indents')}}>All Indents</Button>
+            
+            <Button style={styles.drawerbutton} mode="outlined" onPress={() => {navigation.navigate('Create_Purchase_Order')}}>Create Purchase Order</Button>
+            <Button style={styles.drawerbutton} mode="outlined" onPress={() => {navigation.navigate('All_Purchase_Orders')}}>All Purchase Orders</Button>
+            
+            <Button style={styles.drawerbutton} mode="outlined" onPress={() => {navigation.navigate('Create_Sales_Order')}}>Create Sales Order</Button>
+            <Button style={styles.drawerbutton} mode="outlined" onPress={() => {navigation.navigate('All_Sales_Orders')}}>All Sales Orders</Button>
         </Provider> 
     );
 }

@@ -1,39 +1,18 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const indentSchema = new mongoose.Schema({
-    // userId:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    // },
-    // customerId:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Customer',
-    // },
+
     requestedBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    item_description:[{
-        itemId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Item',
-        },
-        // categoryId:{
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     reef:'Category'
-        // },
-        quantity:{
-            type:Number,
-            default:0,
-        },
-        unit_of_measurement:{
-            type:String,
-        },
-        price:{
-            type: mongoose.Schema.Types.Double,
-            required:true,
-        },
-    }],
+    items:{
+        type:mongoose.Schema.Types.Mixed,
+    },
+    orderId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order',
+    },
     indent_created_date:{
         type:Date,
         default: Date.now,
@@ -48,6 +27,10 @@ const indentSchema = new mongoose.Schema({
     remark:{
         type:String,
         default:"",
+    },
+    margin:{
+        type:String,
+
     },
     }, {
     timestamps: true
