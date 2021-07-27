@@ -15,8 +15,8 @@ const theme = {
 
 export default function EditItem({ route, navigation }) {
 
-    const {itemId} = useParams();
-    // const {itemId} = route.useParams;
+    //const {itemId} = useParams();
+    const {itemId} = route.useParams;
 
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
@@ -58,7 +58,7 @@ export default function EditItem({ route, navigation }) {
             .catch(error => console.log(error))
             .then(item => {
                 setCategory("Choose Category");
-                setGrade(item.grade);
+                setGrade(item[0].grade);
                 setCategoryId("");
                 setItemName(item[0].item_name);
                 setDescription(item[0].description);
