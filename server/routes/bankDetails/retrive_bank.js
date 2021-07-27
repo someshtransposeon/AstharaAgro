@@ -24,4 +24,15 @@ router.get('/retrive_bank/:id',(req, res)=>{
     });
 });
 
+router.get('/retrive_bank_by_userId/:id',(req, res)=>{
+    Bank.find({'userId':req.params.id}, function(err, bank){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(bank);
+        }
+    });
+});
+
 module.exports = router;

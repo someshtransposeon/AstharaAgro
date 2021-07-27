@@ -15,20 +15,14 @@ const theme = {
 
 export default function EditItem({ route, navigation }) {
 
-    //const {itemId} = useParams();
-    const {itemId} = route.useParams;
+    const {itemId} = useParams();
+    // const {itemId} = route.params;
 
-    const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
 
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
-    const [itemCategory, setItemCategory] = useState();
-    const [category, setCategory] = useState("Choose Category");
-    const [categoryId, setCategoryId] = useState("");
     const [itemName, setItemName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
     const [itemDescription, setDescription,] = useState("");
@@ -42,14 +36,6 @@ export default function EditItem({ route, navigation }) {
         else{
             setHost("localhost");
         }
-
-        fetch(`http://${host}:5000/retrive_all_item_category`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemCategory => setItemCategory(itemCategory));
-
         if(flag === 0 && itemId){
             fetch(`http://${host}:5000/retrive_item/${itemId}`, {
                 method: 'GET'
@@ -57,21 +43,13 @@ export default function EditItem({ route, navigation }) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
-                setCategory("Choose Category");
-                setGrade(item[0].grade);
-                setCategoryId("");
+                setGrade(item.grade);
                 setItemName(item[0].item_name);
                 setDescription(item[0].description);
                 setFlag(1);
             });
         }
-    }, [itemCategory,host,itemId,flag]);
-
-    function chooseCategory(id, name) {
-        setCategoryId(id);
-        setCategory(name);
-        closeMenu1();
-    }
+    }, [host,itemId,flag]);
 
     function chooseGrade(name) {
         setGrade(name);
@@ -85,7 +63,6 @@ export default function EditItem({ route, navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                category: categoryId,
                 item_name: itemName,
                 grade: grade,
                 description: itemDescription,
@@ -112,24 +89,11 @@ export default function EditItem({ route, navigation }) {
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                {(grade && itemDescription && itemDescription) &&
                 <Card style={styles.card}>
                     <Card.Title title="EDIT ITEM"/>
                     <Card.Content>
                     <TextInput style={styles.input} label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
-                    <Menu
-                    visible={visible1}
-                    onDismiss={closeMenu1}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{category}</Button>}>
-                        {itemCategory ?
-                            itemCategory.map((item)=>{
-                                return (
-                                    <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
-                                )
-                            })
-                            :
-                            <Menu.Item title="No item Category Available" />
-                        }
-                    </Menu>
                     <Menu
                     visible={visible2}
                     onDismiss={closeMenu2}
@@ -141,9 +105,10 @@ export default function EditItem({ route, navigation }) {
                     </Menu>
                     <TextInput style={styles.input} label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Update Item</Button>
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%', color: 'red'}} onPress={()=>deleteItem()}>Delete Item</Button>
+                    {/* <Button mode="contained" style={{padding: '2%', marginTop: '2%', color: 'red'}} onPress={()=>deleteItem()}>Delete Item</Button> */}
                     </Card.Content>
                 </Card>
+                }
             </View>
         </Provider>
     );

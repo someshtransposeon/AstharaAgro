@@ -97,7 +97,7 @@ export default function CreateOrder({ navigation }) {
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Create Order"/>
+                    <Card.Title title="New Customer Create Order"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />

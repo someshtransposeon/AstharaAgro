@@ -13,9 +13,9 @@ const theme = {
     },
 };
 
-export default function AllItems({ navigation }) {
+export default function AllOrders({ navigation }) {
 
-    const [allItems, setAllItems] = useState();
+    const [allOrders, setAllOrders] = useState();
     const [host, setHost] = useState("");
 
     useEffect(() => {
@@ -25,13 +25,13 @@ export default function AllItems({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_item`, {
+        fetch(`http://${host}:5000/retrive_all_order`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
-    }, [allItems, host]);
+        .then(orders => setAllOrders(orders));
+    }, [allOrders, host]);
 
     return (
         <Provider theme={theme}>
@@ -39,31 +39,33 @@ export default function AllItems({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>All Items</Title>
+                    <Title>All Orders</Title>
                     <DataTable.Header>
-                        <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title numeric>Grade</DataTable.Title>
+                        <DataTable.Title>Name</DataTable.Title>
+                        <DataTable.Title>Email</DataTable.Title>
+                        <DataTable.Title>Customer Email</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
-                {allItems ?
-                    allItems.map((item)=>{
-                        return (
-                            <DataTable.Row>
-                                <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell numeric>{item.grade}</DataTable.Cell>
-                                <DataTable.Cell numeric>
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                }
+                    {allOrders ?
+                        allOrders.map((item)=>{
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{item.name}</DataTable.Cell>
+                                    <DataTable.Cell>{item.email}</DataTable.Cell>
+                                    <DataTable.Cell>Pending</DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                            :
+                                            <Button mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                        })
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
                 </DataTable>
             </View>
         </ScrollView>

@@ -21,19 +21,18 @@ import AddItemCategory from '../components/itemCategory/add_item_category';
 import AddUserCategory from '../components/userCategory/add_user_category';
 import AddAddress from '../components/address/add_address';
 import AddBankDetails from '../components/bank/add_bank_details';
-
 import All_Indents from '../components/indent/All_Indents';
 import Create_Indent from '../components/indent/Create_Indent';
 import Edit_Indent from '../components/indent/Edit_Indent';
-
 import Create_Purchase_Order from '../components/purchase_order/Create_Purchase_Order';
 import All_Purchase_Orders from '../components/purchase_order/All_Purchase_Orders';
 import Edit_Purchase_Order from '../components/purchase_order/Edit_Purchase_Order';
-
 import Create_Sales_Order from '../components/sales_order/Create_Sales_Order';
 import All_Sales_Orders from '../components/sales_order/All_Sales_Orders';
 import Edit_Sales_Order from '../components/sales_order/Edit_Sales_Order';
-
+import AllItemCategories from '../components/itemCategory/all_item_categories';
+import AllOrders from '../components/order/all_orders';
+import Profile from '../components/profile/profile';
 
 const NavBar =()  => {
 
@@ -147,7 +146,7 @@ const NavBar =()  => {
                                 <NavDropdown.Item to="/allitemcategories" as={Link}>All Item Categories</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>All Orders</NavDropdown.Item>
+                                <NavDropdown.Item to="/allorders" as={Link}>All Orders</NavDropdown.Item>
                                 
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
@@ -158,13 +157,7 @@ const NavBar =()  => {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item to="/Create_Sales_Order" as={Link}>Create Sales Order</NavDropdown.Item>
                                 <NavDropdown.Item to="/All_Sales_Orders" as={Link}>All Sales Orders</NavDropdown.Item>
-                                
-
-                            
                             </NavDropdown>
-
-
-
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
                                 <NavDropdown.Item to="/addaddress" as={Link}>Add Address</NavDropdown.Item>
@@ -196,6 +189,15 @@ const NavBar =()  => {
                     </Navbar.Collapse>
                 </Navbar>
                 <Switch>
+                <Route path="/profile">
+                    <Profile/>
+                </Route>
+                <Route path="/allorders">
+                    <AllOrders/>
+                </Route>
+                <Route path="/allitemcategories">
+                    <AllItemCategories/>
+                </Route>
                 <Route path="/additem">
                     <AddItem/>
                 </Route>
@@ -241,8 +243,6 @@ const NavBar =()  => {
                 <Route path="/addbankdetails" exact>
                     <AddBankDetails/>
                 </Route>
-
-
                 <Route path="/Create_Indent">
                     <Create_Indent/>
                 </Route>
@@ -267,12 +267,9 @@ const NavBar =()  => {
                 <Route path="/All_Sales_Orders">
                     <All_Sales_Orders/>
                 </Route>
-
                 <Route path="/Edit_Sales_Order">
                     <Edit_Sales_Order/>
                 </Route>
-                                
-
                 </Switch>
         </Router>
     )

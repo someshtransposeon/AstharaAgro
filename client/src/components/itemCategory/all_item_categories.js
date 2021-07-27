@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable } from 'react-native-paper';
+import { Provider, DefaultTheme, Button,Title, DataTable } from 'react-native-paper';
 import { Link } from "react-router-dom";
 
 const theme = {
@@ -13,9 +13,9 @@ const theme = {
     },
 };
 
-export default function AllItems({ navigation }) {
+export default function AllItemCategories({ navigation }) {
 
-    const [allItems, setAllItems] = useState();
+    const [allItemCategories, setAllItemCategories] = useState();
     const [host, setHost] = useState("");
 
     useEffect(() => {
@@ -25,13 +25,13 @@ export default function AllItems({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_item`, {
+        fetch(`http://${host}:5000/retrive_all_item_category`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
-    }, [allItems, host]);
+        .then(categories => setAllItemCategories(categories));
+    }, [allItemCategories, host]);
 
     return (
         <Provider theme={theme}>
@@ -39,18 +39,16 @@ export default function AllItems({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>All Items</Title>
+                    <Title>All Item Categories</Title>
                     <DataTable.Header>
-                        <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title numeric>Grade</DataTable.Title>
+                        <DataTable.Title>Item Category</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
-                {allItems ?
-                    allItems.map((item)=>{
+                {allItemCategories ?
+                    allItemCategories.map((item)=>{
                         return (
                             <DataTable.Row>
-                                <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell numeric>{item.grade}</DataTable.Cell>
+                                <DataTable.Cell>{item.category_name}</DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>

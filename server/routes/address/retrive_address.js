@@ -24,4 +24,15 @@ router.get('/retrive_address/:id',(req, res)=>{
     });
 });
 
+router.get('/retrive_address_by_userId/:id',(req, res)=>{
+    Address.find({'userId':req.params.id}, function(err, address){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(address);
+        }
+    });
+});
+
 module.exports = router;
