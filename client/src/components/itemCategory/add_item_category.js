@@ -51,7 +51,7 @@ export default function AddItemCategory({ navigation }) {
                     <Card.Title title="ADD ITEM CATEGORY"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Item Category Name" value={itemCategoryName} onChangeText={itemCategoryName => setItemCategoryName(itemCategoryName)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add Item Category</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item Category</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -95,4 +95,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

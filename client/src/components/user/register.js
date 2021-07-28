@@ -98,7 +98,7 @@ export default function Register({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} />
                     <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Register</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Register</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -142,4 +142,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

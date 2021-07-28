@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform} from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import { useParams } from 'react-router-dom';
 
@@ -13,47 +13,61 @@ const theme = {
     },
 };
 
-export default function EditItem({ route, navigation }) {
+export default function EditItem(props, {route}) {
 
-    const {itemId} = useParams();
-    // const {itemId} = route.params;
+    const { itemid } = props.match.params;
+    var id="";
+    if(Platform.OS=="android"){
+        id = route.params.itemId;
+    }
 
     const [visible2, setVisible2] = useState(false);
+    const [visible1, setVisible1] = useState(false);
 
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
+    const openMenu1 = () => setVisible1(true);
+    const closeMenu1 = () => setVisible1(false);
 
+    const [itemId, setItemId] = useState("");
     const [itemName, setItemName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
+    const [unit, setUnit] = useState("Choose Unit");
     const [itemDescription, setDescription,] = useState("");
     const [host, setHost] = useState("");
-    const [flag, setFlag] = useState(0);
-
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
+            setItemId(id);
         }
         else{
             setHost("localhost");
+            setItemId(itemid);
         }
-        if(flag === 0 && itemId){
+        if(itemId){
             fetch(`http://${host}:5000/retrive_item/${itemId}`, {
                 method: 'GET'
             })
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
-                setGrade(item.grade);
+                setGrade(item[0].grade);
+                setUnit(item[0].unit);
                 setItemName(item[0].item_name);
                 setDescription(item[0].description);
-                setFlag(1);
+                console.log(item);
             });
         }
-    }, [host,itemId,flag]);
+    }, [host,itemId,id,itemid]);
 
     function chooseGrade(name) {
         setGrade(name);
         closeMenu2();
+    }
+
+    function chooseUnit(name) {
+        setUnit(name);
+        closeMenu1();
     }
 
     function submitForm() {
@@ -65,19 +79,9 @@ export default function EditItem({ route, navigation }) {
             body: JSON.stringify({
                 item_name: itemName,
                 grade: grade,
+                unit: unit,
                 description: itemDescription,
             })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            console.log(data);
-        }); 
-    }
-
-    function deleteItem() {
-        fetch(`http://${host}:5000/delete_item/${itemId}`, {
-            method: 'GET',
         })
         .then(res => res.json())
         .catch(error => console.log(error))
@@ -89,7 +93,7 @@ export default function EditItem({ route, navigation }) {
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {(grade && itemDescription && itemDescription) &&
+                {grade ?
                 <Card style={styles.card}>
                     <Card.Title title="EDIT ITEM"/>
                     <Card.Content>
@@ -103,11 +107,25 @@ export default function EditItem({ route, navigation }) {
                         <Menu.Item title="C Grade" onPress={()=>chooseGrade("C")} />
                         <Menu.Item title="D Grade" onPress={()=>chooseGrade("D")} />
                     </Menu>
+                    <Menu
+                    visible={visible1}
+                    onDismiss={closeMenu1}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{unit}</Button>}>
+                        <Menu.Item title="100g" onPress={()=>chooseUnit("100g")} />
+                        <Menu.Item title="200g" onPress={()=>chooseUnit("200g")} />
+                        <Menu.Item title="500g" onPress={()=>chooseUnit("500g")} />
+                        <Menu.Item title="1kg" onPress={()=>chooseUnit("1kg")} />
+                        <Menu.Item title="5kg" onPress={()=>chooseUnit("5kg")} />
+                        <Menu.Item title="10kg" onPress={()=>chooseUnit("10kg")} />
+                        <Menu.Item title="1packet = 20kg" onPress={()=>chooseUnit("1packet = 20kg")} />
+                    </Menu>
                     <TextInput style={styles.input} label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Update Item</Button>
-                    {/* <Button mode="contained" style={{padding: '2%', marginTop: '2%', color: 'red'}} onPress={()=>deleteItem()}>Delete Item</Button> */}
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item</Button>
+                    <Button mode="contained" style={styles.button} color='red'>Disable Item</Button>
                     </Card.Content>
                 </Card>
+                :
+                <ActivityIndicator size={50}/>
                 }
             </View>
         </Provider>
@@ -150,4 +168,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

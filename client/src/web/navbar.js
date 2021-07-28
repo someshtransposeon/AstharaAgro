@@ -27,12 +27,10 @@ import Edit_Indent from '../components/indent/Edit_Indent';
 import Create_Purchase_Order from '../components/purchase_order/Create_Purchase_Order';
 import All_Purchase_Orders from '../components/purchase_order/All_Purchase_Orders';
 import Edit_Purchase_Order from '../components/purchase_order/Edit_Purchase_Order';
-import Create_Sales_Order from '../components/sales_order/Create_Sales_Order';
-import All_Sales_Orders from '../components/sales_order/All_Sales_Orders';
-import Edit_Sales_Order from '../components/sales_order/Edit_Sales_Order';
 import AllItemCategories from '../components/itemCategory/all_item_categories';
 import AllOrders from '../components/order/all_orders';
 import Profile from '../components/profile/profile';
+import AllUserCategories from '../components/userCategory/all_user_categories';
 
 const NavBar =()  => {
 
@@ -106,21 +104,21 @@ const NavBar =()  => {
                             {email!=null && email!="" ?
                                 <>
                                     {role!=null && role=="manager" ?
-                                        <NavDropdown title={roleas} id="collasible-nav-dropdown" style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                            <NavDropdown.Item onClick={()=>changeRole("Manager")}>Manager</NavDropdown.Item>
+                                        <NavDropdown title={roleas}>
+                                            <NavDropdown.Item onClick={()=>changeRole("manager")}>manager</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={()=>changeRole("Sales")}>Sales</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={()=>changeRole("sales")}>sales</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={()=>changeRole("Buyer")}>Buyer</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={()=>changeRole("buyer")}>buyer</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={()=>changeRole("Accountant")}>Accountant</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={()=>changeRole("accountant")}>accountant</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={()=>changeRole("Customer")}>Customer</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={()=>changeRole("customer")}>customer</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={()=>changeRole("Vendor")}>Vendor</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={()=>changeRole("vendor")}>vendor</NavDropdown.Item>
                                         </NavDropdown>
                                         :
-                                        <Nav.Link to="/profile" as={Link}><Button variant="outline-secondary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> {role}</Button>{' '}</Nav.Link>
+                                        <Nav.Link><Button variant="outline-secondary">{role}</Button>{' '}</Nav.Link>
                                     }
                                     <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> {email}</Button>{' '}</Nav.Link>
                                     <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
@@ -139,39 +137,76 @@ const NavBar =()  => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav style={{margin: 'auto'}}>
                             <NavDropdown title="Dashboard" id="collasible-nav-dropdown" style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                <NavDropdown.Item to="/additem" as={Link}>Add Item</NavDropdown.Item>
+                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/additem" as={Link}>Add Item</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                                 <NavDropdown.Item to="/allitems" as={Link}>All Items</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item to="/additemcategory" as={Link}>Add Item Category</NavDropdown.Item>
+                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/additemcategory" as={Link}>Add Item Category</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                                 <NavDropdown.Item to="/allitemcategories" as={Link}>All Item Categories</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
-                                <NavDropdown.Item to="/allorders" as={Link}>All Orders</NavDropdown.Item>
-                                
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
-                                <NavDropdown.Item to="/All_Indents" as={Link}>All Indents</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item to="/Create_Purchase_Order" as={Link}>Create Purchase Order</NavDropdown.Item>
-                                <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item to="/Create_Sales_Order" as={Link}>Create Sales Order</NavDropdown.Item>
-                                <NavDropdown.Item to="/All_Sales_Orders" as={Link}>All Sales Orders</NavDropdown.Item>
+                                {(roleas=="sales" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
+                                    <>
+                                        <NavDropdown.Item to="/allorders" as={Link}>All Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Indents" as={Link}>All Indents</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/Create_Purchase_Order" as={Link}>Create Purchase Order</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                             </NavDropdown>
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
-                                <NavDropdown.Item to="/addaddress" as={Link}>Add Address</NavDropdown.Item>
-                                <NavDropdown.Item to="/addbankdetails" as={Link}>Add Bank Details</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>All Users</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item to="/addusercategory" as={Link}>Add User Category</NavDropdown.Item>
-                                <NavDropdown.Item to="/allusercategories" as={Link}>All User Categories</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item to="/addvendor" as={Link}>Add Vendor</NavDropdown.Item>
-                                <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item to="/addcustomer" as={Link}>Add Customer</NavDropdown.Item>
-                                <NavDropdown.Item to="/customerdetails" as={Link}>All Customers</NavDropdown.Item>
+                                {roleas=="manager" &&
+                                    <>
+                                        <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/allitems" as={Link}>All Users</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/addusercategory" as={Link}>Add User Category</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/allusercategories" as={Link}>All User Categories</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/addvendor" as={Link}>Add Vendor</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="sales" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/addcustomer" as={Link}>Add Customer</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/customerdetails" as={Link}>All Customers</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                             </NavDropdown>
                             <NavDropdown title="Reports" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/allitems" as={Link}>Items</NavDropdown.Item>
@@ -195,6 +230,9 @@ const NavBar =()  => {
                 <Route path="/allorders">
                     <AllOrders/>
                 </Route>
+                <Route path="/allusercategories">
+                    <AllUserCategories/>
+                </Route>
                 <Route path="/allitemcategories">
                     <AllItemCategories/>
                 </Route>
@@ -204,9 +242,7 @@ const NavBar =()  => {
                 <Route path="/allitems">
                     <AllItems/>
                 </Route>
-                <Route path="/edititem/:itemId">
-                    <EditItem/>
-                </Route>
+                <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>
@@ -260,15 +296,6 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/Edit_Purchase_Order">
                     <Edit_Purchase_Order/>
-                </Route>
-                <Route path="/Create_Sales_Order">
-                    <Create_Sales_Order/>
-                </Route>
-                <Route path="/All_Sales_Orders">
-                    <All_Sales_Orders/>
-                </Route>
-                <Route path="/Edit_Sales_Order">
-                    <Edit_Sales_Order/>
                 </Route>
                 </Switch>
         </Router>

@@ -81,7 +81,7 @@ export default function AddAddress({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
                     <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add User Category</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add User Category</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -125,4 +125,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

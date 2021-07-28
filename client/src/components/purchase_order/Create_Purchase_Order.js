@@ -66,7 +66,7 @@ export default function Create_Purchase_Order({ navigation }) {
                         <Menu.Item title="C Grade" />
                         <Menu.Item title="D Grade" />
                     </Menu>
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}}>Create Purchase Order</Button>
+                    <Button mode="contained" style={styles.button}>Create Purchase Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -111,5 +111,8 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 
 

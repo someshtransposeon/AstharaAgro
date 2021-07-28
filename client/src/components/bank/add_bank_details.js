@@ -77,7 +77,7 @@ export default function AddBankDetails({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Account Number" value={accountNumber} onChangeText={accountNumber => setAccountNumber(accountNumber)} />
                     <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={accountHolderName} onChangeText={accountHolderName => setAccountHolderName(accountHolderName)} />
                     <TextInput style={styles.input} mode="outlined" label="Ifsc Code" value={ifsccode} onChangeText={ifsccode => setIfsccode(ifsccode)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add User Category</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add User Category</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -121,4 +121,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

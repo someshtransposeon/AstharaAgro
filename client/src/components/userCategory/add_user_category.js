@@ -51,7 +51,7 @@ export default function AddUserCategory({ navigation }) {
                     <Card.Title title="ADD User Category"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="User Category Name" value={userCategoryName} onChangeText={userCategoryName => setUserCategoryName(userCategoryName)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add User Category</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add User Category</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -95,4 +95,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

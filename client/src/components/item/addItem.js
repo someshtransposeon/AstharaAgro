@@ -136,7 +136,7 @@ export default function AddItem({ navigation }) {
                         <Menu.Item title="1packet = 20kg" onPress={()=>chooseUnit("1packet = 20kg")} />
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add Item</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -180,4 +180,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

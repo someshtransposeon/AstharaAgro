@@ -69,7 +69,7 @@ export default function Sales_add_customer(){
                             <TextInput style={styles.input} mode="outlined" label="enter GST number" type="text" value={gst_no} onChangeText={gst_no=>setGst_no(gst_no)} />
                             <TextInput style={styles.input} mode="outlined" type="text" label="Password" value={password} onChangeText={password=>setPassword(password)} secureTextEntry={true} />
                             <TextInput style={styles.input} mode="outlined" type="text" label="confirm Password" value={confirm_password} onChangeText={confirm_password=>setConfirm_password(confirm_password)} secureTextEntry={true} />
-                            <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Add Customer</Button>
+                            <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Customer</Button>
                         </Card.Content>
                     </Card>
                 </View>
@@ -113,4 +113,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

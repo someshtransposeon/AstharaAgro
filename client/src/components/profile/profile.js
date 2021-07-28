@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, Text } from 'react-native';
-import { Card, Provider, DefaultTheme } from 'react-native-paper';
+import { Card, Provider, DefaultTheme, Button } from 'react-native-paper';
+import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
@@ -98,7 +99,7 @@ export default function Profile({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="Address"/>
                     <Card.Content>
-                        {address && 
+                        {(address && address.length) ?
                             <>
                                 <Text style={styles.text2}>Address: {address[0].address}</Text>
                                 <Text style={styles.text2}>Landmark: {address[0].landmark}</Text>
@@ -107,19 +108,27 @@ export default function Profile({ navigation }) {
                                 <Text style={styles.text2}>Country: {address[0].country}</Text>
                                 <Text style={styles.text2}>Pin Code: {address[0].postal_code}</Text>
                             </>
+                            :
+                            <>
+                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addaddress">Add Address</Link></Button>
+                            </>
                         }
                     </Card.Content>
                 </Card>
                 <Card style={styles.card}>
                     <Card.Title title="Bank Details"/>
                     <Card.Content>
-                        {bank && 
+                        {(bank && bank.length) ?
                             <>
                                 <Text style={styles.text3}>Bank Name: {bank[0].bank_name}</Text>
                                 <Text style={styles.text3}>Branch Name: {bank[0].branch_name}</Text>
                                 <Text style={styles.text3}>Account Holder Name: {bank[0].account_holder_name}</Text>
                                 <Text style={styles.text3}>Account Number: {bank[0].account_number}</Text>
                                 <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
+                            </>
+                            :
+                            <>
+                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addbankdetails">Add Bank Details</Link></Button>
                             </>
                         }
                     </Card.Content>

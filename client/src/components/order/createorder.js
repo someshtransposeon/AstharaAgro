@@ -128,7 +128,7 @@ export default function CreateOrder({ navigation }) {
                             <Button  onPress={() => handleAddFields()}><FontAwesomeIcon icon={faPlusCircle   } color={ 'green' } size={30} /></Button>
                         </View>
                     ))}
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()} >Create Order</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -178,5 +178,8 @@ const styles = StyleSheet.create({
     },
     sizeinput:{
         width:"30%"
+    },
+    button: {
+        marginTop: '2%',
     }
 }); 

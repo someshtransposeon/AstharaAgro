@@ -64,8 +64,8 @@ export default function Edit_Purchase_Order({ navigation }) {
                         <Menu.Item title="C Grade" />
                         <Menu.Item title="D Grade" />
                     </Menu>
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}}>Update Purchase Order</Button>
-                    <Button mode="contained" color="red" style={{padding: '2%', marginTop: '2%'}}>Delete Purchase Order</Button>
+                    <Button mode="contained" style={styles.button}>Update Purchase Order</Button>
+                    <Button mode="contained" color="red" style={styles.button}>Delete Purchase Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -107,4 +107,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 

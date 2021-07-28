@@ -59,7 +59,7 @@ export default function Login({ navigation }) {
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} />
-                    <Button mode="contained" style={{padding: '2%', marginTop: '2%'}} onPress={()=>submitForm()}>Login</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Login</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -103,4 +103,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 
