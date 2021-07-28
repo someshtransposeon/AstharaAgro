@@ -53,7 +53,7 @@ export default function AllUserCategories({ navigation }) {
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/editusercategory/"+item._id}>Details</Link></Button>
                                     }
                                 </DataTable.Cell>
                             </DataTable.Row>

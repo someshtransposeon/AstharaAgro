@@ -5,6 +5,7 @@ const User = require('../../../models/user/user');
 router.put('/update_user/:id',(req, res) =>{
     var user_update = {
         category: req.body.category,
+        role: req.body.role,
         full_name: req.body.full_name,
         email: req.body.email,
         mobile_no: req.body.mobile_no,

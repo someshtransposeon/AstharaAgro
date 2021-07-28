@@ -13,9 +13,9 @@ const theme = {
     },
 };
 
-export default function AllItems({ navigation }) {
+export default function AllUsers({ navigation }) {
 
-    const [allItems, setAllItems] = useState();
+    const [allUsers, setAllUsers] = useState();
     const [host, setHost] = useState("");
 
     useEffect(() => {
@@ -25,13 +25,13 @@ export default function AllItems({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_item`, {
+        fetch(`http://${host}:5000/retrive_all_user`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
-    }, [allItems, host]);
+        .then(allusers => setAllUsers(allusers));
+    }, [allUsers, host]);
 
     return (
         <Provider theme={theme}>
@@ -39,23 +39,25 @@ export default function AllItems({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>All Items</Title>
+                    <Title>All Users</Title>
                     <DataTable.Header>
-                        <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title>Grade</DataTable.Title>
+                        <DataTable.Title>Email</DataTable.Title>
+                        <DataTable.Title>Full Name</DataTable.Title>
+                        <DataTable.Title>Role</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
-                {allItems ?
-                    allItems.map((item)=>{
+                {allUsers ?
+                    allUsers.map((item)=>{
                         return (
                             <DataTable.Row>
-                                <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.grade}</DataTable.Cell>
+                                <DataTable.Cell>{item.email}</DataTable.Cell>
+                                <DataTable.Cell>{item.full_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.role}</DataTable.Cell>
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edituser/"+item._id}>Details</Link></Button>
                                     }
                                 </DataTable.Cell>
                             </DataTable.Row>

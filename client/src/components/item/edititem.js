@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
-import { useParams } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -55,7 +54,6 @@ export default function EditItem(props, {route}) {
                 setUnit(item[0].unit);
                 setItemName(item[0].item_name);
                 setDescription(item[0].description);
-                console.log(item);
             });
         }
     }, [host,itemId,id,itemid]);
@@ -97,7 +95,7 @@ export default function EditItem(props, {route}) {
                 <Card style={styles.card}>
                     <Card.Title title="EDIT ITEM"/>
                     <Card.Content>
-                    <TextInput style={styles.input} label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
+                    <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
                     <Menu
                     visible={visible2}
                     onDismiss={closeMenu2}
@@ -119,7 +117,7 @@ export default function EditItem(props, {route}) {
                         <Menu.Item title="10kg" onPress={()=>chooseUnit("10kg")} />
                         <Menu.Item title="1packet = 20kg" onPress={()=>chooseUnit("1packet = 20kg")} />
                     </Menu>
-                    <TextInput style={styles.input} label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
+                    <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item</Button>
                     <Button mode="contained" style={styles.button} color='red'>Disable Item</Button>
                     </Card.Content>
@@ -164,7 +162,7 @@ const styles = StyleSheet.create({
                 
             },
             default: {
-                border: '1px solid gray',
+                
             }
         })
     },

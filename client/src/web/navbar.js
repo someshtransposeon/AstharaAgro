@@ -31,6 +31,10 @@ import AllItemCategories from '../components/itemCategory/all_item_categories';
 import AllOrders from '../components/order/all_orders';
 import Profile from '../components/profile/profile';
 import AllUserCategories from '../components/userCategory/all_user_categories';
+import EditItemCategory from '../components/itemCategory/edit_item_category';
+import EditUserCategory from '../components/userCategory/edit_user_category';
+import AllUsers from '../components/manager/all_users';
+import EditUser from '../components/user/edit_user.js'
 
 const NavBar =()  => {
 
@@ -183,7 +187,7 @@ const NavBar =()  => {
                                     <>
                                         <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/allitems" as={Link}>All Users</NavDropdown.Item>
+                                        <NavDropdown.Item to="/allusers" as={Link}>All Users</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/addusercategory" as={Link}>Add User Category</NavDropdown.Item>
                                         <NavDropdown.Divider />
@@ -242,7 +246,13 @@ const NavBar =()  => {
                 <Route path="/allitems">
                     <AllItems/>
                 </Route>
+                <Route path="/allusers">
+                    <AllUsers/>
+                </Route>
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
+                <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
+                <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />
+                <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>
