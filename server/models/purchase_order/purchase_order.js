@@ -1,42 +1,18 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const purchaseorderSchema = new mongoose.Schema({
-    // purchase_order_date:{
-    //     type:timestamp,    
-    // },
-    // purchase_order_time:{
-    //     type:timestamp,
-    // },
+    
+    requestedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     order_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Order'
     },
-
-    item_description:[{
-        itemId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Item',
-        },
-        quantity:{
-            type:Number,
-            default:0,
-        },
-        unit_of_measurement:{
-            type:String,
-        },
-        price:{
-            type: mongoose.Schema.Types.Double,
-            required:true,
-        },
-        amount:{
-            type:mongoose.Schema.Types.Double,
-            require:true,
-        },
-
-    }],
-    customer_id:{
+    indent_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Customer'
+        ref:'Indent'
     },
     user_id:{
         type:mongoose.Schema.Types.ObjectId,
@@ -46,14 +22,23 @@ const purchaseorderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Vendor'
     },
-    indent_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Indent'
+    items:{
+        type:mongoose.Schema.Types.Mixed,
     },
+    purchase_order_created_date:{
+        type:Date,
+        default: Date.now,
+    },
+    purchase_order_approval_date:{
+        type:Date,
+    },
+
+
     status: {
         type: String,
         default:"pending",
-    }
+    },
+
 });
 
 const PurchaseOrder = mongoose.model('PurchaseOrder', purchaseorderSchema);

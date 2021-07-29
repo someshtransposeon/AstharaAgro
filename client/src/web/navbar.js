@@ -298,13 +298,13 @@ const NavBar =()  => {
                 <Route path="/Create_Purchase_Order">
                     <Create_Purchase_Order/>
                 </Route>
-                <Route path="/Edit_Indent">
-                    <Edit_Indent/>
-                </Route>                
+                <Route path="/Edit_Indent/:indentid"  render={(props) => <Edit_Indent {...props} />} exact />
+                           
                 <Route path="/All_Purchase_Orders">
                     <All_Purchase_Orders/>
                 </Route>
-                <Route path="/Edit_Purchase_Order">
+                <Route path="/Edit_Purchase_Order ">
+                
                     <Edit_Purchase_Order/>
                 </Route>
                 </Switch>
