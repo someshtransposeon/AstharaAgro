@@ -84,6 +84,7 @@ export default function EditItem(props, {route}) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            alert(data.message);
             console.log(data);
         }); 
     }

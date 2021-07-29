@@ -62,6 +62,7 @@ export default function Register({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            alert(data.message);
             console.log(data);
             setCategory("Choose Category");
             setCategoryId("");
@@ -70,7 +71,11 @@ export default function Register({ navigation }) {
             setMobileNo("");
             setPassword("");
             setConfirmPassword("");
-        }); 
+        })
+        .catch(err=>{
+            alert(err.message);
+        })
+        ; 
     }
 
     return (
@@ -96,8 +101,8 @@ export default function Register({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} />
-                    <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} />
+                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
+                    <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} secureTextEntry={true}/>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Register</Button>
                     </Card.Content>
                 </Card>

@@ -31,9 +31,13 @@ export default function Login({ navigation }) {
             })
         })
         .then(res => res.json())
-        .catch(error => console.log(error))
+        .catch(error =>{
+            alert(error);
+            console.log(error);
+        })
         .then(data => {
-            console.log(data);
+            console.log(data.message);
+            alert(data.message);
             if(data.token){
                 AsyncStorage.setItem('token', data.token);
                 AsyncStorage.setItem('loginuserid', data.user_id);
@@ -58,7 +62,7 @@ export default function Login({ navigation }) {
                     <Card.Title title="Login User"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} />
+                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Login</Button>
                     </Card.Content>
                 </Card>

@@ -83,6 +83,7 @@ export default function AddItem({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            alert(data.message);
             console.log(data);
             setCategory("Choose Category");
             setGrade("Choose Grade");
