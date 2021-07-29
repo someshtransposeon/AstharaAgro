@@ -8,9 +8,13 @@ router.post('/create_user_category', (req, res)=>{
     })
     newCategory.save()
     .then(category => {
-        res.json(category);
+        var message={message:"successfully added new User category!",category:category};
+        res.json(message);
     })
-    .catch(err => res.json(err));
+    .catch(err => {
+        var message={message:"Something went wrong!",error:err};
+        res.json(message);
+    })
 });
 
 module.exports = router;

@@ -6,15 +6,15 @@ router.get('/delete_item/:id',(req, res) =>{
     Item.findOneAndRemove({'_id':req.params.id})
     .then((item) => {
         if(item){
-            var message = { success: "item sucessfully deleted" };
+            var message = { message: "item sucessfully deleted" };
             res.json(message);
         }else{
-            var message = { error: "item not found" };
+            var message = { message: "item not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = { message: false, err: err };
         res.json(message);
     })
 });

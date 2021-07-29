@@ -9,15 +9,15 @@ router.put('/update_item_category/:id',(req, res) =>{
     ItemCategory.findOneAndUpdate({'_id':req.params.id}, category_update)
     .then((category) => {
         if(category){
-            var message = { success: "item category sucessfully updated" };
+            var message = { message: "item category sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "item category not found" };
+            var message = { message: "item category not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = {message:"something went wrong!", success: false, err: err };
         res.json(message);
     })
 });

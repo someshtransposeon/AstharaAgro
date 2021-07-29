@@ -24,12 +24,15 @@ router.post('/create_user', async (req, res)=>{
             var newUser = new User({category,role,full_name,email,mobile_no,gst_no,password})
             newUser.save()
             .then(user => {
-                res.json(user);
+                var message={message:"successfully added!",data:user};
+                res.json(message);
                 const userId=user._id;
                 UserCategory.findById({'_id': req.body.category }, (err, users) => {
                     if (users.category_name=="vendor") {
                         var newVendor = new Vendor({userId,full_name,email,mobile_no,gst_no,password})
                         newVendor.save()
+                        var message={message:"successfully added vendor",data:user};
+                        res.json(message);
                     }
                     else if(users.category_name=="customer")
                     {
@@ -59,11 +62,15 @@ router.post('/create_user', async (req, res)=>{
 
                 });   
             })
-            .catch(err => res.json(err));
+            .catch(err => {
+                var message = {message:"something wrong!",error:err};
+                res.json(message);
+            })
+                
         });
     }
     else{
-        var message = { success:"password and confirm password not equal" };
+        var message = { message:"password and confirm password not equal" };
         res.json(message);
     }
 });

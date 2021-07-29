@@ -17,15 +17,15 @@ router.put('/update_item/:id',(req, res) =>{
     Item.findOneAndUpdate({'_id':req.params.id}, item_update)
     .then((item) => {
         if(item){
-            var message = { success: "item sucessfully updated" };
+            var message = {message: "item sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "item not found" };
+            var message = { messageerror: "item not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = { message: false, err: err };
         res.json(message);
     })
 });

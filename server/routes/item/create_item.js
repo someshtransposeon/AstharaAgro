@@ -16,9 +16,13 @@ router.post('/create_item', (req, res)=>{
     })
     newItem.save()
     .then(item => {
-        res.json(item);
+        var message={message:"sucessfully added!",item:item};
+        res.json(message);
     })
-    .catch(err => res.json(err));
+    .catch(err =>{
+        var message={message:"something went wrong!",error:err};
+        res.json(message);
+    }) 
 });
 
 module.exports = router;

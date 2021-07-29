@@ -18,9 +18,13 @@ router.post('/create_order', (req, res)=>{
     })
     newOrder.save()
     .then(order => {
-        res.json(order);
+        var message={message:"your order has been Successfully submitted!",order:order};
+        res.json(message);
     })
-    .catch(err => res.json(err));
+    .catch(err => {
+        var message={message:"Something went wrong!",error:err};
+        res.json(message);
+    })
 });
 
 module.exports = router;

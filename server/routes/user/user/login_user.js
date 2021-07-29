@@ -10,8 +10,9 @@ router.post('/login_user', (req, res)=>{
             res.json(err);
         }
         else if(!user){
-            var message = { error: "user not found with this email"}
+            var message = { message: "user not found with this email"}
             res.json(message);
+
         }
         else {
             bcrypt.compare(req.body.password, user.password, function(err, result) {
@@ -22,12 +23,13 @@ router.post('/login_user', (req, res)=>{
                         email:user.email, 
                         user_id:user._id, 
                         role:user.role, 
-                        success: "successfully login_user"
+                        message: "successfully login"
                     }
+                    
                     res.json(output);
                 }
                 else{
-                    var message = { error: "email and password do not match"}
+                    var message = { message: "email and password do not match"}
                     res.json(message);
                 }
             })
