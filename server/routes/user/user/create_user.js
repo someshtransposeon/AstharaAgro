@@ -28,7 +28,7 @@ router.post('/create_user', async (req, res)=>{
                 res.json(message);
                 const userId=user._id;
                 UserCategory.findById({'_id': req.body.category }, (err, users) => {
-                    if (users.category_name=="vendor") {
+                    if (users.category_name=="Vendor") {
                         var newVendor = new Vendor({userId,full_name,email,mobile_no,gst_no,password})
                         newVendor.save()
                         var message={message:"successfully added vendor",data:user};
