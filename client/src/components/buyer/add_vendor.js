@@ -21,13 +21,17 @@ export default function Buyer_add_vendor(){
     const [password,setPassword] = useState("");
     const [confirm_password,setConfirm_password] = useState("");
     const [category,setCategory] = useState("");
+    const [role,setRole]=useState("");
 
     useEffect(() => {
         fetch('http://localhost:5000/retrive_user_category_type/vendor', {
             method: 'GET'
         })
         .then(res => res.json())
-        .then(data =>setCategory(data[0]._id));
+        .then(data =>{
+            setCategory(data[0]._id);
+            setRole(data[0].category_name);
+        });
     }, []);
 
     function submitForm(){
@@ -43,6 +47,7 @@ export default function Buyer_add_vendor(){
                 mobile_no:mobile_no,
                 gst_no:gst_no,
                 password:password,
+                role:role,
                 confirm_password:confirm_password,
             })
         })
