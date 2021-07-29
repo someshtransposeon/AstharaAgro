@@ -19,8 +19,19 @@ export default function Login({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [host, setHost] = useState("");
+
+    useEffect(() => {
+        if(Platform.OS=="android"){
+            setHost("10.0.2.2");
+        }
+        else{
+            setHost("localhost");
+        }
+    }, [host]);
+
     function submitForm() {
-        fetch('http://localhost:5000/login_user', {
+        fetch(`http://${host}:5000/login_user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

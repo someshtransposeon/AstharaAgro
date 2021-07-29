@@ -42,7 +42,9 @@ export default function AllUsers({ navigation }) {
                     <Title>All Users</Title>
                     <DataTable.Header>
                         <DataTable.Title>Email</DataTable.Title>
+                        {Platform.OS !== "android" &&
                         <DataTable.Title>Full Name</DataTable.Title>
+                        }
                         <DataTable.Title>Role</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
@@ -51,11 +53,13 @@ export default function AllUsers({ navigation }) {
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.email}</DataTable.Cell>
+                                {Platform.OS !== "android" &&
                                 <DataTable.Cell>{item.full_name}</DataTable.Cell>
+                                }
                                 <DataTable.Cell>{item.role}</DataTable.Cell>
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
                                         :
                                         <Button mode="contained" style={{width: '100%'}}><Link to={"/edituser/"+item._id}>Details</Link></Button>
                                     }

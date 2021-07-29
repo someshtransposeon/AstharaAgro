@@ -12,12 +12,15 @@ const theme = {
     },
 };
 
-export default function EditItem(props, {route}) {
+export default function EditItem(props,{route}) {
 
-    const { itemid } = props.match.params;
+    var itemid = "";
     var id="";
     if(Platform.OS=="android"){
         id = route.params.itemId;
+    }
+    else{
+        itemid = props.match.params.itemid;
     }
 
     const [visible2, setVisible2] = useState(false);

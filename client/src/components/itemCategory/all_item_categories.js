@@ -51,7 +51,7 @@ export default function AllItemCategories({ navigation }) {
                                 <DataTable.Cell>{item.category_name}</DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItemCategory', {itemCategoryId: item._id})}}>Details</Button>
                                         :
                                         <Button mode="contained" style={{width: '100%'}}><Link to={"/edititemcategory/"+item._id}>Details</Link></Button>
                                     }

@@ -14,10 +14,13 @@ const theme = {
 
 export default function EditUser(props, {route}) {
 
-    const { userid } = props.match.params;
+    var userid = "";
     var id="";
     if(Platform.OS=="android"){
         id = route.params.userId;
+    }
+    else{
+        userid = props.match.params.userid;
     }
 
     const [visible1, setVisible1] = useState(false);

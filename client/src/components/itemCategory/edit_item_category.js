@@ -12,12 +12,15 @@ const theme = {
     },
 };
 
-export default function EditItemCategory(props, {route}) {
+export default function EditItemCategory(props,{route}) {
 
-    const { itemCategoryid } = props.match.params;
+    var itemCategoryid = "";
     var id="";
     if(Platform.OS=="android"){
         id = route.params.itemCategoryId;
+    }
+    else{
+        itemCategoryid = props.match.params.itemCategoryid;
     }
 
     const [itemCategoryId, setItemCategoryId] = useState("");
@@ -32,6 +35,7 @@ export default function EditItemCategory(props, {route}) {
             setHost("localhost");
             setItemCategoryId(itemCategoryid);
         }
+
         if(itemCategoryId){
             fetch(`http://${host}:5000/retrive_item_category/${itemCategoryId}`, {
                 method: 'GET'

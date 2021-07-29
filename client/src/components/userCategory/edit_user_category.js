@@ -12,12 +12,15 @@ const theme = {
     },
 };
 
-export default function EditUserCategory(props, {route}) {
+export default function EditUserCategory(props,{route}) {
 
-    const { userCategoryid } = props.match.params;
+    var userCategoryid = "";
     var id="";
     if(Platform.OS=="android"){
-        id = route.params.UserCategoryId;
+        id = route.params.userCategoryid;
+    }
+    else{
+        userCategoryid = props.match.params.userCategoryid;
     }
 
     const [userCategoryId, setUserCategoryId] = useState("");

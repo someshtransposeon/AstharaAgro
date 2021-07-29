@@ -41,17 +41,21 @@ export default function AllOrders({ navigation }) {
                 <DataTable style={styles.datatable}>
                     <Title>All Orders</Title>
                     <DataTable.Header>
-                        <DataTable.Title>Name</DataTable.Title>
                         <DataTable.Title>Email</DataTable.Title>
-                        <DataTable.Title>Customer Email</DataTable.Title>
+                        {Platform.OS !== "android" &&
+                        <DataTable.Title>Full Name</DataTable.Title>
+                        }
+                        <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                     {allOrders ?
                         allOrders.map((item)=>{
                             return (
                                 <DataTable.Row>
-                                    <DataTable.Cell>{item.name}</DataTable.Cell>
                                     <DataTable.Cell>{item.email}</DataTable.Cell>
+                                    {Platform.OS !== "android" &&
+                                    <DataTable.Cell>{item.name}</DataTable.Cell>
+                                    }
                                     <DataTable.Cell>Pending</DataTable.Cell>
                                     <DataTable.Cell numeric>
                                         {Platform.OS=='android' ?

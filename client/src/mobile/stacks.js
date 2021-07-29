@@ -8,24 +8,30 @@ import AddItem from '../components/item/addItem';
 import AllItems from '../components/item/allitems';
 import CreateOrder from '../components/order/createorder';
 import EditItem from '../components/item/edititem';
+import Login from '../components/user/login';
+import Register from '../components/user/register';
+import Buyer_add_vendor from '../components/buyer/add_vendor';
+import Vendor_details from '../components/buyer/vendor_details';
+import Add_customer from '../components/sales_person/add_customer';
+import Customer_details from '../components/sales_person/customer_detail';
 import AddItemCategory from '../components/itemCategory/add_item_category';
 import AddUserCategory from '../components/userCategory/add_user_category';
 import AddAddress from '../components/address/add_address';
 import AddBankDetails from '../components/bank/add_bank_details';
-
 import All_Indents from '../components/indent/All_Indents';
 import Create_Indent from '../components/indent/Create_Indent';
 import Edit_Indent from '../components/indent/Edit_Indent';
-
 import Create_Purchase_Order from '../components/purchase_order/Create_Purchase_Order';
 import All_Purchase_Orders from '../components/purchase_order/All_Purchase_Orders';
 import Edit_Purchase_Order from '../components/purchase_order/Edit_Purchase_Order';
-
-import Create_Sales_Order from '../components/sales_order/Create_Sales_Order';
-import All_Sales_Orders from '../components/sales_order/All_Sales_Orders';
-import Edit_Sales_Order from '../components/sales_order/Edit_Sales_Order';
-
-
+import AllItemCategories from '../components/itemCategory/all_item_categories';
+import AllOrders from '../components/order/all_orders';
+import Profile from '../components/profile/profile';
+import AllUserCategories from '../components/userCategory/all_user_categories';
+import EditItemCategory from '../components/itemCategory/edit_item_category';
+import EditUserCategory from '../components/userCategory/edit_user_category';
+import AllUsers from '../components/manager/all_users';
+import EditUser from '../components/user/edit_user.js';
 
 const Stack = createStackNavigator();
 
@@ -95,9 +101,6 @@ export default function Stacks({navigation}){
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),
             }}/>
-
-
-
             <Stack.Screen name="Create_Indent" component={Create_Indent} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
@@ -128,17 +131,72 @@ export default function Stacks({navigation}){
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),
             }}/>
-            <Stack.Screen name="Create_Sales_Order" component={Create_Sales_Order} options={{
+            <Stack.Screen name="Login" component={Login} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),
             }}/>
-            <Stack.Screen name="All_Sales_Orders" component={All_Sales_Orders} options={{
+            <Stack.Screen name="Register" component={Register} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),
             }}/>
-            <Stack.Screen name="Edit_Sales_Order" component={Edit_Sales_Order} options={{
+            <Stack.Screen name="Buyer_add_vendor" component={Buyer_add_vendor} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Vendor_details" component={Vendor_details} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Add_customer" component={Add_customer} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Customer_details" component={Customer_details} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AllItemCategories" component={AllItemCategories} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AllOrders" component={AllOrders} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Profile" component={Profile} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AllUserCategories" component={AllUserCategories} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditItemCategory" component={EditItemCategory} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditUserCategory" component={EditUserCategory} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditUser" component={EditUser} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AllUsers" component={AllUsers} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),
