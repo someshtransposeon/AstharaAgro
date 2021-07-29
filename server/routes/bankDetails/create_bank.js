@@ -13,9 +13,13 @@ router.post('/create_bank', (req, res)=>{
     })
     newBank.save()
     .then(bank => {
-        res.json(bank);
+        var message={message:"Bank details added succesfully!",bank:bank}
+        res.json(message);
     })
-    .catch(err => res.json(err));
+    .catch(err =>{
+        var message={message:"address added succesfully!",error:err};
+        res.json(message);
+    })
 });
 
 module.exports = router;

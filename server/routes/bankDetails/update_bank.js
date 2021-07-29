@@ -13,15 +13,15 @@ router.put('/update_bank/:id',(req, res) =>{
     Bank.findOneAndUpdate({'_id':req.params.id}, bank_update)
     .then((bank) => {
         if(bank){
-            var message = { success: "bank details sucessfully updated" };
+            var message = {message: "bank details sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "bank details not found" };
+            var message = { message: "bank details not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = {message:"Something went wrong!", success: false, err: err };
         res.json(message);
     })
 });

@@ -14,9 +14,13 @@ router.post('/create_address', (req, res)=>{
     })
     newAddress.save()
     .then(address => {
-        res.json(address);
+        var message={message:"address added succesfully!",address:address}
+        res.json(message);
     })
-    .catch(err => res.json(err));
+    .catch(err =>{
+        var message={message:"address added succesfully!",error:err}
+        res.json(message);
+    }) 
 });
 
 module.exports = router;

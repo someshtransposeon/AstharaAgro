@@ -14,15 +14,15 @@ router.put('/update_address/:id',(req, res) =>{
     Address.findOneAndUpdate({'_id':req.params.id}, address_update)
     .then((address) => {
         if(address){
-            var message = { success: "address sucessfully updated" };
+            var message = { message: "address sucessfully updated!" };
             res.json(message);
         }else{
-            var message = { error: "address not found" };
+            var message = { message: "address not found!" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = { message:"Something wrong!",success: false, err: err };
         res.json(message);
     })
 });

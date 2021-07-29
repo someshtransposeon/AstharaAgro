@@ -16,15 +16,15 @@ router.put('/update_user/:id',(req, res) =>{
     User.findOneAndUpdate({'_id':req.params.id}, user_update)
     .then((user) => {
         if(user){
-            var message = { success: "user sucessfully updated" };
+            var message = { message: "user sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "user not found" };
+            var message = { message: "user not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = {message:"Something went wrong!", success: false, err: err };
         res.json(message);
     })
 });
