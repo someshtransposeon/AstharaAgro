@@ -17,7 +17,7 @@ router.post('/create_bank', (req, res)=>{
         res.json(message);
     })
     .catch(err =>{
-        var message={message:"address added succesfully!",error:err};
+        var message={message:"something wrong!",error:err};
         res.json(message);
     })
 });
