@@ -48,7 +48,7 @@ export default function Forgotpassword({ navigation }) {
         })
         .then(data => {
             console.log(data);
-            alert(data);
+            alert(data.message);
         }); 
     }
 
