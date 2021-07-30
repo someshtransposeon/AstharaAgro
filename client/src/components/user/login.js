@@ -74,7 +74,11 @@ export default function Login({ navigation }) {
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
+                    {Platform.OS=='android' ? 
+                    <Button style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('Forgotpassword')}}>Forgot Password</Button>
+                    :
                     <Link to="/forgotpassword">Forgot password?</Link>
+                    }
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Login</Button>
                     </Card.Content>
                 </Card>

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
     ...DefaultTheme,
@@ -13,7 +12,7 @@ const theme = {
     },
 };
 
-export default function EditAddress(props,{route}) {
+export default function EditAddress(props, {route}) {
 
     var addressid = "";
     var id="";

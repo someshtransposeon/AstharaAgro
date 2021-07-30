@@ -32,6 +32,9 @@ import EditItemCategory from '../components/itemCategory/edit_item_category';
 import EditUserCategory from '../components/userCategory/edit_user_category';
 import AllUsers from '../components/manager/all_users';
 import EditUser from '../components/user/edit_user.js';
+import EditAddress from '../components/address/edit_address';
+import EditBankDetails from '../components/bank/edit_bank_details';
+import Forgotpassword from '../components/profile/forgotpassword';
 
 const Stack = createStackNavigator();
 
@@ -198,6 +201,21 @@ export default function Stacks({navigation}){
             ),
             }}/>
             <Stack.Screen name="AllUsers" component={AllUsers} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditAddress" component={EditAddress} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditBankDetails" component={EditBankDetails} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="Forgotpassword" component={Forgotpassword} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),

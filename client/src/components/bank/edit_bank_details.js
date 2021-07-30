@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
     ...DefaultTheme,
@@ -13,7 +12,8 @@ const theme = {
     },
 };
 
-export default function EditBankDetails(props,{route}) {
+export default function EditBankDetails(props, {route}) {
+
     var bankid = "";
     var id="";
     if(Platform.OS=="android"){
@@ -22,6 +22,7 @@ export default function EditBankDetails(props,{route}) {
     else{
        bankid = props.match.params.bankid;
     }
+
     const [bankId,setBankId]=useState("");
     const [userId, setUserId] = useState('');
     const [bankName, setBankName] = useState("");
@@ -40,6 +41,7 @@ export default function EditBankDetails(props,{route}) {
             setHost("localhost");
             setBankId(bankid);
         }
+
         if(bankId){
             fetch(`http://${host}:5000/retrive_bank/${bankId}`, {
                 method: 'GET'
@@ -96,7 +98,7 @@ export default function EditBankDetails(props,{route}) {
                     <TextInput style={styles.input} mode="outlined" label="Account Number" value={accountNumber} onChangeText={accountNumber => setAccountNumber(accountNumber)} />
                     <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={accountHolderName} onChangeText={accountHolderName => setAccountHolderName(accountHolderName)} />
                     <TextInput style={styles.input} mode="outlined" label="Ifsc Code" value={ifsccode} onChangeText={ifsccode => setIfsccode(ifsccode)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Bank details</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Bank details</Button>
                     </Card.Content>
                 </Card>
             </View>

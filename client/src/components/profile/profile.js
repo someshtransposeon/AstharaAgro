@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, Text} from 'react-native';
+import { View, StyleSheet, Platform, Text, SafeAreaView, ScrollView} from 'react-native';
 import { Card, Provider, DefaultTheme, Button, Paragraph } from 'react-native-paper';
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faInfoCircle,faTrash,faEdit} from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
 
 const theme = {
     ...DefaultTheme,
@@ -81,40 +81,45 @@ export default function Profile({ navigation }) {
             }
         }
     }, [user, address, bank, host, userId, flag1, flag2, flag3]);
+
     function deleteaddress(id){
         fetch(`http://${host}:5000/delete_address/${id}`, {
-                    method: 'GET'
-                })
-                .then(res => res.json())
-                .catch(error => console.log(error))
-                .then(data => {
-                    alert(data.message);
-                    setAddress("");
-                });  
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            setAddress("");
+        });  
     }
+
     function deletebank(id){
         fetch(`http://${host}:5000/delete_bank/${id}`, {
-                    method: 'GET'
-                })
-                .then(res => res.json())
-                .catch(error => console.log(error))
-                .then(data => {
-                    alert(data.message);
-                    setBank("");
-                });  
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            setBank("");
+        });  
     }
+
     return (
         <Provider theme={theme}>
+            <SafeAreaView>
+            <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
                     <Card.Title title="Personal Details"/>
                     <Card.Content>
                         {user && 
                             <>
-                                <Text style={styles.text1}>Full Name: {user[0].full_name}</Text>
-                                <Text style={styles.text1}>Email: {user[0].email}</Text>
-                                <Text style={styles.text1}>Mobile No: {user[0].mobile_no}</Text>
-                                <Text style={styles.text1}>Role: {user[0].role}</Text>
+                                <Text>Full Name: {user[0].full_name}</Text>
+                                <Text>Email: {user[0].email}</Text>
+                                <Text>Mobile No: {user[0].mobile_no}</Text>
+                                <Text>Role: {user[0].role}</Text>
                             </>
                         }
                     </Card.Content>
@@ -124,12 +129,12 @@ export default function Profile({ navigation }) {
                     <Card.Content>
                         {(address && address.length) ?
                             <>
-                                <Text style={styles.text2}>Address: {address[0].address}</Text>
-                                <Text style={styles.text2}>Landmark: {address[0].landmark}</Text>
-                                <Text style={styles.text2}>District: {address[0].district}</Text>
-                                <Text style={styles.text2}>State: {address[0].state}</Text>
-                                <Text style={styles.text2}>Country: {address[0].country}</Text>
-                                <Text style={styles.text2}>Pin Code: {address[0].postal_code}</Text>
+                                <Text>Address: {address[0].address}</Text>
+                                <Text>Landmark: {address[0].landmark}</Text>
+                                <Text>District: {address[0].district}</Text>
+                                <Text>State: {address[0].state}</Text>
+                                <Text>Country: {address[0].country}</Text>
+                                <Text>Pin Code: {address[0].postal_code}</Text>
                                 <Paragraph >
                                 {Platform.OS=='android' ?
                                     <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deleteaddress(address[0]._id)} />
@@ -139,7 +144,7 @@ export default function Profile({ navigation }) {
                                     </Button>
                                 }
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('Editaddress', {addressId: address[0]._id})}} />
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('EditAddress', {addressId: address[0]._id})}} />
                                     :
                                     <Button>
                                         <Link to={"/editaddress/"+address[0]._id}>
@@ -165,11 +170,11 @@ export default function Profile({ navigation }) {
                     <Card.Content>
                         {(bank && bank.length) ?
                             <>
-                                <Text style={styles.text3}>Bank Name: {bank[0].bank_name}</Text>
-                                <Text style={styles.text3}>Branch Name: {bank[0].branch_name}</Text>
-                                <Text style={styles.text3}>Account Holder Name: {bank[0].account_holder_name}</Text>
-                                <Text style={styles.text3}>Account Number: {bank[0].account_number}</Text>
-                                <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
+                                <Text>Bank Name: {bank[0].bank_name}</Text>
+                                <Text>Branch Name: {bank[0].branch_name}</Text>
+                                <Text>Account Holder Name: {bank[0].account_holder_name}</Text>
+                                <Text>Account Number: {bank[0].account_number}</Text>
+                                <Text>IFSC Code: {bank[0].ifsc_code}</Text>
                                 <Paragraph >
                                 {Platform.OS=='android' ?
                                     <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deletebank(bank[0]._id)} />
@@ -179,7 +184,7 @@ export default function Profile({ navigation }) {
                                     </Button>
                                 }
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('Editaddress', {bankId: bank[0]._id})}} />
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('EditBankDetails', {bankId: bank[0]._id})}} />
                                     :
                                     <Button>
                                         <Link to={"/editbankdetails/"+bank[0]._id}>
@@ -201,6 +206,8 @@ export default function Profile({ navigation }) {
                     </Card.Content>
                 </Card>
             </View>
+            </ScrollView>
+            </SafeAreaView>
         </Provider>
     );
 }
