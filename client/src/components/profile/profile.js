@@ -172,17 +172,17 @@ export default function Profile({ navigation }) {
                                 <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
                                 <Paragraph >
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deleteaddress(address[0]._id)} />
+                                    <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deletebank(bank[0]._id)} />
                                     :
-                                    <Button onPress={()=>deleteaddress(address[0]._id)} >
+                                    <Button onPress={()=>deletebank(bank[0]._id)} >
                                         <FontAwesomeIcon icon={ faTrash }color="red" size={50} />
                                     </Button>
                                 }
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('Editaddress', {addressId: address[0]._id})}} />
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('Editaddress', {bankId: bank[0]._id})}} />
                                     :
                                     <Button>
-                                        <Link to={"/editaddress/"+address[0]._id}>
+                                        <Link to={"/editbankdetails/"+bank[0]._id}>
                                             <FontAwesomeIcon icon={ faEdit } color="blue" size={50} />
                                         </Link>
                                     </Button>

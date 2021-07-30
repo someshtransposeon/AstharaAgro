@@ -13,8 +13,16 @@ const theme = {
     },
 };
 
-export default function AddBankDetails({ navigation }) {
-
+export default function EditBankDetails(props,{route}) {
+    var bankid = "";
+    var id="";
+    if(Platform.OS=="android"){
+        id = route.params.bankId;
+    }
+    else{
+       bankid = props.match.params.bankid;
+    }
+    const [bankId,setBankId]=useState("");
     const [userId, setUserId] = useState('');
     const [bankName, setBankName] = useState("");
     const [branchName, setBranchName] = useState("");
@@ -24,24 +32,34 @@ export default function AddBankDetails({ navigation }) {
     const [host, setHost] = useState("");
 
     useEffect(() => {
-        async function fetchData() {
-            await AsyncStorage.getItem('loginuserid')
-            .then((userid) => {
-                setUserId(userid);
-            })
-        }
-        fetchData();
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
+            setBankId(id);
         }
         else{
             setHost("localhost");
+            setBankId(bankid);
         }
-    }, [host]);
+        if(bankId){
+            fetch(`http://${host}:5000/retrive_bank/${bankId}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(item => {
+                setUserId(item[0].userId);
+                setBankName(item[0].bank_name);
+                setBranchName(item[0].branch_name);
+                setAccountNumber(item[0].account_number);
+                setAccountHolderName(item[0].account_holder_name);
+                setIfsccode(item[0].ifsc_code);
+            });
+        }
+    }, [host,id,bankId,bankid]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/create_bank`, {
-            method: 'POST',
+        fetch(`http://${host}:5000/update_bank/${bankId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -57,6 +75,7 @@ export default function AddBankDetails({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            alert(data.message);
             console.log(data);
             setBankName("");
             setBranchName("");
@@ -70,14 +89,14 @@ export default function AddBankDetails({ navigation }) {
         <Provider theme={theme}>
             <View style={{ flex: 1, alignUsers: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Add Bank Details"/>
+                    <Card.Title title="Update Bank Details"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bankName} multiline onChangeText={bankName => setBankName(bankName)} />
                     <TextInput style={styles.input} mode="outlined" label="Branch Name" value={branchName} onChangeText={branchName => setBranchName(branchName)} />
                     <TextInput style={styles.input} mode="outlined" label="Account Number" value={accountNumber} onChangeText={accountNumber => setAccountNumber(accountNumber)} />
                     <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={accountHolderName} onChangeText={accountHolderName => setAccountHolderName(accountHolderName)} />
                     <TextInput style={styles.input} mode="outlined" label="Ifsc Code" value={ifsccode} onChangeText={ifsccode => setIfsccode(ifsccode)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Bank Details</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Bank details</Button>
                     </Card.Content>
                 </Card>
             </View>

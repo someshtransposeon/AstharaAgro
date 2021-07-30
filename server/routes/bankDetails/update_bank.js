@@ -4,6 +4,7 @@ const Bank = require('../../models/bankDetails/bank');
 
 router.put('/update_bank/:id',(req, res) =>{
     var bank_update = {
+        userId:req.body.userId,
         bank_name: req.body.bank_name,
         branch_name: req.body.branch_name,
         account_number: req.body.account_number,

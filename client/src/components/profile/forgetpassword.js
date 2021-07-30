@@ -3,7 +3,7 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Redirect } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -70,12 +70,11 @@ export default function Login({ navigation }) {
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Login User"/>
+                    <Card.Title title="Reset Password"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Login</Button>
-                    <Link to="/forgetpassword">Forgot password?</Link>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Reset password</Button>
                     </Card.Content>
                 </Card>
             </View>

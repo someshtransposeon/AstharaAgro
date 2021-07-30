@@ -36,6 +36,7 @@ import EditUserCategory from '../components/userCategory/edit_user_category';
 import AllUsers from '../components/manager/all_users';
 import EditUser from '../components/user/edit_user.js';
 import EditAddress from '../components/address/edit_address';
+import EditBankDetails from '../components/bank/edit_bank_details';
 
 const NavBar =()  => {
 
@@ -253,6 +254,7 @@ const NavBar =()  => {
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
                 <Route path="/editaddress/:addressid" render={(props) => <EditAddress {...props} />} exact />
+                <Route path="/editbankdetails/:bankid" render={(props) => <EditBankDetails {...props} />} exact />
                 <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/createorder">
