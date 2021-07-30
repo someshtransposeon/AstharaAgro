@@ -74,8 +74,8 @@ export default function Login({ navigation }) {
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
+                    <Link to="/forgotpassword">Forgot password?</Link>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Login</Button>
-                    <Link to="/forgetpassword">Forgot password?</Link>
                     </Card.Content>
                 </Card>
             </View>

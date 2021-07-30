@@ -14,7 +14,7 @@ const theme = {
     },
 };
 
-export default function Login({ navigation }) {
+export default function Forgotpassword({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -31,8 +31,8 @@ export default function Login({ navigation }) {
     }, [host]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/login_user`, {
-            method: 'POST',
+        fetch(`http://${host}:5000/reset_password`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -47,22 +47,8 @@ export default function Login({ navigation }) {
             console.log(error);
         })
         .then(data => {
-            console.log(data.message);
-            alert(data.message);
-            if(data.token){
-                AsyncStorage.setItem('token', data.token);
-                AsyncStorage.setItem('loginuserid', data.user_id);
-                AsyncStorage.setItem('loginemail', data.email);
-                AsyncStorage.setItem('role', data.role);
-                setEmail("");
-                setPassword("");
-                if(Platform.OS=='android'){
-                    navigation.navigate('Home');
-                }
-                else{
-                    <Redirect to="/"/>
-                }
-            }
+            console.log(data);
+            alert(data);
         }); 
     }
 
@@ -72,8 +58,8 @@ export default function Login({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="Reset Password"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
+                    <TextInput style={styles.input} mode="outlined" label="Enter your Email" value={email} onChangeText={email => setEmail(email)} />
+                    <TextInput style={styles.input} mode="outlined" label="Enter new Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Reset password</Button>
                     </Card.Content>
                 </Card>

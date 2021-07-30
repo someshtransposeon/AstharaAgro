@@ -37,6 +37,7 @@ import AllUsers from '../components/manager/all_users';
 import EditUser from '../components/user/edit_user.js';
 import EditAddress from '../components/address/edit_address';
 import EditBankDetails from '../components/bank/edit_bank_details';
+import Forgotpassword from '../components/profile/forgotpassword';
 
 const NavBar =()  => {
 
@@ -257,6 +258,7 @@ const NavBar =()  => {
                 <Route path="/editbankdetails/:bankid" render={(props) => <EditBankDetails {...props} />} exact />
                 <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
+                <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>

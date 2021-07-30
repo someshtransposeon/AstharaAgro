@@ -17,6 +17,7 @@ const delete_user = require('./routes/user/user/delete_user');
 const login_user = require('./routes/user/user/login_user');
 const retrive_user = require('./routes/user/user/retrive_user');
 const update_user = require('./routes/user/user/update_user');
+const reset_password=require('./routes/forgotpassword/resetpassword');
 
 const retrive_vendor = require('./routes/user/vendor/retrive_vendor');
 const deactivate_vendor=require('./routes/user/vendor/deactivated_vendor');
@@ -118,6 +119,7 @@ app.use('/', login_user);
 app.use('/', delete_user);
 app.use('/', retrive_user);
 app.use('/', update_user);
+app.use('/',reset_password);
 
 app.use('/', create_item_category);
 app.use('/', delete_item_category);
