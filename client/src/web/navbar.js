@@ -34,7 +34,8 @@ import AllUserCategories from '../components/userCategory/all_user_categories';
 import EditItemCategory from '../components/itemCategory/edit_item_category';
 import EditUserCategory from '../components/userCategory/edit_user_category';
 import AllUsers from '../components/manager/all_users';
-import EditUser from '../components/user/edit_user.js'
+import EditUser from '../components/user/edit_user.js';
+import EditAddress from '../components/address/edit_address';
 
 const NavBar =()  => {
 
@@ -251,6 +252,7 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
+                <Route path="/editaddress/:addressid" render={(props) => <EditAddress {...props} />} exact />
                 <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/createorder">

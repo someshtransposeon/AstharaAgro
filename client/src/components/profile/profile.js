@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, Text } from 'react-native';
-import { Card, Provider, DefaultTheme, Button } from 'react-native-paper';
+import { View, StyleSheet, Platform, Text} from 'react-native';
+import { Card, Provider, DefaultTheme, Button, Paragraph } from 'react-native-paper';
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faInfoCircle,faTrash,faEdit} from '@fortawesome/free-solid-svg-icons'
 
 const theme = {
     ...DefaultTheme,
@@ -79,7 +81,28 @@ export default function Profile({ navigation }) {
             }
         }
     }, [user, address, bank, host, userId, flag1, flag2, flag3]);
-
+    function deleteaddress(id){
+        fetch(`http://${host}:5000/delete_address/${id}`, {
+                    method: 'GET'
+                })
+                .then(res => res.json())
+                .catch(error => console.log(error))
+                .then(data => {
+                    alert(data.message);
+                    setAddress("");
+                });  
+    }
+    function deletebank(id){
+        fetch(`http://${host}:5000/delete_bank/${id}`, {
+                    method: 'GET'
+                })
+                .then(res => res.json())
+                .catch(error => console.log(error))
+                .then(data => {
+                    alert(data.message);
+                    setBank("");
+                });  
+    }
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -107,6 +130,24 @@ export default function Profile({ navigation }) {
                                 <Text style={styles.text2}>State: {address[0].state}</Text>
                                 <Text style={styles.text2}>Country: {address[0].country}</Text>
                                 <Text style={styles.text2}>Pin Code: {address[0].postal_code}</Text>
+                                <Paragraph >
+                                {Platform.OS=='android' ?
+                                    <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deleteaddress(address[0]._id)} />
+                                    :
+                                    <Button onPress={()=>deleteaddress(address[0]._id)} >
+                                        <FontAwesomeIcon icon={ faTrash }color="red" size={50} />
+                                    </Button>
+                                }
+                                {Platform.OS=='android' ?
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('Editaddress', {addressId: address[0]._id})}} />
+                                    :
+                                    <Button>
+                                        <Link to={"/editaddress/"+address[0]._id}>
+                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={50} />
+                                        </Link>
+                                    </Button>
+                                }
+                                </Paragraph>
                             </>
                             :
                             <>
@@ -125,6 +166,23 @@ export default function Profile({ navigation }) {
                                 <Text style={styles.text3}>Account Holder Name: {bank[0].account_holder_name}</Text>
                                 <Text style={styles.text3}>Account Number: {bank[0].account_number}</Text>
                                 <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
+                                <Paragraph >
+                                <Button onPress={()=>deletebank(bank[0]._id)} >
+                                <FontAwesomeIcon 
+                                    icon={ faTrash }  
+                                    color="red" 
+                                    size={50} 
+                                    
+                                    />
+                                </Button>
+                                <Link to={"/editbank"}>
+                                <FontAwesomeIcon 
+                                    icon={ faEdit }  
+                                    color="blue" 
+                                    size={50} 
+                                    />
+                                </Link>
+                                </Paragraph>
                             </>
                             :
                             <>

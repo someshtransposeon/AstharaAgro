@@ -13,8 +13,18 @@ const theme = {
     },
 };
 
-export default function AddAddress({ navigation }) {
+export default function EditAddress(props,{route}) {
 
+    var addressid = "";
+    var id="";
+    if(Platform.OS=="android"){
+        id = route.params.addressId;
+    }
+    else{
+        addressid = props.match.params.addressid;
+    }
+
+    const [addressId,setAddressId]=useState("");
     const [userId, setUserId] = useState('');
     const [address, setAddress] = useState('');
     const [landmark, setLandmark] = useState('');
@@ -25,24 +35,35 @@ export default function AddAddress({ navigation }) {
     const [host, setHost] = useState('');
 
     useEffect(() => {
-        async function fetchData() {
-            await AsyncStorage.getItem('loginuserid')
-            .then((userid) => {
-                setUserId(userid);
-            })
-        }
-        fetchData();
-        if (Platform.OS === 'android'){
+        if(Platform.OS=="android"){
             setHost("10.0.2.2");
+            setAddressId(id);
         }
         else{
             setHost("localhost");
+            setAddressId(addressid);
         }
-    }, [host, userId]);
+        if(addressId){
+            fetch(`http://${host}:5000/retrive_address/${addressId}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(item => {
+                setUserId(item[0].userId);
+                setAddress(item[0].address);
+                setLandmark(item[0].landmark);
+                setPincode(item[0]. postal_code);
+                setState(item[0].state);
+                setDistrict(item[0].district);
+                setCountry(item[0].country);
+            });
+        }
+    }, [host,id,addressId,addressid]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/create_address`, {
-            method: 'POST',
+        fetch(`http://${host}:5000/update_address/${addressId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -59,13 +80,8 @@ export default function AddAddress({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            alert(data.message);
             console.log(data);
-            setAddress("");
-            setLandmark("");
-            setDistrict("");
-            setState("");
-            setCountry("");
-            setPincode("");
         }); 
     }
 
@@ -73,7 +89,7 @@ export default function AddAddress({ navigation }) {
         <Provider theme={theme}>
             <View style={{ flex: 1, alignUsers: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Add Address"/>
+                    <Card.Title title="Update Address"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
                     <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
@@ -81,7 +97,7 @@ export default function AddAddress({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
                     <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add address</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update address</Button>
                 </Card.Content>
                 </Card>
             </View>

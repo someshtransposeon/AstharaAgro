@@ -6,15 +6,15 @@ router.get('/delete_address/:id',(req, res) =>{
     Address.findOneAndRemove({'_id':req.params.id})
     .then((address) => {
         if(address){
-            var message = { success: "address sucessfully deleted" };
+            var message = { message: "address sucessfully deleted" };
             res.json(message);
         }else{
-            var message = { error: "address not found" };
+            var message = { message: "address not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = { message:"Something went wrong!",success: false, err: err };
         res.json(message);
     })
 });
