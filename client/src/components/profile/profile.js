@@ -151,7 +151,11 @@ export default function Profile({ navigation }) {
                             </>
                             :
                             <>
+                            {Platform.OS=='android' ?
+                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddAddress')}}>Add Address</Button>
+                                :
                                 <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addaddress">Add Address</Link></Button>
+                            }
                             </>
                         }
                     </Card.Content>
@@ -167,26 +171,31 @@ export default function Profile({ navigation }) {
                                 <Text style={styles.text3}>Account Number: {bank[0].account_number}</Text>
                                 <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
                                 <Paragraph >
-                                <Button onPress={()=>deletebank(bank[0]._id)} >
-                                <FontAwesomeIcon 
-                                    icon={ faTrash }  
-                                    color="red" 
-                                    size={50} 
-                                    
-                                    />
-                                </Button>
-                                <Link to={"/editbank"}>
-                                <FontAwesomeIcon 
-                                    icon={ faEdit }  
-                                    color="blue" 
-                                    size={50} 
-                                    />
-                                </Link>
+                                {Platform.OS=='android' ?
+                                    <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deleteaddress(address[0]._id)} />
+                                    :
+                                    <Button onPress={()=>deleteaddress(address[0]._id)} >
+                                        <FontAwesomeIcon icon={ faTrash }color="red" size={50} />
+                                    </Button>
+                                }
+                                {Platform.OS=='android' ?
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('Editaddress', {addressId: address[0]._id})}} />
+                                    :
+                                    <Button>
+                                        <Link to={"/editaddress/"+address[0]._id}>
+                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={50} />
+                                        </Link>
+                                    </Button>
+                                }
                                 </Paragraph>
                             </>
                             :
                             <>
+                            {Platform.OS=='android' ?
+                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddBankDetails')}}>Add Bank Details</Button>
+                                :
                                 <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addbankdetails">Add Bank Details</Link></Button>
+                            }
                             </>
                         }
                     </Card.Content>

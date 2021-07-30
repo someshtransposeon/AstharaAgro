@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import { View, StyleSheet, Platform} from 'react-native';
+import { View, StyleSheet, Platform, ScrollView, SafeAreaView} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faMinus, faPlusCircle,faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
@@ -96,6 +96,8 @@ export default function CreateOrder({ navigation }) {
 
     return (
         <Provider theme={theme}>
+            <SafeAreaView>
+            <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
                     <Card.Title title="New Customer Create Order"/>
@@ -105,11 +107,11 @@ export default function CreateOrder({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
                     <TextInput style={styles.input} mode="outlined" label="Address" multiline value={address} onChangeText={address => setAddress(address)} />
                     {items.map((it, index) => (
-                        <View style={styles.items}>
+                        <View>
                             <Menu
                             visible={visible1}
                             onDismiss={closeMenu1}
-                            anchor={<Button style={{flex: 1, marginTop: '15%'}}mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
+                            anchor={<Button style={{flex: 1, marginTop: '2%'}}mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
                                 {item ?
                                     item.map((item)=>{
                                         return (
@@ -123,16 +125,29 @@ export default function CreateOrder({ navigation }) {
                                 }
                                 
                             </Menu>
-                            <TextInput style={styles.sizeinput} mode="outlined" label="unit of each item" value={it.itemUnit} />
-                            <TextInput  style={styles.sizeinput} keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                            <Button onPress={() => handleRemoveFields(index)}><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
-                            <Button  onPress={() => handleAddFields()}><FontAwesomeIcon icon={faPlusCircle   } color={ 'green' } size={30} /></Button>
+                            <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
+                            <View style={{flexDirection: 'row'}}>
+                                {Platform.OS=="android" ?
+                                    <>
+                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                        <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
+                                    </>
+                                    :
+                                    <>
+                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
+                                        <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
+                                    </>
+                                }
+                            </View>
                         </View>
                     ))}
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Order</Button>
                     </Card.Content>
                 </Card>
             </View>
+            </ScrollView>
+            </SafeAreaView>
         </Provider>
     );
 }
@@ -173,12 +188,6 @@ const styles = StyleSheet.create({
                 
             }
         })
-    },
-    items: {
-        flexDirection: 'row',
-    },
-    sizeinput:{
-        width:"30%"
     },
     button: {
         marginTop: '2%',

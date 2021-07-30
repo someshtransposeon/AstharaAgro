@@ -71,6 +71,7 @@ export default function EditUser(props, {route}) {
                 setEmail(user[0].email);
                 setMobileNo(user[0].mobile_no);
                 setCategory(user[0].role);
+                setCategoryId(user[0].category);
             });
         }
     }, [host,userId,id,userid,userCategory,flag]);

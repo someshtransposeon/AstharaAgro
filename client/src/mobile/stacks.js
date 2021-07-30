@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faBars } from '@fortawesome/free-solid-svg-icons';
@@ -40,6 +40,7 @@ export default function Stacks({navigation}){
         <Stack.Navigator screenOptions={{
             headerStyle: {
                 backgroundColor: "#0cc261",
+                // backgroundColor: "blue",
             },
             headerTintColor: "white",
             headerBackTitle: "Back",
@@ -49,13 +50,13 @@ export default function Stacks({navigation}){
         }}>
             <Stack.Screen name="Home" component={Home} options={{
             headerTitle: () => (
-                <>
+                <View style={{flexDirection: 'row'}}>
                     {/* <Image
-                        style={{width: 30, height: 30}}
-                        source={'/images/Asthara-Logo.png'}
+                        style={{width: 50, height: 50}}
+                        source={require('/images/')}
                     /> */}
                     <Text style={{fontWeight: 'bold', fontSize: 25, color: 'white'}}>Asthara-Agro</Text>
-                </>
+                </View>
             ),
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
