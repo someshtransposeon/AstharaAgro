@@ -8,16 +8,17 @@ router.put('/updateindent/:id',(req, res) =>{
         customerId:req.params.customerId,
         requestedBy:req.params.empId,
         remark:req.body.remark,
-        item_description:req.body.item_description,
+        items:req.body.items,
+        margin:req.body.margin,
         status:req.body.status,
     }
     Indent.findOneAndUpdate({'_id':req.params.id},newupdate)
-    .then((indent) => {
-        if(indent){
-            var message = { success: "sucessfully updated" };
+    .then((item) => {
+        if(item){
+            var message = {message: "Indent sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "Indent not found" };
+            var message = { messageerror: "Record not found" };
             res.json(message);
         }
     }).catch(err => {

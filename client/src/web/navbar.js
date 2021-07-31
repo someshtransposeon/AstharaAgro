@@ -309,10 +309,8 @@ const NavBar =()  => {
                 <Route path="/All_Purchase_Orders">
                     <All_Purchase_Orders/>
                 </Route>
-                <Route path="/Edit_Purchase_Order ">
+                <Route path="/Edit_Purchase_Order/:purchaseid" render={(props) => <Edit_Purchase_Order {...props} />} exact />
                 
-                    <Edit_Purchase_Order/>
-                </Route>
                 </Switch>
         </Router>
     )

@@ -48,17 +48,17 @@ export default function All_Purchase_Orders({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 {allPurchaseOrders ?
-                    allPurchaseOrders.map((purchaseorder)=>{
+                    allPurchaseOrders.map((purchaseOrder)=>{
                         return (
                             <Card style={styles.card}>
-                                <Card.Title title={purchaseorder._id} subtitle={purchaseorder._id}/>
+                                <Card.Title title={purchaseOrder._id} subtitle={purchaseOrder._id}/>
                              
                              
                                 <Card.Actions>
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseorder._id})}}>View</Button>
+                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>View</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/Edit_Purchase_Order/"+purchaseorder._id}>View</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>View</Link></Button>
                                     }
                                 </Card.Actions>
                             </Card>

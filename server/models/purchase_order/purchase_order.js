@@ -32,8 +32,6 @@ const purchaseorderSchema = new mongoose.Schema({
     purchase_order_approval_date:{
         type:Date,
     },
-
-
     status: {
         type: String,
         default:"pending",

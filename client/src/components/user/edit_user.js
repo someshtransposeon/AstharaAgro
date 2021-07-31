@@ -109,7 +109,7 @@ export default function EditUser(props, {route}) {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 {fullName ?
                 <Card style={styles.card}>
-                    <Card.Title title="EDIT ITEM"/>
+                    <Card.Title title="EDIT USER"/>
                     <Card.Content>
                     <Menu
                     visible={visible1}

@@ -14,11 +14,16 @@ const theme = {
 
 export default function Edit_Indent(props, {route}) {
 
-      const { indentid } = props.match.params;
-    // var id="";
-    // if(Platform.OS=="android"){
-    //     id = route.params.itemId;
-    // }
+        // const { indentid } = props.match.params;
+        
+        var id="";
+        var indentid = ""; 
+        if(Platform.OS=="android"){
+            id = route.params.indentId;
+        }
+        else{
+            indentid = props.match.params.indentid;
+        }
 
 
     const [visible1, setVisible1] = useState(false);
@@ -26,17 +31,13 @@ export default function Edit_Indent(props, {route}) {
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
 
     const [indentId, setIndentId] = useState("");
-    const [itemId, setItemId] = useState("");
-    const [orderId, setOrderId] = useState("Choose Orderr");
-    
+
+    const [orderId, setOrderId] = useState("Choose Order");
     const [items, setItems] = useState("");
     const [margin, setMargin] = useState("");
-    const [unit, setUnit] = useState("Choose Unit");
-    const [itemDescription, setDescription,] = useState("");
+
     const [host, setHost] = useState("");
 
 
@@ -46,38 +47,46 @@ export default function Edit_Indent(props, {route}) {
     }
 
     useEffect(() => {
-
-            fetch(`http://localhost:5000/displayindent/${indentid}`, {
+        if(Platform.OS=="android"){
+            setHost("10.0.2.2");
+            setIndentId(id);
+        }
+        else{
+            setHost("localhost");
+            setIndentId(indentid);
+        }
+        if(indentId){
+       
+            fetch(`http://${host}:5000/displayindent/${indentid}`, {
                 method: 'GET'
             })
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
                 setOrderId(item[0].orderId);
-                setItems(item[0].items)
+                setItems(item[0].items);
                 setMargin(item[0].margin);
 
             });
-    }   , [host,indentid]);
+        }
+    }   , [host,indentId,indentid,id]);
 
         function submitForm() {
-        fetch(`http://localhost:5000/updateindent/${indentid}`, {
+        fetch(`http://${host}:5000/updateindent/${indentid}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                items:items,
-                margin:margin
-                // item_name: itemName,
-                // grade: grade,
-                // unit: unit,
-                
+                orderId:orderId,
+                items:items,  
+                margin:margin,              
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            alert(data.message);
             console.log(data);
         }); 
     }
@@ -93,7 +102,7 @@ export default function Edit_Indent(props, {route}) {
                     visible={visible1}
                     onDismiss={closeMenu1}
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{orderId}</Button>}>
-                        <Menu.Item title="101" onPress={()=>chooseOrder(orderId)} />
+                        <Menu.Item title="${orderId}" onPress={()=>chooseOrder(orderId)} />
                     </Menu>
                     }
                     {orderId && 
@@ -116,7 +125,7 @@ export default function Edit_Indent(props, {route}) {
                         }
                     </DataTable>
                     }                   
-                    <TextInput style={styles.input} value={margin} onChangeText={margin => setMargin(margin)}  label="Margin" />
+                    <TextInput style={styles.input} value={margin}  label="Margin"  onChangeText={margin => setMargin(margin)}/>
                     <Button mode="contained" onPress={()=>submitForm()} style={{padding: '2%', marginTop: '2%'}}>Update Indent</Button>
                     <Button mode="contained" color="red" style={{padding: '2%', marginTop: '2%'}}>Delete Indent</Button>
                     </Card.Content>
