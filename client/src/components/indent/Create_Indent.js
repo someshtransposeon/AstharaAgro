@@ -22,8 +22,12 @@ export default function CreateIndent({ navigation }) {
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
+    const [user_id, setUserId] = useState();
     const [orderId, setOrderId] = useState("Choose Order");
+
+    const [vendor_id, setVendorId] = useState("Choose Vendor");
     const [user, setUser] = useState();
+    const [user2, setUser2] = useState();
     const [margin, setMargin] = useState("");    
     const [items, setItems] = useState();
     const [order, setOrder] = useState();
@@ -42,6 +46,14 @@ export default function CreateIndent({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(user => setUser(user));
+
+
+        fetch("http://localhost:5000/retrive_all_vendor", {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(user2 => setUser2(user2));
     }, [user,host]);
     
     function chooseOrder(id) {
@@ -55,6 +67,17 @@ export default function CreateIndent({ navigation }) {
         console.log(items);
         closeMenu1();
     }
+    function chooseVendor(id){
+        setVendorId(id)
+        fetch(`http://localhost:5000/retrive_vendor/${id}`, {
+            method: 'GET'
+        })        
+        .then(res => res.json())
+        .catch(error => console.log(error))
+
+        closeMenu2();
+    }
+
 
     function submitForm(){
         fetch('http://localhost:5000/newindent', {
@@ -65,6 +88,8 @@ export default function CreateIndent({ navigation }) {
             body: JSON.stringify({
                 orderId: orderId,
                 items:items,
+                user_id:user_id,
+                vendor_id:vendor_id,
                 margin:margin,
             })
         }).then(res => res.json())
@@ -72,7 +97,9 @@ export default function CreateIndent({ navigation }) {
         .then(data => {
             console.log(data);
             setOrderId("Choose Order");
+            setVendorId("Choose Vendor");
             setItems("");
+            setMargin("");
         }); 
     }
 
@@ -94,6 +121,21 @@ export default function CreateIndent({ navigation }) {
                             })
                             :
                             <Menu.Item title="No order Available" />
+                        }
+                    </Menu>
+
+                    <Menu
+                    visible={visible2}
+                    onDismiss={closeMenu2}
+                    anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{vendor_id} </Button>}>
+                        {user2 ?
+                            user2.map((item)=>{
+                                return (
+                                    <Menu.Item title={item._id } onPress={()=>chooseVendor(item._id)} />
+                                )
+                            })
+                            :
+                            <Menu.Item title="No Vendor Available" />
                         }
                     </Menu>
                     {items && 

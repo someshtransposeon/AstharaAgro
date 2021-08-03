@@ -8,6 +8,8 @@ router.post('/newindent',(req,res)=>{
         
         orderId:req.body.orderId,
         items:req.body.items,
+        user_id:req.body.user_id,
+        vendor_id:req.body.vendor_id,
         margin:req.body.margin,
 
     })

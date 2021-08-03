@@ -74,7 +74,9 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
+                console.log(item[0]);
             });
+
        }
     }, [host,purchaseId,purchaseid,id]);
 

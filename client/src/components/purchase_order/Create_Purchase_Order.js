@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform} from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme, DataTable } from 'react-native-paper';
+import { View, StyleSheet, Platform, CheckBox} from 'react-native';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 
 const theme = {
     ...DefaultTheme,
@@ -17,17 +17,17 @@ export default function Create_Purchase_Order({ navigation }) {
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
 
+    const [checked, setChecked] = useState(false);
+
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
     const [indent_id, setPurchaseOrderId] = useState("Choose Indent");
-    const [vendor_id, setVendorId] = useState("Choose Vendor");
+    // const [vendor_id, setVendorId] = useState("Choose Vendor");
     
     const [order_id, setOrderId] = useState();
-    // const [user_id, setUserId] = useState();
-    // const [user_id, setUserId] = useState();
     
     const [user_id, setUserId] = useState();
     const [user, setUser] = useState();
@@ -52,13 +52,6 @@ export default function Create_Purchase_Order({ navigation }) {
         .catch(error => console.log(error))
         .then(user => setUser(user));
     
-
-        fetch("http://localhost:5000/retrive_all_vendor", {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(user2 => setUser2(user2));
     }, [user,host]);
 
     function choosePurchaseOrder(id) {
@@ -72,19 +65,10 @@ export default function Create_Purchase_Order({ navigation }) {
         console.log(items);  
         closeMenu1();
     }
-    
-    function chooseVendor(id){
-        setVendorId(id)
-        fetch(`http://localhost:5000/retrive_vendor/${id}`, {
-            method: 'GET'
-        })        
-        .then(res => res.json())
-        .catch(error => console.log(error))
 
-        closeMenu2();
+    function checkBoxTest(){
+        alert("Hello ...")
     }
-
-    // submit purchase_order form
     function submitForm(){
         fetch('http://localhost:5000/create_purchase_order', {
             method: 'POST',
@@ -96,7 +80,6 @@ export default function Create_Purchase_Order({ navigation }) {
                 order_id:order_id,
                 items:items,
                 user_id:user_id,
-                vendor_id:vendor_id,
                 indent_id:indent_id,
 
             })
@@ -105,7 +88,8 @@ export default function Create_Purchase_Order({ navigation }) {
         .then(data => {
             console.log(data);
             setPurchaseOrderId("Choose Order");
-            setVendorId("Choose Vendor");
+            setItems("");
+            // setVendorId("Choose Vendor");
         }); 
     }
 
@@ -121,20 +105,10 @@ export default function Create_Purchase_Order({ navigation }) {
                     <Card.Title title="CREATE PURCHASE ORDER"/>
                     <Card.Content>
                     
-                    <Menu
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{vendor_id} </Button>}>
-                        {user2 ?
-                            user2.map((item)=>{
-                                return (
-                                    <Menu.Item title={item._id } onPress={()=>chooseVendor(item._id)} />
-                                )
-                            })
-                            :
-                            <Menu.Item title="No Vendor Available" />
-                        }
-                    </Menu>
+            
+                    <CheckBox value={false} onChange={()=> this.checkBoxTest()}/>        
+                        
+
                     <Menu
                     visible={visible1}
                     onDismiss={closeMenu1}
@@ -142,6 +116,7 @@ export default function Create_Purchase_Order({ navigation }) {
                         {user ?
                             user.map((item)=>{
                                 return (
+                                  
                                     <Menu.Item title={ item._id } onPress={()=>choosePurchaseOrder(item._id)} />
                                 )
                             })

@@ -13,6 +13,10 @@ const indentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
     },
+    vendor_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendor',
+    },
     indent_created_date:{
         type:Date,
         default: Date.now,
