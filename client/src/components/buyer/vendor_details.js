@@ -1,122 +1,125 @@
-import React,{useState,useEffect} from 'react';
-import { DataTable } from 'react-native-paper';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faInfoCircle,faTrash,faEdit} from '@fortawesome/free-solid-svg-icons'
-import {Text,View,StyleSheet,Platform} from 'react-native';
-import {Link} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
+import { Provider, DefaultTheme, Button, Title, DataTable } from 'react-native-paper';
+import { Link } from "react-router-dom";
 
-export default function  Vendor_details({ navigation }){
-     const optionsPerPage = [2, 3, 4];
-    const [page, setPage] = React.useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(optionsPerPage[0]);
-    const [data, setData] = useState(); 
+const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    colors: {
+        ...DefaultTheme.colors,
+        primary: '#0cc261',
+        accent: '#f1c40f',
+    },
+};
+
+export default function Vendor_details({ navigation }) {
+
+    const [allItems, setAllItems] = useState();
+    const [host, setHost] = useState("");
 
     useEffect(() => {
-      fetch('http://localhost:5000/retrive_all_vendor', {
-          method: 'GET'
-      })
-      .then(res => res.json())
-      .then(data => setData(data));
-      setPage(0);
+        if(Platform.OS=="android"){
+            setHost("10.0.2.2");
+        }
+        else{
+            setHost("localhost");
+        }
+        fetch('http://localhost:5000/retrive_all_vendor', {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(allItems => setAllItems(allItems));
+    }, [allItems, host]);
 
-    }, []);
     return (
-        <View style={styles.container} >
-            <Text style={styles.textdesign}>Vendor List</Text>
-            <View style={styles.card}>
-            <DataTable>
-            <DataTable.Header style={styles.tableheader} >
-            <DataTable.Title >FULLNAME</DataTable.Title>
-            <DataTable.Title >EMAIL </DataTable.Title>
-            <DataTable.Title >MOBILE NUMBER</DataTable.Title>
-            <DataTable.Title >GST NUMBER</DataTable.Title>
-            <DataTable.Title >ACTIONS</DataTable.Title>
-            </DataTable.Header>
-            {data && data.map((item)=>{
-              return (
-                <DataTable.Row key={item._id}>
-                <DataTable.Cell>{item.full_name }</DataTable.Cell>
-                <DataTable.Cell  >{item.email}</DataTable.Cell>
-                <DataTable.Cell >{item.mobile_no}</DataTable.Cell>
-                <DataTable.Cell >{item.gst_no}</DataTable.Cell>
-                <DataTable.Cell >
-                  <Link to="/particularvendor" >
-                  <FontAwesomeIcon icon={ faInfoCircle } 
-                    color="green" 
-                    secondaryColor="red" 
-                    />
-                   </Link>
-                   <Link to="/deactivevendor" >
-                   <FontAwesomeIcon 
-                    icon={ faTrash }  
-                    color="red" 
-                    secondaryColor="red" 
-                    
-                    />
-                  </Link>
-                  <Link to={"/editvendor/"+item._id}>
-                   <FontAwesomeIcon 
-                    icon={ faEdit }  
-                    color="blue" 
-                    secondaryColor="red" 
-                     />
-                  </Link>
-                  </DataTable.Cell>
-                </DataTable.Row>
-               )
-              })
-            }
-            <DataTable.Pagination
-            page={page}
-            numberOfPages={3}
-            onPageChange={(page) => setPage(page)}
-            label="1-2 of 6"
-            optionsPerPage={optionsPerPage}
-            itemsPerPage={itemsPerPage}
-            setItemsPerPage={setItemsPerPage}
-            showFastPagination
-            optionsLabel={'Rows per page'}
-            />
-    </DataTable>
-    </View>
-    </View>
+        <Provider theme={theme}>
+        <SafeAreaView>
+        <ScrollView>
+            <View style={styles.view}>
+                <DataTable style={styles.datatable}>
+                    <Title>All Vendors</Title>
+                    <DataTable.Header>
+                        <DataTable.Title>S.no</DataTable.Title>
+                        <DataTable.Title>Name</DataTable.Title>
+                        <DataTable.Title>Email</DataTable.Title>
+                        <DataTable.Title>Acton</DataTable.Title>
+                    </DataTable.Header>
+                {allItems ?
+                    allItems.map((item)=>{
+                        return (
+                            <DataTable.Row>
+                                <DataTable.Cell>{item._id}</DataTable.Cell>
+                                <DataTable.Cell>{item.full_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.email}</DataTable.Cell>
+                                <DataTable.Cell>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {vendorId: item._id})}}>Details</Button>
+                                        :
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/editvendordetails/"+item._id}>Details</Link></Button>
+                                    }
+                                </DataTable.Cell>
+                            </DataTable.Row>
+                        )
+                    })
+                    :
+                    <ActivityIndicator color="#794BC4" size={60}/>
+                }
+                </DataTable>
+            </View>
+        </ScrollView>
+        </SafeAreaView>
+        </Provider>
     );
-};
+}
+
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      ...Platform.select({
-        ios: {
-          backgroundColor: '#DDDFDD'
-        },
-        android: {
-          backgroundColor: '#DDDFDD'
-        },
-        default: {
-          // other platforms, web for example
-          backgroundColor:"#EBF8D6"
-  
-        },
-  
-      }),
-      justifyContent:"center",
-      padding:"10%",
+    view: {
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+            },
+            default: {
+                
+            }
+        })
     },
-    textdesign:{
-      marginLeft:"40%",
-      fontStyle:"italic",
-      fontWeight:"bold",
-      fontSize:40,
-      color:"green"
+    card: {
+        margin: '2%',
+        alignSelf: 'center',
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                width: '90%',
+            },
+            default: {
+                width: '20%',
+            }
+        })
     },
-    card:{
-      backgroundColor:"white",
-      borderRadius:5,
-      borderColor:"black",
-      justifyContent:"center",
-      shadowRadius:10,
+    datatable: {
+        alignSelf: 'center',
+        marginTop: '2%',
+        marginBottom: '2%',
+        padding: '2%',
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                width: '90%',
+            },
+            default: {
+                width: '50%',
+                border: '1px solid gray',
+                borderRadius: '2%',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
+            }
+        })
     },
-    tableheader:{
-      backgroundColor:"lightgreen"
-    }
-  });
+}); 

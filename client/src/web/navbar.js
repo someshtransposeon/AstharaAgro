@@ -38,6 +38,8 @@ import EditUser from '../components/user/edit_user.js';
 import EditAddress from '../components/address/edit_address';
 import EditBankDetails from '../components/bank/edit_bank_details';
 import Forgotpassword from '../components/profile/forgotpassword';
+import EditVendor from '../components/buyer/edit_vendor';
+import EditCustomer from '../components/sales_person/edit_customer';
 
 const NavBar =()  => {
 
@@ -254,6 +256,8 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
+                <Route path="/editvendordetails/:vendorid" render={(props) => <EditVendor {...props} />} exact />
+                <Route path="/editcustomerdetails/:customerid" render={(props) => <EditCustomer {...props} />} exact />
                 <Route path="/editaddress/:addressid" render={(props) => <EditAddress {...props} />} exact />
                 <Route path="/editbankdetails/:bankid" render={(props) => <EditBankDetails {...props} />} exact />
                 <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />

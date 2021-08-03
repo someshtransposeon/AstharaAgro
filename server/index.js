@@ -21,6 +21,11 @@ const reset_password=require('./routes/forgotpassword/resetpassword');
 
 const retrive_vendor = require('./routes/user/vendor/retrive_vendor');
 const deactivate_vendor=require('./routes/user/vendor/deactivated_vendor');
+const update_vendor=require('./routes/user/vendor/update_vendor');
+
+const retrive_customer= require('./routes/user/customer/retrive_customer');
+const update_customer=require('./routes/user/customer/update_customer');
+
 
 
 const create_item_category = require('./routes/itemCategory/create_item_category');
@@ -112,6 +117,10 @@ app.use('/', update_user_category);
 
 app.use('/', retrive_vendor);
 app.use('/', deactivate_vendor);
+app.use('/', update_vendor);
+
+app.use('/', retrive_customer);
+app.use('/', update_customer);
 
 
 app.use('/', create_user);
