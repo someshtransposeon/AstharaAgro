@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable } from 'react-native-paper';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 
 const theme = {
@@ -33,6 +33,9 @@ export default function AllOrders({ navigation }) {
         .then(orders => setAllOrders(orders));
     }, [allOrders, host]);
 
+    const onChangeSearch = query => setSearchQuery(query);
+    const [searchQuery, setSearchQuery] = useState('');
+
     return (
         <Provider theme={theme}>
         <SafeAreaView>
@@ -40,6 +43,11 @@ export default function AllOrders({ navigation }) {
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
                     <Title>All Orders</Title>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+		                value={searchQuery}
+                    />
                     <DataTable.Header>
                         <DataTable.Title>Email</DataTable.Title>
                         {Platform.OS !== "android" &&
@@ -50,6 +58,7 @@ export default function AllOrders({ navigation }) {
                     </DataTable.Header>
                     {allOrders ?
                         allOrders.map((item)=>{
+                            if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{item.email}</DataTable.Cell>
@@ -66,6 +75,7 @@ export default function AllOrders({ navigation }) {
                                     </DataTable.Cell>
                                 </DataTable.Row>
                             )
+                            }
                         })
                         :
                         <ActivityIndicator color="#794BC4" size={60}/>

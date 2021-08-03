@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 
 const theme = {
     ...DefaultTheme,
@@ -14,7 +14,7 @@ const theme = {
 
 export default function Register({ navigation }) {
 
-    const [message, setMessage] = useState();
+    const [searchQuery, setSearchQuery] = useState('');
     const [visible1, setVisible1] = useState(false);
     const [userCategory, setUserCategory] = useState();
     const [category, setCategory] = useState("Choose Category");
@@ -71,6 +71,8 @@ export default function Register({ navigation }) {
         ; 
     }
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -81,11 +83,18 @@ export default function Register({ navigation }) {
                     visible={visible1}
                     onDismiss={closeMenu1}
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{category}</Button>}>
+                        <Searchbar
+                            placeholder="Search"
+                            onChangeText={onChangeSearch}
+                            value={searchQuery}
+                        />
                         {userCategory ?
                             userCategory.map((item)=>{
+                                if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                 return (
                                     <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
                                 )
+                                }
                             })
                             :
                             <Menu.Item title="No User Category Available" />

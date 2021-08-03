@@ -1,8 +1,8 @@
 import React, {useState,useEffect} from 'react';
-import { View, StyleSheet, Platform, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faMinus, faPlusCircle,faMinusCircle } from '@fortawesome/free-solid-svg-icons';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 
 const theme = {
     ...DefaultTheme,
@@ -16,6 +16,8 @@ const theme = {
 
 export default function CreateOrder({ navigation }) {
 
+    const [searchQuery1, setSearchQuery1] = useState('');
+    const [searchQuery2, setSearchQuery2] = useState('');
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [item, setItem] = useState();
@@ -122,6 +124,9 @@ export default function CreateOrder({ navigation }) {
         }); 
     }
 
+    const onChangeSearch1 = query => setSearchQuery1(query);
+    const onChangeSearch2 = query => setSearchQuery2(query);
+
     return (
         <Provider theme={theme}>
             <SafeAreaView>
@@ -139,13 +144,20 @@ export default function CreateOrder({ navigation }) {
                             visible={visible2}
                             onDismiss={closeMenu2}
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
+                                <Searchbar
+                                    placeholder="Search"
+                                    onChangeText={onChangeSearch1}
+                                    value={searchQuery1}
+                                />
                                 {customer ?
                                     customer.map((item)=>{
+                                        if(item.email.toUpperCase().search(searchQuery1.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
                                         return (
                                             <>
-                                            <Menu.Item title={item.email} onPress={()=>CustomerChange(item._id, item.email)}/>
+                                            <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
                                             </>
                                         )
+                                        }
                                     })
                                     :
                                     <Menu.Item title="No Customers are available" />
@@ -162,13 +174,20 @@ export default function CreateOrder({ navigation }) {
                             visible={visible1}
                             onDismiss={closeMenu1}
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
+                                <Searchbar
+                                    placeholder="Search"
+                                    onChangeText={onChangeSearch1}
+                                    value={searchQuery1}
+                                />
                                 {item ?
                                     item.map((item)=>{
+                                        if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
                                         return (
                                             <>
                                             <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit)}/>
                                             </>
                                         )
+                                        }
                                     })
                                     :
                                     <Menu.Item title="No items are available" />

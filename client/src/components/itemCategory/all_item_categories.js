@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
-import { Provider, DefaultTheme, Button,Title, DataTable } from 'react-native-paper';
+import { Provider, DefaultTheme, Button,Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 
 const theme = {
@@ -17,6 +17,7 @@ export default function AllItemCategories({ navigation }) {
 
     const [allItemCategories, setAllItemCategories] = useState();
     const [host, setHost] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -33,6 +34,8 @@ export default function AllItemCategories({ navigation }) {
         .then(categories => setAllItemCategories(categories));
     }, [allItemCategories, host]);
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
         <SafeAreaView>
@@ -40,12 +43,18 @@ export default function AllItemCategories({ navigation }) {
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
                     <Title>All Item Categories</Title>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+		                value={searchQuery}
+                    />
                     <DataTable.Header>
                         <DataTable.Title>Item Category</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItemCategories ?
                     allItemCategories.map((item)=>{
+                        if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.category_name}</DataTable.Cell>
@@ -58,6 +67,7 @@ export default function AllItemCategories({ navigation }) {
                                 </DataTable.Cell>
                             </DataTable.Row>
                         )
+                        }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>

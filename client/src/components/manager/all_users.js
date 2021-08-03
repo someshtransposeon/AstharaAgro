@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable } from 'react-native-paper';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 
 const theme = {
@@ -17,6 +17,7 @@ export default function AllUsers({ navigation }) {
 
     const [allUsers, setAllUsers] = useState();
     const [host, setHost] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -33,6 +34,8 @@ export default function AllUsers({ navigation }) {
         .then(allusers => setAllUsers(allusers));
     }, [allUsers, host]);
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
         <SafeAreaView>
@@ -40,6 +43,11 @@ export default function AllUsers({ navigation }) {
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
                     <Title>All Users</Title>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+		                value={searchQuery}
+                    />
                     <DataTable.Header>
                         <DataTable.Title>Email</DataTable.Title>
                         {Platform.OS !== "android" &&
@@ -50,6 +58,7 @@ export default function AllUsers({ navigation }) {
                     </DataTable.Header>
                 {allUsers ?
                     allUsers.map((item)=>{
+                        if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.role.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.email}</DataTable.Cell>
@@ -66,6 +75,7 @@ export default function AllUsers({ navigation }) {
                                 </DataTable.Cell>
                             </DataTable.Row>
                         )
+                        }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>

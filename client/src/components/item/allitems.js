@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable } from 'react-native-paper';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 
 const theme = {
@@ -17,6 +17,7 @@ export default function AllItems({ navigation }) {
 
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -33,6 +34,8 @@ export default function AllItems({ navigation }) {
         .then(allItems => setAllItems(allItems));
     }, [allItems, host]);
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
         <SafeAreaView>
@@ -40,6 +43,11 @@ export default function AllItems({ navigation }) {
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
                     <Title>All Items</Title>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+		                value={searchQuery}
+                    />
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title>Grade</DataTable.Title>
@@ -47,6 +55,7 @@ export default function AllItems({ navigation }) {
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
+                        if(item.item_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.item_name}</DataTable.Cell>
@@ -60,6 +69,7 @@ export default function AllItems({ navigation }) {
                                 </DataTable.Cell>
                             </DataTable.Row>
                         )
+                        }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>
