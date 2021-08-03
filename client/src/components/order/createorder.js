@@ -17,6 +17,7 @@ const theme = {
 export default function CreateOrder({ navigation }) {
 
     const [visible1, setVisible1] = useState(false);
+    const [visible2, setVisible2] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
@@ -24,6 +25,9 @@ export default function CreateOrder({ navigation }) {
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
     const [address, setAddress] = useState("");
+    const [flag, setFlag] = useState(true);
+    const [customer, setCustomer] = useState();
+    const [customerEmail, setCustomerEmail] = useState("Choose customer");
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -32,17 +36,26 @@ export default function CreateOrder({ navigation }) {
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_item`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(item => setItem(item));
-    }, [item,host]);
 
+        fetch(`http://${host}:5000/retrive_all_customer`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(customer => setCustomer(customer));
+    }, [item,host]);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
+    const openMenu2 = () => setVisible2(true);
+    const closeMenu2 = () => setVisible2(false);
 
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
@@ -57,6 +70,21 @@ export default function CreateOrder({ navigation }) {
         }
         setItems(values);
         console.log(unit);
+    };
+
+    const CustomerChange = (id, email) => {
+        setCustomerEmail(email);
+        fetch(`http://${host}:5000/retrive_customer/${id}`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(customer => {
+            setEmail(customer[0].email);
+            setName(customer[0].full_name);
+            setMobileNo(customer[0].mobile_no);
+        });
+        closeMenu2();
     };
 
     const handleAddFields = () => {
@@ -100,8 +128,30 @@ export default function CreateOrder({ navigation }) {
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="New Customer Create Order"/>
+                    <Card.Title title="Create Order"/>
                     <Card.Content>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
+                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
+                    </View>
+                    {flag &&
+                        <Menu
+                            visible={visible2}
+                            onDismiss={closeMenu2}
+                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
+                                {customer ?
+                                    customer.map((item)=>{
+                                        return (
+                                            <>
+                                            <Menu.Item title={item.email} onPress={()=>CustomerChange(item._id, item.email)}/>
+                                            </>
+                                        )
+                                    })
+                                    :
+                                    <Menu.Item title="No Customers are available" />
+                                }
+                        </Menu>
+                    }
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
@@ -111,7 +161,7 @@ export default function CreateOrder({ navigation }) {
                             <Menu
                             visible={visible1}
                             onDismiss={closeMenu1}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}}mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
+                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
                                 {item ?
                                     item.map((item)=>{
                                         return (
@@ -123,7 +173,6 @@ export default function CreateOrder({ navigation }) {
                                     :
                                     <Menu.Item title="No items are available" />
                                 }
-                                
                             </Menu>
                             <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />

@@ -64,13 +64,6 @@ export default function Register({ navigation }) {
         .then(data => {
             alert(data.message);
             console.log(data);
-            setCategory("Choose Category");
-            setCategoryId("");
-            setFullName("");
-            setEmail("");
-            setMobileNo("");
-            setPassword("");
-            setConfirmPassword("");
         })
         .catch(err=>{
             alert(err.message);
