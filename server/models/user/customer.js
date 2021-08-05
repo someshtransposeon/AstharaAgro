@@ -16,11 +16,9 @@ const customerSchema = new mongoose.Schema({
     },
     mobile_no: {
         type: Number,
-        required: true,
     },
     password: {
         type: String,
-        required: true,
     },
     status:{
         type:String,

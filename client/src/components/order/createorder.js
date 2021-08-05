@@ -26,10 +26,17 @@ export default function CreateOrder({ navigation }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState('');
+    const [landmark, setLandmark] = useState('');
+    const [district, setDistrict] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [pincode, setPincode] = useState('');
     const [flag, setFlag] = useState(true);
     const [customer, setCustomer] = useState();
     const [customerEmail, setCustomerEmail] = useState("Choose customer");
+    const [category,setCategory] = useState("");
+    const [role,setRole]=useState("");
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -52,6 +59,15 @@ export default function CreateOrder({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(customer => setCustomer(customer));
+
+        fetch('http://localhost:5000/retrive_user_category_type/customer', {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .then(data =>{
+            setCategory(data[0]._id);
+            setRole(data[0].category_name);
+        });
     }, [item,host]);
 
     const openMenu1 = () => setVisible1(true);
@@ -86,6 +102,24 @@ export default function CreateOrder({ navigation }) {
             setName(customer[0].full_name);
             setMobileNo(customer[0].mobile_no);
         });
+
+        fetch(`http://${host}:5000/retrive_address_by_userId/${id}`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(address => {
+            if(address.length != 0)
+            {
+                setAddress(address[0].address);
+                setLandmark(address[0].landmark);
+                setDistrict(address[0].district);
+                setState(address[0].state);
+                setCountry(address[0].country);
+                setPincode(address[0].postal_code);
+            }
+            console.log(address);
+        });
         closeMenu2();
     };
 
@@ -113,6 +147,11 @@ export default function CreateOrder({ navigation }) {
                 email: email,
                 mobile_no: mobileNo,
                 address: address,
+                landmark: landmark,
+                district: district,
+                state: state,
+                country: country,
+                postal_code: pincode,
                 items: items,
             })
         })
@@ -122,6 +161,27 @@ export default function CreateOrder({ navigation }) {
             alert(data.message);
             console.log(data);
         }); 
+
+        if(flag==false) {
+            fetch('http://localhost:5000/create_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    category:category,
+                    role:role,
+                    full_name:name,
+                    email:email,
+                    mobile_no:mobileNo,
+                })
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data => {
+                console.log(data);
+            });
+        }
     }
 
     const onChangeSearch1 = query => setSearchQuery1(query);
@@ -146,12 +206,12 @@ export default function CreateOrder({ navigation }) {
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
                                 <Searchbar
                                     placeholder="Search"
-                                    onChangeText={onChangeSearch1}
-                                    value={searchQuery1}
+                                    onChangeText={onChangeSearch2}
+                                    value={searchQuery2}
                                 />
                                 {customer ?
                                     customer.map((item)=>{
-                                        if(item.email.toUpperCase().search(searchQuery1.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
+                                        if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
                                         return (
                                             <>
                                             <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
@@ -167,7 +227,12 @@ export default function CreateOrder({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    <TextInput style={styles.input} mode="outlined" label="Address" multiline value={address} onChangeText={address => setAddress(address)} />
+                    <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
+                    <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
+                    <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
+                    <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
+                    <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
+                    <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
                     {items.map((it, index) => (
                         <View>
                             <Menu

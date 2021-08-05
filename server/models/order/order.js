@@ -15,8 +15,29 @@ const orderSchema = new mongoose.Schema({
     email: {
         type: String,
     },
-    address:{
-        type:String,
+    address: {
+        type: String,
+        required: true,
+    },
+    landmark: {
+        type: String,
+        default: "",
+    },
+    district: { 
+        type: String,
+        required: true,
+    },
+    state: {
+        type: String,
+        required: true,
+    },
+    country: {
+        type: Object,
+        required: true,
+    },
+    postal_code: {
+        type: Number,
+        required: true,
     },
     mobile_no: {
         type: String,
