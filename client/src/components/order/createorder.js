@@ -195,7 +195,7 @@ export default function CreateOrder({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="Create Order"/>
                     <Card.Content>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.customer}>
                         <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
                         <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
                     </View>
@@ -318,11 +318,24 @@ const styles = StyleSheet.create({
             },
             default: {
                 
-                
             }
         })
     },
     button: {
         marginTop: '2%',
+    },
+    customer: {
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                
+            },
+            default: {
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }
+        })
     }
 }); 
