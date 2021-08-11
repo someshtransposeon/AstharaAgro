@@ -27,5 +27,24 @@ router.put('/update_order/:id',(req, res) =>{
         res.json(message);
     })
 });
+router.put('/update_status/:id',(req, res) =>{
+    var order_update = {
+        status: req.body.status,
+    }
+    Order.findOneAndUpdate({'_id':req.params.id}, order_update)
+    .then((order) => {
+        if(order){
+            var message = { success: "Status sucessfully updated" };
+            res.json(message);
+        }else{
+            var message = { error: "order not found" };
+            res.json(message);
+        }
+    }).catch(err => {
+        console.log(err);
+        var message = { message:"something went wrong!",success: false, err: err };
+        res.json(message);
+    })
+});
 
 module.exports = router;

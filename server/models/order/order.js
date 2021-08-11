@@ -45,6 +45,10 @@ const orderSchema = new mongoose.Schema({
     items: {
         type: mongoose.Schema.Types.Mixed,
     },
+    status:{
+        type:String,
+        default:"Pending",
+    }
 });
 
 const Order = mongoose.model('Order', orderSchema);
