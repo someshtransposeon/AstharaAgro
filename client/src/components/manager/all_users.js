@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
 import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -44,6 +46,8 @@ export default function AllUsers({ navigation }) {
                 <DataTable style={styles.datatable}>
                     <Title>All Users</Title>
                     <Searchbar
+                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}

@@ -3,8 +3,8 @@ import { View, StyleSheet, Platform, Text, SafeAreaView, ScrollView} from 'react
 import { Card, Provider, DefaultTheme, Button, Paragraph } from 'react-native-paper';
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTrash, faEdit} from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,

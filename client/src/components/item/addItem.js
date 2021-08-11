@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -108,6 +110,8 @@ export default function AddItem({ navigation }) {
                     onDismiss={closeMenu1}
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{category}</Button>}>
                         <Searchbar
+                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                             placeholder="Search"
                             onChangeText={onChangeSearch}
                             value={searchQuery}

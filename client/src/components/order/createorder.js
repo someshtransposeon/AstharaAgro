@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {  faMinus, faPlusCircle,faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 
 const theme = {
@@ -205,6 +205,8 @@ export default function CreateOrder({ navigation }) {
                             onDismiss={closeMenu2}
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
                                 <Searchbar
+                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                                     placeholder="Search"
                                     onChangeText={onChangeSearch2}
                                     value={searchQuery2}
@@ -240,6 +242,8 @@ export default function CreateOrder({ navigation }) {
                             onDismiss={closeMenu1}
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
                                 <Searchbar
+                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                                     placeholder="Search"
                                     onChangeText={onChangeSearch1}
                                     value={searchQuery1}
