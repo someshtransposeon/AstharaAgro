@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider,DataTable, DefaultTheme } from 'react-native-paper';
 
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -109,6 +110,16 @@ export default function CreateIndent({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="CREATE INDENT"/>
                     <Card.Content>
+                    {/* <CheckBox
+                    style={{flex: 1, padding: 10}}
+                    onClick={()=>{
+                    this.setState({
+                        isChecked:!this.state.isChecked
+                    })
+                    }}
+                    isChecked={this.state.isChecked}
+                    leftText={"CheckBox"}
+                /> */}
                     <Menu
                     visible={visible1}
                     onDismiss={closeMenu1}

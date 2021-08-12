@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, CheckBox} from 'react-native';
+import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 
 const theme = {
@@ -17,7 +17,6 @@ export default function Create_Purchase_Order({ navigation }) {
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
 
-    const [checked, setChecked] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -45,7 +44,7 @@ export default function Create_Purchase_Order({ navigation }) {
             setHost("localhost");
         }
 
-        fetch("http://localhost:5000/displayindent", {
+        fetch(`http://${host}:5000/displayindent`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -56,7 +55,7 @@ export default function Create_Purchase_Order({ navigation }) {
 
     function choosePurchaseOrder(id) {
         setPurchaseOrderId(id)
-        fetch(`http://localhost:5000/displayindent/${id}`, {
+        fetch(`http://${host}:5000/displayindent/${id}`, {
             method: 'GET'
         })        
         .then(res => res.json())
@@ -70,7 +69,7 @@ export default function Create_Purchase_Order({ navigation }) {
         alert("Hello ...")
     }
     function submitForm(){
-        fetch('http://localhost:5000/create_purchase_order', {
+        fetch(`http://${host}:5000/create_purchase_order`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,9 +105,6 @@ export default function Create_Purchase_Order({ navigation }) {
                     <Card.Content>
                     
             
-                    <CheckBox value={false} onChange={()=> this.checkBoxTest()}/>        
-                        
-
                     <Menu
                     visible={visible1}
                     onDismiss={closeMenu1}
@@ -136,7 +132,7 @@ export default function Create_Purchase_Order({ navigation }) {
                 { items.map((item)=>{
               return (
                 <DataTable.Row key={item.itemName}> 
-                    <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >check box </DataTable.Cell>
+                    <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >checkbox </DataTable.Cell>
                     <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >{item.itemName} </DataTable.Cell>
                     <DataTable.Cell  onChangeText={items => setItems(item.quantity)} >{item.quantity} </DataTable.Cell>
                 </DataTable.Row>

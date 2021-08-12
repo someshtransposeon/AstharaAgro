@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, CheckBox } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 
 const theme = {
@@ -27,6 +27,7 @@ export default function Edit_Purchase_Order(props, {route}) {
 
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
+    const [isSelected, setSelection] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -38,7 +39,6 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [indent_id, setIndentId] = useState("Choose Indent");
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [status,setStatus] = useState("");
-
     
     const [items, setItems] = useState("");
     
@@ -74,10 +74,14 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
-                console.log(item[0]);
+                // console.log(item[0]);
             });
 
        }
+    //    items.map((i)=>{
+    //        return("select":false,itemName:d.itemName) 
+    //    })
+
     }, [host,purchaseId,purchaseid,id]);
 
     function submitForm() {
@@ -102,7 +106,12 @@ export default function Edit_Purchase_Order(props, {route}) {
         }); 
     }
 
-
+    const handleCheckbox=(event)=>{
+        const {itemName,checked} = event.target;
+        let tempItems = items.map((item) => 
+            items.itemName === itemName ? {...item, isChecked : checked} : item);
+        setItems(tempItems);
+     }; 
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -130,7 +139,8 @@ export default function Edit_Purchase_Order(props, {route}) {
                     {indent_id && 
                     <DataTable>
                         <DataTable.Header style={styles.tableheader} >
-                        <DataTable.Title >Select Box</DataTable.Title>
+                        <DataTable.Title ><input type="checkbox" ></input>
+                                         Select All </DataTable.Title>
                         <DataTable.Title >Item Name </DataTable.Title>
                         <DataTable.Title >Quantity</DataTable.Title>
                         </DataTable.Header>
@@ -138,7 +148,14 @@ export default function Edit_Purchase_Order(props, {route}) {
                             items.map((item)=>{
                                 return (
                                     <DataTable.Row key={item.itemName}> 
-                                        <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >check box </DataTable.Cell>
+                                        <DataTable.Cell    > 
+                                        <input type="checkbox" 
+                                        name={item.itemName}    
+                                        checked={item?.isChecked || false } 
+                                        onChange={handleCheckbox} />
+                                       
+
+                                         </DataTable.Cell>
                                         <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >{item.itemName} </DataTable.Cell>
                                         <DataTable.Cell  onChangeText={items => setItems(item.quantity)} >{item.quantity} </DataTable.Cell>
                                     </DataTable.Row>

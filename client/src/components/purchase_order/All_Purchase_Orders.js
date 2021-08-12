@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
-import { Provider, DefaultTheme,Card, DataTable, Button } from 'react-native-paper';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Provider, DefaultTheme,Card, DataTable, Button,Title,Searchbar } from 'react-native-paper';
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -13,14 +15,12 @@ const theme = {
     },
 };
 
-const optionsPerPage = [2, 3, 4];
 
 export default function All_Purchase_Orders({ navigation }) {
 
-    const [page, setPage] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(optionsPerPage[0]);
     const [allPurchaseOrders, setAllPurchaseOrders] = useState();
     const [host, setHost] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -37,36 +37,53 @@ export default function All_Purchase_Orders({ navigation }) {
         .then(allPurchaseOrders => setAllPurchaseOrders(allPurchaseOrders));
     }, [allPurchaseOrders, host]);
 
-
-    // React.useEffect(() => {
-    //     setPage(0);
-    // }, [itemsPerPage]);
+    const onChangeSearch = query => setSearchQuery(query);
 
     return (
         <Provider theme={theme}>
             <SafeAreaView>
         <ScrollView>
             <View style={styles.view}>
+             <DataTable style={styles.datatable}>
+                    <Title>All Purchase Orders</Title>
+               <Searchbar
+                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+		                value={searchQuery}
+                    />
+
+                    <DataTable.Header>
+                        <DataTable.Title>Purchase ID</DataTable.Title>
+                        <DataTable.Title numeric>Status</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
+                    </DataTable.Header>
+                                                                                                                                                                                                                        
+            
                 {allPurchaseOrders ?
                     allPurchaseOrders.map((purchaseOrder)=>{
-                        return (
-                            <Card style={styles.card}>
-                                <Card.Title title={purchaseOrder._id} subtitle={purchaseOrder._id}/>
-                             
-                             
-                                <Card.Actions>
+                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                       
+                                               return (
+                              <DataTable.Row>
+                                <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
+                                {/* <DataTable.Cell>{item.grade}</DataTable.Cell>*/}
+                                <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>View</Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>View</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
                                     }
-                                </Card.Actions>
-                            </Card>
+                                </DataTable.Cell>
+                             </DataTable.Row>
                         )
+                        }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>
                 }
+            </DataTable>
             </View>
         </ScrollView>
         </SafeAreaView>
@@ -99,6 +116,27 @@ const styles = StyleSheet.create({
             },
             default: {
                 width: '20%',
+            }
+        })
+    },
+
+    datatable: {
+        alignSelf: 'center',
+        marginTop: '2%',
+        marginBottom: '2%',
+        padding: '2%',
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+                width: '90%',
+            },
+            default: {
+                width: '50%',
+                border: '1px solid gray',
+                borderRadius: '2%',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })
     },
