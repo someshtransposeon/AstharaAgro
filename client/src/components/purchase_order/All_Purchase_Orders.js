@@ -41,34 +41,32 @@ export default function All_Purchase_Orders({ navigation }) {
 
     return (
         <Provider theme={theme}>
-            <SafeAreaView>
+        <SafeAreaView>
         <ScrollView>
             <View style={styles.view}>
              <DataTable style={styles.datatable}>
-                    <Title>All Purchase Orders</Title>
+               <Title>All Purchase Orders</Title>
                <Searchbar
-                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                        placeholder="Search"
-                        onChangeText={onChangeSearch}
-		                value={searchQuery}
-                    />
+                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                    placeholder="Search"
+                    onChangeText={onChangeSearch}
+                    value={searchQuery}
+                />
 
-                    <DataTable.Header>
-                        <DataTable.Title>Purchase ID</DataTable.Title>
-                        <DataTable.Title numeric>Status</DataTable.Title>
-                        <DataTable.Title numeric>Action</DataTable.Title>
-                    </DataTable.Header>
+                <DataTable.Header>
+                    <DataTable.Title>Purchase ID</DataTable.Title>
+                    <DataTable.Title numeric>Status</DataTable.Title>
+                    <DataTable.Title numeric>Action</DataTable.Title>
+                </DataTable.Header>
                                                                                                                                                                                                                         
             
                 {allPurchaseOrders ?
                     allPurchaseOrders.map((purchaseOrder)=>{
-                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                       
-                                               return (
+                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                         return (
                               <DataTable.Row>
                                 <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                {/* <DataTable.Cell>{item.grade}</DataTable.Cell>*/}
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>

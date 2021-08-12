@@ -13,10 +13,8 @@ const theme = {
 };
 
 export default function Create_Purchase_Order({ navigation }) {
-
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
-
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -24,13 +22,9 @@ export default function Create_Purchase_Order({ navigation }) {
     const closeMenu2 = () => setVisible2(false);
 
     const [indent_id, setPurchaseOrderId] = useState("Choose Indent");
-    // const [vendor_id, setVendorId] = useState("Choose Vendor");
-    
     const [order_id, setOrderId] = useState();
-    
     const [user_id, setUserId] = useState();
     const [user, setUser] = useState();
-
     const [user2, setUser2] = useState();
     const [items, setItems] = useState();
     const [purchase, setPurchase] = useState();
@@ -91,12 +85,6 @@ export default function Create_Purchase_Order({ navigation }) {
             // setVendorId("Choose Vendor");
         }); 
     }
-
-
-
-    
-
-
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -153,8 +141,6 @@ export default function Create_Purchase_Order({ navigation }) {
         </Provider>
     );
 }
-
-
 const styles = StyleSheet.create({
     card: {
         alignSelf: 'center',

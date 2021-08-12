@@ -14,8 +14,6 @@ const theme = {
 
 export default function Edit_Indent(props, {route}) {
 
-        // const { indentid } = props.match.params;
-        
         var id="";
         var indentid = ""; 
         if(Platform.OS=="android"){

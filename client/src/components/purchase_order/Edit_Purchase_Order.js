@@ -74,13 +74,9 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
-                // console.log(item[0]);
             });
 
        }
-    //    items.map((i)=>{
-    //        return("select":false,itemName:d.itemName) 
-    //    })
 
     }, [host,purchaseId,purchaseid,id]);
 
@@ -165,8 +161,8 @@ export default function Edit_Purchase_Order(props, {route}) {
                     </DataTable>
                     }                   
                     
-                    <Button mode="contained" onPress={()=>submitForm()} style={{padding: '2%', marginTop: '2%'}}>Update Purchase Order</Button>
-                    <Button mode="contained" color="red" style={{padding: '2%', marginTop: '2%'}}>Delete Purchase Order</Button>
+                    <Button mode="contained" onPress={()=>submitForm()} style={styles.button}>Update Purchase Order</Button>
+                    <Button mode="contained" color="red" style={styles.button}>Delete Purchase Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -175,7 +171,7 @@ export default function Edit_Purchase_Order(props, {route}) {
 }
 
 const styles = StyleSheet.create({
- card: {
+    card: {
         alignSelf: 'center',
         padding: '1%',
         ...Platform.select({
@@ -184,20 +180,18 @@ const styles = StyleSheet.create({
             },
             android: {
                 marginTop: '10%',
-                marginBottom: '10%',
                 width: '90%',
             },
             default: {
-                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
-                marginTop: '4%',
-                marginBottom: '4%',
-                width: '50%',
+                width: '60%',
+                marginTop: '2%',
             }
         })
     },
     input: {
         marginTop: '2%',
         width: '100%',
+        backgroundColor: 'white',
         ...Platform.select({
             ios: {
                 
@@ -210,4 +204,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+    button: {
+        marginTop: '2%',
+    }
 }); 
