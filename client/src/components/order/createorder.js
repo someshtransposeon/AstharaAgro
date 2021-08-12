@@ -38,6 +38,7 @@ export default function CreateOrder({ navigation }) {
     const [category,setCategory] = useState("");
     const [role,setRole]=useState("");
     const [userId,setUserId]=useState("");
+    const [flag2,setFlag2]=useState(true);
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -69,7 +70,26 @@ export default function CreateOrder({ navigation }) {
             setCategory(data[0]._id);
             setRole(data[0].category_name);
         });
-    }, [item,host]);
+
+        if(flag2 && userId!=""){
+            fetch(`http://${host}:5000/retrive_address_by_userId/${userId}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(address => {
+                // setAddress(address[0].address);
+                // setLandmark(address[0].landmark);
+                // setDistrict(address[0].district);
+                // setState(address[0].state);
+                // setCountry(address[0].country);
+                // setPincode(address[0].postal_code);
+                console.log(address);
+                console.log(userId);
+                setFlag2(false);
+            });
+        }
+    }, [item,host,userId,flag2]);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -103,25 +123,6 @@ export default function CreateOrder({ navigation }) {
             setMobileNo(customer[0].mobile_no);
             setUserId(customer[0].userId);
         });
-
-        if(userId!=""){
-            fetch(`http://${host}:5000/retrive_address_by_userId/${userId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(address => {
-                if(address.length!=0){
-                    setAddress(address[0].address);
-                    setLandmark(address[0].landmark);
-                    setDistrict(address[0].district);
-                    setState(address[0].state);
-                    setCountry(address[0].country);
-                    setPincode(address[0].postal_code);
-                }
-                console.log(address);
-            });
-        }
         closeMenu2();
     };
 
@@ -129,7 +130,6 @@ export default function CreateOrder({ navigation }) {
         const values = [...items];
         values.push({ itemId: '', itemName: 'Choose Item', quantity: 0 });
         setItems(values);
-        
     };
     
     const handleRemoveFields = index => {
@@ -202,7 +202,6 @@ export default function CreateOrder({ navigation }) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(data => {
-                alert(data.message);
                 console.log(data);
             }); 
         }

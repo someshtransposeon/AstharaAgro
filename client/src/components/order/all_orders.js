@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +17,9 @@ const theme = {
 
 export default function AllOrders({ navigation }) {
 
+    const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
+    const [visible, setVisible] = useState(false);
     const [host, setHost] = useState("");
 
     useEffect(() => {
@@ -32,11 +34,34 @@ export default function AllOrders({ navigation }) {
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(orders => setAllOrders(orders));
+        .then(orders => {
+            setAllOrders(orders);
+        });
     }, [allOrders, host]);
 
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
+
+    const StatusChange = (s, id) => {
+        fetch(`http://${host}:5000/update_status/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        closeMenu();
+    };
+
     const onChangeSearch = query => setSearchQuery(query);
-    const [searchQuery, setSearchQuery] = useState('');
 
     return (
         <Provider theme={theme}>
@@ -69,8 +94,17 @@ export default function AllOrders({ navigation }) {
                                     {Platform.OS !== "android" &&
                                     <DataTable.Cell>{item.name}</DataTable.Cell>
                                     }
-                                    <DataTable.Cell>Pending</DataTable.Cell>
-                                    <DataTable.Cell numeric>
+                                    <DataTable.Cell>
+                                    <Menu
+                                        visible={visible}
+                                        onDismiss={closeMenu}
+                                        anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu}>{item.status}</Button>}>
+                                            <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", item._id)}/>
+                                            <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", item._id)}/>
+                                            <Menu.Item title="Approve" onPress={()=>StatusChange("Pending",  item._id)}/>
+                                    </Menu>
+                                    </DataTable.Cell>
+                                    <DataTable.Cell>
                                         {Platform.OS=='android' ?
                                             <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                             :
