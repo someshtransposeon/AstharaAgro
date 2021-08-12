@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const orderSchema = new mongoose.Schema({
-    // customer_id:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     ref:'Customer'
-    // }, 
-    // user_id:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     ref:'User'
-    // },
     name:{
         type:String,
     },

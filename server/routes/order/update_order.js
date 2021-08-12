@@ -4,21 +4,24 @@ const Order = require('../../models/order/order');
 
 router.put('/update_order/:id',(req, res) =>{
     var order_update = {
-        
-        // customer_id: req.body.customer_id,
-        // user_id: req.body.user_id,
-        item_description:req.body.item_description,
-        // inventory_id: req.body.inventory_id,
-        address_id: req.body.address_id,
-        status: req.body.status,
+        name: req.body.name,
+        email: req.body.email,
+        mobile_no: req.body.mobile_no,
+        address: req.body.address,
+        landmark: req.body.landmark,
+        district: req.body.district,
+        state: req.body.state,
+        country: req.body.country,
+        postal_code: req.body.postal_code,
+        items: req.body.items,
     }
     Order.findOneAndUpdate({'_id':req.params.id}, order_update)
     .then((order) => {
         if(order){
-            var message = { success: "order sucessfully updated" };
+            var message = { message: "order sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "order not found" };
+            var message = { message: "order not found" };
             res.json(message);
         }
     }).catch(err => {
@@ -27,6 +30,7 @@ router.put('/update_order/:id',(req, res) =>{
         res.json(message);
     })
 });
+
 router.put('/update_status/:id',(req, res) =>{
     var order_update = {
         status: req.body.status,
@@ -34,10 +38,10 @@ router.put('/update_status/:id',(req, res) =>{
     Order.findOneAndUpdate({'_id':req.params.id}, order_update)
     .then((order) => {
         if(order){
-            var message = { success: "Status sucessfully updated" };
+            var message = { message: "Status sucessfully updated" };
             res.json(message);
         }else{
-            var message = { error: "order not found" };
+            var message = { message: "order not found" };
             res.json(message);
         }
     }).catch(err => {

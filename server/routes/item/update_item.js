@@ -20,7 +20,7 @@ router.put('/update_item/:id',(req, res) =>{
             var message = {message: "item sucessfully updated" };
             res.json(message);
         }else{
-            var message = { messageerror: "item not found" };
+            var message = { error: "item not found" };
             res.json(message);
         }
     }).catch(err => {

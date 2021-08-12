@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 
 const theme = {
@@ -14,12 +14,20 @@ const theme = {
     },
 };
 
-export default function CreateOrder({ navigation }) {
+export default function EditOrder(props,{route}) {
+
+    var orderid = "";
+    var id="";
+    if(Platform.OS=="android"){
+        id = route.params.orderId;
+    }
+    else{
+        orderid = props.match.params.orderid;
+    }
 
     const [searchQuery1, setSearchQuery1] = useState('');
-    const [searchQuery2, setSearchQuery2] = useState('');
+    const [orderId, setOrderId] = useState("");
     const [visible1, setVisible1] = useState(false);
-    const [visible2, setVisible2] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
@@ -33,18 +41,15 @@ export default function CreateOrder({ navigation }) {
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('');
     const [flag, setFlag] = useState(true);
-    const [customer, setCustomer] = useState();
-    const [customerEmail, setCustomerEmail] = useState("Choose customer");
-    const [category,setCategory] = useState("");
-    const [role,setRole]=useState("");
-    const [userId,setUserId]=useState("");
 
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
+            setOrderId(id);
         }
         else{
             setHost("localhost");
+            setOrderId(orderid);
         }
 
         fetch(`http://${host}:5000/retrive_all_item`, {
@@ -54,27 +59,30 @@ export default function CreateOrder({ navigation }) {
         .catch(error => console.log(error))
         .then(item => setItem(item));
 
-        fetch(`http://${host}:5000/retrive_all_customer`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => setCustomer(customer));
-
-        fetch('http://localhost:5000/retrive_user_category_type/customer', {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .then(data =>{
-            setCategory(data[0]._id);
-            setRole(data[0].category_name);
-        });
-    }, [item,host]);
+        if(flag && orderId){
+            fetch(`http://${host}:5000/retrive_order/${orderId}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(order => {
+                setName(order[0].name);
+                setEmail(order[0].email);
+                setMobileNo(order[0].mobile_no);
+                setAddress(order[0].address);
+                setLandmark(order[0].landmark);
+                setDistrict(order[0].landmark);
+                setState(order[0].state);
+                setCountry(order[0].country);
+                setPincode(order[0].postal_code);
+                setItems(order[0].items);
+                setFlag(false);
+            });
+        }
+    }, [item,host,orderId,id,orderid,flag]);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
 
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
@@ -90,46 +98,10 @@ export default function CreateOrder({ navigation }) {
         setItems(values);
     };
 
-    const CustomerChange = (id, email) => {
-        setCustomerEmail(email);
-        fetch(`http://${host}:5000/retrive_customer/${id}`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => {
-            setEmail(customer[0].email);
-            setName(customer[0].full_name);
-            setMobileNo(customer[0].mobile_no);
-            setUserId(customer[0].userId);
-        });
-
-        if(userId!=""){
-            fetch(`http://${host}:5000/retrive_address_by_userId/${userId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(address => {
-                if(address.length!=0){
-                    setAddress(address[0].address);
-                    setLandmark(address[0].landmark);
-                    setDistrict(address[0].district);
-                    setState(address[0].state);
-                    setCountry(address[0].country);
-                    setPincode(address[0].postal_code);
-                }
-                console.log(address);
-            });
-        }
-        closeMenu2();
-    };
-
     const handleAddFields = () => {
         const values = [...items];
         values.push({ itemId: '', itemName: 'Choose Item', quantity: 0 });
         setItems(values);
-        
     };
     
     const handleRemoveFields = index => {
@@ -139,8 +111,8 @@ export default function CreateOrder({ navigation }) {
     };
 
     function submitForm() {
-        fetch(`http://${host}:5000/create_order`, {
-            method: 'POST',
+        fetch(`http://${host}:5000/update_order/${orderId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -162,54 +134,22 @@ export default function CreateOrder({ navigation }) {
         .then(data => {
             alert(data.message);
             console.log(data);
-        }); 
+        });
+    }
 
-        if(flag==false) {
-            fetch('http://localhost:5000/create_user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    category:category,
-                    role:role,
-                    full_name:name,
-                    email:email,
-                    mobile_no:mobileNo,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                console.log(data);
-            });
-
-            fetch(`http://${host}:5000/create_address`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    address: address,
-                    landmark: landmark,
-                    district: district,
-                    state: state,
-                    country: country,
-                    postal_code: pincode,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                alert(data.message);
-                console.log(data);
-            }); 
-        }
+    function deleteOrder() {
+        fetch(`http://${host}:5000/delete_order/${orderId}`, {
+            method: 'GET',
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
     }
 
     const onChangeSearch1 = query => setSearchQuery1(query);
-    const onChangeSearch2 = query => setSearchQuery2(query);
 
     return (
         <Provider theme={theme}>
@@ -217,39 +157,8 @@ export default function CreateOrder({ navigation }) {
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Create Order"/>
+                    <Card.Title title="Edit Order"/>
                     <Card.Content>
-                    <View style={styles.customer}>
-                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
-                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
-                    </View>
-                    {flag &&
-                        <Menu
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
-                                <Searchbar
-                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                    placeholder="Search"
-                                    onChangeText={onChangeSearch2}
-                                    value={searchQuery2}
-                                />
-                                {customer ?
-                                    customer.map((item)=>{
-                                        if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
-                                            </>
-                                        )
-                                        }
-                                    })
-                                    :
-                                    <Menu.Item title="No Customers are available" />
-                                }
-                        </Menu>
-                    }
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
@@ -303,7 +212,8 @@ export default function CreateOrder({ navigation }) {
                             </View>
                         </View>
                     ))}
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Order</Button>
+                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Order</Button>
+                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -352,18 +262,4 @@ const styles = StyleSheet.create({
     button: {
         marginTop: '2%',
     },
-    customer: {
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-                
-            },
-            default: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-            }
-        })
-    }
 }); 
