@@ -19,8 +19,9 @@ export default function AllOrders({ navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState([]);
     const [host, setHost] = useState("");
+    const [flag, setFlag] = useState(false);
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -37,12 +38,28 @@ export default function AllOrders({ navigation }) {
         .then(orders => {
             setAllOrders(orders);
         });
-    }, [allOrders, host]);
+        if(flag && AllOrders.length > 0){
+            for(let i = 0; i < AllOrders.length; i++){
+                const values = [...visible];
+                values[i]=true;
+                setVisible(values);
+            }
+            setFlag(true);
+        }
+    }, [allOrders, host, visible, flag]);
 
-    const openMenu = () => setVisible(true);
-    const closeMenu = () => setVisible(false);
+    const openMenu = (index) => {
+        const values = [...visible];
+        values[index]=true;
+        setVisible(values);
+    };
+    const closeMenu = (index) => {
+        const values = [...visible];
+        values[index]=false;
+        setVisible(values);
+    };
 
-    const StatusChange = (s, id) => {
+    const StatusChange = (s, id, index) => {
         fetch(`http://${host}:5000/update_status/${id}`, {
             method: 'PUT',
             headers: {
@@ -58,7 +75,7 @@ export default function AllOrders({ navigation }) {
             alert(data.message);
             console.log(data);
         });
-        closeMenu();
+        closeMenu(index);
     };
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -86,8 +103,8 @@ export default function AllOrders({ navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                     {allOrders ?
-                        allOrders.map((item)=>{
-                            if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                        allOrders.map((item, index)=>{
+                            if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{item.email}</DataTable.Cell>
@@ -96,12 +113,12 @@ export default function AllOrders({ navigation }) {
                                     }
                                     <DataTable.Cell>
                                     <Menu
-                                        visible={visible}
-                                        onDismiss={closeMenu}
-                                        anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu}>{item.status}</Button>}>
-                                            <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", item._id)}/>
-                                            <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", item._id)}/>
-                                            <Menu.Item title="Approve" onPress={()=>StatusChange("Pending",  item._id)}/>
+                                        visible={visible[index]}
+                                        onDismiss={()=>closeMenu(index)}
+                                        anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
+                                            <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", item._id, index)}/>
+                                            <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", item._id, index)}/>
+                                            <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  item._id, index)}/>
                                     </Menu>
                                     </DataTable.Cell>
                                     <DataTable.Cell>

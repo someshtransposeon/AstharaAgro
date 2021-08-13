@@ -116,10 +116,10 @@ export default function Profile({ navigation }) {
                     <Card.Content>
                         {user && 
                             <>
-                                <Text>Full Name: {user[0].full_name}</Text>
-                                <Text>Email: {user[0].email}</Text>
-                                <Text>Mobile No: {user[0].mobile_no}</Text>
-                                <Text>Role: {user[0].role}</Text>
+                                <Text style={styles.text1}>Full Name: {user[0].full_name}</Text>
+                                <Text style={styles.text1}>Email: {user[0].email}</Text>
+                                <Text style={styles.text1}>Mobile No: {user[0].mobile_no}</Text>
+                                <Text style={styles.text1}>Role: {user[0].role}</Text>
                             </>
                         }
                     </Card.Content>
@@ -129,26 +129,26 @@ export default function Profile({ navigation }) {
                     <Card.Content>
                         {(address && address.length) ?
                             <>
-                                <Text>Address: {address[0].address}</Text>
-                                <Text>Landmark: {address[0].landmark}</Text>
-                                <Text>District: {address[0].district}</Text>
-                                <Text>State: {address[0].state}</Text>
-                                <Text>Country: {address[0].country}</Text>
-                                <Text>Pin Code: {address[0].postal_code}</Text>
+                                <Text style={styles.text2}>Address: {address[0].address}</Text>
+                                <Text style={styles.text2}>Landmark: {address[0].landmark}</Text>
+                                <Text style={styles.text2}>District: {address[0].district}</Text>
+                                <Text style={styles.text2}>State: {address[0].state}</Text>
+                                <Text style={styles.text2}>Country: {address[0].country}</Text>
+                                <Text style={styles.text2}>Pin Code: {address[0].postal_code}</Text>
                                 <Paragraph >
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deleteaddress(address[0]._id)} />
+                                    <FontAwesomeIcon icon={ faTrash }color="red" size={25} onPress={()=>deleteaddress(address[0]._id)} />
                                     :
                                     <Button onPress={()=>deleteaddress(address[0]._id)} >
-                                        <FontAwesomeIcon icon={ faTrash }color="red" size={50} />
+                                        <FontAwesomeIcon icon={ faTrash }color="red" size={25} />
                                     </Button>
                                 }
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('EditAddress', {addressId: address[0]._id})}} />
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={25} onPress={() => {navigation.navigate('EditAddress', {addressId: address[0]._id})}} />
                                     :
                                     <Button>
                                         <Link to={"/editaddress/"+address[0]._id}>
-                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={50} />
+                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
                                         </Link>
                                     </Button>
                                 }
@@ -170,25 +170,25 @@ export default function Profile({ navigation }) {
                     <Card.Content>
                         {(bank && bank.length) ?
                             <>
-                                <Text>Bank Name: {bank[0].bank_name}</Text>
-                                <Text>Branch Name: {bank[0].branch_name}</Text>
-                                <Text>Account Holder Name: {bank[0].account_holder_name}</Text>
-                                <Text>Account Number: {bank[0].account_number}</Text>
-                                <Text>IFSC Code: {bank[0].ifsc_code}</Text>
+                                <Text style={styles.text3}>Bank Name: {bank[0].bank_name}</Text>
+                                <Text style={styles.text3}>Branch Name: {bank[0].branch_name}</Text>
+                                <Text style={styles.text3}>Account Holder Name: {bank[0].account_holder_name}</Text>
+                                <Text style={styles.text3}>Account Number: {bank[0].account_number}</Text>
+                                <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
                                 <Paragraph >
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon icon={ faTrash }color="red" size={50} onPress={()=>deletebank(bank[0]._id)} />
+                                    <FontAwesomeIcon icon={ faTrash }color="red" size={25} onPress={()=>deletebank(bank[0]._id)} />
                                     :
                                     <Button onPress={()=>deletebank(bank[0]._id)} >
-                                        <FontAwesomeIcon icon={ faTrash }color="red" size={50} />
+                                        <FontAwesomeIcon icon={ faTrash }color="red" size={25} />
                                     </Button>
                                 }
                                 {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={50} onPress={() => {navigation.navigate('EditBankDetails', {bankId: bank[0]._id})}} />
+                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={25} onPress={() => {navigation.navigate('EditBankDetails', {bankId: bank[0]._id})}} />
                                     :
                                     <Button>
                                         <Link to={"/editbankdetails/"+bank[0]._id}>
-                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={50} />
+                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
                                         </Link>
                                     </Button>
                                 }
@@ -248,19 +248,16 @@ const styles = StyleSheet.create({
         })
     },
     text1: {
-        fontWeight: 'bold',
         fontSize: 20,
         marginTop: '5px',
         color: 'blue',
     },
     text2: {
-        fontWeight: 'bold',
         fontSize: 20,
         marginTop: '5px',
         color: 'red',
     },
     text3: {
-        fontWeight: 'bold',
         fontSize: 20,
         marginTop: '5px',
         color: 'green',

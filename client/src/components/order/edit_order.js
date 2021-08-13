@@ -27,7 +27,7 @@ export default function EditOrder(props,{route}) {
 
     const [searchQuery1, setSearchQuery1] = useState('');
     const [orderId, setOrderId] = useState("");
-    const [visible1, setVisible1] = useState(false);
+    const [visible, setVisible] = useState([]);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
@@ -81,8 +81,16 @@ export default function EditOrder(props,{route}) {
         }
     }, [item,host,orderId,id,orderid,flag]);
 
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
+    const openMenu = (index) => {
+        const values = [...visible];
+        values[index]=true;
+        setVisible(values);
+    };
+    const closeMenu = (index) => {
+        const values = [...visible];
+        values[index]=false;
+        setVisible(values);
+    };
 
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
@@ -90,7 +98,7 @@ export default function EditOrder(props,{route}) {
             values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
             values[index].itemUnit=unit;
-            closeMenu1();
+            closeMenu(index);
         }
         else{
             values[index].quantity = fieldvalue;
@@ -171,9 +179,9 @@ export default function EditOrder(props,{route}) {
                     {items.map((it, index) => (
                         <View>
                             <Menu
-                            visible={visible1}
-                            onDismiss={closeMenu1}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
+                            visible={visible[index]}
+                            onDismiss={()=>closeMenu(index)}
+                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
                                 <Searchbar
                                     icon={() => <FontAwesomeIcon icon={ faSearch } />}
                                     clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}

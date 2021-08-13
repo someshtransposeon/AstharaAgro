@@ -18,7 +18,7 @@ export default function CreateOrder({ navigation }) {
 
     const [searchQuery1, setSearchQuery1] = useState('');
     const [searchQuery2, setSearchQuery2] = useState('');
-    const [visible1, setVisible1] = useState(false);
+    const [visible, setVisible] = useState([]);
     const [visible2, setVisible2] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
@@ -91,8 +91,17 @@ export default function CreateOrder({ navigation }) {
         }
     }, [item,host,userId,flag2]);
 
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
+    const openMenu = (index) => {
+        const values = [...visible];
+        values[index]=true;
+        setVisible(values);
+    };
+    const closeMenu = (index) => {
+        const values = [...visible];
+        values[index]=false;
+        setVisible(values);
+    };
+
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
@@ -102,7 +111,7 @@ export default function CreateOrder({ navigation }) {
             values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
             values[index].itemUnit=unit;
-            closeMenu1();
+            closeMenu(index);
         }
         else{
             values[index].quantity = fieldvalue;
@@ -216,7 +225,7 @@ export default function CreateOrder({ navigation }) {
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Create Order"/>
+                    <Card.Title title="Create Sales Order"/>
                     <Card.Content>
                     <View style={styles.customer}>
                         <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
@@ -261,9 +270,9 @@ export default function CreateOrder({ navigation }) {
                     {items.map((it, index) => (
                         <View>
                             <Menu
-                            visible={visible1}
-                            onDismiss={closeMenu1}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu1}>{it.itemName}</Button>}>
+                            visible={visible[index]}
+                            onDismiss={()=>closeMenu(index)}
+                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
                                 <Searchbar
                                     icon={() => <FontAwesomeIcon icon={ faSearch } />}
                                     clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
