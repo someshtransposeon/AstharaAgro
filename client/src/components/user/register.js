@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -92,6 +93,7 @@ export default function Register({ navigation }) {
                             onChangeText={onChangeSearch}
                             value={searchQuery}
                         />
+                        <Link to="/addusercategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
                         {userCategory ?
                             userCategory.map((item)=>{
                                 if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){

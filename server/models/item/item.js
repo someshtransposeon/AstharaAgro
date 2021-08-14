@@ -5,6 +5,14 @@ const itemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ItemCategory',
     },
+    grade: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ItemGrade',
+    },
+    unit: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ItemUnit',
+    },
     added_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -13,29 +21,21 @@ const itemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    grade: { 
+    category_name: {
         type: String,
         required: true,
     },
-    unit:{
+    grade_name: { 
+        type: String,
+        required: true,
+    },
+    unit_name:{
         type:String,
     },
     description: {
         type: String,
         default:"",
     },
-    price: {
-        type: Number,
-        default: null,
-    },
-    remark: {
-        type: String,
-        default:"",
-    },
-    status: {
-        type: String,
-        default:"",
-    }
 });
 
 const Item = mongoose.model('Item', itemSchema);

@@ -26,12 +26,20 @@ const update_vendor=require('./routes/user/vendor/update_vendor');
 const retrive_customer= require('./routes/user/customer/retrive_customer');
 const update_customer=require('./routes/user/customer/update_customer');
 
-
-
 const create_item_category = require('./routes/itemCategory/create_item_category');
 const delete_item_category = require('./routes/itemCategory/delete_item_category');
 const retrive_item_category = require('./routes/itemCategory/retrive_item_category');
 const update_item_category = require('./routes/itemCategory/update_item_category');
+
+const create_item_grade = require('./routes/itemGrade/create_item_grade');
+const delete_item_grade = require('./routes/itemGrade/delete_item_grade');
+const retrive_item_grade = require('./routes/itemGrade/retrive_item_grade');
+const update_item_grade = require('./routes/itemGrade/update_item_grade');
+
+const create_item_unit = require('./routes/itemUnit/create_item_unit');
+const delete_item_unit = require('./routes/itemUnit/delete_item_unit');
+const retrive_item_unit = require('./routes/itemUnit/retrive_item_unit');
+const update_item_unit = require('./routes/itemUnit/update_item_unit');
 
 const create_item = require('./routes/item/create_item');
 const delete_item = require('./routes/item/delete_item');
@@ -122,7 +130,6 @@ app.use('/', update_vendor);
 app.use('/', retrive_customer);
 app.use('/', update_customer);
 
-
 app.use('/', create_user);
 app.use('/', login_user);
 app.use('/', delete_user);
@@ -134,6 +141,16 @@ app.use('/', create_item_category);
 app.use('/', delete_item_category);
 app.use('/', retrive_item_category);
 app.use('/', update_item_category);
+
+app.use('/', create_item_unit);
+app.use('/', delete_item_unit);
+app.use('/', retrive_item_unit);
+app.use('/', update_item_unit);
+
+app.use('/', create_item_grade);
+app.use('/', delete_item_grade);
+app.use('/', retrive_item_grade);
+app.use('/', update_item_grade);
 
 app.use('/', create_item);
 app.use('/', delete_item);

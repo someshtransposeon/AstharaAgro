@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -37,6 +40,7 @@ export default function EditUser(props, {route}) {
     const [mobileNo, setMobileNo] = useState("");
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -104,6 +108,8 @@ export default function EditUser(props, {route}) {
         }); 
     }
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -115,6 +121,14 @@ export default function EditUser(props, {route}) {
                     visible={visible1}
                     onDismiss={closeMenu1}
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{category}</Button>}>
+                        <Searchbar
+                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                            placeholder="Search"
+                            onChangeText={onChangeSearch}
+                            value={searchQuery}
+                        />
+                        <Link to="/addusercategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
                         {userCategory ?
                             userCategory.map((item)=>{
                                 return (

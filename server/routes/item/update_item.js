@@ -5,14 +5,14 @@ const Item = require('../../models/item/item');
 router.put('/update_item/:id',(req, res) =>{
     var item_update = {
         category: req.body.category,
+        grade: req.body.grade,
+        unit: req.body.unit,
         added_by: req.body.added_by,
         item_name: req.body.item_name,
-        grade: req.body.grade,
+        category_name: req.body.category_name,
+        grade_name: req.body.grade_name,
         description: req.body.description,
-        price: req.body.price,
-        remark: req.body.remark,
-        unit:req.body.unit,
-        status: req.body.status,
+        unit_name:req.body.unit_name,
     }
     Item.findOneAndUpdate({'_id':req.params.id}, item_update)
     .then((item) => {

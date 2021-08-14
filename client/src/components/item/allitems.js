@@ -55,6 +55,7 @@ export default function AllItems({ navigation }) {
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title>Grade</DataTable.Title>
+                        <DataTable.Title>unit</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItems ?
@@ -63,7 +64,8 @@ export default function AllItems({ navigation }) {
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.grade}</DataTable.Cell>
+                                <DataTable.Cell>{item.grade_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.unit_name}</DataTable.Cell>
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
