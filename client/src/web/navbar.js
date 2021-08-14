@@ -41,6 +41,12 @@ import Forgotpassword from '../components/profile/forgotpassword';
 import EditVendor from '../components/buyer/edit_vendor';
 import EditCustomer from '../components/sales_person/edit_customer';
 import EditOrder from '../components/order/edit_order';
+import EditItemUnit from '../components/itemUnit/edit_item_unit';
+import AddItemUnit from '../components/itemUnit/add_item_unit';
+import AllItemUnit from '../components/itemUnit/all_item_unit';
+import EditItemGrade from '../components/itemGrade/edit_item_grade';
+import AddItemGrade from '../components/itemGrade/add_item_grade';
+import AllItemGrade from '../components/itemGrade/all_item_grade';
 
 const NavBar =()  => {
 
@@ -163,6 +169,22 @@ const NavBar =()  => {
                                 }
                                 <NavDropdown.Item to="/allitemcategories" as={Link}>All Item Categories</NavDropdown.Item>
                                 <NavDropdown.Divider />
+                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/additemunits" as={Link}>Add Item Unit</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                <NavDropdown.Item to="/allitemunits" as={Link}>All Item Units</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/additemgrades" as={Link}>Add Item Grade</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                <NavDropdown.Item to="/allitemgrades" as={Link}>All Item Grades</NavDropdown.Item>
+                                <NavDropdown.Divider />
                                 {(roleas=="sales" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
@@ -246,6 +268,18 @@ const NavBar =()  => {
                 <Route path="/allitemcategories">
                     <AllItemCategories/>
                 </Route>
+                <Route path="/allitemunits">
+                    <AllItemUnit/>
+                </Route>
+                <Route path="/additemunits">
+                    <AddItemUnit/>
+                </Route>
+                <Route path="/allitemgrades">
+                    <AllItemGrade/>
+                </Route>
+                <Route path="/additemgrades">
+                    <AddItemGrade/>
+                </Route>
                 <Route path="/additem">
                     <AddItem/>
                 </Route>
@@ -263,6 +297,8 @@ const NavBar =()  => {
                 <Route path="/editaddress/:addressid" render={(props) => <EditAddress {...props} />} exact />
                 <Route path="/editbankdetails/:bankid" render={(props) => <EditBankDetails {...props} />} exact />
                 <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />
+                <Route path="/edititemunit/:itemUnitid" render={(props) => <EditItemUnit {...props} />} exact />
+                <Route path="/edititemgrade/:itemGradeid" render={(props) => <EditItemGrade {...props} />} exact />
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact />
                 <Route path="/createorder">

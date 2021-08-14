@@ -12,50 +12,50 @@ const theme = {
     },
 };
 
-export default function EditItemCategory(props,{route}) {
+export default function EditItemUnit(props,{route}) {
 
-    var itemCategoryid = "";
+    var itemUnitid = "";
     var id="";
     if(Platform.OS=="android"){
-        id = route.params.itemCategoryId;
+        id = route.params.itemUnitId;
     }
     else{
-        itemCategoryid = props.match.params.itemCategoryid;
+        itemUnitid = props.match.params.itemUnitid;
     }
 
-    const [itemCategoryId, setItemCategoryId] = useState("");
-    const [itemCategoryName, setItemCategoryName] = useState("");
+    const [itemUnitId, setItemUnitId] = useState("");
+    const [itemUnitName, setItemUnitName] = useState("");
     const [host, setHost] = useState("");
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
-            setItemCategoryId(id);
+            setItemUnitId(id);
         }
         else{
             setHost("localhost");
-            setItemCategoryId(itemCategoryid);
+            setItemUnitId(itemUnitid);
         }
 
-        if(itemCategoryId){
-            fetch(`http://${host}:5000/retrive_item_category/${itemCategoryId}`, {
+        if(itemUnitId){
+            fetch(`http://${host}:5000/retrive_item_unit/${itemUnitId}`, {
                 method: 'GET'
             })
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
-                setItemCategoryName(item[0].category_name);
+                setItemUnitName(item[0].unit_name);
             });
         }
-    }, [host,itemCategoryId,id,itemCategoryid]);
+    }, [host,itemUnitId,id,itemUnitid]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_item_category/${itemCategoryId}`, {
+        fetch(`http://${host}:5000/update_item_unit/${itemUnitId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                category_name: itemCategoryName,
+                unit_name: itemUnitName,
             })
         })
         .then(res => res.json())
@@ -69,13 +69,13 @@ export default function EditItemCategory(props,{route}) {
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {itemCategoryName ?
+                {itemUnitName ?
                 <Card style={styles.card}>
-                    <Card.Title title="EDIT ITEM CATEGORY"/>
+                    <Card.Title title="EDIT ITEM UNIT"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Item Category Name" value={itemCategoryName} onChangeText={itemCategoryName => setItemCategoryName(itemCategoryName)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Category </Button>
-                    <Button mode="contained" style={styles.button} color='red'>Disable Item Category</Button>
+                    <TextInput style={styles.input} mode="outlined" label="Item Unit Name" value={itemUnitName} onChangeText={itemUnitName => setItemUnitName(itemUnitName)} />
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Unit </Button>
+                    <Button mode="contained" style={styles.button} color='red'>Disable Item Unit</Button>
                     </Card.Content>
                 </Card>
                 :
