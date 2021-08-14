@@ -3,7 +3,7 @@ import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView
 import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -54,7 +54,7 @@ export default function AllItems({ navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title>Grade</DataTable.Title>
+                        <DataTable.Title>Category</DataTable.Title>
                         <DataTable.Title>unit</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
@@ -64,13 +64,13 @@ export default function AllItems({ navigation }) {
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.grade_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.category_name}</DataTable.Cell>
                                 <DataTable.Cell>{item.unit_name}</DataTable.Cell>
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                        <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
+                                        <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
                                     }
                                 </DataTable.Cell>
                             </DataTable.Row>
