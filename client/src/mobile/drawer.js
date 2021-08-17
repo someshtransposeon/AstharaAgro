@@ -124,7 +124,15 @@ function CustomDrawerContent({navigation}) {
             {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                 <Menu.Item title="Add Item Category" onPress={() => {navigation.navigate('AddItemCategory')}} />
             }
-                <Menu.Item title="All Item Category" onPress={() => {navigation.navigate('AllItemCategories')}} />
+            <Menu.Item title="All Item Category" onPress={() => {navigation.navigate('AllItemCategories')}} />
+            {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                <Menu.Item title="Add Item Unit" onPress={() => {navigation.navigate('AddItemUnit')}} />
+            }
+            <Menu.Item title="All Item Unit" onPress={() => {navigation.navigate('AllItemUnits')}} />
+            {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                <Menu.Item title="Add Item Grade" onPress={() => {navigation.navigate('AddItemGrade')}} />
+            }
+            <Menu.Item title="All Item Grade" onPress={() => {navigation.navigate('AllItemGrades')}} />
             {(roleas=="sales" || roleas=="manager") &&
                 <Menu.Item title="Create Order" onPress={() => {navigation.navigate('CreateOrder')}} />
             }

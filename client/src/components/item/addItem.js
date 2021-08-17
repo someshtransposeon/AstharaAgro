@@ -139,7 +139,11 @@ export default function AddItem({ navigation }) {
                             onChangeText={onChangeSearch}
                             value={searchQuery}
                         />
-                        <Link to="/additemcategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemCategory')}}>Add Category</Button>
+                            :
+                            <Link to="/additemcategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
+                        }
                         {itemCategory ?
                             itemCategory.map((item)=>{
                                 if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
@@ -163,7 +167,11 @@ export default function AddItem({ navigation }) {
                             onChangeText={onChangeSearch1}
                             value={searchQuery1}
                         />
-                        <Link to="/additemgrades"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Grade</Button></Link>
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemGrade')}}>Add Grade</Button>
+                            :
+                            <Link to="/additemgrades"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Grade</Button></Link>
+                        }
                         {itemGrade ?
                             itemGrade.map((item)=>{
                                 if(item.grade_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
@@ -187,7 +195,11 @@ export default function AddItem({ navigation }) {
                             onChangeText={onChangeSearch2}
                             value={searchQuery2}
                         />
-                        <Link to="/additemunits"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Unit</Button></Link>
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemUnit')}}>Add Unit</Button>
+                            :
+                            <Link to="/additemunits"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Unit</Button></Link>
+                        }
                         {itemUnit ?
                             itemUnit.map((item)=>{
                                 if(item.unit_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){

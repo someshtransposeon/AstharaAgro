@@ -68,7 +68,7 @@ export default function AllItems({ navigation }) {
                                 <DataTable.Cell>{item.unit_name}</DataTable.Cell>
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
-                                        <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                        <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                         :
                                         <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/edititem/"+item._id}>Details</Link></Button>
                                     }

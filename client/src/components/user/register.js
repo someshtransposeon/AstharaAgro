@@ -93,7 +93,11 @@ export default function Register({ navigation }) {
                             onChangeText={onChangeSearch}
                             value={searchQuery}
                         />
-                        <Link to="/addusercategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddUserCategory')}}>Add Category</Button>
+                            :
+                            <Link to="/addusercategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
+                        }
                         {userCategory ?
                             userCategory.map((item)=>{
                                 if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){

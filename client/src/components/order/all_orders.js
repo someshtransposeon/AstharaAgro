@@ -123,7 +123,7 @@ export default function AllOrders({ navigation }) {
                                     </DataTable.Cell>
                                     <DataTable.Cell>
                                         {Platform.OS=='android' ?
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
                                             :
                                             <Link to={"/editorder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
                                         }

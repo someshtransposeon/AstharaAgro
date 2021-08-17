@@ -35,6 +35,13 @@ import EditUser from '../components/user/edit_user.js';
 import EditAddress from '../components/address/edit_address';
 import EditBankDetails from '../components/bank/edit_bank_details';
 import Forgotpassword from '../components/profile/forgotpassword';
+import AddItemUnit from '../components/itemUnit/add_item_unit';
+import AllItemUnits from '../components/itemUnit/all_item_unit';
+import EditItemUnit from '../components/itemUnit/edit_item_unit';
+import AddItemGrade from '../components/itemGrade/add_item_grade';
+import AllItemGrades from '../components/itemGrade/all_item_grade';
+import EditItemGrade from '../components/itemGrade/edit_item_grade';
+import EditOrder from '../components/order/edit_order';
 
 const Stack = createStackNavigator();
 
@@ -216,6 +223,41 @@ export default function Stacks({navigation}){
             ),
             }}/>
             <Stack.Screen name="Forgotpassword" component={Forgotpassword} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AllItemUnits" component={AllItemUnits} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AddItemUnit" component={AddItemUnit} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditItemUnit" component={EditItemUnit} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AllItemGrades" component={AllItemGrades} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="AddItemGrade" component={AddItemGrade} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditItemGrade" component={EditItemGrade} options={{
+            headerLeft:()=>(
+                <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
+            ),
+            }}/>
+            <Stack.Screen name="EditOrder" component={EditOrder} options={{
             headerLeft:()=>(
                 <FontAwesomeIcon icon={ faBars } color={ 'white' } size={25} onPress={()=>navigation.toggleDrawer()} />
             ),
