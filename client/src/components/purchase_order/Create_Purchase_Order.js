@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faMinusCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -21,15 +23,16 @@ export default function Create_Purchase_Order({ navigation }) {
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
-    const [indent_id, setPurchaseOrderId] = useState("Choose Indent");
+    const [indent_id, setIndentId] = useState("Choose Indent");
     const [order_id, setOrderId] = useState();
     const [user_id, setUserId] = useState();
     const [user, setUser] = useState();
     const [user2, setUser2] = useState();
-    const [items, setItems] = useState();
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
     const [purchase, setPurchase] = useState();
     const [host, setHost] = useState("");
-    
+    const [flag, setFlag] = useState(false);
+
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
@@ -47,17 +50,41 @@ export default function Create_Purchase_Order({ navigation }) {
     
     }, [user,host]);
 
-    function choosePurchaseOrder(id) {
-        setPurchaseOrderId(id)
+    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+        }
+        else{
+            values[index].quantity = fieldvalue;
+        }
+        setItems(values);
+    };
+
+    function chooseIndent(id) {
+        setIndentId(id)
         fetch(`http://${host}:5000/displayindent/${id}`, {
             method: 'GET'
         })        
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(order => setItems(order[0].items));
+        // .then(order => setItems(order[0].items));
+        .then(order => {
+            setItems(order[0].items);
+            setFlag(true);
+        });
         console.log(items);  
         closeMenu1();
     }
+
+
+    const handleRemoveFields = index => {
+        const values = [...items];
+        values.splice(index, 1);
+        setItems(values);
+    };
 
     function checkBoxTest(){
         alert("Hello ...")
@@ -79,8 +106,9 @@ export default function Create_Purchase_Order({ navigation }) {
         }).then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+             alert(data.message);
             console.log(data);
-            setPurchaseOrderId("Choose Order");
+            setIndentId("Choose Indent");
             setItems("");
             // setVendorId("Choose Vendor");
         }); 
@@ -101,34 +129,75 @@ export default function Create_Purchase_Order({ navigation }) {
                             user.map((item)=>{
                                 return (
                                   
-                                    <Menu.Item title={ item._id } onPress={()=>choosePurchaseOrder(item._id)} />
+                                    <Menu.Item title={ item._id } onPress={()=>chooseIndent(item._id)} />
                                 )
                             })
                             :
                             <Menu.Item title="No Indent Available" />
                         }
                     </Menu>
-                    {items && 
-                <DataTable>
-                    
-            <DataTable.Header style={styles.tableheader} >
-            <DataTable.Title >Select Box</DataTable.Title>
-            <DataTable.Title >Item Name </DataTable.Title>
-            <DataTable.Title >Quantity</DataTable.Title>
-            </DataTable.Header>
-
-                { items.map((item)=>{
-              return (
-                <DataTable.Row key={item.itemName}> 
-                    <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >checkbox </DataTable.Cell>
-                    <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >{item.itemName} </DataTable.Cell>
-                    <DataTable.Cell  onChangeText={items => setItems(item.quantity)} >{item.quantity} </DataTable.Cell>
-                </DataTable.Row>
-              )}
-
-                )}
-                </DataTable>
+                    {items && flag &&
+                    <DataTable style={styles.datatable}>
+                    {items.map((it, index) => (
+                        <DataTable.Row>
+                            <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={it.itemName} /></DataTable.Cell>
+                            <DataTable.Cell><TextInput mode="outlined" label="Unit" value={it.itemUnit} /></DataTable.Cell>
+                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} /></DataTable.Cell>
+                            <DataTable.Cell><View style={{flexDirection: 'row'}}>
+                                {Platform.OS=="android" ?
+                                    <>
+                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                    </>
+                                    :
+                                    <>
+                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
+                                }
+                            </View></DataTable.Cell>
+                        </DataTable.Row>
+                    ))}
+                    </DataTable>
                     }
+                    {/* {items[0].name!=='Choose Item' &&
+                    <DataTable style={styles.datatable}>
+                    {items.map((it, index) => (
+                        <DataTable.Row>
+                            <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={it.itemName} /></DataTable.Cell>
+                            <DataTable.Cell><TextInput mode="outlined" label="Unit" value={it.itemUnit} /></DataTable.Cell>
+                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} /></DataTable.Cell>
+                            <DataTable.Cell><View style={{flexDirection: 'row'}}>
+                                {Platform.OS=="android" ?
+                                    <>
+                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                    </>
+                                    :
+                                    <>
+                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
+                                }
+                            </View></DataTable.Cell>
+                        </DataTable.Row>
+                    ))}
+                    </DataTable>
+                    } */}
+                    {/* {items && 
+                        <DataTable>
+                            <DataTable.Header style={styles.tableheader} >
+                            <DataTable.Title >Select Box</DataTable.Title>
+                            <DataTable.Title >Item Name </DataTable.Title>
+                            <DataTable.Title >Quantity</DataTable.Title>
+                            </DataTable.Header>
+
+                                { items.map((item)=>{
+                            return (
+                                <DataTable.Row key={item.itemName}> 
+                                    <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >checkbox </DataTable.Cell>
+                                    <DataTable.Cell  onChangeText={items => setItems(item.itemName)}  >{item.itemName} </DataTable.Cell>
+                                    <DataTable.Cell  onChangeText={items => setItems(item.quantity)} >{item.quantity} </DataTable.Cell>
+                                </DataTable.Row>
+                            )}
+
+                        )}
+                        </DataTable>
+                    } */}
 
                 
 
