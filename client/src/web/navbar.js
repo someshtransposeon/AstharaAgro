@@ -197,7 +197,7 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="buyer" || roleas=="manager") &&
+                                {(roleas=="buyer" || roleas=="manager" ) &&
                                     <>
                                         <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
                                         <NavDropdown.Divider />
@@ -205,6 +205,12 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/Create_Purchase_Order" as={Link}>Create Purchase Order</NavDropdown.Item>
                                         <NavDropdown.Divider />
+                                        {/* <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider /> */}
+                                    </>
+                                }
+                                {(roleas=="vendor" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
+                                    <>
                                         <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>

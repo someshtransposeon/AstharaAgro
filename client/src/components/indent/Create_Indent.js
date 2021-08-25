@@ -13,9 +13,9 @@ const theme = {
         accent: '#f1c40f',
     },
 };
-
+//define createIndent Component
 export default function CreateIndent({ navigation }) {
-
+    //initialize all required state variables
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
 
@@ -36,6 +36,7 @@ export default function CreateIndent({ navigation }) {
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
 
+    //fetch all orders
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
@@ -50,7 +51,7 @@ export default function CreateIndent({ navigation }) {
         .catch(error => console.log(error))
         .then(user => setUser(user));
 
-
+        // fetch all vendors
         fetch("http://localhost:5000/retrive_all_vendor", {
             method: 'GET'
         })
@@ -59,6 +60,7 @@ export default function CreateIndent({ navigation }) {
         .then(user2 => setUser2(user2));
     }, [user,host]);
     
+    //itemChange function for change the Item Details
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -72,6 +74,7 @@ export default function CreateIndent({ navigation }) {
         setItems(values);
     };
 
+    //chooseOrder() function for select the Order 
     function chooseOrder(id) {
         setOrderId(id)
         fetch(`http://localhost:5000/retrive_order/${id}`, {
@@ -87,6 +90,7 @@ export default function CreateIndent({ navigation }) {
         closeMenu1();
     }
 
+    //chooseVendor() function for select the Vendor   
     function chooseVendor(id, email){
         setVendorId(id)
         setVendorEmail(email);
@@ -98,12 +102,14 @@ export default function CreateIndent({ navigation }) {
         closeMenu2();
     }
 
+    //handleRemoveFiels() for handle the item
     const handleRemoveFields = index => {
         const values = [...items];
         values.splice(index, 1);
         setItems(values);
     };
 
+    //submitForm() for sending the data in corresponding database
     function submitForm(){
         fetch('http://localhost:5000/newindent', {
             method: 'POST',
@@ -128,7 +134,7 @@ export default function CreateIndent({ navigation }) {
             setMargin("");
         }); 
     }
-
+    //define all the required input fields
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -194,7 +200,7 @@ export default function CreateIndent({ navigation }) {
     );
 }
 
-
+//define stylesheet for the component (IOS styles to be added)
 const styles = StyleSheet.create({
     card: {
         alignSelf: 'center',
