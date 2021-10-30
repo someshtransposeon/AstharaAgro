@@ -15,6 +15,7 @@ router.post('/create_order', (req, res)=>{
         country: req.body.country,
         postal_code: req.body.postal_code,
         items: req.body.items,
+        // item_price:req.body.item_price,
     })
     newOrder.save()
     .then(order => {

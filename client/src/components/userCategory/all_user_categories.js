@@ -28,7 +28,7 @@ export default function AllUserCategories({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_User_category`, {
+        fetch(`http://${host}:5000/retrive_all_user_category`, {
             method: 'GET'
         })
         .then(res => res.json())

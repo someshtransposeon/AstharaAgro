@@ -116,9 +116,8 @@ export default function AllOrders({ navigation }) {
                                         visible={visible[index]}
                                         onDismiss={()=>closeMenu(index)}
                                         anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
-                                            <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", item._id, index)}/>
-                                            <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", item._id, index)}/>
-                                            <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  item._id, index)}/>
+                                            <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index)}/>
+                                            <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index)}/>
                                     </Menu>
                                     </DataTable.Cell>
                                     <DataTable.Cell>

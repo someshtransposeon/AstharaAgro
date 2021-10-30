@@ -22,7 +22,8 @@ export default function CreateOrder({ navigation }) {
     const [visible2, setVisible2] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:''}]);
+    // const [itemPrice, setItemPrice] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -48,7 +49,7 @@ export default function CreateOrder({ navigation }) {
             setHost("localhost");
         }
 
-        fetch(`http://${host}:5000/retrive_all_item`, {
+        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -105,12 +106,13 @@ export default function CreateOrder({ navigation }) {
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
-    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
+    const ItemChange = (index, fieldname, fieldvalue, itemId,unit,price) => {
         const values = [...items];
         if (fieldname === "item") {
             values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
             values[index].itemUnit=unit;
+            values[index].itemPrice=price;
             closeMenu(index);
         }
         else{
@@ -118,7 +120,45 @@ export default function CreateOrder({ navigation }) {
         }
         setItems(values);
     };
-
+    
+    //  const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
+    //     const values = [...items];
+    //     if (fieldname === "item") {
+    //         values[index].itemId = itemId;
+    //         values[index].itemName = fieldvalue;
+    //         values[index].itemUnit=unit;
+    //     }
+    //     else{
+    //         values[index].itemPrice = fieldvalue;
+    //     }
+    //     setItems(values);
+    // };
+    const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit,price) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+            values[index].itemPrice=price;
+        }
+        else{
+            values[index].itemNegotiatePrice = fieldvalue;
+        }
+        setItems(values);
+        };
+    const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+            values[index].itemPrice=price;
+        }
+        else{
+            values[index].finalPrice = fieldvalue;
+        }
+        setItems(values);
+        };
     const CustomerChange = (id, email) => {
         setCustomerEmail(email);
         fetch(`http://${host}:5000/retrive_customer/${id}`, {
@@ -164,6 +204,7 @@ export default function CreateOrder({ navigation }) {
                 country: country,
                 postal_code: pincode,
                 items: items,
+                // item_price:itemPrice
             })
         })
         .then(res => res.json())
@@ -285,7 +326,8 @@ export default function CreateOrder({ navigation }) {
                                         if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
                                         return (
                                             <>
-                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit_name)}/>
+                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} 
+                                            onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit_name,item.item_price)}/>
                                             </>
                                         )
                                         }
@@ -296,6 +338,17 @@ export default function CreateOrder({ navigation }) {
                             </Menu>
                             <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
+                           
+                            {/* <TextInput  keyboardType='numeric' mode="outlined" label="Price"
+                             value={ (it.itemPrice / 100) * 30 +(it.itemPrice) } 
+                            /> */}
+
+                             <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
+                             value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
+                           onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
+                             />
+                            
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>

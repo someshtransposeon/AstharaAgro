@@ -57,7 +57,7 @@ export default function AllItemGrades({ navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItemGrade ?
-                    allItemGrade.map((item)=>{
+allItemGrade.map((item)=>{
                         if(item.grade_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>

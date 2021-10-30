@@ -44,7 +44,7 @@ export default function CreateIndent({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch("http://localhost:5000/retrive_all_order", {
+        fetch("http://localhost:5000/retrive_all_approved_order", {
             method: 'GET'
         })
         .then(res => res.json())
@@ -73,6 +73,18 @@ export default function CreateIndent({ navigation }) {
         }
         setItems(values);
     };
+    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+        }
+        else{
+            values[index].itemPrice = fieldvalue;
+        }
+        setItems(values);
+    };
 
     //chooseOrder() function for select the Order 
     function chooseOrder(id) {
@@ -94,7 +106,7 @@ export default function CreateIndent({ navigation }) {
     function chooseVendor(id, email){
         setVendorId(id)
         setVendorEmail(email);
-        fetch(`http://localhost:5000/retrive_vendor/${id}`, {
+        fetch(`http://${host}:5000/retrive_vendor/${id}`, {
             method: 'GET'
         })        
         .then(res => res.json())
@@ -111,7 +123,7 @@ export default function CreateIndent({ navigation }) {
 
     //submitForm() for sending the data in corresponding database
     function submitForm(){
-        fetch('http://localhost:5000/newindent', {
+        fetch(`http://${host}:5000/newindent`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -177,6 +189,7 @@ export default function CreateIndent({ navigation }) {
                             <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={it.itemName} /></DataTable.Cell>
                             <DataTable.Cell><TextInput mode="outlined" label="Unit" value={it.itemUnit} /></DataTable.Cell>
                             <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} /></DataTable.Cell>
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Price" value={it.itemPrice} onChangeText={(text)=>ItemChange2(index, "itemPrice", text, '')} />
                             <DataTable.Cell><View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>
@@ -191,7 +204,7 @@ export default function CreateIndent({ navigation }) {
                     ))}
                     </DataTable>
                     }
-                    <TextInput style={styles.input} value={margin} onChangeText={margin => setMargin(margin)} mode="outlined"  label="Margin" />
+                    <TextInput style={styles.input} value={margin} onChangeText={margin => setMargin(margin)} mode="outlined"  label="Value" />
                     <Button mode="contained" onPress ={()=> submitForm() } style={styles.button}>Create Indent</Button>
                     </Card.Content>
                 </Card>

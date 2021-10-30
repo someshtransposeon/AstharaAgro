@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const itemUnitSchema = new mongoose.Schema({
     unit_name: {
         type: String,
+    },
+     status:{
+        type:String,
+        default:"enabled"
     }
 });
 

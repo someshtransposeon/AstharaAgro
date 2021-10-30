@@ -65,6 +65,25 @@ export default function EditItemUnit(props,{route}) {
             console.log(data);
         }); 
     }
+      const StatusChange = (s) => {
+        fetch(`http://${host}:5000/disabled_item_unit/${itemUnitId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    }; 
+
 
     return (
         <Provider theme={theme}>
@@ -75,7 +94,9 @@ export default function EditItemUnit(props,{route}) {
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Item Unit Name" value={itemUnitName} onChangeText={itemUnitName => setItemUnitName(itemUnitName)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Unit </Button>
-                    <Button mode="contained" style={styles.button} color='red'>Disable Item Unit</Button>
+                    <Button mode="contained" style={styles.button} color='red'                    
+                    onPress={()=>StatusChange("disabled")}
+                    >Disable Item Unit</Button>
                     </Card.Content>
                 </Card>
                 :

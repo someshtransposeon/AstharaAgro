@@ -4,7 +4,7 @@ const router = express.Router();
 const Order = require('../../models/order/order');
 //Define ROute to  retrive all orders 
 router.get('/retrive_all_order',(req, res)=>{
-    Order.find({}, function(err, orders){
+    Order.find({status:"pending"}, function(err, orders){
         if(err){
             console.log(err);
         }
@@ -13,6 +13,7 @@ router.get('/retrive_all_order',(req, res)=>{
         }
     });
 });
+
 
 router.get('/retrive_order/:id',(req, res)=>{
     Order.find({'_id':req.params.id}, function(err, order){
@@ -24,5 +25,34 @@ router.get('/retrive_order/:id',(req, res)=>{
         }
     });
 });
-
+router.get('/retrive_all_rejected_order',(req, res)=>{
+    Order.find({status:"rejected"}, function(err, orders){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(orders);
+        }
+    });
+});
+router.get('/retrive_all_approved_order',(req, res)=>{
+    Order.find({status:"approved"}, function(err, orders){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(orders);
+        }
+    });
+});
+router.get('/retrive_all_order_items',(req, res)=>{
+    Order.find({}, function(err, orders){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(orders);
+        }
+    });
+});
 module.exports = router;

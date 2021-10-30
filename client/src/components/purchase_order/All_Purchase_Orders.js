@@ -99,11 +99,15 @@ export default function All_Purchase_Orders({ navigation }) {
                                 <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     <Menu visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{purchaseOrder.status}</Button>}>
-                                    <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", purchaseOrder._id, index)}/>
-                                    <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", purchaseOrder._id, index)}/>
-                                    <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  purchaseOrder._id, index)}/>
+                                    {/* <Menu.Item title="Approve" onPress={()=>StatusChange("approved", purchaseOrder._id, index)}/>
+                                    <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", purchaseOrder._id, index)}/>
+                                    <Menu.Item title="Pending" onPress={()=>StatusChange("pending",  purchaseOrder._id, index)}/> */}
+                                    <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  purchaseOrder._id, index)}/>
+                                    <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  purchaseOrder._id, index)}/>
+                                    {/* <Menu.Item title="Cancel" onPress={()=>StatusChange("cancel",  purchaseOrder._id, index)}/> */}
+                                    
                                     </Menu>
-                                </DataTable.Cell>
+                                </DataTable.Cell>   
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>

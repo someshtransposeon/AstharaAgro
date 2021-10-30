@@ -66,6 +66,51 @@ export default function EditItemCategory(props,{route}) {
         }); 
     }
 
+    //  function submitForm2() {
+         const StatusChange = (s) => {
+        // fetch(`http://${host}:5000/update_purchase_status/${id}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         status: s,
+        //     })
+        // })
+        fetch(`http://${host}:5000/disabled_item_category/${itemCategoryId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    
+        // fetch(`http://${host}:5000/disabled_item_category/${itemCategoryId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         status: "disabled",
+        //     })
+        // })
+        // .then(res => res.json())
+        // .catch(error => console.log(error))
+        // .then(data => {
+        //     alert(data.message);
+        //     console.log(data);
+        // }); 
+    }
+
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -75,7 +120,15 @@ export default function EditItemCategory(props,{route}) {
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Item Category Name" value={itemCategoryName} onChangeText={itemCategoryName => setItemCategoryName(itemCategoryName)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Category </Button>
-                    <Button mode="contained" style={styles.button} color='red'>Disable Item Category</Button>
+                    
+                    <Button mode="contained" style={styles.button} color='red' 
+                    onPress={()=>StatusChange("disabled")}
+                    >Disable Category</Button>
+
+                    {/* <Button mode="contained" style={styles.button} color='red' 
+                    onPress={()=>StatusChange2("enabled")}
+                    >Enabled Item</Button> */}
+
                     </Card.Content>
                 </Card>
                 :

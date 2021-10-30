@@ -10,7 +10,7 @@ router.post('/create_purchase_order', (req, res)=>{
         items:req.body.items,
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,
-        indent_id:req.body.indent_id,
+        // indent_id:req.body.indent_id,
         
         purchase_order_date:req.body.purchase_order_date,
         purchase_order_time:req.body.purchase_order_tiem,

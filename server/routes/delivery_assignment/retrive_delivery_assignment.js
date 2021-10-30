@@ -24,5 +24,25 @@ router.get('/retrive_delivery_assignment/:id',(req, res)=>{
         }
     });
 });
+router.get('/retrive_all_pending_delivery_assignments',(req, res)=>{
+    DeliveryAssignment.find({status:"pending"}, function(err, retrive_all_pending_delivery_assignments){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(retrive_all_pending_delivery_assignments);
+        }
+    });
+});
 
+router.get('/retrive_all_delivered_delivery_assignments',(req, res)=>{
+    DeliveryAssignment.find({status:"delivered"}, function(err, retrive_all_pending_delivery_assignments){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(retrive_all_delivered_delivery_assignments);
+        }
+    });
+});
 module.exports = router;

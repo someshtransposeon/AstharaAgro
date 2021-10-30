@@ -17,6 +17,7 @@ const theme = {
 };
 
 export default function Profile({ navigation }) {
+    const [customerId, setCustomerId] = useState('');
 
     const [userId, setUserId] = useState('');
     const [user, setUser] = useState();
@@ -105,6 +106,24 @@ export default function Profile({ navigation }) {
             setBank("");
         });  
     }
+    const StatusChange = (s) => {
+        fetch(`http://${host}:5000/send_delete_account_remark/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                remark: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    }; 
 
     return (
         <Provider theme={theme}>
@@ -205,6 +224,30 @@ export default function Profile({ navigation }) {
                         }
                     </Card.Content>
                 </Card>
+                <Card style={styles.card}>
+                    <Card.Title title="Delete Account"/>
+                    <Card.Content>
+                        {user && 
+                            <>
+                                <Text style={styles.text1}> {user[0].remark}</Text>
+                            </>
+                        }
+                    </Card.Content>
+                    <Card.Content>
+                            {/* <>
+                            {Platform.OS=='android' ?
+                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddAddress')}}>Delete Account</Button>
+                                :
+                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addaddress">Delete Account</Link></Button>
+                            }
+                            </> */}           
+                             <Button mode="contained" style={styles.button} color='red' 
+                    onPress={()=>StatusChange("detete account request sent!")}
+                    >Delete Account</Button>
+                    </Card.Content>
+                </Card>
+             
+
             </View>
             </ScrollView>
             </SafeAreaView>

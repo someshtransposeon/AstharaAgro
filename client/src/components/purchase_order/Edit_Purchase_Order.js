@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, CheckBox } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -33,16 +35,17 @@ export default function Edit_Purchase_Order(props, {route}) {
     const closeMenu1 = () => setVisible1(false);
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
-
     const [purchaseId, setPurchaseId] = useState("");
     const [order_id, setOrderId] = useState("");
     const [indent_id, setIndentId] = useState("Choose Indent");
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [status,setStatus] = useState("");
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
     
-    const [items, setItems] = useState("");
-    
+    //const [items, setItems] = useState("");
     const [host, setHost] = useState("");
+    const [flag, setFlag] = useState(false);
+
 
     function chooseIndent(i_id) {
         setIndentId(i_id);
@@ -74,11 +77,46 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
+                setFlag(true);
             });
-
+            // .then(item => {
+            // setItems(item[0].items);
+            // setFlag(true);
+            // });
        }
 
     }, [host,purchaseId,purchaseid,id]);
+
+    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+        }
+        else{
+            values[index].quantity = fieldvalue;
+        }
+        setItems(values);
+    };
+
+    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+        }
+        else{
+            values[index].itemPrice = fieldvalue;
+        }
+        setItems(values);
+    };
+    const handleRemoveFields = index => {
+        const values = [...items];
+        values.splice(index, 1);
+        setItems(values);
+    };
 
     function submitForm() {
         fetch(`http://${host}:5000/update_purchase_order/${purchaseid}`, {
@@ -99,15 +137,43 @@ export default function Edit_Purchase_Order(props, {route}) {
         .then(data => {
             alert(data.message);
             console.log(data);
-        }); 
+        });   
+    }
+        // for create Purchase Receipt
+        function submitForm2() {
+            fetch(`http://${host}:5000/create_purchase_confirm`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        
+            body: JSON.stringify({
+                indent_id:indent_id,
+                purchaseId:purchaseId,
+                order_id:order_id,
+                items:items,   
+                vendor_id:vendor_id, 
+                status:status,          
+
+                          
+            })
+        })
+        
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+            
+        });   
     }
 
-    const handleCheckbox=(event)=>{
-        const {itemName,checked} = event.target;
-        let tempItems = items.map((item) => 
-            items.itemName === itemName ? {...item, isChecked : checked} : item);
-        setItems(tempItems);
-     }; 
+    // const handleCheckbox=(event)=>{
+    //     const {itemName,checked} = event.target;
+    //     let tempItems = items.map((item) => 
+    //         items.itemName === itemName ? {...item, isChecked : checked} : item);
+    //     setItems(tempItems);
+    //  }; 
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -132,7 +198,29 @@ export default function Edit_Purchase_Order(props, {route}) {
                         <Menu.Item title="${indentId}" onPress={()=>chooseIndent(indent_id)} />
                     </Menu>
                     }
-                    {indent_id && 
+                    {items && flag &&
+                    <DataTable style={styles.datatable}>
+                    {items.map((it, index) => (
+                        <DataTable.Row>
+                            <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={it.itemName} /></DataTable.Cell>
+                            <DataTable.Cell><TextInput mode="outlined" label="Unit" value={it.itemUnit} /></DataTable.Cell>
+                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} /></DataTable.Cell>
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Price" value={it.itemPrice} onChangeText={(text)=>ItemChange2(index, "itemPrice", text, '')} />
+                            <DataTable.Cell><View style={{flexDirection: 'row'}}>
+                                {Platform.OS=="android" ?
+                                    <>
+                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                    </>
+                                    :
+                                    <>
+                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
+                                }
+                            </View></DataTable.Cell>
+                        </DataTable.Row>
+                    ))}
+                    </DataTable>
+                    }
+                    {/* {indent_id && 
                     <DataTable>
                         <DataTable.Header style={styles.tableheader} >
                         <DataTable.Title >Item Name </DataTable.Title>
@@ -152,7 +240,10 @@ export default function Edit_Purchase_Order(props, {route}) {
                             })
                         }
                     </DataTable>
-                    }                   
+                    }  */}
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Purchase</Button>
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faReceipt } />} style={styles.button} onPress={()=>submitForm2()} >Create Purchase Confirm</Button>
+                                 
                     </Card.Content>
                 </Card>
             </View>

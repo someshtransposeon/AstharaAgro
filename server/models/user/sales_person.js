@@ -24,7 +24,7 @@ const sales_personSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        default:"",
+        default:"enabled",
     }
 });
 

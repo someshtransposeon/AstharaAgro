@@ -107,6 +107,24 @@ export default function EditUser(props, {route}) {
             console.log(data);
         }); 
     }
+     const StatusChange = (s) => {
+        fetch(`http://${host}:5000/disabled_user/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    }; 
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -143,7 +161,9 @@ export default function EditUser(props, {route}) {
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update User</Button>
-                    <Button mode="contained" style={styles.button} color='red'>Disable User</Button>
+                       <Button mode="contained" style={styles.button} color='red' 
+                    onPress={()=>StatusChange("disabled")}
+                    >Disable User</Button>
                     </Card.Content>
                 </Card>
                 :

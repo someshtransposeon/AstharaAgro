@@ -30,7 +30,7 @@ export default function EditOrder(props,{route}) {
     const [visible, setVisible] = useState([]);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:''}]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -52,7 +52,7 @@ export default function EditOrder(props,{route}) {
             setOrderId(orderid);
         }
 
-        fetch(`http://${host}:5000/retrive_all_item`, {
+        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -105,6 +105,43 @@ export default function EditOrder(props,{route}) {
         }
         setItems(values);
     };
+    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+        }
+        else{
+            values[index].itemPrice = fieldvalue;
+        }
+        setItems(values);
+    };
+    const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+        }
+        else{
+            values[index].itemNegotiatePrice = fieldvalue;
+        }
+        setItems(values);
+        };
+    const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
+            values[index].itemPrice=price;
+        }
+        else{
+            values[index].finalPrice = fieldvalue;
+        }
+        setItems(values);
+        };
 
     const handleAddFields = () => {
         const values = [...items];
@@ -205,6 +242,11 @@ export default function EditOrder(props,{route}) {
                             </Menu>
                             <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
+                             value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
+                           onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
+                             />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>

@@ -55,6 +55,10 @@ export default function EditItem(props,{route}) {
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(true);
     const [flag2, setFlag2] = useState(true);
+    const [disabled, setDisabled] = useState(true);
+    const [enabled, setEnabled] = useState(true);
+    const [status, setStatus] = useState(true);
+    const [disable, setDisable] = React.useState(false);
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -80,7 +84,11 @@ export default function EditItem(props,{route}) {
                 setCategory(item[0].category_name);
                 setItemName(item[0].item_name);
                 setDescription(item[0].description);
+                setStatus(item[0].status);
+
+            
             });
+            
             setFlag(false);
         }
 
@@ -149,6 +157,7 @@ export default function EditItem(props,{route}) {
                 unit_name: unit,
                 grade_name: grade,
                 description: itemDescription,
+
             })
         })
         .then(res => res.json())
@@ -158,6 +167,45 @@ export default function EditItem(props,{route}) {
             console.log(data);
         }); 
     }
+
+
+      const StatusChange = (s) => {
+        fetch(`http://${host}:5000/disabled_item/${itemId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    };  
+    const StatusChange2 = (s) => {
+        fetch(`http://${host}:5000/enabled_item/${itemId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    };  
+
 
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch1 = query => setSearchQuery1(query);
@@ -245,7 +293,24 @@ export default function EditItem(props,{route}) {
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item</Button>
-                    <Button mode="contained" style={styles.button} color='red'>Disable Item</Button>
+                   
+                        
+                   
+                    <Button mode="contained" style={styles.button} color='red' 
+                    // onPress={()=>submit2Form()} 
+                    onPress={()=>StatusChange("disabled")}
+                    // setDisabled
+                    // disabled="false"
+                    // disabled={disabled}
+                    // enabled2={enabled2}
+                    // enabled={enabled}
+                    >Disable Item</Button>
+
+                    {/* <Button mode="contained" style={styles.button} color='red' 
+                    // onPress={()=>submit2Form()} 
+                    onPress={()=>StatusChange2("enabled")}
+                    >Enabled Item</Button> */}
+
                     </Card.Content>
                 </Card>
                 :

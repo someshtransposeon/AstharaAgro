@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
     },
+    status:{
+        type:String,
+        default:"enabled"
+    },
+    remark:{
+        type:String,
+        default:""
+    },
 });
 
 const User = mongoose.model('User', userSchema);

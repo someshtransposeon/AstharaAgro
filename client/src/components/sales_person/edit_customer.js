@@ -82,7 +82,7 @@ export default function EditCustomer(props,{route}) {
             <ScrollView keyboardDismissMode="interactive" >
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Card style={styles.card}>
-                        <Card.Title title="UPDATE Customer"/>
+                        <Card.Title title="UPDATE CUSTOMER"/>
                         <Card.Content>
                             <TextInput style={styles.input} mode="outlined" type="text" label="Enter your full name" value={full_name} onChangeText={fullname=>setFull_name(fullname)} />
                             <TextInput style={styles.input} mode="outlined" type="email" label="Enter email" value={email} onChangeText={email=>setEmail(email)} />

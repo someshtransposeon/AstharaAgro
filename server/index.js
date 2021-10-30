@@ -105,6 +105,37 @@ const delivery_assignment = require('./routes/delivery_assignment/delivery_assig
 const retrive_delivery_assignment = require('./routes/delivery_assignment/retrive_delivery_assignment');
 const retrive_all_delivery_assignments = require('./routes/delivery_assignment/retrive_delivery_assignment');
 
+const create_purchase_confirm = require('./routes/purchase_confirm/create_purchase_confirm');
+const retrive_purchase_order_confirm = require('./routes/purchase_confirm/retrive_purchase_confirm');
+const retrive_all_purchase_order_confirm = require('./routes/purchase_confirm/retrive_purchase_confirm');
+const update_purchase_order_confirm = require('./routes/purchase_confirm/update_purchase_confirm');
+
+const add_transportation = require('./routes/confidential/transportation/add_transportation');
+const retrive_transportation = require('./routes/confidential/transportation/retrive_transportation');
+const update_transportation = require('./routes/confidential/transportation/update_transportation');
+
+const disabled_item = require('./routes/item/disabled_item');
+const disabled_item_category = require('./routes/itemCategory/disabled_item_category');
+const disabled_item_grade = require('./routes/itemGrade/disabled_item_grade');
+const disabled_item_unit = require('./routes/itemUnit/disabled_item_unit');
+const disabled_user = require('./routes/user/user/disabled_user');
+const disabled_user_category = require('./routes/userCategory/disabled_user_category');
+
+const enabled_item = require('./routes/item/enabled_item');
+const enabled_item_category = require('./routes/itemCategory/enabled_item_category');
+const enabled_item_unit = require('./routes/itemUnit/enabled_item_unit');
+const enabled_item_grade = require('./routes/itemGrade/enabled_item_grade');
+const enabled_user = require('./routes/user/user/enabled_user');
+const enabled_user_category = require('./routes/userCategory/enabled_user_category');
+
+const vendors_create_item = require('./routes/vendorsItem/vendors_create_item');
+const vendors_retrive_item = require('./routes/vendorsItem/vendors_retrive_item');
+const vendors_update_item = require('./routes/vendorsItem/vendors_update_item');
+
+const create_pickup_assign = require('./routes/pickup_assign/create_pickup_assign');
+const retrive_pickup_assign = require('./routes/pickup_assign/retrive_pickup_assign');
+
+
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -214,6 +245,41 @@ app.use('/', retrive_all_pickup_assignments);
 app.use('/', delivery_assignment);
 app.use('/', retrive_delivery_assignment);
 app.use('/', retrive_all_delivery_assignments);
+
+
+app.use('/', create_purchase_confirm);
+app.use('/', retrive_purchase_order_confirm);
+app.use('/', retrive_all_purchase_order_confirm);
+app.use('/', update_purchase_order_confirm);
+
+app.use('/', add_transportation);
+app.use('/', retrive_transportation);
+app.use('/', update_transportation);
+
+
+app.use('/', disabled_item);
+app.use('/', disabled_item_category);
+app.use('/', disabled_item_grade);
+app.use('/', disabled_item_unit);
+app.use('/', disabled_user);
+app.use('/', disabled_user_category);
+
+app.use('/', enabled_item);
+app.use('/', enabled_item_category);
+app.use('/', enabled_item_grade);
+app.use('/', enabled_item_unit);
+app.use('/', enabled_user);
+app.use('/', enabled_user_category);
+
+app.use('/', vendors_create_item);
+app.use('/', vendors_retrive_item);
+app.use('/', vendors_update_item);
+
+
+app.use('/', create_pickup_assign);
+app.use('/', retrive_pickup_assign);
+
+
 
 
 app.listen(5000, ()=>{

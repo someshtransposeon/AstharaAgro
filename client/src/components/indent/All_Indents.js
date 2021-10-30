@@ -100,9 +100,9 @@ export default function AllIndents({ navigation }) {
                                 <DataTable.Cell>{indent._id}</DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     <Menu visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{indent.status}</Button>}>
-                                    <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", indent._id, index)}/>
-                                    <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", indent._id, index)}/>
-                                    <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  indent._id, index)}/>
+                                    <Menu.Item title="Approve" onPress={()=>StatusChange("approved", indent._id, index)}/>
+                                    <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", indent._id, index)}/>
+                                    {/* <Menu.Item title="Pending" onPress={()=>StatusChange("pending",  indent._id, index)}/> */}
                                     </Menu>
                                 </DataTable.Cell>
                                 <DataTable.Cell numeric> 

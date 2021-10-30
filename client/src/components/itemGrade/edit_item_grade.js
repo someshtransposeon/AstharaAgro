@@ -65,6 +65,25 @@ export default function EditItemGrade(props,{route}) {
             console.log(data);
         }); 
     }
+       
+      const StatusChange = (s) => {
+        fetch(`http://${host}:5000/disabled_item_grade/${itemGradeId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        // closeMenu(index);
+    }; 
 
     return (
         <Provider theme={theme}>
@@ -75,7 +94,8 @@ export default function EditItemGrade(props,{route}) {
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Item Grade Name" value={itemGradeName} onChangeText={itemGradeName => setItemGradeName(itemGradeName)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Grade </Button>
-                    <Button mode="contained" style={styles.button} color='red'>Disable Item Grade</Button>
+                    <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("disabled")}
+                    >Disable Item Grade</Button>
                     </Card.Content>
                 </Card>
                 :

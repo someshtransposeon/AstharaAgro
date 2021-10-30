@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Double = require('@mongoosejs/double/lib');
 
 const itemSchema = new mongoose.Schema({
     category: {
@@ -36,6 +37,16 @@ const itemSchema = new mongoose.Schema({
         type: String,
         default:"",
     },
+    item_price: {
+        type: Double,
+    },
+    item_negotiate_price: {
+        type: Double,
+    },
+    status:{
+        type:String,
+        default:"enabled"
+    }
 });
 
 const Item = mongoose.model('Item', itemSchema);

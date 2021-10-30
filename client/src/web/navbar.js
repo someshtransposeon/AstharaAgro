@@ -47,6 +47,63 @@ import AllItemUnit from '../components/itemUnit/all_item_unit';
 import EditItemGrade from '../components/itemGrade/edit_item_grade';
 import AddItemGrade from '../components/itemGrade/add_item_grade';
 import AllItemGrade from '../components/itemGrade/all_item_grade';
+import All_Purchase_Order_Confirm from '../components/purchase_confirm/All_Purchase_Order_Confirm';
+import Edit_Purchase_Order_Confirm from '../components/purchase_confirm/Edit_Purchase_Order_Confirm';
+import Edit_Purchase_Order_Confirm2 from '../components/purchase_confirm/Edit_Purchase_Order_Confirm2';
+import Edit_Purchase_Order_Confirm3 from '../components/purchase_confirm/Edit_Purchase_Order_Confirm3';
+
+import AllTransportation from '../components/confidential/transportation/allTransportation';
+import AddTransportation from '../components/confidential/transportation/addTransportation';
+import ShowTransportation from '../components/confidential/transportation/showTransportation';
+import EditTransportation from '../components/confidential/transportation/editTransportation';
+
+
+import DisabledAllItems from '../components/item/disabled_all_items';
+import DisabledAllItemCategories from '../components/itemCategory/disabled_all_item_categories';
+import DisabledAllItemGrade from '../components/itemGrade/disabled_all_item_grade';
+import DisabledAllItemUnit from '../components/itemUnit/disabled_all_item_unit';
+import DisabledAllUsers from '../components/manager/disabled_all_users';
+import DisabledAllUserCategories from '../components/userCategory/disabled_all_user_categories';
+import Disabled_Customer_details from '../components/sales_person/disabled_customer_detail';
+
+import DisabledEditItem from '../components/item/disablededititem';
+import DisabledEditItemCategory from '../components/itemCategory/disabled_edit_item_category';
+import DisabledEditItemGrade from '../components/itemGrade/disabled_edit_item_grade';
+import DisabledEditItemUnit from '../components/itemUnit/disabled_edit_item_unit';
+import DisabledEditUser from '../components/user/disabled_edit_user.js';
+import DisabledEditUserCategory from '../components/userCategory/disabled_edit_user_category.js';
+
+import CustomerAccountDeleteRequests from '../components/sales_person/customer_account_delete_requests';
+import All_Pending_Purchase_Orders from '../components/purchase_order/All_Pending_Purchase_Orders';
+import All_Accepted_Purchase_Orders from '../components/purchase_order/All_Accepted_Purchase_Orders';
+import Edit_Purchase_Order_Price from '../components/purchase_order/Edit_Purchase_Order_Price';
+import Accepted_Purchase_Orders from '../components/purchase_order/Accepted_Purchase_Orders';
+
+import AllInventory from '../components/inventory/allinventory';
+
+import All_Pending_Purchase_Order_Confirm from '../components/purchase_confirm/All_Pending_Purchase_Order_Confirm';
+
+import CreateInvoice from '../components/invoice/create_invoice';
+import AllInvoice from '../components/invoice/all_invoice';
+
+import VenodrsAddItem from '../components/vendorsItem/vendors_addItem';
+import VendorsAllItems from '../components/vendorsItem/vendors_allitems';
+import VendorsEditItem from '../components/vendorsItem/vendors_edititem';
+
+import Edit_Vendor_Purchase_Order from '../components/purchase_order/Edit_Vendor_Purchase_Order';
+import All_Declined_Purchase_Orders from '../components/purchase_order/All_Declined_Purchase_Orders';
+
+import CreateGrn from '../components/grn/create_grn';
+import AllGrn from '../components/grn/all_grn';
+
+import OrderItemsSummary from '../components/order/order_items_summary';
+
+import EditOrderItem from '../components/order/edit_order_item';
+import Pickup_Purchase from '../components/purchase_order/Pickup_Purchase';
+
+import All_Pickup_Assignment from '../components/pickup_assign/All_Pickup_Assignment';
+import Edit_Pickup_Assignment from '../components/pickup_assign/Edit_Pickup_Assignment';
+
 
 const NavBar =()  => {
 
@@ -159,6 +216,14 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                {( roleas=="vendor" ||roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/vendors_additem" as={Link}>Vendors Add Item</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/vendors_allitems" as={Link}>Vendors All Items</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                                 <NavDropdown.Item to="/allitems" as={Link}>All Items</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
@@ -213,8 +278,33 @@ const NavBar =()  => {
                                     <>
                                         <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
                                         <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Purchase_Order_Confirm" as={Link}>All Purchase Order Confirm</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Pending_Purchase_Order_Confirm" as={Link}>All Pending Purchase Confirm</NavDropdown.Item>
+                                        <NavDropdown.Divider />
                                     </>
                                 }
+                                {(roleas=="vendor") &&
+                                    <>
+                                        <NavDropdown.Item to="/All_Pending_Purchase_Orders" as={Link}>All Pending Purchase Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Accepted_Purchase_Orders" as={Link}>All Accepted Purchase Orders </NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="manager" || roleas=="accountant") &&
+                                    <>
+                                        <NavDropdown.Item to="/addTransportationCost" as={Link}>Add Transportation</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/allTransportation" as={Link}>All Transportations</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        {/* <NavDropdown.Item to="/ShowTransportation" as={Link}>Transportation</NavDropdown.Item>
+                                        <NavDropdown.Divider /> */}
+                                    </>
+                                }        
+
+
+
                             </NavDropdown>
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 {roleas=="manager" &&
@@ -247,16 +337,59 @@ const NavBar =()  => {
                                 }
                             </NavDropdown>
                             <NavDropdown title="Reports" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                <NavDropdown.Item to="/allitems" as={Link}>Items</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>Sales Order</NavDropdown.Item>
+                                {/* <NavDropdown.Item to="/allitems" as={Link}>Items</NavDropdown.Item><NavDropdown.Divider /> */}
+                                <NavDropdown.Item to="/allitems" as={Link}>Sales Order</NavDropdown.Item><NavDropdown.Divider />
+                                 {( roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/disabled_all_items" as={Link}>Disabled Items</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/disabled_all_item_categories" as={Link}>Disabled ItemCategory</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/disabled_all_item_unit" as={Link}>Disabled ItemUnit</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/disabled_all_item_grade" as={Link}>Disabled ItemGrade</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/disabled_all_users" as={Link}>Disabled Users</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/disabled_all_user_categories" as={Link}>Disabled UserCategory</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/disabledcustomerdetails" as={Link}>Disabled Customers</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/customer_account_delete_requests" as={Link}>Delete AccountRequests</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/Accepted_Purchase_Orders" as={Link}>Accepted PurchaseOrder</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/create_invoice" as={Link}>Create Invoice</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/all_invoice" as={Link}>All Invoices</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Declined_Purchase_Orders" as={Link}>All Declined PurchaseOrders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+
+                                        <NavDropdown.Item to="/create_grn" as={Link}>Create GRN</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/all_grn" as={Link}>All GRNs</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/order_items_summary" as={Link}>Order Items Summary</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/Pickup_Purchase" as={Link}>Pickup Purchase</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                             </NavDropdown>
                             <NavDropdown title="Inventory" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                <NavDropdown.Item to="/allitems" as={Link}>Show Inventory</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>All Inventories</NavDropdown.Item>
+                                <NavDropdown.Item to="/allinventory" as={Link}>Show Inventory</NavDropdown.Item>
+                                <NavDropdown.Item to="/allinventory" as={Link}>All Inventories</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Assignment" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/allitems" as={Link}>Delivery</NavDropdown.Item>
                                 <NavDropdown.Item to="/allitems" as={Link}>Show All Deliveries</NavDropdown.Item>
+                                 {(roleas=="buyer" || roleas=="manager") &&
+                                    <> 
+                                        <NavDropdown.Item to="/all_pickup_assignment" as={Link}>All Pickup Assignment</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
@@ -297,6 +430,7 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/editorder/:orderid" render={(props) => <EditOrder {...props} />} exact />
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
+                <Route path="/disabled_item/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
                 <Route path="/editvendordetails/:vendorid" render={(props) => <EditVendor {...props} />} exact />
                 <Route path="/editcustomerdetails/:customerid" render={(props) => <EditCustomer {...props} />} exact />
@@ -357,8 +491,118 @@ const NavBar =()  => {
                 <Route path="/All_Purchase_Orders">
                     <All_Purchase_Orders/>
                 </Route>
+                <Route path="/All_Purchase_Order_Confirm">
+                    <All_Purchase_Order_Confirm/>
+                </Route>
+                <Route path="/AllTransportation">
+                    <AllTransportation/>
+                </Route>
+                <Route path="/AddTransportation">
+                    <AddTransportation/>
+                </Route>
+                <Route path="/ShowTransportation">
+                    <ShowTransportation/>
+                </Route>
+                <Route path="/EditTransportation/:transportationid" render={(props) => <EditTransportation {...props} />} exact />
                 <Route path="/Edit_Purchase_Order/:purchaseid" render={(props) => <Edit_Purchase_Order {...props} />} exact />
+                <Route path="/Edit_Vendor_Purchase_Order/:purchaseid" render={(props) => <Edit_Vendor_Purchase_Order {...props} />} exact />
                 
+                <Route path="/Edit_Purchase_Order_confirm/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm {...props} />} exact />
+                <Route path="/Edit_Purchase_Order_confirm2/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm2 {...props} />} exact />
+                <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 {...props} />} exact />
+
+                
+                <Route path="/disabled_all_items">
+                    <DisabledAllItems/>
+                </Route>
+                <Route path="/disabled_all_item_categories">
+                    <DisabledAllItemCategories/>
+                </Route>
+                <Route path="/disabled_all_item_grade">
+                    <DisabledAllItemGrade/>
+                </Route>
+                <Route path="/disabled_all_item_unit">
+                    <DisabledAllItemUnit/>
+                </Route>
+                <Route path="/disabled_all_users">
+                    <DisabledAllUsers/>
+                </Route>
+                <Route path="/disabled_all_user_categories">
+                    <DisabledAllUserCategories/>
+                </Route>
+                <Route path="/disabledcustomerdetails">
+                    <Disabled_Customer_details/>
+                </Route>
+                
+                <Route path="/disablededititem/:itemid" render={(props) => <DisabledEditItem {...props} />} exact />
+                <Route path="/disablededititemcategory/:itemCategoryid" render={(props) => <DisabledEditItemCategory {...props} />} exact />
+                <Route path="/disablededititemgrade/:itemGradeid" render={(props) => <DisabledEditItemGrade {...props} />} exact />
+                <Route path="/disablededititemunit/:itemUnitid" render={(props) => <DisabledEditItemUnit {...props} />} exact />
+                <Route path="/disablededituser/:userid" render={(props) => <DisabledEditUser {...props} />} exact />
+                <Route path="/disablededitusercategory/:userCategoryid" render={(props) => <DisabledEditUserCategory {...props} />} exact />
+                
+                {/* <Route path="/delete_account_requests">
+                    <DeleteAccountRequests/>
+                </Route> */}
+
+                <Route path="/customer_account_delete_requests">
+                    <CustomerAccountDeleteRequests/>
+                </Route>
+                <Route path="/All_Pending_Purchase_Orders">
+                    <All_Pending_Purchase_Orders/>
+                </Route>
+                <Route path="/All_Accepted_Purchase_Orders">
+                    <All_Accepted_Purchase_Orders/>
+                </Route>
+                <Route path="/Edit_Purchase_Order_Price/:purchaseid" render={(props) => <Edit_Purchase_Order_Price {...props} />} exact />
+                <Route path="/Accepted_Purchase_Orders">
+                    <Accepted_Purchase_Orders/>
+                </Route>
+                
+                <Route path="/allinventory">
+                    <AllInventory/>
+                </Route>
+                <Route path="/All_Pending_Purchase_Order_Confirm">
+                    <All_Pending_Purchase_Order_Confirm/>
+                </Route>
+                <Route path="/all_invoice">
+                    <AllInvoice/>
+                </Route>
+                <Route path="/create_invoice">
+                    <CreateInvoice/>
+                </Route>
+                <Route path="/vendors_additem">
+                    <VenodrsAddItem/>
+                </Route>
+                <Route path="/vendors_allitems">
+                    <VendorsAllItems/>
+                </Route>    
+                <Route path="/vendors_edititem/:itemid" render={(props) => <VendorsEditItem {...props} />} exact />        
+                
+                <Route path="/All_Declined_Purchase_Orders">
+                    <All_Declined_Purchase_Orders/>
+                </Route>    
+                <Route path="/all_grn">
+                    <AllGrn/>
+                </Route>
+                <Route path="/create_grn">
+                    <CreateGrn/>
+                </Route>
+                <Route path="/order_items_summary">
+                    <OrderItemsSummary/>
+                </Route>
+                <Route path="/editorderitem/:orderid" render={(props) => <EditOrderItem {...props} />} exact />
+                <Route path="/Pickup_Purchase">
+                    <Pickup_Purchase/>
+                </Route>    
+
+                <Route path="/all_pickup_assignment">
+                    <All_Pickup_Assignment/>
+                </Route>
+                <Route path="/Edit_Pickup_Assignment/:pickupId" render={(props) => <Edit_Pickup_Assignment {...props} />} exact />
+                    
+
+
                 </Switch>
         </Router>
     )

@@ -37,27 +37,38 @@ const grnSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'invoice',
     },
-    item_description:[{
-        itemId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Item',
-        },
-        // categoryId:{
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     reef:'Category'
-        // },
-        quantity:{
-            type:Number,
-            default:0,
-        },
-        unit_of_measurement:{
-            type:String,
-        },
-        price:{
-            type: mongoose.Schema.Types.Double,
-            required:true,
-        },
-    }],
+    items: {
+        type: mongoose.Schema.Types.Mixed,
+    },
+      status: {
+        type: String,
+        default:"pending",
+    },
+      remark: {
+        type: String,
+        default:"",
+    },
+    // item_description:[{
+    //     itemId:{
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: 'Item',
+    //     },
+    //     // categoryId:{
+    //     //     type: mongoose.Schema.Types.ObjectId,
+    //     //     reef:'Category'
+    //     // },
+    //     quantity:{
+    //         type:Number,
+    //         default:0,
+    //     },
+    //     unit_of_measurement:{
+    //         type:String,
+    //     },
+    //     price:{
+    //         type: mongoose.Schema.Types.Double,
+    //         required:true,
+    //     },
+    // }],
     date_of_issue:{
         type:Date,
         default: Date.now,
