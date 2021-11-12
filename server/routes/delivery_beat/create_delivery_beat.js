@@ -1,25 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const PickupAssign = require('../../models/pickup_assign/pickup_assign');
+const DeliveryBeat = require('../../models/delivery_beat/delivery_beat');
 
-router.post('/create_pickup_assign', (req, res)=>{
-    var newPickupAssign = new PickupAssign({
+router.post('/create_delivery_beat', (req, res)=>{
+    var newDeliveryBeat = new DeliveryBeat({
         
         requestedBy:req.body.userId,
         orderId:req.body.orderId,
         items:req.body.items,
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,
+        pickup_id:req.body.pickup_id,
         buyer_id:req.body.buyer_id,
         indent_id:req.body.indent_id,
         
-        pickup_assign_date:req.body.pickup_assign_date,
-        pickup_assign_time:req.body.pickup_assign_tiem,
+        delivery_beat_date:req.body.delivery_beat_date,
+        delivery_beat_time:req.body.delivery_beat_time,
 
     })
-    newPickupAssign.save()
+    newDeliveryBeat.save()
     .then(post => {
-        var message={message:"successfully Pickup Assigned"};
+        var message={message:"successfully Delivery Beat"};
         res.json(message);
     })
     .catch(err => res.json(err));

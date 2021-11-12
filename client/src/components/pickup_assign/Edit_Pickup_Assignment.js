@@ -67,10 +67,6 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         closeMenu2();
     }
     
-    // function addValue(itemPrice){
-    //     setFinalPrice(10+12);
-    //     console.log(finalPrice);
-    // }
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
@@ -193,6 +189,10 @@ export default function Edit_Pickup_Assignment(props, {route}) {
             alert(data.message);
             console.log(data);
         });   
+    }
+    function chooseIndent(i_id) {
+        setIndentId(i_id);
+        closeMenu1();
     }
 
 

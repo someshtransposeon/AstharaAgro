@@ -103,7 +103,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
                 setFlag(true);
-                console.log(item[0].status);
+                // console.log(item[0].vendor_id);
             });
             
        }

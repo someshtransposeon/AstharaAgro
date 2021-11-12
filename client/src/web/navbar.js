@@ -103,6 +103,21 @@ import Pickup_Purchase from '../components/purchase_order/Pickup_Purchase';
 
 import All_Pickup_Assignment from '../components/pickup_assign/All_Pickup_Assignment';
 import Edit_Pickup_Assignment from '../components/pickup_assign/Edit_Pickup_Assignment';
+import Edit_Pickup_Assignment2 from '../components/pickup_assign/Edit_Pickup_Assignment2';
+import All_Pending_Pickup_Assignment from '../components/pickup_assign/All_Pending_Pickup_Assignment';
+import All_Accepted_Pickup_Assignment from '../components/pickup_assign/All_Accepted_Pickup_Assignment';
+
+import All_Delivery_Beats from '../components/delivery_beat/All_Delivery_Beats';
+import All_Pending_Delivery_Beats from '../components/delivery_beat/All_Pending_Delivery_Beats';
+import All_Accepted_Delivery_Beats from '../components/delivery_beat/All_Accepted_Delivery_Beats';
+
+import All_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm';
+import Edit_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/Edit_Pickup_Assignment_Confirm';
+
+import All_Pickup_Assignment_Confirm_Vendor from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm_Vendor';
+import All_Pickup_Assignment_Confirm_Buyer from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm_Buyer';
+
+
 
 
 const NavBar =()  => {
@@ -189,6 +204,8 @@ const NavBar =()  => {
                                             <NavDropdown.Item onClick={()=>changeRole("customer")}>customer</NavDropdown.Item>
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item onClick={()=>changeRole("vendor")}>vendor</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={()=>changeRole("field_executive")}>Field Executive</NavDropdown.Item>
                                         </NavDropdown>
                                         :
                                         <Nav.Link><Button variant="outline-secondary">{role}</Button>{' '}</Nav.Link>
@@ -292,14 +309,14 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="manager" || roleas=="accountant") &&
+                                {(roleas=="manager" || roleas=="field_executive") &&
                                     <>
-                                        <NavDropdown.Item to="/addTransportationCost" as={Link}>Add Transportation</NavDropdown.Item>
+                                        <NavDropdown.Item to="/All_Delivery_Beats" as={Link}>All Delivery Beats</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/allTransportation" as={Link}>All Transportations</NavDropdown.Item>
+                                        <NavDropdown.Item to="/All_Pending_Delivery_Beats" as={Link}>Pending Delivery Beats</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        {/* <NavDropdown.Item to="/ShowTransportation" as={Link}>Transportation</NavDropdown.Item>
-                                        <NavDropdown.Divider /> */}
+                                        <NavDropdown.Item to="/All_Accepted_Delivery_Beats" as={Link}>Accepted Delivery Beats</NavDropdown.Item>
+                                        <NavDropdown.Divider />
                                     </>
                                 }        
 
@@ -383,10 +400,27 @@ const NavBar =()  => {
                             </NavDropdown>
                             <NavDropdown title="Assignment" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/allitems" as={Link}>Delivery</NavDropdown.Item>
+                                <NavDropdown.Divider />
                                 <NavDropdown.Item to="/allitems" as={Link}>Show All Deliveries</NavDropdown.Item>
+                                <NavDropdown.Divider />
                                  {(roleas=="buyer" || roleas=="manager") &&
                                     <> 
                                         <NavDropdown.Item to="/all_pickup_assignment" as={Link}>All Pickup Assignment</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/all_pending_pickup_assignment" as={Link}>All Pending Pickup Assignment</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/all_accepted_pickup_assignment" as={Link}>All Accepted Pickup Assignment</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+
+                                        <NavDropdown.Item to="/all_pickup_assignment_confirm" as={Link}>All Pickup Assignment Confirm</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/all_pickup_assignment_confirm_buyer" as={Link}>All Pickup Assignment Confirm Buyer</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                 {(roleas=="vendor" || roleas=="manager" ) &&
+                                    <> 
+                                        <NavDropdown.Item to="/all_pickup_assignment_confirm_vendor" as={Link}>All Pickup Assignment Confirm Vendor</NavDropdown.Item>        
                                         <NavDropdown.Divider />
                                     </>
                                 }
@@ -600,7 +634,39 @@ const NavBar =()  => {
                     <All_Pickup_Assignment/>
                 </Route>
                 <Route path="/Edit_Pickup_Assignment/:pickupId" render={(props) => <Edit_Pickup_Assignment {...props} />} exact />
+                <Route path="/Edit_Pickup_Assignment2/:pickupId" render={(props) => <Edit_Pickup_Assignment2 {...props} />} exact />
+                {/* <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 {...props} />} exact /> */}
+
+                <Route path="/all_pending_pickup_assignment">
+                    <All_Pending_Pickup_Assignment/>
+                </Route>
+                <Route path="/all_accepted_pickup_assignment">
+                    <All_Accepted_Pickup_Assignment/>
+                </Route>
+                <Route path="/All_Delivery_Beats">
+                    <All_Delivery_Beats/>
+                </Route> 
+                <Route path="/All_Pending_Delivery_Beats">
+                    <All_Pending_Delivery_Beats/>
+                </Route> 
+                <Route path="/All_Accepted_Delivery_Beats">
+                    <All_Accepted_Delivery_Beats/>
+                </Route>    
+                <Route path="/all_pickup_assignment_confirm">
+                    <All_Pickup_Assignment_Confirm/>
+                </Route>
                     
+                <Route path="/all_pickup_assignment_confirm_vendor">
+                    <All_Pickup_Assignment_Confirm_Vendor/>
+                </Route>
+                <Route path="/all_pickup_assignment_confirm_buyer">
+                    <All_Pickup_Assignment_Confirm_Buyer/>
+                </Route>
+                <Route path="/Edit_Pickup_Assignment_Confirm/:pickupConfirmId" render={(props) => <Edit_Pickup_Assignment_Confirm {...props} />} exact />
+
+
+
+
 
 
                 </Switch>

@@ -14,16 +14,16 @@ const theme = {
     },
 };
 
-export default function Edit_Purchase_Order_Confirm3(props, {route}) {
+export default function Edit_Pickup_Assignment(props, {route}) {
 
     
     var id="";
-    var purchaseconfirmid = ""; 
+    var pickupId = ""; 
     if(Platform.OS=="android"){
-        id = route.params.purchaseConfirmId;
+        id = route.params.pickupAssignId;
     }
     else{
-        purchaseconfirmid = props.match.params.purchaseconfirmid;
+        pickupId = props.match.params.pickupId;
     }
 
     
@@ -39,58 +39,51 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const closeMenu2 = () => setVisible2(false);
     const openMenu3 = () => setVisible3(true);
     const closeMenu3 = () => setVisible3(false);
-    const [purchaseConfirmId, setPurchaseConfirmId] = useState("");
+    const [pickupAssignId, setPickupAssignId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
     const [order_id, setOrderId] = useState("");
     const [indent_id, setIndentId] = useState("Choose Indent");
-    const [vendor_id,setVendorId] = useState("Choose Vendor");
+    const [buyer_id,setBuyerId] = useState("Choose Buyer");
+    // const [buyer_id,setPickupAssId] = useState("");
     const [status,setStatus] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
     const [finalPrice,setFinalPrice] = useState("");
 
-    const [transportation_id,setTransportationId] = useState("");  
-    const [transportationCharges, setTransportationCharges] = useState("");
-    const [handlingCharges, setHandlingCharges] = useState("");
-    const [flag1, setFlag1] = useState(true);
-    const [buyer, setBuyer] = useState();
+    const [vendor_id,setVendorId] = useState("Choose Vendor");
+
+    
+
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
-    const [buyer_id, setBuyerId] = useState("");
-    const [buyer_email, setBuyerEmail] = useState("Choose Buyer");
-    
+
 
     function chooseIndent(i_id) {
         setIndentId(i_id);
         closeMenu1();
     }
+    function chooseBuyer(buyerId) {
+        setBuyerId(buyerId);
+        closeMenu2();
+    }
     function chooseVendor(vendorId) {
         setVendorId(vendorId);
         closeMenu2();
     }
-
     
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
-            setPurchaseConfirmId(id);
+            setPickupAssignId(id);
         }
         else{
             setHost("localhost");
-            setPurchaseConfirmId(purchaseconfirmid);
-           
-          
+            setPickupAssignId(pickupId);
+            // addValue(10);
+
         }
-                 // fetch all Buyer
-            fetch("http://localhost:5000/retrive_all_buyers", {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(buyer => setBuyer(buyer));
-      
-        if(purchaseConfirmId){
+        if(pickupAssignId){
        
-            fetch(`http://${host}:5000/retrive_purchase_order_confirm/${purchaseconfirmid}`, {
+            fetch(`http://${host}:5000/retrive_pickup_assignment/${pickupId}`, {
                 method: 'GET'
             })
             .then(res => res.json())
@@ -101,14 +94,29 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 setPurchaseId(item[0].purchaseId);
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
+                setBuyerId(item[0].buyer_id);
                 setStatus(item[0].status);
                 setFlag(true);
-                console.log(item[0].status);
+                console.log(item[0].status)
             });
+
+            // .then(item => {
+            // setItems(item[0].items);
+            // setFlag(true);
+            // });
+
             
        }
 
-    }, [host,purchaseConfirmId,purchaseconfirmid,id]);
+       
+    //    fetch(`http://${host}:5000/retrive_all_transportation_category`, {
+    //         method: 'GET'
+    //     })
+    //     .then(res => res.json())
+    //     .catch(error => console.log(error))
+    //     .then(transportation_category => setTransportationCategory(transportation_category));
+
+    }, [host,pickupAssignId,pickupId,id]);
 
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
@@ -139,21 +147,61 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         }
         setItems(values);
     };
-  
-    //chooseBuyer() function for select the Buyer   
-    function chooseBuyer(id, email){
-        setBuyerId(id)
-        setBuyerEmail(email);
-        fetch(`http://${host}:5000/retrive_buyer/${id}`, {
-            method: 'GET'
-        })        
+    // function submitForm() {
+    //     fetch(`http://${host}:5000/update_purchase_order_confirm/${purchaseconfirmid}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             indent_id:indent_id,
+    //             order_id:order_id,
+    //             items:items,   
+    //             vendor_id:vendor_id, 
+    //             status:status,          
+    //         })
+    //     })
+    //     .then(res => res.json())
+    //     .catch(error => console.log(error))
+    //     .then(data => {
+    //         alert(data.message);
+    //         console.log(data);
+    //     });   
+    // }
+    function submitForm3(){
+        alert("Payment in progress!");
+    };
+   
+    
+    // for update inventory function
+        function submitForm2() {
+            fetch(`http://${host}:5000/update_inventory`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                // indent_id:indent_id,
+                // purchaseConfirmId:purchaseConfirmId,
+                // order_id:order_id,
+                items:items,   
+                // vendor_id:vendor_id, 
+                // status:status,                    
+            })
+        })
         .then(res => res.json())
         .catch(error => console.log(error))
-        closeMenu3();
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });   
     }
-    // for asign buyer 
-        function submitForm() {
-            fetch(`http://${host}:5000/create_pickup_assign`, {
+    function chooseIndent(i_id) {
+        setIndentId(i_id);
+        closeMenu1();
+    }
+     function submitForm() {
+            fetch(`http://${host}:5000/create_pickup_assign_confirm`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -165,12 +213,15 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 order_id:order_id,
                 items:items,   
                 vendor_id:vendor_id,
-                buyer_id:buyer_id, 
+                buyer_id:buyer_id,
+                pickupAssignId:pickupAssignId, 
                 status:status,          
 
                           
             })
-        })
+        }
+
+        )
         
         .then(res => res.json())
         .catch(error => console.log(error))
@@ -181,28 +232,23 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         });   
     }
 
+
+
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Edit Purchase Order Confirm(Assign Buyer to pickup)"/>
+                    <Card.Title title="Edit Pickup Assignment2"/>
                     <Card.Content>
-                    <Menu
-                    visible={visible3}
-                    onDismiss={closeMenu3}
-                    anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu3}>{buyer_email} </Button>}>
-                        {buyer ?
-                            buyer.map((item)=>{
-                                return (
-                                    <Menu.Item title={item.full_name+" ("+item.email+")" } onPress={()=>chooseBuyer(item._id, item.email)} />
-                                )
-                            })
-                            :
-                            <Menu.Item title="No Buyer Available" />
-                        }
-                    </Menu>    
-
-
+                    
+                    {buyer_id &&
+                    <Menu 
+                    visible={visible2}
+                    onDismiss={closeMenu2}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{buyer_id}</Button>}>
+                        <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
+                    </Menu>
+                    }
                     {vendor_id &&
                     <Menu 
                     visible={visible2}
@@ -243,14 +289,15 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                     </DataTable>
                     }
 
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Purchase Confirm</Button> */}
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} 
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>submitForm()} >Confirm Pickup Assignment</Button>
+                    
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} 
                     onPress={()=>submitForm3()}
-                     >Payment</Button> */}
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} 
+                     >Payment</Button>
+                   
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} 
                     onPress={()=>submitForm2()}
-                     >Update Inventory</Button> */}
-                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Assign Buyer</Button>
+                     >Update Inventory</Button>             
                     </Card.Content>
                 </Card>
             </View>
@@ -259,7 +306,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
 }
 
 const styles = StyleSheet.create({
-   card: {
+    card: {
         alignSelf: 'center',
         padding: '1%',
         ...Platform.select({

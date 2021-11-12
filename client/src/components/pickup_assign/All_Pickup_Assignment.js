@@ -30,7 +30,7 @@ export default function All_Pickup_Assignment({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_pending_pickup_assignment`, {
+        fetch(`http://${host}:5000/retrive_all_pickup_assignment`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -114,7 +114,7 @@ export default function All_Pickup_Assignment({ navigation }) {
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment/"+pickupAssignment._id}>Details</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
                                     }
                                 </DataTable.Cell>
                              </DataTable.Row>

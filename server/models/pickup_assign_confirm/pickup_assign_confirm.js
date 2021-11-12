@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
-const pickupAssignSchema = new mongoose.Schema({
+const pickupAssignConfirmSchema = new mongoose.Schema({
     
     requestedBy:{
         type: mongoose.Schema.Types.ObjectId,
@@ -30,14 +30,18 @@ const pickupAssignSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Buyer'
     },
+    pickupAssignId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'PickupAssign'
+    },
     items:{
         type:mongoose.Schema.Types.Mixed,
     },
-    pickup_assign_date:{
+    pickup_assign_confirm_date:{
         type:Date,
         default: Date.now,
     },
-    pikup_assign_date:{
+    pickup_assign_confirm_date:{
         type:Date,
     },
     status: {
@@ -47,5 +51,5 @@ const pickupAssignSchema = new mongoose.Schema({
 
 });
 
-const PickupAssign = mongoose.model('PickupAssign', pickupAssignSchema);
-module.exports = PickupAssign;
+const PickupAssignConfirm = mongoose.model('PickupAssignConfirm', pickupAssignConfirmSchema);
+module.exports = PickupAssignConfirm;

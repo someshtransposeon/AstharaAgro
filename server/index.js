@@ -134,6 +134,16 @@ const vendors_update_item = require('./routes/vendorsItem/vendors_update_item');
 
 const create_pickup_assign = require('./routes/pickup_assign/create_pickup_assign');
 const retrive_pickup_assign = require('./routes/pickup_assign/retrive_pickup_assign');
+const update_pickup_assign = require('./routes/pickup_assign/update_purchase_order');
+// const retrive_pickup_assign = require('./routes/pickup_assign/retrive_pickup_assign');
+
+const create_delivery_beat = require('./routes/delivery_beat/create_delivery_beat');
+const retrive_delivery_beat = require('./routes/delivery_beat/retrive_delivery_beat');
+
+const create_pickup_assign_confirm = require('./routes/pickup_assign_confirm/create_pickup_assign_confirm');
+const retrive_pickup_assign_confirm = require('./routes/pickup_assign_confirm/retrive_pickup_assign_confirm');
+
+const update_pickup_assign_confirm_vendor = require('./routes/pickup_assign_confirm/update_pickup_assign_confirm_vendor');
 
 
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
@@ -278,7 +288,14 @@ app.use('/', vendors_update_item);
 
 app.use('/', create_pickup_assign);
 app.use('/', retrive_pickup_assign);
+app.use('/', update_pickup_assign);
 
+app.use('/', create_delivery_beat);
+app.use('/', retrive_delivery_beat);
+
+app.use('/', create_pickup_assign_confirm);
+app.use('/', retrive_pickup_assign_confirm);
+app.use('/', update_pickup_assign_confirm_vendor);
 
 
 

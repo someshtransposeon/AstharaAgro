@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
-const pickupAssignSchema = new mongoose.Schema({
+const deliveryBeatSchema = new mongoose.Schema({
     
     requestedBy:{
         type: mongoose.Schema.Types.ObjectId,
@@ -13,6 +13,10 @@ const pickupAssignSchema = new mongoose.Schema({
     purchaseId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Purchase'
+    },
+    pickup_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'PickupAssign'
     },
     indent_id:{
         type:mongoose.Schema.Types.ObjectId,
@@ -47,5 +51,5 @@ const pickupAssignSchema = new mongoose.Schema({
 
 });
 
-const PickupAssign = mongoose.model('PickupAssign', pickupAssignSchema);
-module.exports = PickupAssign;
+const DeliveryBeat = mongoose.model('DeliveryBeat', deliveryBeatSchema);
+module.exports = DeliveryBeat;

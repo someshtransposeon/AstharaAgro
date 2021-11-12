@@ -16,9 +16,9 @@ const theme = {
 };
 
 
-export default function All_Purchase_Order_Confirm({ navigation }) {
+export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
 
-    const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
+    const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
@@ -30,13 +30,13 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_purchase_order_confirm`, {
+        fetch(`http://${host}:5000/retrive_all_pickup_assignment_confirm`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allPurchaseOrderConfirm => setAllPurchaseOrderConfirm(allPurchaseOrderConfirm));
-    }, [allPurchaseOrderConfirm, host]);
+        .then(allPickupAssignmentConfirm => setAllPickupAssignment(allPickupAssignmentConfirm));
+    }, [allPickupAssignmentConfirm, host]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -50,7 +50,7 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
     };
 
     const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_purchase_status/${id}`, {
+        fetch(`http://${host}:5000/update_pickup_assign_confirm_vendor_status/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
              <DataTable style={styles.datatable}>
-               <Title>All Pending Purchase Order Confirm</Title>
+               <Title>All Pickup Assignment Confirm Vendor</Title>
                <Searchbar
                     icon={() => <FontAwesomeIcon icon={ faSearch } />}
                     clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -85,35 +85,32 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                 />
 
                 <DataTable.Header>
-                    <DataTable.Title>PurchaseConfirm ID</DataTable.Title>
+                    <DataTable.Title>Pickup ID</DataTable.Title>
+                    <DataTable.Title numeric>Buyer ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
                                                                                                                                                                                                                         
             {/* //comment code aug 31/08/2012 for testing....  */}
-                {allPurchaseOrderConfirm ?
-                    allPurchaseOrderConfirm.map((purchaseOrderConfirm,index)=>{
-                         if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                {allPickupAssignmentConfirm ?
+                    allPickupAssignmentConfirm.map((pickupAssignmentConfirm,index)=>{
+                         if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                          return (
                               <DataTable.Row>
-                                <DataTable.Cell>{purchaseOrderConfirm._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
-                                {/* <DataTable.Cell  numeric>
-                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{purchaseOrderConfirm.status}</Button>}>
-                                    <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", purchaseOrderConfirm._id, index)}/>
-                                    <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", purchaseOrderConfirm._id, index)}/>
-                                    <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  purchaseOrderConfirm._id, index)}/>
-                                    <Menu.Item title="Accept" onPress={()=>StatusChange("Accepted",  purchaseOrderConfirm._id, index)}/>
-                                    <Menu.Item title="Decline" onPress={()=>StatusChange("Decline",  purchaseOrderConfirm._id, index)}/>
-                                    <Menu.Item title="Cancel" onPress={()=>StatusChange("Cancel",  purchaseOrderConfirm._id, index)}/>
+                                <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
+                                <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
+                                <DataTable.Cell  numeric>
+                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignmentConfirm.status}</Button>}>
+                                    <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignmentConfirm._id, index)}/>
+                                    <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignmentConfirm._id, index)}/>
                                     
                                     </Menu>
-                                </DataTable.Cell>    */}
+                                </DataTable.Cell>   
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}>Details</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment_Confirm/"+pickupAssignmentConfirm._id}>Details</Link></Button>
                                     }
                                 </DataTable.Cell>
                              </DataTable.Row>
