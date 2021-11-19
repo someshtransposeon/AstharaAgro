@@ -14,6 +14,17 @@ router.get('/retrive_all_order',(req, res)=>{
     });
 });
 
+router.get('/retrive_all_completed_order',(req, res)=>{
+    Order.find({status:"completed"}, function(err, orders){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(orders);
+        }
+    });
+});
+
 
 router.get('/retrive_order/:id',(req, res)=>{
     Order.find({'_id':req.params.id}, function(err, order){

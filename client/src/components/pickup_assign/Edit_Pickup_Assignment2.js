@@ -97,7 +97,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setBuyerId(item[0].buyer_id);
                 setStatus(item[0].status);
                 setFlag(true);
-                console.log(item[0].status)
+                console.log(item)
             });
 
             // .then(item => {
@@ -291,13 +291,13 @@ export default function Edit_Pickup_Assignment(props, {route}) {
 
                     <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>submitForm()} >Confirm Pickup Assignment</Button>
                     
-                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} 
+                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} 
                     onPress={()=>submitForm3()}
                      >Payment</Button>
                    
                     <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} 
                     onPress={()=>submitForm2()}
-                     >Update Inventory</Button>             
+                     >Update Inventory</Button>   */}
                     </Card.Content>
                 </Card>
             </View>

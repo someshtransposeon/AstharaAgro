@@ -6,7 +6,7 @@ router.post('/create_pickup_assign_confirm', (req, res)=>{
     var newPickupAssignConfirm = new PickupAssignConfirm({
         
         requestedBy:req.body.userId,
-        orderId:req.body.orderId,
+        order_id:req.body.order_id,
         items:req.body.items,
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,

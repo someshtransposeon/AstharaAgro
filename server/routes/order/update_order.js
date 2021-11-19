@@ -52,4 +52,25 @@ router.put('/update_status/:id',(req, res) =>{
     })
 });
 
+//define route update to status by id
+router.put('/update_completion_status/:id',(req, res) =>{
+    var order_update = {
+        completion_status: req.body.completion_status,
+    }
+    Order.findOneAndUpdate({'_id':req.params.id}, order_update)
+    .then((order) => {
+        if(order){
+            var message = { message: "Status sucessfully updated" };
+            res.json(message);
+        }else{
+            var message = { message: "order not found" };
+            res.json(message);
+        }
+    }).catch(err => {
+        console.log(err);
+        var message = { message:"something went wrong!",success: false, err: err };
+        res.json(message);
+    })
+});
+
 module.exports = router;

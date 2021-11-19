@@ -29,7 +29,7 @@ export default function EditOrderItem(props,{route}) {
     const closeMenu2 = () => setVisible2(false);
 
     const [searchQuery1, setSearchQuery1] = useState('');
-    const [orderId, setOrderId] = useState("");
+    // const [orderId, setOrderId] = useState("");
     const [visible, setVisible] = useState([]);
     const [visible2, setVisible2] = useState(false);
 
@@ -46,6 +46,7 @@ export default function EditOrderItem(props,{route}) {
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('');
     const [vendor_id, setVendorId] = useState("");
+    const [order_id, setOrderId] = useState("");
     const [vendor_email, setVendorEmail] = useState("Choose Vendor");
     const [user2, setUser2] = useState();
     const [indent_id, setIndentId] = useState("Choose Indent");
@@ -80,8 +81,8 @@ export default function EditOrderItem(props,{route}) {
         .catch(error => console.log(error))
         .then(user2 => setUser2(user2));
 
-        if(flag && orderId){
-            fetch(`http://${host}:5000/retrive_order/${orderId}`, {
+        if(flag && order_id){
+            fetch(`http://${host}:5000/retrive_order/${order_id}`, {
                 method: 'GET'
             })
             .then(res => res.json())
@@ -100,7 +101,7 @@ export default function EditOrderItem(props,{route}) {
                 setFlag(false);
             });
         }
-    }, [item,host,orderId,id,orderid,flag]);
+    }, [item,host,order_id,id,orderid,flag]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -148,8 +149,8 @@ export default function EditOrderItem(props,{route}) {
             },
             body: JSON.stringify({
                 
-                // order_id:order_id,
-                orderId:orderId,
+                order_id:order_id,
+                // orderId:orderId,
                 items:items,
                 user_id:user_id,
                 indent_id:indent_id,

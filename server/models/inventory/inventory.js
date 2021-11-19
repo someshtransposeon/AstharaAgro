@@ -6,26 +6,6 @@ const inventorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'InventoryCategory',
     },
-    // item_description:[{
-    //     itemId:{
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'Item',
-    //     },
-    //     quantity:{
-    //         type:Number,
-    //         default:0,
-    //     },
-    //     griding:{
-    //         type: String,
-    //     },
-    //     unit_of_measurement:{
-    //         type:String,
-    //     },
-    //     price:{
-    //         type: mongoose.Schema.Types.Double,
-    //         required:true,
-    //     },
-    // }],
     items:{
         type:mongoose.Schema.Types.Mixed,
         ref:'items'
@@ -46,9 +26,21 @@ const inventorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Indent',
     },
+    order_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order',
+    },
     vendor_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendor',
+    },
+    buyer_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Buyer',
+    },
+    pickupAssignId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'PickupAssignConfirm',
     },
     remark: {
         type: String,

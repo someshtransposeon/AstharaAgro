@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 
 const theme = {
@@ -14,16 +14,28 @@ const theme = {
     },
 };
 
-export default function CreateOrder({ navigation }) {
+export default function EditCompletedOrder(props,{route}) {
 
-    const [searchQuery1, setSearchQuery1] = useState('');
-    const [searchQuery2, setSearchQuery2] = useState('');
-    const [visible, setVisible] = useState([]);
+    var orderid = "";
+    var id="";
+    if(Platform.OS=="android"){
+        id = route.params.orderId;
+    }
+    else{
+        orderid = props.match.params.orderid;
+    }
     const [visible2, setVisible2] = useState(false);
+
+    const openMenu2 = () => setVisible2(true);
+    const closeMenu2 = () => setVisible2(false);
+    
+    
+    const [searchQuery1, setSearchQuery1] = useState('');
+    const [orderId, setOrderId] = useState("");
+    const [visible, setVisible] = useState([]);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:''}]);
-    // const [itemPrice, setItemPrice] = useState("");
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:''}]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -33,22 +45,32 @@ export default function CreateOrder({ navigation }) {
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('');
-    const [flag, setFlag] = useState(true);
-    const [customer, setCustomer] = useState();
-    const [customerEmail, setCustomerEmail] = useState("Choose customer");
-    const [category,setCategory] = useState("");
-    const [role,setRole]=useState("");
+    const [sales, setSales] = useState();
+    const [sales_id, setSalesId] = useState("");
+    const [sales_email, setSalesEmail] = useState("Choose Sales");
     const [userId,setUserId]=useState("");
-    const [requestedBy,setRequestedBy]=useState("");
-    const [flag2,setFlag2]=useState(true);
+    // const [purchaseId, setPurchaseId] = useState("");
+    // const [order_id, setOrderId] = useState("");
+    // const [indent_id, setIndentId] = useState("Choose Indent");
+    // const [vendor_id,setVendorId] = useState("Choose Vendor");
+    const [flag, setFlag] = useState(true);
 
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
+            setOrderId(id);
         }
         else{
             setHost("localhost");
+            setOrderId(orderid);
         }
+        // fetch all sales
+        fetch("http://localhost:5000/retrive_all_sales", {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(sales => setSales(sales));
 
         fetch(`http://${host}:5000/vendors_retrive_all_item`, {
             method: 'GET'
@@ -57,41 +79,28 @@ export default function CreateOrder({ navigation }) {
         .catch(error => console.log(error))
         .then(item => setItem(item));
 
-        fetch(`http://${host}:5000/retrive_all_customer`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => setCustomer(customer));
-
-        fetch('http://localhost:5000/retrive_user_category_type/customer', {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .then(data =>{
-            setCategory(data[0]._id);
-            setRole(data[0].category_name);
-        });
-
-        if(flag2 && userId!=""){
-            fetch(`http://${host}:5000/retrive_address_by_userId/${userId}`, {
+        if(flag && orderId){
+            fetch(`http://${host}:5000/retrive_order/${orderId}`, {
                 method: 'GET'
             })
             .then(res => res.json())
             .catch(error => console.log(error))
-            .then(address => {
-                // setAddress(address[0].address);
-                // setLandmark(address[0].landmark);
-                // setDistrict(address[0].district);
-                // setState(address[0].state);
-                // setCountry(address[0].country);
-                // setPincode(address[0].postal_code);
-                console.log(address);
-                console.log(userId);
-                setFlag2(false);
+            .then(order => {
+                setName(order[0].name);
+                setEmail(order[0].email);
+                setMobileNo(order[0].mobile_no);
+                setAddress(order[0].address);
+                setLandmark(order[0].landmark);
+                setDistrict(order[0].district);
+                setState(order[0].state);
+                setCountry(order[0].country);
+                setPincode(order[0].postal_code);
+                setItems(order[0].items);
+                setFlag(false);
+                console.log(order[0])
             });
         }
-    }, [item,host,userId,flag2]);
+    }, [item,sales,host,orderId,id,orderid,flag]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -104,16 +113,12 @@ export default function CreateOrder({ navigation }) {
         setVisible(values);
     };
 
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
-
-    const ItemChange = (index, fieldname, fieldvalue, itemId,unit,price) => {
+    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
             values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
             values[index].itemUnit=unit;
-            values[index].itemPrice=price;
             closeMenu(index);
         }
         else{
@@ -121,26 +126,24 @@ export default function CreateOrder({ navigation }) {
         }
         setItems(values);
     };
-    
-    //  const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-    //     const values = [...items];
-    //     if (fieldname === "item") {
-    //         values[index].itemId = itemId;
-    //         values[index].itemName = fieldvalue;
-    //         values[index].itemUnit=unit;
-    //     }
-    //     else{
-    //         values[index].itemPrice = fieldvalue;
-    //     }
-    //     setItems(values);
-    // };
-    const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit,price) => {
+    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
             values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
             values[index].itemUnit=unit;
-            values[index].itemPrice=price;
+        }
+        else{
+            values[index].itemPrice = fieldvalue;
+        }
+        setItems(values);
+    };
+    const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit) => {
+        const values = [...items];
+        if (fieldname === "item") {
+            values[index].itemId = itemId;
+            values[index].itemName = fieldvalue;
+            values[index].itemUnit=unit;
         }
         else{
             values[index].itemNegotiatePrice = fieldvalue;
@@ -160,21 +163,6 @@ export default function CreateOrder({ navigation }) {
         }
         setItems(values);
         };
-    const CustomerChange = (id, email) => {
-        setCustomerEmail(email);
-        fetch(`http://${host}:5000/retrive_customer/${id}`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => {
-            setEmail(customer[0].email);
-            setName(customer[0].full_name);
-            setMobileNo(customer[0].mobile_no);
-            setUserId(customer[0].userId);
-        });
-        closeMenu2();
-    };
 
     const handleAddFields = () => {
         const values = [...items];
@@ -187,81 +175,96 @@ export default function CreateOrder({ navigation }) {
         values.splice(index, 1);
         setItems(values);
     };
-
+    // for asign Sales 
     function submitForm() {
-        fetch(`http://${host}:5000/create_order`, {
+            fetch(`http://${host}:5000/create_delivery_assign`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+        
             body: JSON.stringify({
                 requestedBy:userId,
-                userId: userId,
-                name: name,
-                email: email,
-                mobile_no: mobileNo,
-                address: address,
-                landmark: landmark,
-                district: district,
-                state: state,
-                country: country,
-                postal_code: pincode,
-                items: items,
-                // item_price:itemPrice
+                // indent_id:indent_id,
+                // purchaseId:purchaseId,
+                name:name,
+                mobile_no:mobileNo,
+                email:email,
+
+                address:address,
+                landmark:landmark,
+                district:district,
+                state:state,
+                country:country,
+                postal_code:pincode,
+        
+                orderId:orderId,
+                items:items,   
+                // vendor_id:vendor_id,
+                sales_id:sales_id, 
+                status:status,          
+
+                          
             })
+        })
+        
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert("OK");
+            console.log(data);
+        });   
+    }
+    // function submitForm() {
+    //     fetch(`http://${host}:5000/update_order/${orderId}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             name: name,
+    //             email: email,
+    //             mobile_no: mobileNo,
+    //             address: address,
+    //             landmark: landmark,
+    //             district: district,
+    //             state: state,
+    //             country: country,
+    //             postal_code: pincode,
+    //             items: items,
+    //         })
+    //     })
+    //     .then(res => res.json())
+    //     .catch(error => console.log(error))
+    //     .then(data => {
+    //         alert(data.message);
+    //         console.log(data);
+    //     });
+    // }
+
+    function deleteOrder() {
+        fetch(`http://${host}:5000/delete_order/${orderId}`, {
+            method: 'GET',
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
             console.log(data);
-        }); 
-
-        if(flag==false) {
-            fetch('http://localhost:5000/create_user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    category:category,
-                    role:role,
-                    full_name:name,
-                    email:email,
-                    mobile_no:mobileNo,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                console.log(data);
-            });
-
-            fetch(`http://${host}:5000/create_address`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    address: address,
-                    landmark: landmark,
-                    district: district,
-                    state: state,
-                    country: country,
-                    postal_code: pincode,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                console.log(data);
-            }); 
-        }
+        });
+    }
+    function chooseSales(id, email){
+        setSalesId(id)
+        setSalesEmail(email);
+        fetch(`http://${host}:5000/retrive_sales/${id}`, {
+            method: 'GET'
+        })        
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        closeMenu2();
     }
 
     const onChangeSearch1 = query => setSearchQuery1(query);
-    const onChangeSearch2 = query => setSearchQuery2(query);
 
     return (
         <Provider theme={theme}>
@@ -269,39 +272,8 @@ export default function CreateOrder({ navigation }) {
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Create Sales Order"/>
+                    <Card.Title title="Edit Completed Order"/>
                     <Card.Content>
-                    <View style={styles.customer}>
-                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
-                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
-                    </View>
-                    {flag &&
-                        <Menu
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
-                                <Searchbar
-                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                    placeholder="Search"
-                                    onChangeText={onChangeSearch2}
-                                    value={searchQuery2}
-                                />
-                                {customer ?
-                                    customer.map((item)=>{
-                                        if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
-                                            </>
-                                        )
-                                        }
-                                    })
-                                    :
-                                    <Menu.Item title="No Customers are available" />
-                                }
-                        </Menu>
-                    }
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
@@ -329,8 +301,7 @@ export default function CreateOrder({ navigation }) {
                                         if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
                                         return (
                                             <>
-                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} 
-                                            onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit_name,item.item_price)}/>
+                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit)}/>
                                             </>
                                         )
                                         }
@@ -341,16 +312,10 @@ export default function CreateOrder({ navigation }) {
                             </Menu>
                             <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                           
-                            {/* <TextInput  keyboardType='numeric' mode="outlined" label="Price"
-                             value={ (it.itemPrice / 100) * 30 +(it.itemPrice) } 
-                            /> */}
-
-                             <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
+                            <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
                              value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
                            onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
                              />
-                            
                             <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
@@ -367,7 +332,34 @@ export default function CreateOrder({ navigation }) {
                             </View>
                         </View>
                     ))}
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Order</Button>
+
+                    {/* {sales_id &&
+                    <Menu 
+                    visible={visible2}
+                    onDismiss={closeMenu2}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{sales_id}</Button>}>
+                        <Menu.Item title="${pId}" onPress={()=>chooseSales(sales_id)} />
+                    </Menu>
+                    }    */}
+                    <Menu
+                    visible={visible2}
+                    onDismiss={closeMenu2}
+                    anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{sales_email} </Button>}>
+                        {sales ?
+                            sales.map((item)=>{
+                                return (
+                                    <Menu.Item title={item.full_name+" ("+item.email+")" } onPress={()=>chooseSales(item._id, item.email)} />
+                                )
+                            })
+                            :
+                            <Menu.Item title="No Sales Available" />
+                        }
+                    </Menu>  
+                    
+                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Assign Sales</Button>            
+
+                    {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Order</Button>
+                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button> */}
                     </Card.Content>
                 </Card>
             </View>
@@ -416,18 +408,4 @@ const styles = StyleSheet.create({
     button: {
         marginTop: '2%',
     },
-    customer: {
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-                
-            },
-            default: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-            }
-        })
-    }
 }); 

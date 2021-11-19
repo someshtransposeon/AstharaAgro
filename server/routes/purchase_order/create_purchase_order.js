@@ -6,10 +6,11 @@ router.post('/create_purchase_order', (req, res)=>{
     var newPurchaseOrder = new PurchaseOrder({
         
         requestedBy:req.body.userId,
-        orderId:req.body.orderId,
+        // orderId:req.body.orderId,
         items:req.body.items,
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,
+        order_id:req.body.order_id,
         // indent_id:req.body.indent_id,
         
         purchase_order_date:req.body.purchase_order_date,

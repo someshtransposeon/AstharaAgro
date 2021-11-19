@@ -1,14 +1,39 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
-const orderSchema = new mongoose.Schema({
+const deliveryAssignSchema = new mongoose.Schema({
+    
     requestedBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    userId:{
+    orderId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'Order'
     },
+    purchaseId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Purchase'
+    },
+    indent_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Indent'
+    },
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    vendor_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Vendor'
+    },
+    sales_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    items:{
+        type:mongoose.Schema.Types.Mixed,
+    },
+
     name:{
         type:String,
     },
@@ -21,7 +46,6 @@ const orderSchema = new mongoose.Schema({
     },
     landmark: {
         type: String,
-        default: "",
     },
     district: { 
         type: String,
@@ -42,18 +66,13 @@ const orderSchema = new mongoose.Schema({
     mobile_no: {
         type: String,
     },
-    items: {
-        type: mongoose.Schema.Types.Mixed,
-    },
-    status:{
-        type:String,
+    
+    status: {
+        type: String,
         default:"pending",
     },
-    completion_status:{
-        type:String,
-        default:"new",
-    }
+
 });
 
-const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+const deliveryAssign = mongoose.model('deliveryAssign', deliveryAssignSchema);
+module.exports = deliveryAssign;

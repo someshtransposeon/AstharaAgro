@@ -144,6 +144,10 @@ const create_pickup_assign_confirm = require('./routes/pickup_assign_confirm/cre
 const retrive_pickup_assign_confirm = require('./routes/pickup_assign_confirm/retrive_pickup_assign_confirm');
 
 const update_pickup_assign_confirm_vendor = require('./routes/pickup_assign_confirm/update_pickup_assign_confirm_vendor');
+const create_delivery_assign = require('./routes/delivery_assign/create_delivery_assign');
+const retrive_delivery_assign = require('./routes/delivery_assign/retrive_delivery_assign');
+
+
 
 
 mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
@@ -297,6 +301,8 @@ app.use('/', create_pickup_assign_confirm);
 app.use('/', retrive_pickup_assign_confirm);
 app.use('/', update_pickup_assign_confirm_vendor);
 
+app.use('/', create_delivery_assign);
+app.use('/', retrive_delivery_assign);
 
 
 app.listen(5000, ()=>{

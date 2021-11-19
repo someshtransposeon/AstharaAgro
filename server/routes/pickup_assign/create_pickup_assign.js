@@ -6,7 +6,7 @@ router.post('/create_pickup_assign', (req, res)=>{
     var newPickupAssign = new PickupAssign({
         
         requestedBy:req.body.userId,
-        orderId:req.body.orderId,
+        order_id:req.body.order_id,
         items:req.body.items,
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,
@@ -14,7 +14,7 @@ router.post('/create_pickup_assign', (req, res)=>{
         indent_id:req.body.indent_id,
         
         pickup_assign_date:req.body.pickup_assign_date,
-        pickup_assign_time:req.body.pickup_assign_tiem,
+        pickup_assign_time:req.body.pickup_assign_time,
 
     })
     newPickupAssign.save()

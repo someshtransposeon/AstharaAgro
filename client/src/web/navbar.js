@@ -117,6 +117,12 @@ import Edit_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/
 import All_Pickup_Assignment_Confirm_Vendor from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm_Vendor';
 import All_Pickup_Assignment_Confirm_Buyer from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm_Buyer';
 
+import Edit_Pickup_Assignment_Confirm_Buyer from '../components/pickup_assign_confirm/Edit_Pickup_Assignment_Confirm_Buyer';
+
+import AllCompletedOrders from '../components/order/all_completed_orders';
+import EditCompletedOrder from '../components/order/edit_completed_order';
+import EditCompletedOrder2 from '../components/order/edit_completed_order2';
+import All_Delivery_Assignment from '../components/delivery_assign/All_Delivery_Assignment';
 
 
 
@@ -393,6 +399,12 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                {( roleas=="manager" || roleas=="accountant") &&
+                                    <>
+                                        <NavDropdown.Item to="/allcompletedorders" as={Link}>All Completed Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                             </NavDropdown>
                             <NavDropdown title="Inventory" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/allinventory" as={Link}>Show Inventory</NavDropdown.Item>
@@ -421,6 +433,12 @@ const NavBar =()  => {
                                  {(roleas=="vendor" || roleas=="manager" ) &&
                                     <> 
                                         <NavDropdown.Item to="/all_pickup_assignment_confirm_vendor" as={Link}>All Pickup Assignment Confirm Vendor</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="FE" || roleas=="manager"|| roleas=="manager" ) &&
+                                    <> 
+                                        <NavDropdown.Item to="/All_Delivery_Assignment" as={Link}>All Delivery Assignment</NavDropdown.Item>        
                                         <NavDropdown.Divider />
                                     </>
                                 }
@@ -663,10 +681,18 @@ const NavBar =()  => {
                     <All_Pickup_Assignment_Confirm_Buyer/>
                 </Route>
                 <Route path="/Edit_Pickup_Assignment_Confirm/:pickupConfirmId" render={(props) => <Edit_Pickup_Assignment_Confirm {...props} />} exact />
-
-
-
-
+                <Route path="/Edit_Pickup_Assignment_Confirm_Buyer/:pickupConfirmId" render={(props) => <Edit_Pickup_Assignment_Confirm_Buyer {...props} />} exact />
+                
+                <Route path="/allcompletedorders">
+                    <AllCompletedOrders/>
+                </Route>        
+                <Route path="/editCompletedorder/:orderid" render={(props) => <EditCompletedOrder {...props} />} exact />    
+                    
+                <Route path="/All_Delivery_Assignment">
+                    <All_Delivery_Assignment/>
+                </Route>    
+                <Route path="/editCompletedorder2/:orderid" render={(props) => <EditCompletedOrder2 {...props} />} exact />    
+                
 
 
                 </Switch>

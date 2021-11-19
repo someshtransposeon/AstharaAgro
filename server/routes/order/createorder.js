@@ -5,6 +5,7 @@ const Order = require('../../models/order/order');
 //Define Route to create order 
 router.post('/create_order', (req, res)=>{
     var newOrder = new Order({
+        userId: req.body.userId,
         name: req.body.name,
         email: req.body.email,
         mobile_no: req.body.mobile_no,

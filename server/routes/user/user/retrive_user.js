@@ -74,6 +74,27 @@ router.get('/retrive_buyer/:id',(req, res)=>{
         }
     });
 });
+
+router.get('/retrive_all_sales',(req, res)=>{
+    User.find({role:"FE"}, function(err, users){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(users);
+        }
+    });
+});
+router.get('/retrive_sales/:id',(req, res)=>{
+    User.find({'_id':req.params.id}, function(err, user){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(user);
+        }
+    });
+});
 // router.get('/delete_account_requests',(req, res)=>{
 //     User.find({remark:"detete account request sent!"}, function(err, users){
 //         if(err){
