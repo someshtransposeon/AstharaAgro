@@ -30,7 +30,7 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_purchase_order_confirm`, {
+        fetch(`http://${host}:5000/retrive_all_pending_purchase_order_confirm`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -191,10 +191,10 @@ const styles = StyleSheet.create({
                 
             },
             android: {
-                width: '90%',
+                width: '80%',
             },
             default: {
-                width: '50%',
+                width: '90%',
                 border: '1px solid gray',
                 borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',

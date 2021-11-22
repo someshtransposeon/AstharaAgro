@@ -18,7 +18,7 @@ const deliveryAssignSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Indent'
     },
-    user_id:{
+    userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
@@ -69,7 +69,7 @@ const deliveryAssignSchema = new mongoose.Schema({
     
     status: {
         type: String,
-        default:"pending",
+        default:"pending for sales acceptance",
     },
 
 });

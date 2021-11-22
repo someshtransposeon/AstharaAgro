@@ -23,6 +23,16 @@ router.get('/retrive_user/:id',(req, res)=>{
         }
     });
 });
+router.get('/retrive_user_id/:email',(req, res)=>{
+    User.find({'email':req.params.email}, function(err, user){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(user);
+        }
+    });
+});
 
 router.get('/retrive_all_disabled_user',(req, res)=>{
     User.find({status:"disabled"}, function(err, users){
@@ -76,7 +86,7 @@ router.get('/retrive_buyer/:id',(req, res)=>{
 });
 
 router.get('/retrive_all_sales',(req, res)=>{
-    User.find({role:"FE"}, function(err, users){
+    User.find({role:"sales"}, function(err, users){
         if(err){
             console.log(err);
         }
@@ -105,5 +115,15 @@ router.get('/retrive_sales/:id',(req, res)=>{
 //         }
 //     });
 // });
+router.get('/retrive_all_vendors',(req, res)=>{
+    User.find({role:"vendor",status:"enabled"}, function(err, users){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(users);
+        }
+    });
+});
 
 module.exports = router;

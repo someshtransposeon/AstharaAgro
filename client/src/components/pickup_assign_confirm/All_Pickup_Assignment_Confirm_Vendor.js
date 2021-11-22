@@ -101,7 +101,7 @@ export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
                                 <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
                                 <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignmentConfirm.status}</Button>}>
-                                    <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignmentConfirm._id, index)}/>
+                                    <Menu.Item title="Accept" onPress={()=>StatusChange("vendor accepted",  pickupAssignmentConfirm._id, index)}/>
                                     <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignmentConfirm._id, index)}/>
                                     
                                     </Menu>

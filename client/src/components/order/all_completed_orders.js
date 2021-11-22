@@ -115,7 +115,7 @@ export default function AllCompletedOrders({ navigation }) {
                                     <Menu
                                         visible={visible[index]}
                                         onDismiss={()=>closeMenu(index)}
-                                        anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
+                                        anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.completion_status}</Button>}>
                                             <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index)}/>
                                             <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index)}/>
                                     </Menu>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '70%',
+                width: '80%',
                 border: '1px solid gray',
                 borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',

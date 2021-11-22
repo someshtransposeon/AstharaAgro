@@ -123,6 +123,7 @@ import AllCompletedOrders from '../components/order/all_completed_orders';
 import EditCompletedOrder from '../components/order/edit_completed_order';
 import EditCompletedOrder2 from '../components/order/edit_completed_order2';
 import All_Delivery_Assignment from '../components/delivery_assign/All_Delivery_Assignment';
+import All_Pending_Delivery_Assignment from '../components/delivery_assign/All_Pending_Delivery_Assignment';
 
 
 
@@ -210,8 +211,6 @@ const NavBar =()  => {
                                             <NavDropdown.Item onClick={()=>changeRole("customer")}>customer</NavDropdown.Item>
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item onClick={()=>changeRole("vendor")}>vendor</NavDropdown.Item>
-                                            <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={()=>changeRole("field_executive")}>Field Executive</NavDropdown.Item>
                                         </NavDropdown>
                                         :
                                         <Nav.Link><Button variant="outline-secondary">{role}</Button>{' '}</Nav.Link>
@@ -436,9 +435,11 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="FE" || roleas=="manager"|| roleas=="manager" ) &&
+                                {(roleas=="accountant" || roleas=="manager"|| roleas=="sales" ) &&
                                     <> 
                                         <NavDropdown.Item to="/All_Delivery_Assignment" as={Link}>All Delivery Assignment</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Pending_Delivery_Assignment" as={Link}>All Pending Delivery Assignment</NavDropdown.Item>        
                                         <NavDropdown.Divider />
                                     </>
                                 }
@@ -692,7 +693,13 @@ const NavBar =()  => {
                     <All_Delivery_Assignment/>
                 </Route>    
                 <Route path="/editCompletedorder2/:orderid" render={(props) => <EditCompletedOrder2 {...props} />} exact />    
-                
+                <Route path="/All_Pending_Delivery_Assignment">
+                    <All_Pending_Delivery_Assignment/>
+                </Route>    
+
+
+
+
 
 
                 </Switch>

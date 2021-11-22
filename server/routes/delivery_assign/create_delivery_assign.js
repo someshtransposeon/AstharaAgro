@@ -8,7 +8,7 @@ router.post('/create_delivery_assign', (req, res)=>{
         requestedBy:req.body.userId,
         orderId:req.body.orderId,
         items:req.body.items,
-        user_id:req.body.user_id,
+        userId:req.body.userId,
         vendor_id:req.body.vendor_id,
         sales_id:req.body.sales_id,
         indent_id:req.body.indent_id,

@@ -35,7 +35,7 @@ export default function Buyer_add_vendor(){
     }, []);
     //define a function for sending the data in corresponding database
     function submitForm(){
-        fetch('http://localhost:5000/create_user/', {
+        fetch(`http://localhost:5000/create_user/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const orderSchema = new mongoose.Schema({
-    requestedBy:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
+    // requestedBy:{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    // },
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
+    },
+    customerId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Customer',
     },
     name:{
         type:String,
@@ -41,9 +45,11 @@ const orderSchema = new mongoose.Schema({
     },
     mobile_no: {
         type: String,
+        required: true,
     },
     items: {
         type: mongoose.Schema.Types.Mixed,
+        required: true,
     },
     status:{
         type:String,

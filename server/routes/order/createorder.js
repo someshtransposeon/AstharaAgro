@@ -5,7 +5,9 @@ const Order = require('../../models/order/order');
 //Define Route to create order 
 router.post('/create_order', (req, res)=>{
     var newOrder = new Order({
+        // requestedBy:req.body.requestedBy,
         userId: req.body.userId,
+        customerId: req.body.customerId,
         name: req.body.name,
         email: req.body.email,
         mobile_no: req.body.mobile_no,
@@ -16,7 +18,6 @@ router.post('/create_order', (req, res)=>{
         country: req.body.country,
         postal_code: req.body.postal_code,
         items: req.body.items,
-        // item_price:req.body.item_price,
     })
     newOrder.save()
     .then(order => {

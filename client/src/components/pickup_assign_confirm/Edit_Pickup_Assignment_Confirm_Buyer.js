@@ -269,7 +269,7 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                completion_status: "completion_status_done",
+                completion_status: "pending for sales",
             })
         })
         .then(res => res.json())

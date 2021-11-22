@@ -25,7 +25,7 @@ router.get('/retrive_purchase_order/:id',(req, res)=>{
 });
 
 router.get('/retrive_all_pending_purchase_order',(req, res)=>{
-    PurchaseOrder.find({status:"pending"}, function(err, purchase_orders){
+    PurchaseOrder.find({status:"pending for vendor acceptance"}, function(err, purchase_orders){
         if(err){
             console.log(err);
         }

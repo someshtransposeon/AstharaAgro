@@ -96,6 +96,7 @@ export default function EditCompletedOrder(props,{route}) {
                 setCountry(order[0].country);
                 setPincode(order[0].postal_code);
                 setItems(order[0].items);
+                // setUserId(order[0].userId);
                 setFlag(false);
                 console.log(order[0])
             });
@@ -201,7 +202,8 @@ export default function EditCompletedOrder(props,{route}) {
                 orderId:orderId,
                 items:items,   
                 // vendor_id:vendor_id,
-                sales_id:sales_id, 
+                sales_id:sales_id,
+                // userId:userId, 
                 status:status,          
 
                           
@@ -355,6 +357,7 @@ export default function EditCompletedOrder(props,{route}) {
                             <Menu.Item title="No Sales Available" />
                         }
                     </Menu>  
+                    
                     
                      <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Assign Sales</Button>            
 

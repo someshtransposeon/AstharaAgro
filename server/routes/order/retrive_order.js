@@ -15,7 +15,7 @@ router.get('/retrive_all_order',(req, res)=>{
 });
 
 router.get('/retrive_all_completed_order',(req, res)=>{
-    Order.find({status:"completed"}, function(err, orders){
+    Order.find({completion_status:"pending for sales"}, function(err, orders){
         if(err){
             console.log(err);
         }

@@ -24,4 +24,15 @@ router.get('/retrive_purchase_order_confirm/:id',(req, res)=>{
     });
 });
 
+router.get('/retrive_all_pending_purchase_order_confirm',(req, res)=>{
+    PurchaseOrderConfirm.find({"status":"pending for manager acceptance"}, function(err, purchase_order_confirm){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(purchase_order_confirm);
+        }
+    });
+});
+
 module.exports = router;

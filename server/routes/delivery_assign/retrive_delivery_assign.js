@@ -25,7 +25,7 @@ router.get('/retrive_delivery_assignment/:id',(req, res)=>{
 });
 
 router.get('/retrive_all_pending_delivery_assignment',(req, res)=>{
-    DeliveryAssign.find({status:"pending"}, function(err, delivery_assignments){
+    DeliveryAssign.find({status:"pending for sales acceptance"}, function(err, delivery_assignments){
         if(err){
             console.log(err);
         }

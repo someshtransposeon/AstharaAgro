@@ -25,7 +25,7 @@ router.get('/retrive_pickup_assignment/:id',(req, res)=>{
 });
 
 router.get('/retrive_all_pending_pickup_assignment',(req, res)=>{
-    PickupAssign.find({status:"pending"}, function(err, pickup_assignments){
+    PickupAssign.find({status:"pending for buyer acceptance"}, function(err, pickup_assignments){
         if(err){
             console.log(err);
         }

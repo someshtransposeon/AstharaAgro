@@ -74,7 +74,7 @@ export default function EditOrderItem(props,{route}) {
         .then(item => setItem(item));
 
         // fetch all vendors
-        fetch("http://localhost:5000/retrive_all_vendor", {
+        fetch("http://localhost:5000/retrive_all_vendors", {
             method: 'GET'
         })
         .then(res => res.json())
@@ -170,7 +170,7 @@ export default function EditOrderItem(props,{route}) {
     function chooseVendor(id, email){
         setVendorId(id)
         setVendorEmail(email);
-        fetch(`http://${host}:5000/retrive_vendor/${id}`, {
+        fetch(`http://${host}:5000/retrive_vendors/${id}`, {
             method: 'GET'
         })        
         .then(res => res.json())

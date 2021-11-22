@@ -25,7 +25,7 @@ router.get('/retrive_pickup_assignment_confirm/:id',(req, res)=>{
 });
 
 router.get('/retrive_all_pending_pickup_assignment_confirm',(req, res)=>{
-    PickupAssignConfirm.find({status:"pending"}, function(err, pickup_assignments_confirm){
+    PickupAssignConfirm.find({status:"pending for vendor acceptance"}, function(err, pickup_assignments_confirm){
         if(err){
             console.log(err);
         }
@@ -46,7 +46,7 @@ router.get('/retrive_all_accepted_pickup_assignment_confirm',(req, res)=>{
 });
 
 router.get('/retrive_all_accepted_pickup_assignment_confirm_buyer',(req, res)=>{
-    PickupAssignConfirm.find({status:"accepted"}, function(err, pickup_assignments_confirm){
+    PickupAssignConfirm.find({status:"vendor accepted"}, function(err, pickup_assignments_confirm){
         if(err){
             console.log(err);
         }

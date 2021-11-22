@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-nati
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
     ...DefaultTheme,
@@ -39,10 +40,20 @@ export default function CreateOrder({ navigation }) {
     const [category,setCategory] = useState("");
     const [role,setRole]=useState("");
     const [userId,setUserId]=useState("");
+    const [customerId,setCustomerId]=useState("");
     const [requestedBy,setRequestedBy]=useState("");
     const [flag2,setFlag2]=useState(true);
 
     useEffect(() => {
+        async function fetchData() {
+            await AsyncStorage.getItem('loginuserid')
+            .then((userid) => {
+                setUserId(userid);
+                console.log(userid)
+            })
+        }
+        fetchData();
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
@@ -68,9 +79,10 @@ export default function CreateOrder({ navigation }) {
             method: 'GET'
         })
         .then(res => res.json())
+        .catch(error => console.log(error))
         .then(data =>{
-            setCategory(data[0]._id);
-            setRole(data[0].category_name);
+            setCategory(data._id);
+            setRole(data.category_name);
         });
 
         if(flag2 && userId!=""){
@@ -171,7 +183,7 @@ export default function CreateOrder({ navigation }) {
             setEmail(customer[0].email);
             setName(customer[0].full_name);
             setMobileNo(customer[0].mobile_no);
-            setUserId(customer[0].userId);
+            setCustomerId(customer[0].userId);
         });
         closeMenu2();
     };
@@ -195,8 +207,9 @@ export default function CreateOrder({ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                requestedBy:userId,
+                // requestedBy:requestedBy,
                 userId: userId,
+                customerId: customerId,
                 name: name,
                 email: email,
                 mobile_no: mobileNo,
@@ -207,7 +220,6 @@ export default function CreateOrder({ navigation }) {
                 country: country,
                 postal_code: pincode,
                 items: items,
-                // item_price:itemPrice
             })
         })
         .then(res => res.json())
@@ -351,7 +363,7 @@ export default function CreateOrder({ navigation }) {
                            onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
                              />
                             
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price"     value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>
