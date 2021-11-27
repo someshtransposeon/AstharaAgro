@@ -14,7 +14,7 @@ router.get('/retrive_all_delivery_assignments',(req, res)=>{
     });
 });
 //Define route to get details of delivery assignment by id
-router.get('/retrive_delivery_assignment/:id',(req, res)=>{
+router.get('/retrive_delivery_assignments/:id',(req, res)=>{
     DeliveryAssignment.find({'_id':req.params.id}, function(err, retrive_delivery_assignment){
         if(err){
             console.log(err);
@@ -25,7 +25,7 @@ router.get('/retrive_delivery_assignment/:id',(req, res)=>{
     });
 });
 router.get('/retrive_all_pending_delivery_assignments',(req, res)=>{
-    DeliveryAssignment.find({status:"pending"}, function(err, retrive_all_pending_delivery_assignments){
+    DeliveryAssignment.find({status:"pending for sales"}, function(err, retrive_all_pending_delivery_assignments){
         if(err){
             console.log(err);
         }

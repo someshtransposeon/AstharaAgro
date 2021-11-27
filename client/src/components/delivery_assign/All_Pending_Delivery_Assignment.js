@@ -18,7 +18,7 @@ const theme = {
 
 export default function All_Pending_Delivery_Assignment({ navigation }) {
 
-    const [allPickupAssignment, setAllPickupAssignment] = useState();
+    const [allDeliveryAssignment, setAllDeliveryAssignment] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
@@ -35,8 +35,8 @@ export default function All_Pending_Delivery_Assignment({ navigation }) {
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allPickupAssignment => setAllPickupAssignment(allPickupAssignment));
-    }, [allPickupAssignment, host]);
+        .then(allDeliveryAssignment => setAllDeliveryAssignment(allDeliveryAssignment));
+    }, [allDeliveryAssignment, host]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -50,7 +50,7 @@ export default function All_Pending_Delivery_Assignment({ navigation }) {
     };
 
     const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_purchase_status/${id}`, {
+        fetch(`http://${host}:5000/update_delivery_assign_status/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export default function All_Pending_Delivery_Assignment({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
              <DataTable style={styles.datatable}>
-               <Title>All Delivery Assignment</Title>
+               <Title>All Pending Delivery Assignment</Title>
                <Searchbar
                     icon={() => <FontAwesomeIcon icon={ faSearch } />}
                     clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -86,35 +86,31 @@ export default function All_Pending_Delivery_Assignment({ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title numeric>Sales ID</DataTable.Title>
+                    <DataTable.Title >Sales ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
                                                                                                                                                                                                                         
             {/* //comment code aug 31/08/2012 for testing....  */}
-                {allPickupAssignment ?
-                    allPickupAssignment.map((pickupAssignment,index)=>{
-                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                {allDeliveryAssignment ?
+                    allDeliveryAssignment.map((deliveryAssignment,index)=>{
+                         if(deliveryAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                          return (
                               <DataTable.Row>
-                                <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                {/* <DataTable.Cell  numeric>
-                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
-                                    <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Accept" onPress={()=>StatusChange("Accepted",  pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Decline" onPress={()=>StatusChange("Decline",  pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Cancel" onPress={()=>StatusChange("Cancel",  pickupAssignment._id, index)}/>
-                                    
-                                    </Menu>
-                                </DataTable.Cell>    */}
+                                <DataTable.Cell>{deliveryAssignment._id}</DataTable.Cell>
+                                <DataTable.Cell >{deliveryAssignment.sales_id}</DataTable.Cell>
+                                <DataTable.Cell numeric>{deliveryAssignment.status}</DataTable.Cell>
+                                <DataTable.Cell  numeric>
+                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{deliveryAssignment.status}</Button>}>
+                                    <Menu.Item title="Accept" onPress={()=>StatusChange("sales accepted",  deliveryAssignment._id, index)}/>
+                                    <Menu.Item title="Decline" onPress={()=>StatusChange("sales decline",  deliveryAssignment._id, index)}/>
+                                </Menu>
+                                </DataTable.Cell>   
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Delivery_Assignment', {deliveryid: deliveryAssignment._id})}}>Details</Button>
                                         :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Delivery_Assignment/"+deliveryAssignment._id}>Details</Link></Button>
                                     }
                                 </DataTable.Cell>
                              </DataTable.Row>

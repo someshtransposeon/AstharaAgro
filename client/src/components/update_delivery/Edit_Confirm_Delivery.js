@@ -14,27 +14,20 @@ const theme = {
     },
 };
 
-export default function EditCompletedOrder(props,{route}) {
+export default function Edit_Confirm_Delivery(props,{route}) {
 
-    var orderid = "";
+    var deliveryid = "";
     var id="";
     if(Platform.OS=="android"){
-        id = route.params.orderId;
+        id = route.params.deliveryId;
     }
     else{
-        orderid = props.match.params.orderid;
+        deliveryid = props.match.params.deliveryid;
     }
-    const [visible2, setVisible2] = useState(false);
+
     const [visible3, setVisible3] = useState(false);
-    
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
-    
-    const openMenu3 = () => setVisible3(true);
-    const closeMenu3 = () => setVisible3(false);
-    
     const [searchQuery1, setSearchQuery1] = useState('');
-    const [orderId, setOrderId] = useState("");
+    const [deliveryId, setDeliveryId] = useState("");
     const [visible, setVisible] = useState([]);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
@@ -48,32 +41,27 @@ export default function EditCompletedOrder(props,{route}) {
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('');
-    const [sales, setSales] = useState();
-    const [sales_id, setSalesId] = useState("");
-    const [sales_email, setSalesEmail] = useState("Choose Sales");
-    const [userId,setUserId]=useState("");
-    // const [purchaseId, setPurchaseId] = useState("");
-    // const [order_id, setOrderId] = useState("");
-    // const [indent_id, setIndentId] = useState("Choose Indent");
-    // const [vendor_id,setVendorId] = useState("Choose Vendor");
+    const [sales_id,setSalesId] = useState("Choose Sales");
     const [flag, setFlag] = useState(true);
+
+    const openMenu3 = () => setVisible3(true);
+    const closeMenu3 = () => setVisible3(false);
+    
+    function chooseSales(salesId) {
+        setSalesId(salesId);
+        closeMenu3();
+    }
+
 
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
-            setOrderId(id);
+            setDeliveryId(id);
         }
         else{
             setHost("localhost");
-            setOrderId(orderid);
+            setDeliveryId(deliveryid);
         }
-        // fetch all sales
-        fetch("http://localhost:5000/retrive_all_sales", {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(sales => setSales(sales));
 
         fetch(`http://${host}:5000/vendors_retrive_all_item`, {
             method: 'GET'
@@ -82,29 +70,28 @@ export default function EditCompletedOrder(props,{route}) {
         .catch(error => console.log(error))
         .then(item => setItem(item));
 
-        if(flag && orderId){
-            fetch(`http://${host}:5000/retrive_order/${orderId}`, {
+        if(flag && deliveryId){
+            fetch(`http://${host}:5000/retrive_update_delivery/${deliveryId}`, {
                 method: 'GET'
             })
             .then(res => res.json())
             .catch(error => console.log(error))
-            .then(order => {
-                setName(order[0].name);
-                setEmail(order[0].email);
-                setMobileNo(order[0].mobile_no);
-                setAddress(order[0].address);
-                setLandmark(order[0].landmark);
-                setDistrict(order[0].district);
-                setState(order[0].state);
-                setCountry(order[0].country);
-                setPincode(order[0].postal_code);
-                setItems(order[0].items);
-                setUserId(order[0].userId);
+            .then(delivery => {
+                setName(delivery[0].name);
+                setEmail(delivery[0].email);
+                setMobileNo(delivery[0].mobile_no);
+                setAddress(delivery[0].address);
+                setLandmark(delivery[0].landmark);
+                setDistrict(delivery[0].landmark);
+                setState(delivery[0].state);
+                setCountry(delivery[0].country);
+                setPincode(delivery[0].postal_code);
+                setItems(delivery[0].items);
+                setSalesId(delivery[0].sales_id);
                 setFlag(false);
-                console.log(order[0])
             });
         }
-    }, [item,sales,host,orderId,id,orderid,flag]);
+    }, [item,host,deliveryId,id,deliveryid,flag]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -179,54 +166,54 @@ export default function EditCompletedOrder(props,{route}) {
         values.splice(index, 1);
         setItems(values);
     };
-    // for asign Sales 
+
     function submitForm() {
-            fetch(`http://${host}:5000/create_delivery_assign`, {
-            method: 'POST',
+        fetch(`http://${host}:5000/update_delivery_status_complete_order/${deliveryId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-        
             body: JSON.stringify({
-                requestedBy:userId,
-                // indent_id:indent_id,
-                // purchaseId:purchaseId,
-                name:name,
-                mobile_no:mobileNo,
-                email:email,
-
-                address:address,
-                landmark:landmark,
-                district:district,
-                state:state,
-                country:country,
-                postal_code:pincode,
-        
-                orderId:orderId,
-                items:items,   
-                // vendor_id:vendor_id,
-                sales_id:sales_id,
-                userId:userId, 
-                status:status,          
-
-                          
+                status: "order delivered",
             })
         })
-        
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert("OK");
+            alert(data.message);
             console.log(data);
-        });   
+        });
+    }
+    function submitForm2() {
+        alert("Accepting Payment in Progess")
+    }
+    function submitForm3() {
+        alert("Order Completely Finished Here... ")
+
+        // fetch(`http://${host}:5000/update_delivery_status_complete_order/${deliveryId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         status: "order delivered",
+        //     })
+        // })
+        // .then(res => res.json())
+        // .catch(error => console.log(error))
+        // .then(data => {
+        //     alert(data.message);
+        //     console.log(data);
+        // });
     }
     // function submitForm() {
-    //     fetch(`http://${host}:5000/update_order/${orderId}`, {
-    //         method: 'PUT',
+    //         fetch(`http://${host}:5000/update_inventory`, {
+    //         method: 'POST',
     //         headers: {
     //             'Content-Type': 'application/json',
     //         },
     //         body: JSON.stringify({
+                
     //             name: name,
     //             email: email,
     //             mobile_no: mobileNo,
@@ -236,8 +223,21 @@ export default function EditCompletedOrder(props,{route}) {
     //             state: state,
     //             country: country,
     //             postal_code: pincode,
-    //             items: items,
+    //             items: items, 
+    //             status:status,                    
     //         })
+    //     })
+    //     .then(res => res.json())
+    //     .catch(error => console.log(error))
+    //     .then(data => {
+    //         alert(data.message);
+    //         console.log(data);
+    //     });   
+    // }
+
+    // function deleteOrder() {
+    //     fetch(`http://${host}:5000/delete_order/${orderId}`, {
+    //         method: 'GET',
     //     })
     //     .then(res => res.json())
     //     .catch(error => console.log(error))
@@ -247,32 +247,6 @@ export default function EditCompletedOrder(props,{route}) {
     //     });
     // }
 
-    function deleteOrder() {
-        fetch(`http://${host}:5000/delete_order/${orderId}`, {
-            method: 'GET',
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-    }
-    function chooseSales(id, email){
-        setSalesId(id)
-        setSalesEmail(email);
-        fetch(`http://${host}:5000/retrive_sales/${id}`, {
-            method: 'GET'
-        })        
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        closeMenu2();
-    }
-    function chooseUser(userId) {
-        setUserId(userId);
-        closeMenu3();
-    }
-
     const onChangeSearch1 = query => setSearchQuery1(query);
 
     return (
@@ -281,7 +255,7 @@ export default function EditCompletedOrder(props,{route}) {
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Edit Completed Order"/>
+                    <Card.Title title="Edit Confirm Delivery"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
@@ -325,7 +299,7 @@ export default function EditCompletedOrder(props,{route}) {
                              value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
                            onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
                              />
-                            <TextInput  keyboardType='numeric' mode="outlined"  label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>
@@ -341,45 +315,18 @@ export default function EditCompletedOrder(props,{route}) {
                             </View>
                         </View>
                     ))}
-
-                    {/* {sales_id &&
-                    <Menu 
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{sales_id}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseSales(sales_id)} />
-                    </Menu>
-                    }    */}
-                    <Menu
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{sales_email} </Button>}>
-                        {sales ?
-                            sales.map((item)=>{
-                                return (
-                                    <Menu.Item title={item.full_name+" ("+item.email+")" } onPress={()=>chooseSales(item._id, item.email)} />
-                                )
-                            })
-                            :
-                            <Menu.Item title="No Sales Available" />
-                        }
-                    </Menu>  
-                    {/* {userId &&
+                    {sales_id &&
                     <Menu 
                     visible={visible3}
                     onDismiss={closeMenu3}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu3}>{userId}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseUser(userId)} />
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu3}>{sales_id}</Button>}>
+                        <Menu.Item title="${pId}" onPress={()=>chooseSales(sales_id)} />
                     </Menu>
-                    } */}
-
-                    <TextInput editable={false} style={styles.input} mode="outlined" label="Default Sales Id" value={userId} onChangeText={userId => setUserId(userId)} />
-                    
-                    
-                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Assign Sales</Button>            
-
-                    {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Order</Button>
-                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button> */}
+                    }
+                    {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} > Confirm Delivery by Customer</Button> */}
+                    {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button> */}
+                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm2()} > Accept Payment</Button>
+                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm3()} > Order Delivered</Button>
                     </Card.Content>
                 </Card>
             </View>

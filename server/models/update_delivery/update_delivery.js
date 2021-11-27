@@ -1,18 +1,43 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
-const orderSchema = new mongoose.Schema({
+const updateDeliverySchema = new mongoose.Schema({
+    
     // requestedBy:{
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'User',
     // },
-    userId:{
+    orderId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'Order'
     },
-    customerId:{
+    purchaseId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Customer',
+        ref:'Purchase'
     },
+    indent_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Indent'
+    },
+    // userId:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:'User'
+    // },
+    vendor_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Vendor'
+    },
+    sales_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    order_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Order'
+    },
+    items:{
+        type:mongoose.Schema.Types.Mixed,
+    },
+
     name:{
         type:String,
     },
@@ -25,7 +50,6 @@ const orderSchema = new mongoose.Schema({
     },
     landmark: {
         type: String,
-        default: "",
     },
     district: { 
         type: String,
@@ -45,29 +69,18 @@ const orderSchema = new mongoose.Schema({
     },
     mobile_no: {
         type: String,
-        required: true,
     },
-    items: {
-        type: mongoose.Schema.Types.Mixed,
-        required: true,
+    
+    status: {
+        type: String,
+        default:"waiting for customer end",
     },
-    status:{
-        type:String,
-        default:"pending",
-    },
-    completion_status:{
-        type:String,
-        default:"new",
-    },
-
-    order_date:{
+    delivery_date:{
         type:Date,
         default: Date.now,
     },
-    order_date2:{
-        type:Date,
-    },
+
 });
 
-const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+const updateDelivery = mongoose.model('updateDelivery', updateDeliverySchema);
+module.exports = updateDelivery;

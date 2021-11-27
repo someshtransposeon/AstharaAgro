@@ -33,7 +33,6 @@ const deliveryAssignSchema = new mongoose.Schema({
     items:{
         type:mongoose.Schema.Types.Mixed,
     },
-
     name:{
         type:String,
     },
@@ -66,13 +65,17 @@ const deliveryAssignSchema = new mongoose.Schema({
     mobile_no: {
         type: String,
     },
-    
     status: {
         type: String,
         default:"pending for sales acceptance",
     },
+    delivery_assign_date:{
+        type:Date,
+        default: Date.now,
+    },
 
-});
+}
+);
 
 const deliveryAssign = mongoose.model('deliveryAssign', deliveryAssignSchema);
 module.exports = deliveryAssign;

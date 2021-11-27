@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const PickupAssign = require('../../models/pickup_assign/pickup_assign');
+const DeliveryAssign = require('../../models/delivery_assign/delivery_assign');
 
-router.put('/update_pickup_assign/:id',(req, res) =>{
-    var pickup_assign_update = {
+router.put('/update_delivery_assign/:id',(req, res) =>{
+    var delivery_assign_update = {
         
 
         items:req.body.items,
     }
-    PickupAssign.findOneAndUpdate({'_id':req.params.id}, pickup_assign_update)
-    .then((pickup_assign) => {
-        if(pickup_assign){
-            var message = {message: "Pickup Assign sucessfully updated" };
+    DeliveryAssign.findOneAndUpdate({'_id':req.params.id}, delivery_assign_update)
+    .then((delivery_assign) => {
+        if(delivery_assign){
+            var message = {message: "Delivery Assign sucessfully updated" };
             res.json(message);
         }else{
             var message = { messageerror: "Record not found" };
@@ -24,17 +24,17 @@ router.put('/update_pickup_assign/:id',(req, res) =>{
     })
 });
 
-router.put('/update_pickup_assign_status/:id',(req, res) =>{
-    var pickup_assign = {
+router.put('/update_delivery_assign_status/:id',(req, res) =>{
+    var delivery_assign = {
         status: req.body.status,
     }
-    PickupAssign.findOneAndUpdate({'_id':req.params.id}, pickup_assign)
-    .then((pickup_assign) => {
-        if(pickup_assign){
+    DeliveryAssign.findOneAndUpdate({'_id':req.params.id}, delivery_assign)
+    .then((delivery_assign) => {
+        if(delivery_assign){
             var message = { message: "Status sucessfully updated" };
             res.json(message);
         }else{
-            var message = { message: "Pickup Assign not found" };
+            var message = { message: "Delivery Assign not found" };
             res.json(message);
         }
     }).catch(err => {
@@ -45,17 +45,17 @@ router.put('/update_pickup_assign_status/:id',(req, res) =>{
 });
 
 
-router.put('/update_buyer_pickup_assign/:id',(req, res) =>{
-    var pickup_assign = {
+router.put('/update_sales_delivery_assign/:id',(req, res) =>{
+    var delivery_assign = {
         vendor_id: req.body.vendor_id,
     }
-    PickupAssign.findOneAndUpdate({'_id':req.params.id}, pickup_assign)
-    .then((pickup_assign) => {
-        if(pickup_assign){
-            var message = { message: "Buyer sucessfully updated" };
+    DeliveryAssign.findOneAndUpdate({'_id':req.params.id}, delivery_assign)
+    .then((delivery_assign) => {
+        if(delivery_assign){
+            var message = { message: "Sales sucessfully updated" };
             res.json(message);
         }else{
-            var message = { message: "pickup_assign not found" };
+            var message = { message: "delivery_assign not found" };
             res.json(message);
         }
     }).catch(err => {

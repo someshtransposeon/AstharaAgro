@@ -18,6 +18,8 @@ router.post('/create_order', (req, res)=>{
         country: req.body.country,
         postal_code: req.body.postal_code,
         items: req.body.items,
+        order_date:req.body.order_date,
+        order_time:req.body.order_time,
     })
     newOrder.save()
     .then(order => {

@@ -97,7 +97,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setBuyerId(item[0].buyer_id);
                 setStatus(item[0].status);
                 setFlag(true);
-                console.log(item)
+                // console.log(item)
             });
 
             // .then(item => {

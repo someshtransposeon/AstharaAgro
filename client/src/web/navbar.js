@@ -124,7 +124,14 @@ import EditCompletedOrder from '../components/order/edit_completed_order';
 import EditCompletedOrder2 from '../components/order/edit_completed_order2';
 import All_Delivery_Assignment from '../components/delivery_assign/All_Delivery_Assignment';
 import All_Pending_Delivery_Assignment from '../components/delivery_assign/All_Pending_Delivery_Assignment';
+import All_Accepted_Delivery_Assignment from '../components/delivery_assign/All_Accepted_Delivery_Assignment';
 
+import Edit_Accepted_Delivery_Assignment from '../components/delivery_assign/Edit_Accepted_Delivery_Assignment';
+import Edit_Delivery_Assignment from '../components/delivery_assign/Edit_Delivery_Assignment';
+import All_Delivery from '../components/update_delivery/All_Delivery';
+import All_Confirm_Delivery from '../components/update_delivery/All_Confirm_Delivery';
+import Edit_Accepted_Delivery from '../components/update_delivery/Edit_Accepted_Delivery';
+import Edit_Confirm_Delivery from '../components/update_delivery/Edit_Confirm_Delivery';
 
 
 const NavBar =()  => {
@@ -441,6 +448,20 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/All_Pending_Delivery_Assignment" as={Link}>All Pending Delivery Assignment</NavDropdown.Item>        
                                         <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Accepted_Delivery_Assignment" as={Link}>All Accepted Delivery Assignment</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="accountant" || roleas=="manager"|| roleas=="sales" || roleas=="customer"  ) &&
+                                    <> 
+                                        <NavDropdown.Item to="/All_Delivery" as={Link}>All Delivery</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="accountant" || roleas=="manager"|| roleas=="sales"  ) &&
+                                    <> 
+                                        <NavDropdown.Item to="/All_Confirm_Delivery" as={Link}>All Confirm Delivery</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
                                     </>
                                 }
                             </NavDropdown>
@@ -695,9 +716,22 @@ const NavBar =()  => {
                 <Route path="/editCompletedorder2/:orderid" render={(props) => <EditCompletedOrder2 {...props} />} exact />    
                 <Route path="/All_Pending_Delivery_Assignment">
                     <All_Pending_Delivery_Assignment/>
+                </Route> 
+                <Route path="/All_Accepted_Delivery_Assignment">
+                    <All_Accepted_Delivery_Assignment/>
+                </Route>   
+                <Route path="/Edit_Accepted_Delivery_Assignment/:deliveryid" render={(props) => <Edit_Accepted_Delivery_Assignment {...props} />} exact />
+                <Route path="/Edit_Delivery_Assignment/:deliveryid" render={(props) => <Edit_Delivery_Assignment {...props} />} exact />
+                    
+                <Route path="/All_Delivery">
+                    <All_Delivery/>
+                </Route>
+                <Route path="/All_Confirm_Delivery">
+                    <All_Confirm_Delivery/>
                 </Route>    
-
-
+                <Route path="/Edit_Accepted_Delivery/:deliveryid" render={(props) => <Edit_Accepted_Delivery {...props} />} exact />
+                <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
+                        
 
 
 

@@ -180,16 +180,17 @@ const styles = StyleSheet.create({
         padding: '1%',
         ...Platform.select({
             ios: {
-                //to be updated for IOS
-                marginTop: '10%',
-                width: '90%',
+                
             },
             android: {
                 marginTop: '10%',
+                marginBottom: '10%',
                 width: '90%',
             },
             default: {
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
+                marginBottom: '4%',
                 width: '50%',
             }
         })

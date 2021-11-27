@@ -6,12 +6,6 @@ router.post('/create_delivery_assign', (req, res)=>{
     var newDeliveryAssign = new DeliveryAssign({
         
         requestedBy:req.body.userId,
-        orderId:req.body.orderId,
-        items:req.body.items,
-        userId:req.body.userId,
-        vendor_id:req.body.vendor_id,
-        sales_id:req.body.sales_id,
-        indent_id:req.body.indent_id,
         name:req.body.name,
         email:req.body.email,
         mobile_no:req.body.mobile_no,
@@ -21,6 +15,15 @@ router.post('/create_delivery_assign', (req, res)=>{
         state:req.body.state,
         country:req.body.country,
         postal_code:req.body.postal_code,
+        orderId:req.body.orderId,
+        items:req.body.items,
+        userId:req.body.userId,
+        sales_id:req.body.sales_id,
+
+        vendor_id:req.body.vendor_id,
+        indent_id:req.body.indent_id,
+        
+        
         delivery_assign_date:req.body.delivery_assign_date,
         delivery_assign_time:req.body.delivery_assign_time,
 
