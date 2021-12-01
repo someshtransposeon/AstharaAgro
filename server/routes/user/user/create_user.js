@@ -17,11 +17,12 @@ router.post('/create_user', async (req, res)=>{
             const category=req.body.category;
             const role=req.body.role;
             const full_name= req.body.full_name;
+            const nick_name= req.body.nick_name;
             const email= req.body.email;
             const mobile_no= req.body.mobile_no;
             const gst_no= req.body.gst_no;
             const password= hash;
-            var newUser = new User({category,role,full_name,email,mobile_no,gst_no,password})
+            var newUser = new User({category,role,full_name,nick_name,email,mobile_no,gst_no,password})
             newUser.save()
             .then(user => {
                 var message={message:"successfully added!",data:user};
@@ -29,34 +30,34 @@ router.post('/create_user', async (req, res)=>{
                 const userId=user._id;
                 UserCategory.findById({'_id': req.body.category }, (err, users) => {
                     if (users.category_name=="vendor") {
-                        var newVendor = new Vendor({userId,full_name,email,mobile_no,gst_no,password})
+                        var newVendor = new Vendor({userId,full_name,nick_name,email,mobile_no,gst_no,password})
                         newVendor.save()
                         var message={message:"successfully added vendor",data:user};
-                        res.json(message);
+                        // res.json(message);
                     }
                     else if(users.category_name=="customer")
                     {
-                        var newCustomer = new Customer({userId,full_name,email,mobile_no,gst_no,password})
+                        var newCustomer = new Customer({userId,full_name,email,nick_name,mobile_no,gst_no,password})
                         newCustomer.save()
                     }
                     else if(users.category_name=="manager")
                     {
-                        var newManager = new Manager({userId,full_name,email,mobile_no,password})
+                        var newManager = new Manager({userId,full_name,nick_name,email,mobile_no,password})
                         newManager.save()
                     }
                     else if(users.category_name=="sales")
                     {
-                        var newSales_person = new Sales_person({userId,full_name,email,mobile_no,password})
+                        var newSales_person = new Sales_person({userId,full_name,nick_name,email,mobile_no,password})
                         newSales_person.save()
                     }
                     else if(users.category_name=="accountant")
                     {
-                        var newAccountant = new Accountant({userId,full_name,email,mobile_no,password})
+                        var newAccountant = new Accountant({userId,full_name,nick_name,email,mobile_no,password})
                         newAccountant.save()
                     }
                     else if(users.category_name=="buyer")
                     {
-                        var newBuyer = new Buyer({userId,full_name,email,mobile_no,password})
+                        var newBuyer = new Buyer({userId,full_name,nick_name,email,mobile_no,password})
                         newBuyer.save()
                     }
 

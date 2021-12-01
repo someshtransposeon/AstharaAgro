@@ -9,6 +9,10 @@ const buyerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    nick_name: {
+        type: String,
+        required: true,
+    },
     email: { 
         type: String,
         required: true,

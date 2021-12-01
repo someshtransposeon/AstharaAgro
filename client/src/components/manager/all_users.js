@@ -57,6 +57,8 @@ export default function AllUsers({ navigation }) {
                         {Platform.OS !== "android" &&
                         <DataTable.Title>Full Name</DataTable.Title>
                         }
+                        <DataTable.Title>Nick Name</DataTable.Title>
+                        
                         <DataTable.Title>Role</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
@@ -69,6 +71,8 @@ export default function AllUsers({ navigation }) {
                                 {Platform.OS !== "android" &&
                                 <DataTable.Cell>{item.full_name}</DataTable.Cell>
                                 }
+                                <DataTable.Cell>{item.nick_name}</DataTable.Cell>
+                                
                                 <DataTable.Cell>{item.role}</DataTable.Cell>
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '70%',
                 border: '1px solid gray',
                 borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',

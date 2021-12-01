@@ -86,7 +86,7 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title numeric>Buyer ID</DataTable.Title>
+                    <DataTable.Title >Buyer ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -98,6 +98,7 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                          return (
                               <DataTable.Row>
                                 <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
+                                <DataTable.Cell numeric>{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
                                 {/* <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignmentConfirm.status}</Button>}>

@@ -23,6 +23,7 @@ export default function Register({ navigation }) {
     const [category, setCategory] = useState("Choose Category");
     const [categoryId, setCategoryId] = useState("");
     const [fullName, setFullName] = useState("");
+    const [nickName, setNickName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
     const [password, setPassword] = useState("");
@@ -56,6 +57,7 @@ export default function Register({ navigation }) {
                 category: categoryId,
                 role: category,
                 full_name: fullName,
+                nick_name: nickName,
                 email: email,
                 mobile_no: mobileNo,
                 password: password,
@@ -111,6 +113,7 @@ export default function Register({ navigation }) {
                         }
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
+                    <TextInput style={styles.input} mode="outlined" label="Nick Name" value={nickName} onChangeText={nickName => setNickName(nickName)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>

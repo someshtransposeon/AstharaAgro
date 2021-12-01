@@ -87,7 +87,7 @@ export default function All_Delivery_Assignment({ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title numeric>Sales ID</DataTable.Title>
+                    <DataTable.Title >Sales ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -98,6 +98,7 @@ export default function All_Delivery_Assignment({ navigation }) {
                          return (
                               <DataTable.Row>
                                 <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
+                                <DataTable.Cell>{pickupAssignment.sales_id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
                                 {/* <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>

@@ -86,7 +86,7 @@ export default function All_Accepted_Pickup_Assignment({ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title numeric>Buyer ID</DataTable.Title>
+                    <DataTable.Title >Buyer ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -98,14 +98,16 @@ export default function All_Accepted_Pickup_Assignment({ navigation }) {
                          return (
                               <DataTable.Row>
                                 <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
+                                <DataTable.Cell numeric>{pickupAssignment.buyer_id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                <DataTable.Cell  numeric>
+                                
+                                {/* <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
                                     <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
                                     <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
                                     
                                     </Menu>
-                                </DataTable.Cell>   
+                                </DataTable.Cell>    */}
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {pickupId: pickupAssignment._id})}}>Details</Button>

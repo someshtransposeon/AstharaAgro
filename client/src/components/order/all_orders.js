@@ -95,6 +95,8 @@ export default function AllOrders({ navigation }) {
 		                value={searchQuery}
                     />
                     <DataTable.Header>
+                    <DataTable.Title>Order ID</DataTable.Title>
+                    <DataTable.Title>Sales ID</DataTable.Title>
                         <DataTable.Title>Email</DataTable.Title>
                         {Platform.OS !== "android" &&
                         <DataTable.Title>Full Name</DataTable.Title>
@@ -107,6 +109,8 @@ export default function AllOrders({ navigation }) {
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                             return (
                                 <DataTable.Row>
+                                    <DataTable.Cell>{item._id}</DataTable.Cell>
+                                    <DataTable.Cell>{item.userId}</DataTable.Cell>
                                     <DataTable.Cell>{item.email}</DataTable.Cell>
                                     {Platform.OS !== "android" &&
                                     <DataTable.Cell>{item.name}</DataTable.Cell>
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '95%',
                 border: '1px solid gray',
                 borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',

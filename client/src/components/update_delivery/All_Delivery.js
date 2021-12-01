@@ -86,7 +86,7 @@ export default function All_Delivery({ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Delivery ID</DataTable.Title>
-                    <DataTable.Title numeric>Sales ID</DataTable.Title>
+                    <DataTable.Title >Sales ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -98,8 +98,8 @@ export default function All_Delivery({ navigation }) {
                          return (
                               <DataTable.Row>
                                 <DataTable.Cell>{updateDelivery._id}</DataTable.Cell>
-                                <DataTable.Cell>{updateDelivery.sales_id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{updateDelivery.status}</DataTable.Cell>
+                                <DataTable.Cell>{updateDelivery.sales_id+"_"+updateDelivery.delivery_date}</DataTable.Cell>
+                                {/* <DataTable.Cell numeric>{updateDelivery.status}</DataTable.Cell> */}
                                 <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{updateDelivery.status}</Button>}>
                                         <Menu.Item title="Accept" onPress={()=>StatusChange("Customer Accepted",  updateDelivery._id, index)}/>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '80%',
+                width: '95%',
                 border: '1px solid gray',
                 borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',

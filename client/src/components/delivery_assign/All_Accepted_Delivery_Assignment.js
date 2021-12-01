@@ -101,12 +101,12 @@ export default function All_Accepted_Delivery_Assignment({ navigation }) {
                                 <DataTable.Cell>{deliveryAssignment._id}</DataTable.Cell>
                                 <DataTable.Cell >{deliveryAssignment.sales_id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{deliveryAssignment.status}</DataTable.Cell>
-                                <DataTable.Cell  numeric>
+                                {/* <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{deliveryAssignment.status}</Button>}>
                                     <Menu.Item title="Accept" onPress={()=>StatusChange("sales accepted",  deliveryAssignment._id, index)}/>
                                     <Menu.Item title="Decline" onPress={()=>StatusChange("sales decline",  deliveryAssignment._id, index)}/>
                                 </Menu>
-                                </DataTable.Cell>   
+                                </DataTable.Cell>    */}
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Accepted_Delivery_Assignment', {deliveryid: deliveryAssignment._id})}}>Details</Button>
