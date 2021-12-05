@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Redirect } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Redirect, useHistory, Link } from 'react-router-dom';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -20,6 +20,8 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState("");
 
     const [host, setHost] = useState("");
+
+    let history = useHistory();
 
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -60,7 +62,7 @@ export default function Login({ navigation }) {
                     navigation.navigate('Home');
                 }
                 else{
-                    <Redirect to="/"/>
+                    window.location.reload(false);
                 }
             }
         }); 

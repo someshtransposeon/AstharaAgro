@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Platform, ScrollView, SafeAreaView, Alert } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
@@ -19,11 +19,13 @@ export default function CreateOrder({ navigation }) {
 
     const [searchQuery1, setSearchQuery1] = useState('');
     const [searchQuery2, setSearchQuery2] = useState('');
+    const [searchQuery4, setSearchQuery4] = useState('');
     const [visible, setVisible] = useState([]);
+    const [visible4, setVisible4] = useState([]);
     const [visible2, setVisible2] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:''}]);
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:'', Grade: 'Choose Grade',}]);
     // const [itemPrice, setItemPrice] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -43,13 +45,13 @@ export default function CreateOrder({ navigation }) {
     const [customerId,setCustomerId]=useState("");
     const [requestedBy,setRequestedBy]=useState("");
     const [flag2,setFlag2]=useState(true);
+    const [itemGrade, setItemGrade]=useState();
 
     useEffect(() => {
         async function fetchData() {
             await AsyncStorage.getItem('loginuserid')
             .then((userid) => {
                 setUserId(userid);
-                console.log(userid)
             })
         }
         fetchData();
@@ -81,8 +83,8 @@ export default function CreateOrder({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data =>{
-            setCategory(data._id);
-            setRole(data.category_name);
+            setCategory(data[0]._id);
+            setRole(data[0].category_name);
         });
 
         if(flag2 && userId!=""){
@@ -98,12 +100,18 @@ export default function CreateOrder({ navigation }) {
                 // setState(address[0].state);
                 // setCountry(address[0].country);
                 // setPincode(address[0].postal_code);
-                console.log(address);
-                console.log(userId);
                 setFlag2(false);
             });
         }
-    }, [item,host,userId,flag2]);
+
+        fetch(`http://${host}:5000/retrive_all_item_grade`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(itemGrade => setItemGrade(itemGrade));
+
+    }, [item,host,userId,flag2, itemGrade]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -119,21 +127,43 @@ export default function CreateOrder({ navigation }) {
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
-    const ItemChange = (index, fieldname, fieldvalue, itemId,unit,price) => {
+    const openMenu4 = (index) => {
+        const values = [...visible];
+        values[index]=true;
+        setVisible4(values);
+    };
+    const closeMenu4 = (index) => {
+        const values = [...visible];
+        values[index]=false;
+        setVisible4(values);4
+    };
+
+    const ItemChange = (index, fieldname, fieldvalue, itemId, unit, price, grade) => {
         const values = [...items];
         if (fieldname === "item") {
-            values[index].itemId = itemId;
             values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-            values[index].itemPrice=price;
+            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade/${fieldvalue}/${values[index].Grade}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data =>{
+                values[index].itemId = data[0]._id;
+                values[index].itemUnit=data[0].unit_name;
+                values[index].itemPrice=data[0].item_price;
+            });
             closeMenu(index);
+        }
+        else if (fieldname=="grade") {
+            values[index].Grade=grade;
+            closeMenu4(index);
         }
         else{
             values[index].quantity = fieldvalue;
         }
         setItems(values);
     };
-    
+
     //  const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
     //     const values = [...items];
     //     if (fieldname === "item") {
@@ -159,6 +189,7 @@ export default function CreateOrder({ navigation }) {
         }
         setItems(values);
         };
+
     const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -172,6 +203,7 @@ export default function CreateOrder({ navigation }) {
         }
         setItems(values);
         };
+
     const CustomerChange = (id, email) => {
         setCustomerEmail(email);
         fetch(`http://${host}:5000/retrive_customer/${id}`, {
@@ -190,7 +222,7 @@ export default function CreateOrder({ navigation }) {
 
     const handleAddFields = () => {
         const values = [...items];
-        values.push({ itemId: '', itemName: 'Choose Item', quantity: 0 });
+        values.push({ itemId: '', itemName: 'Choose Item', quantity: 0, Grade: "Choose Grade" });
         setItems(values);
     };
     
@@ -226,7 +258,6 @@ export default function CreateOrder({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         }); 
 
         if(flag==false) {
@@ -246,7 +277,7 @@ export default function CreateOrder({ navigation }) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(data => {
-                console.log(data);
+                Alert("Successfully user created");
             });
 
             fetch(`http://${host}:5000/create_address`, {
@@ -267,13 +298,14 @@ export default function CreateOrder({ navigation }) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(data => {
-                console.log(data);
+                Alert("New Address of user added");
             }); 
         }
     }
 
     const onChangeSearch1 = query => setSearchQuery1(query);
     const onChangeSearch2 = query => setSearchQuery2(query);
+    const onChangeSearch4 = query => setSearchQuery4(query);
 
     return (
         <Provider theme={theme}>
@@ -326,6 +358,32 @@ export default function CreateOrder({ navigation }) {
                     {items.map((it, index) => (
                         <View>
                             <Menu
+                            visible={visible4[index]}
+                            onDismiss={()=>closeMenu4(index)}
+                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu4(index)}>{it.Grade}</Button>}>
+                                <Searchbar
+                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                    placeholder="Search"
+                                    onChangeText={onChangeSearch4}
+                                    value={searchQuery4}
+                                />
+                                {itemGrade ?
+                                    itemGrade.map((grade)=>{
+                                        if(grade.grade_name.toUpperCase().search(searchQuery4.toUpperCase())!=-1){
+                                        return (
+                                            <>
+                                            <Menu.Item title={grade.grade_name} 
+                                            onPress={()=>ItemChange(index, "grade", "", "","","", grade.grade_name)}/>
+                                            </>
+                                        )
+                                        }
+                                    })
+                                    :
+                                    <Menu.Item title="No items are available" />
+                                }
+                            </Menu>
+                            <Menu
                             visible={visible[index]}
                             onDismiss={()=>closeMenu(index)}
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
@@ -342,7 +400,7 @@ export default function CreateOrder({ navigation }) {
                                         return (
                                             <>
                                             <Menu.Item title={item.item_name+" ("+item.grade+") "} 
-                                            onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit_name,item.item_price)}/>
+                                            onPress={()=>ItemChange(index, "item", item.item_name, "","","")}/>
                                             </>
                                         )
                                         }
