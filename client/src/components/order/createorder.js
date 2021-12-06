@@ -68,7 +68,12 @@ export default function CreateOrder({ navigation }) {
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(item => setItem(item));
+        .then(item => {
+            if(item){
+                const itemsnames=[...new Set(item.map(x=>x.item_name))];
+                setItem(itemsnames);
+            }
+        });
 
         fetch(`http://${host}:5000/retrive_all_customer`, {
             method: 'GET'
@@ -148,9 +153,11 @@ export default function CreateOrder({ navigation }) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(data =>{
-                values[index].itemId = data[0]._id;
-                values[index].itemUnit=data[0].unit_name;
-                values[index].itemPrice=data[0].item_price;
+                var min = Math.min.apply(null, data.map(item => item.item_price));
+                let obj = data.find(item => item.item_price === min);
+                values[index].itemId = obj._id;
+                values[index].itemUnit=obj.unit_name;
+                values[index].itemPrice=obj.item_price;
             });
             closeMenu(index);
         }
@@ -394,13 +401,13 @@ export default function CreateOrder({ navigation }) {
                                     onChangeText={onChangeSearch1}
                                     value={searchQuery1}
                                 />
-                                {item ?
+                                {typeof item!=='undefined' ?
                                     item.map((item)=>{
-                                        if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
+                                        if(item.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
                                         return (
                                             <>
-                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} 
-                                            onPress={()=>ItemChange(index, "item", item.item_name, "","","")}/>
+                                            <Menu.Item title={item} 
+                                            onPress={()=>ItemChange(index, "item", item, "","","")}/>
                                             </>
                                         )
                                         }

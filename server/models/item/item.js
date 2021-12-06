@@ -20,6 +20,7 @@ const itemSchema = new mongoose.Schema({
     },
     item_name: {
         type: String,
+        unique: true,
         required: true,
     },
     category_name: {

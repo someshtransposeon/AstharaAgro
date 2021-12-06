@@ -58,7 +58,7 @@ router.get('/vendors_one_item',(req, res)=>{
 });
 
 router.get('/retrive_vendor_item_by_name_grade/:itemname/:grade',(req, res)=>{
-    VendorsItem.find({'item_name':req.params.itemname, 'grade_name':req.params.grade}).sort({"item_price":-1}).limit(2).exec(function(err, item){
+    VendorsItem.find({'item_name':req.params.itemname, 'grade_name':req.params.grade}).sort({"item_price":-1}).exec(function(err, item){
         if(err){
             console.log(err);
         }

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Redirect, useHistory, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -62,6 +62,7 @@ export default function Login({ navigation }) {
                     navigation.navigate('Home');
                 }
                 else{
+                    history.push('/');
                     window.location.reload(false);
                 }
             }
