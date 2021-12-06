@@ -60,6 +60,7 @@ export default function Login({ navigation }) {
                 setPassword("");
                 if(Platform.OS=='android'){
                     navigation.navigate('Home');
+                    window.location.reload(false);
                 }
                 else{
                     history.push('/');
