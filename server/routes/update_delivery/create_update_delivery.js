@@ -5,10 +5,10 @@ const UpdateDelivery = require('../../models/update_delivery/update_delivery');
 router.post('/create_update_delivery', (req, res)=>{
     var newUpdateDelivery = new UpdateDelivery({
         
-        // requestedBy:req.body.userId,
+        requestedBy:req.body.userId,
         orderId:req.body.orderId,
         items:req.body.items,
-        // userId:req.body.userId,
+        userId:req.body.userId,
         vendor_id:req.body.vendor_id,
         sales_id:req.body.sales_id,
         order_id:req.body.order_id,

@@ -43,7 +43,7 @@ export default function Edit_Accepted_Delivery_Assignment(props,{route}) {
     const [pincode, setPincode] = useState('');
     const [sales_id,setSalesId] = useState("Choose Sales");
     const [userId,setUserId]=useState("");
-    const [order_id, setOrderId] = useState("");
+    const [orderId, setOrderId] = useState("");
     const [flag, setFlag] = useState(true);
 
     const openMenu3 = () => setVisible3(true);
@@ -84,12 +84,13 @@ export default function Edit_Accepted_Delivery_Assignment(props,{route}) {
                 setMobileNo(delivery[0].mobile_no);
                 setAddress(delivery[0].address);
                 setLandmark(delivery[0].landmark);
-                setDistrict(delivery[0].landmark);
+                setDistrict(delivery[0].district);
                 setState(delivery[0].state);
                 setCountry(delivery[0].country);
                 setPincode(delivery[0].postal_code);
                 setItems(delivery[0].items);
-                setOrderId(delivery[0].order_id)
+                setOrderId(delivery[0].orderId);
+                setUserId(delivery[0].userId);
                 setSalesId(delivery[0].sales_id);
                 setFlag(false);
                 console.log(delivery);
@@ -217,10 +218,10 @@ export default function Edit_Accepted_Delivery_Assignment(props,{route}) {
                 items: items,
                 sales_id:sales_id,
 
-                // requestedBy:userId,
-                // orderId:orderId,
-                // orderId:order_id,
-                // userId:userId,
+                requestedBy:userId,
+                orderId:orderId,
+                // order_id:order_id,
+                userId:userId,
                 status:status,                    
             })
         })

@@ -90,8 +90,7 @@ export default function All_Delivery({ navigation }) {
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
-                                                                                                                                                                                                                        
-            {/* //comment code aug 31/08/2012 for testing....  */}
+                                                                  
                 {allUpdateDelivery ?
                     allUpdateDelivery.map((updateDelivery,index)=>{
                          if(updateDelivery._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              

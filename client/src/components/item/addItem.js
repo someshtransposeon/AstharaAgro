@@ -16,6 +16,7 @@ const theme = {
 };
 //define add items component
 export default function AddItem({ navigation }) {
+    
     //initialize all required state variables
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
@@ -40,8 +41,9 @@ export default function AddItem({ navigation }) {
     const [gradeId, setGradeId] = useState("");
     const [itemName, setItemName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
-    const [itemDescription, setDescription,] = useState("");
+    const [itemDescription, setDescription] = useState("");
     const [unit,setUnit]=useState("Select unit of each item");
+    // const [myImg, setMyImg] = useState("");
     const [host, setHost] = useState("");
     //fetch all required item categories, units, grades
     useEffect(() => {
@@ -121,7 +123,16 @@ export default function AddItem({ navigation }) {
         setDescription("");
 
     }
-
+    // function uploadImg(){
+    //     console.log("ok")
+    // }
+    // myHandler = () =>{
+    //     console.log("yess")
+    // }
+    
+    const myImg = event => {
+        console.log(event)
+    }
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch1 = query => setSearchQuery1(query);
     const onChangeSearch2 = query => setSearchQuery2(query);
@@ -219,6 +230,13 @@ export default function AddItem({ navigation }) {
                         }
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
+                    <input type="file" name="myfile" 
+                    // onPress={()=>uploadImg} 
+                    // onChange={myHandler}  
+                    // onImageChange={myImg}
+                    // onChange={myImg => setMyImg(myImg)}
+                    // onChange={itemImg => setItemImg(itemImg)}      
+                    />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>

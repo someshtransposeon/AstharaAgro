@@ -326,7 +326,7 @@ export default function Edit_Confirm_Delivery(props,{route}) {
                     {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} > Confirm Delivery by Customer</Button> */}
                     {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button> */}
                     <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm2()} > Accept Payment</Button>
-                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm3()} > Order Delivered</Button>
+                    <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} > Order Delivered</Button>
                     </Card.Content>
                 </Card>
             </View>

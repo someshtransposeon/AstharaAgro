@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const updateDeliverySchema = new mongoose.Schema({
     
-    // requestedBy:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    // },
+    requestedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     orderId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Order'
@@ -18,10 +18,10 @@ const updateDeliverySchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Indent'
     },
-    // userId:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     ref:'User'
-    // },
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Vendor'
@@ -37,7 +37,6 @@ const updateDeliverySchema = new mongoose.Schema({
     items:{
         type:mongoose.Schema.Types.Mixed,
     },
-
     name:{
         type:String,
     },
@@ -70,7 +69,6 @@ const updateDeliverySchema = new mongoose.Schema({
     mobile_no: {
         type: String,
     },
-    
     status: {
         type: String,
         default:"waiting for customer end",

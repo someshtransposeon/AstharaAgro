@@ -100,13 +100,13 @@ export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
                                 <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
                                 <DataTable.Cell>{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
-                                {/* <DataTable.Cell  numeric>
+                                <DataTable.Cell  numeric>
                                     <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignmentConfirm.status}</Button>}>
                                     <Menu.Item title="Accept" onPress={()=>StatusChange("vendor accepted",  pickupAssignmentConfirm._id, index)}/>
                                     <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignmentConfirm._id, index)}/>
                                     
                                     </Menu>
-                                </DataTable.Cell>    */}
+                                </DataTable.Cell>   
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '80%',
                 border: '1px solid gray',
                 borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
