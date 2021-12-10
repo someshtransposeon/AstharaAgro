@@ -153,7 +153,7 @@ export default function CreateOrder({ navigation }) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(data =>{
-                var min = Math.min.apply(null, data.map(item => item.item_price));
+                var min = Math.max.apply(null, data.map(item => item.item_price));
                 let obj = data.find(item => item.item_price === min);
                 values[index].itemId = obj._id;
                 values[index].itemUnit=obj.unit_name;
