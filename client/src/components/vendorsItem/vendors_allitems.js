@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
     ...DefaultTheme,
@@ -20,21 +21,31 @@ export default function VendorsAllItems({ navigation }) {
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
+        //to get the id of current vendor
+        async function fetchData() {
+            await AsyncStorage.getItem('loginuserid')
+            .then((userid) => {
+                setUserId(userid);
+            })
+        }
+        fetchData();
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
+        fetch(`http://${host}:5000/vendors_retrive_all_item/${userId}`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allItems => setAllItems(allItems));
-    }, [allItems, host]);
+    }, [allItems, host,userId]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

@@ -74,20 +74,13 @@ export default function AddItem({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(item => setItem(item));
-
         fetch(`http://${host}:5000/retrive_all_item_category`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(itemCategory => setItemCategory(itemCategory));
-
+        //console.log(itemCategory);
         fetch(`http://${host}:5000/retrive_all_item_unit`, {
             method: 'GET'
         })
@@ -173,36 +166,6 @@ export default function AddItem({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="VENDORS ADD ITEM"/>
                     <Card.Content>
-                    <Menu key={4}
-                    visible={visible4}
-                    onDismiss={closeMenu4}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu4}>{item}</Button>}>
-                        <Searchbar
-                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                            placeholder="Search"
-                            onChangeText={onChangeSearch3}
-                            value={searchQuery3}
-                        />
-                        {Platform.OS=='android' ?
-                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemCategory')}}>Add Category</Button>
-                            :
-                            <Link to="/additemcategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
-                        }
-                        {item ?
-                            item.map((item)=>{
-                                if(item.item_name.toUpperCase().search(searchQuery3.toUpperCase())!=-1){
-                                return (
-                                    <Menu.Item title={item.item_name} onPress={()=>chooseItem(item._id, item.item_name)} />
-                                )
-                                }
-                            })
-                            :
-                            <Menu.Item title="No item Available" />
-                        }
-                    </Menu>
-                    <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
-                    <View></View>
                     <Menu key={1}
                     visible={visible1}
                     onDismiss={closeMenu1}
@@ -287,10 +250,10 @@ export default function AddItem({ navigation }) {
                             <Menu.Item title="No item Unit Available" />
                         }
                     </Menu>
+                    <TextInput style={styles.input} mode="outlined" label="Item name"  value={itemName} onChangeText={itemName => setItemName(itemName)} />
                     <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <TextInput style={styles.input} mode="outlined" label="Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>
             </View>

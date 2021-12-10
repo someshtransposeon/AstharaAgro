@@ -15,16 +15,16 @@ const theme = {
 };
 
 export default function EditOrderItem(props,{route}) {
-
     var orderid = "";
-    var id="";
-    if(Platform.OS=="android"){
+    var id = '';
+    var itemid = '';
+    if(Platform.OS == 'android'){
         id = route.params.orderId;
     }
     else{
         orderid = props.match.params.orderid;
+        itemid = props.match.params.itemid;
     }
-
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
@@ -50,7 +50,7 @@ export default function EditOrderItem(props,{route}) {
     const [vendor_email, setVendorEmail] = useState("Choose Vendor");
     const [user2, setUser2] = useState();
     const [indent_id, setIndentId] = useState("Choose Indent");
-    // const [order_id, setOrderId] = useState();
+    const [item_id, setItem_id] = useState("");
     const [user_id, setUserId] = useState();
     const [flag, setFlag] = useState(true);
 
@@ -64,6 +64,7 @@ export default function EditOrderItem(props,{route}) {
         else{
             setHost("localhost");
             setOrderId(orderid);
+            setItem_id(itemid);
         }
 
         fetch(`http://${host}:5000/vendors_retrive_all_item`, {
@@ -101,7 +102,7 @@ export default function EditOrderItem(props,{route}) {
                 setFlag(false);
             });
         }
-    }, [item,host,order_id,id,orderid,flag]);
+    }, [item,host,order_id,id,orderid,flag,item_id,itemid]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -239,7 +240,7 @@ export default function EditOrderItem(props,{route}) {
                     <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} /> */}
                     {items.map((it, index) => (
-                        <View>
+                          <View>                         
                             <Menu
                             visible={visible[index]}
                             onDismiss={()=>closeMenu(index)}

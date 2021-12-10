@@ -35,9 +35,7 @@ export default function AllInventory({ navigation }) {
         .catch(error => console.log(error))
         .then(allInventory => setAllInventory(allInventory));
     }, [allInventory, host]);
-
     const onChangeSearch = query => setSearchQuery(query);
-
     return (
         <Provider theme={theme}>
         <SafeAreaView>

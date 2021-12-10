@@ -25,14 +25,28 @@ router.get('/retrive_all_completed_order',(req, res)=>{
     });
 });
 
-
 router.get('/retrive_order/:id',(req, res)=>{
     Order.find({'_id':req.params.id}, function(err, order){
+       if(err){
+           console.log(err);
+       }
+       else {
+           res.json(order);
+       }
+   });
+});
+router.get('/retrive_order_items/:id/:itemid',(req, res)=>{
+     Order.find({'_id':req.params.id,'items.itemId':req.params.itemid}, function(err, order){
         if(err){
             console.log(err);
         }
         else {
-            res.json(order);
+            if(order[0].items.itemId==req.params.itemid)
+            {
+                res.json(order[0].items);
+                console.log(order[0].items);
+            }
+            
         }
     });
 });

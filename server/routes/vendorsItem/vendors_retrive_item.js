@@ -14,8 +14,8 @@ router.get('/vendors_retrive_all_item',(req, res)=>{
     });
 });
 //Define route to retrive item by item id
-router.get('/vendors_retrive_item/:id',(req, res)=>{
-    VendorsItem.find({'_id':req.params.id}, function(err, item){
+router.get('/vendors_retrive_item/:vendorid',(req, res)=>{
+    VendorsItem.find({'userId':req.params.vendorid}, function(err, item){
         if(err){
             console.log(err);
         }

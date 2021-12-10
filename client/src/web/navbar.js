@@ -293,9 +293,9 @@ const NavBar =()  => {
                                 }
                                 {(roleas=="buyer" || roleas=="manager" ) &&
                                     <>
-                                        <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
+                                        {/* <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Indents" as={Link}>All Indents</NavDropdown.Item>
+                                        <NavDropdown.Item to="/All_Indents" as={Link}>All Indents</NavDropdown.Item> 
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/Create_Purchase_Order" as={Link}>Create Purchase Order</NavDropdown.Item>
                                         <NavDropdown.Divider />
@@ -665,7 +665,7 @@ const NavBar =()  => {
                 <Route path="/order_items_summary">
                     <OrderItemsSummary/>
                 </Route>
-                <Route path="/editorderitem/:orderid" render={(props) => <EditOrderItem {...props} />} exact />
+                <Route path="/editorderitem/:orderid/:itemid" render={(props) => <EditOrderItem {...props} />} exact />
                 <Route path="/Pickup_Purchase">
                     <Pickup_Purchase/>
                 </Route>    

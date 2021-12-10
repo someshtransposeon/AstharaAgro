@@ -39,6 +39,7 @@ export default function OrderItemsSummary({ navigation }) {
         else{
             setHost("localhost");
         }
+        //to fetch the all orders details 
         fetch(`http://${host}:5000/retrive_all_order_items`, {
             method: 'GET'
         })
@@ -109,9 +110,9 @@ export default function OrderItemsSummary({ navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
-                        {Platform.OS !== "android" &&
-                        <DataTable.Title>Item Id</DataTable.Title>
-                        }
+                        {/* {Platform.OS !== "android" &&
+                         <DataTable.Title>Item Id</DataTable.Title>
+                        } */}
                         <DataTable.Title>Item Name</DataTable.Title>
                         <DataTable.Title>Unit</DataTable.Title>
                         <DataTable.Title>Quantity</DataTable.Title>
@@ -125,7 +126,7 @@ export default function OrderItemsSummary({ navigation }) {
                                 return(
                                     <DataTable.Row>
                                     <DataTable.Cell >{item._id}</DataTable.Cell>
-                                        <DataTable.Cell >{item2.itemId}</DataTable.Cell>
+                                        {/* <DataTable.Cell >{item2.itemId}</DataTable.Cell> */}
                                         <DataTable.Cell >{item2.itemName}</DataTable.Cell>
                                         <DataTable.Cell >{item2.itemUnit}</DataTable.Cell>
                                         <DataTable.Cell >{item2.quantity}</DataTable.Cell>
@@ -174,9 +175,9 @@ export default function OrderItemsSummary({ navigation }) {
                                         </DataTable.Cell> */}
                                         <DataTable.Cell numeric>
                                         {Platform.OS=='android' ?
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrderItem', {itemId: item._id})}}>Details</Button>
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrderItem', {itemId: item2.itemId,orderId:item._id})}}>Details</Button>
                                             :
-                                            <Link to={"/editorderitem/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            <Link to={"/editorderitem/"+item._id+"/"+item2.itemId}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
                                         }
                                     </DataTable.Cell>
                                     </DataTable.Row>)
