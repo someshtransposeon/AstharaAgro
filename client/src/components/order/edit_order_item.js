@@ -35,7 +35,7 @@ export default function EditOrderItem(props,{route}) {
 
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:''}]);
+    const [items, setItems] = useState();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -98,7 +98,8 @@ export default function EditOrderItem(props,{route}) {
                 setState(order[0].state);
                 setCountry(order[0].country);
                 setPincode(order[0].postal_code);
-                setItems(order[0].items);
+                var it=order[0].items.find(x => x.itemId === item_id);
+                setItems(it);
                 setFlag(false);
             });
         }
@@ -129,6 +130,11 @@ export default function EditOrderItem(props,{route}) {
         setItems(values);
     };
     
+    const QuantityChange = (quantity) => {
+        const values = items;
+        values.quantity = quantity;
+        setItems(values);
+    };
 
     const handleAddFields = () => {
         const values = [...items];
@@ -239,61 +245,55 @@ export default function EditOrderItem(props,{route}) {
                     <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
                     <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} /> */}
-                    {items.map((it, index) => {
-                        if(it.itemId==item_id)
-                        {
-                        return (
-                            <View>                         
-                                <Menu
-                                visible={visible[index]}
-                                onDismiss={()=>closeMenu(index)}
-                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
-                                    <Searchbar
-                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                        placeholder="Search"
-                                        onChangeText={onChangeSearch1}
-                                        value={searchQuery1}
-                                    />
-                                    {item ?
-                                        item.map((item)=>{
-                                            if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
-                                            return (
-                                                <>
-                                                <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit)}/>
-                                                </>
-                                            )
-                                            }
-                                        })
-                                        :
-                                        <Menu.Item title="No items are available" />
-                                    }
-                                </Menu>
-                                <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
-                                <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                                {/* <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
-                                value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
-                            onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
-                                /> */}
-                                {/* <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} /> */}
-                                {/* <View style={{flexDirection: 'row'}}>
-                                    {Platform.OS=="android" ?
+                    {items && 
+                    <View>                         
+                        <Menu
+                        visible={visible[0]}
+                        onDismiss={()=>closeMenu(0)}
+                        anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(0)}>{items.itemName}</Button>}>
+                            <Searchbar
+                                icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                placeholder="Search"
+                                onChangeText={onChangeSearch1}
+                                value={searchQuery1}
+                            />
+                            {item ?
+                                item.map((item)=>{
+                                    if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
+                                    return (
                                         <>
-                                            <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
-                                            <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
+                                        <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(0, "item", item.item_name, item._id,item.unit)}/>
                                         </>
-                                        :
-                                        <>
-                                            <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
-                                            <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
-                                        </>
+                                    )
                                     }
-                                </View> */}
-                            </View>
-                        )
-                        }
-                        return "";
-                    })}
+                                })
+                                :
+                                <Menu.Item title="No items are available" />
+                            }
+                        </Menu>
+                        <TextInput mode="outlined" label="unit of each item" value={items.itemUnit} />
+                        <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>QuantityChange(text)} />
+                        {/* <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
+                        value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
+                    onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
+                        /> */}
+                        {/* <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} /> */}
+                        {/* <View style={{flexDirection: 'row'}}>
+                            {Platform.OS=="android" ?
+                                <>
+                                    <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                    <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
+                                </>
+                                :
+                                <>
+                                    <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
+                                    <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
+                                </>
+                            }
+                        </View> */}
+                    </View>
+                    }
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Purchase</Button>
                     {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Order</Button> */}
                     {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button> */}
