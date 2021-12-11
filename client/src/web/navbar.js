@@ -182,13 +182,13 @@ const NavBar =()  => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link to="/" as={Link}>Home</Nav.Link>
-                            <Nav.Link to="/allitems" as={Link}>Services</Nav.Link>
-                            <Nav.Link to="/allitems" as={Link}>Our Vision</Nav.Link>
+                            <Nav.Link to="/" as={Link}>Services</Nav.Link>
+                            <Nav.Link to="/" as={Link}>Our Vision</Nav.Link>
                             <NavDropdown title="Other" id="collasible-nav-dropdown">
-                                <NavDropdown.Item to="/allitems" as={Link}>Contact Us</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>About Us</NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>Terms and conditions </NavDropdown.Item>
-                                <NavDropdown.Item to="/allitems" as={Link}>Privacy policy</NavDropdown.Item>
+                                <NavDropdown.Item to="/" as={Link}>Contact Us</NavDropdown.Item>
+                                <NavDropdown.Item to="/" as={Link}>About Us</NavDropdown.Item>
+                                <NavDropdown.Item to="/" as={Link}>Terms and conditions </NavDropdown.Item>
+                                <NavDropdown.Item to="/" as={Link}>Privacy policy</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                         <Form className="d-flex" style={{margin: 'auto'}}>
@@ -239,22 +239,27 @@ const NavBar =()  => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav style={{margin: 'auto'}}>
                             <NavDropdown title="Dashboard" id="collasible-nav-dropdown" style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
+                                <NavDropdown title="Item" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/additem" as={Link}>Add Item</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                <NavDropdown.Item to="/allitems" as={Link}>All Items</NavDropdown.Item>
+                                </NavDropdown>
+                                <NavDropdown.Divider />
                                 {( roleas=="vendor" ||roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                                     <>
+                                    <NavDropdown title="Vendor Item" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/vendors_additem" as={Link}>Vendors Add Item</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/vendors_allitems" as={Link}>Vendors All Items</NavDropdown.Item>
-                                        <NavDropdown.Divider />
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
                                     </>
                                 }
-                                <NavDropdown.Item to="/allitems" as={Link}>All Items</NavDropdown.Item>
-                                <NavDropdown.Divider />
+                                <NavDropdown title="Item Category" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/additemcategory" as={Link}>Add Item Category</NavDropdown.Item>
@@ -262,15 +267,18 @@ const NavBar =()  => {
                                     </>
                                 }
                                 <NavDropdown.Item to="/allitemcategories" as={Link}>All Item Categories</NavDropdown.Item>
+                                </NavDropdown>
                                 <NavDropdown.Divider />
-                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                <NavDropdown title="Item Unit" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/additemunits" as={Link}>Add Item Unit</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>
                                 }
                                 <NavDropdown.Item to="/allitemunits" as={Link}>All Item Units</NavDropdown.Item>
+                                </NavDropdown>
                                 <NavDropdown.Divider />
+                                <NavDropdown title="Item Grade" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}> 
                                 {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/additemgrades" as={Link}>Add Item Grade</NavDropdown.Item>
@@ -278,7 +286,9 @@ const NavBar =()  => {
                                     </>
                                 }
                                 <NavDropdown.Item to="/allitemgrades" as={Link}>All Item Grades</NavDropdown.Item>
+                                </NavDropdown>
                                 <NavDropdown.Divider />
+                                <NavDropdown title="Order" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="sales" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
@@ -288,9 +298,10 @@ const NavBar =()  => {
                                 {(roleas=="sales" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
                                     <>
                                         <NavDropdown.Item to="/allorders" as={Link}>All Orders</NavDropdown.Item>
-                                        <NavDropdown.Divider />
                                     </>
                                 }
+                                </NavDropdown>
+                                <NavDropdown.Divider />
                                 {(roleas=="buyer" || roleas=="manager" ) &&
                                     <>
                                         {/* <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
@@ -303,6 +314,7 @@ const NavBar =()  => {
                                         <NavDropdown.Divider /> */}
                                     </>
                                 }
+                                <NavDropdown title="Purchase Order" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="vendor" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
                                     <>
                                         <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
@@ -313,14 +325,16 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="vendor") &&
+                                {(roleas=="vendor" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/All_Pending_Purchase_Orders" as={Link}>All Pending Purchase Orders</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/All_Accepted_Purchase_Orders" as={Link}>All Accepted Purchase Orders </NavDropdown.Item>
-                                        <NavDropdown.Divider />
                                     </>
                                 }
+                                </NavDropdown>
+                                <NavDropdown.Divider />
+                                <NavDropdown title="Delivery Beats" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="manager" || roleas=="field_executive") &&
                                     <>
                                         <NavDropdown.Item to="/All_Delivery_Beats" as={Link}>All Delivery Beats</NavDropdown.Item>
@@ -328,40 +342,44 @@ const NavBar =()  => {
                                         <NavDropdown.Item to="/All_Pending_Delivery_Beats" as={Link}>Pending Delivery Beats</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/All_Accepted_Delivery_Beats" as={Link}>Accepted Delivery Beats</NavDropdown.Item>
-                                        <NavDropdown.Divider />
                                     </>
                                 }        
-
-
-
+                                </NavDropdown>
                             </NavDropdown>
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 {roleas=="manager" &&
                                     <>
+                                    <NavDropdown title="User" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/allusers" as={Link}>All Users</NavDropdown.Item>
-                                        <NavDropdown.Divider />
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown title="User Category" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/addusercategory" as={Link}>Add User Category</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/allusercategories" as={Link}>All User Categories</NavDropdown.Item>
-                                        <NavDropdown.Divider />
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
                                     </>
                                 }
                                 {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
                                     <>
+                                    <NavDropdown title="Vendor" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/addvendor" as={Link}>Add Vendor</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
-                                        <NavDropdown.Divider />
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
                                     </>
                                 }
                                 {(roleas=="sales" || roleas=="manager") &&
                                     <>
+                                    <NavDropdown title="Customer" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/addcustomer" as={Link}>Add Customer</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/customerdetails" as={Link}>All Customers</NavDropdown.Item>
-                                        <NavDropdown.Divider />
+                                    </NavDropdown>
                                     </>
                                 }
                             </NavDropdown>
@@ -370,38 +388,43 @@ const NavBar =()  => {
                                 <NavDropdown.Item to="/allitems" as={Link}>Sales Order</NavDropdown.Item><NavDropdown.Divider />
                                  {( roleas=="manager") &&
                                     <>
+                                    <NavDropdown title="Disabled" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/disabled_all_items" as={Link}>Disabled Items</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/disabled_all_item_categories" as={Link}>Disabled ItemCategory</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/disabled_all_item_unit" as={Link}>Disabled ItemUnit</NavDropdown.Item>
+                                        <NavDropdown.Item to="/disabled_all_item_unit" as={Link}>Disabled Item Unit</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/disabled_all_item_grade" as={Link}>Disabled ItemGrade</NavDropdown.Item>
+                                        <NavDropdown.Item to="/disabled_all_item_grade" as={Link}>Disabled Item Grade</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/disabled_all_users" as={Link}>Disabled Users</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/disabled_all_user_categories" as={Link}>Disabled UserCategory</NavDropdown.Item>
+                                        <NavDropdown.Item to="/disabled_all_user_categories" as={Link}>Disabled User Category</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/disabledcustomerdetails" as={Link}>Disabled Customers</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/customer_account_delete_requests" as={Link}>Delete AccountRequests</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/Accepted_Purchase_Orders" as={Link}>Accepted PurchaseOrder</NavDropdown.Item>
-                                        <NavDropdown.Divider />
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown title="Invoice" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/create_invoice" as={Link}>Create Invoice</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/all_invoice" as={Link}>All Invoices</NavDropdown.Item>
+                                    </NavDropdown>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown title="Purchase Order" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                        <NavDropdown.Item to="/Accepted_Purchase_Orders" as={Link}>Accepted Purchase Order</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/All_Declined_Purchase_Orders" as={Link}>All Declined PurchaseOrders</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown title="GRN" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/create_grn" as={Link}>Create GRN</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/all_grn" as={Link}>All GRNs</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/order_items_summary" as={Link}>Order Items Summary</NavDropdown.Item>
+                                    </NavDropdown>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/Pickup_Purchase" as={Link}>Pickup Purchase</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/order_items_summary" as={Link}>Order Items Summary</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>
                                 }
@@ -411,16 +434,23 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                {( roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/customer_account_delete_requests" as={Link}>Delete Account Requests</NavDropdown.Item>
+                                    </>
+                                }
                             </NavDropdown>
                             <NavDropdown title="Inventory" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 <NavDropdown.Item to="/allinventory" as={Link}>Show Inventory</NavDropdown.Item>
+                                <NavDropdown.Divider />
                                 <NavDropdown.Item to="/allinventory" as={Link}>All Inventories</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Assignment" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
-                                <NavDropdown.Item to="/allitems" as={Link}>Delivery</NavDropdown.Item>
+                                {/* <NavDropdown.Item to="/allitems" as={Link}>Delivery</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item to="/allitems" as={Link}>Show All Deliveries</NavDropdown.Item>
-                                <NavDropdown.Divider />
+                                <NavDropdown.Divider /> */}
+                                <NavDropdown title="Pickup Assignment" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%'}}>
                                  {(roleas=="buyer" || roleas=="manager") &&
                                     <> 
                                         <NavDropdown.Item to="/all_pickup_assignment" as={Link}>All Pickup Assignment</NavDropdown.Item>        
@@ -436,12 +466,14 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                 {(roleas=="vendor" || roleas=="manager" ) &&
+                                {(roleas=="vendor" || roleas=="manager" ) &&
                                     <> 
                                         <NavDropdown.Item to="/all_pickup_assignment_confirm_vendor" as={Link}>All Pickup Assignment Confirm Vendor</NavDropdown.Item>        
-                                        <NavDropdown.Divider />
                                     </>
                                 }
+                                </NavDropdown>
+                                <NavDropdown.Divider />
+                                <NavDropdown title="Delivery Assignment" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="accountant" || roleas=="manager"|| roleas=="sales" ) &&
                                     <> 
                                         <NavDropdown.Item to="/All_Delivery_Assignment" as={Link}>All Delivery Assignment</NavDropdown.Item>        
@@ -449,9 +481,11 @@ const NavBar =()  => {
                                         <NavDropdown.Item to="/All_Pending_Delivery_Assignment" as={Link}>All Pending Delivery Assignment</NavDropdown.Item>        
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/All_Accepted_Delivery_Assignment" as={Link}>All Accepted Delivery Assignment</NavDropdown.Item>        
-                                        <NavDropdown.Divider />
                                     </>
                                 }
+                                </NavDropdown>
+                                <NavDropdown.Divider />
+                                <NavDropdown title="Delivery" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="accountant" || roleas=="manager"|| roleas=="sales" || roleas=="customer"  ) &&
                                     <> 
                                         <NavDropdown.Item to="/All_Delivery" as={Link}>All Delivery</NavDropdown.Item>        
@@ -461,9 +495,9 @@ const NavBar =()  => {
                                 {(roleas=="accountant" || roleas=="manager"|| roleas=="sales"  ) &&
                                     <> 
                                         <NavDropdown.Item to="/All_Confirm_Delivery" as={Link}>All Confirm Delivery</NavDropdown.Item>        
-                                        <NavDropdown.Divider />
                                     </>
                                 }
+                                </NavDropdown>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
