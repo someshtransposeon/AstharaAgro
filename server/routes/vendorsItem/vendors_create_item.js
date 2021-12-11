@@ -7,6 +7,7 @@ router.post('/vendors_create_item', (req, res)=>{
     var newItem = new VendorsItem({
         userId: req.body.userId,
         category: req.body.category,
+
         grade: req.body.grade,
         unit: req.body.unit,
         added_by: req.body.added_by,
