@@ -14,6 +14,7 @@ const theme = {
         accent: '#f1c40f',
     },
 };
+
 //define all item components
 export default function AllItems({ navigation }) {
     //initialize the all states variables
@@ -22,18 +23,21 @@ export default function AllItems({ navigation }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+        
         fetch(`http://${host}:5000/retrive_all_item`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allItems => setAllItems(allItems));
+
     }, [allItems, host]);
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -44,13 +48,14 @@ export default function AllItems({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>All Items</Title>
+                    <Title style={{marginBottom: '20px'}}>All Items</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}
+                        style={{marginBottom: '20px'}}
                     />
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
@@ -89,18 +94,6 @@ export default function AllItems({ navigation }) {
 }
 //define stylesheet for the component (IOS styles to be added)
 const styles = StyleSheet.create({
-    view: {
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-            },
-            default: {
-                
-            }
-        })
-    },
     card: {
         margin: '2%',
         alignSelf: 'center',
@@ -129,9 +122,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, CheckBox } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { faMinusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -16,7 +16,6 @@ const theme = {
 
 export default function Edit_Purchase_Order(props, {route}) {
 
-    
     var id="";
     var purchaseid = ""; 
     if(Platform.OS=="android"){
@@ -26,10 +25,8 @@ export default function Edit_Purchase_Order(props, {route}) {
         purchaseid = props.match.params.purchaseid;
     }
 
-
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
-    const [isSelected, setSelection] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -43,13 +40,10 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
     const [user2, setUser2] = useState();
 
-    // const [vendor_id, setVendorId] = useState("");
     const [vendor_email, setVendorEmail] = useState("Choose Vendor");
 
-    //const [items, setItems] = useState("");
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
-
 
     function chooseIndent(i_id) {
         setIndentId(i_id);
@@ -229,12 +223,6 @@ export default function Edit_Purchase_Order(props, {route}) {
         });
     }; 
 
-    // const handleCheckbox=(event)=>{
-    //     const {itemName,checked} = event.target;
-    //     let tempItems = items.map((item) => 
-    //         items.itemName === itemName ? {...item, isChecked : checked} : item);
-    //     setItems(tempItems);
-    //  }; 
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -281,28 +269,7 @@ export default function Edit_Purchase_Order(props, {route}) {
                     ))}
                     </DataTable>
                     }
-                    {/* {indent_id && 
-                    <DataTable>
-                        <DataTable.Header style={styles.tableheader} >
-                        <DataTable.Title >Item Name </DataTable.Title>
-                        <DataTable.Title >Unit</DataTable.Title>
-                        <DataTable.Title >Quantity</DataTable.Title>
-
-                        </DataTable.Header>
-                        {items && 
-                            items.map((item)=>{
-                                return (
-                                    <DataTable.Row key={item.itemName}> 
-                                        <DataTable.Cell>{item.itemName} </DataTable.Cell>
-                                        <DataTable.Cell>{item.itemUnit} </DataTable.Cell>
-                                        <DataTable.Cell>{item.quantity} </DataTable.Cell>
-                                    </DataTable.Row>
-                                )
-                            })
-                        }
-                    </DataTable>
-                    }  */}
-                            <Menu
+                    <Menu
                     visible={visible2}
                     onDismiss={closeMenu2}
                     anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{vendor_email} </Button>}>
@@ -316,15 +283,8 @@ export default function Edit_Purchase_Order(props, {route}) {
                             <Menu.Item title="No Vendor Available" />
                         }
                     </Menu>
-                    <Button mode="contained" style={styles.button} color='red' 
-                        // onclick={()=>{ StatusChange("pending"); submitForm3() }}
-                    onPress={()=>submitForm3()}         
-                    // onPress={()=>StatusChange("pending")}
-                    >Update Vendor</Button>
-                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm3()} >Update Vendor</Button>
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Purchase</Button>
-                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faReceipt } />} style={styles.button} onPress={()=>submitForm2()} >Create Purchase Confirm</Button> */}
-                                 
+                    <Button mode="contained" style={styles.button} color='red' onPress={()=>submitForm3()}>Update Vendor</Button>
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm3()} >Update Vendor</Button>                          
                     </Card.Content>
                 </Card>
             </View>

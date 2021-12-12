@@ -6,7 +6,6 @@ import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-ico
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -58,7 +57,8 @@ export default function AddItem({ navigation }) {
     const [host, setHost] = useState("");
     //fetch all required item categories, units, grades
     useEffect(() => {
-         async function fetchData() {
+
+        async function fetchData() {
             await AsyncStorage.getItem('loginuserid')
             .then((userid,username) => {
                 setUserId(userid);
@@ -67,19 +67,20 @@ export default function AddItem({ navigation }) {
         }
         fetchData();    
 
-
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_item_category`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(itemCategory => setItemCategory(itemCategory));
+
         //console.log(itemCategory);
         fetch(`http://${host}:5000/retrive_all_item_unit`, {
             method: 'GET'
@@ -94,13 +95,15 @@ export default function AddItem({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(itemGrade => setItemGrade(itemGrade));
-    }, [userId,fullName,itemCategory,host,itemUnit,itemGrade,item]);
+
+    }, [userId, fullName, itemCategory, host, itemUnit, itemGrade, item]);
 
     function chooseItem(id, name) {
         setItemId(id);
         setItem(name);
         closeMenu4();
     }
+
     function chooseCategory(id, name) {
         setCategoryId(id);
         setCategory(name);
@@ -112,6 +115,7 @@ export default function AddItem({ navigation }) {
         setGrade(name);
         closeMenu2();
     }
+
     function chooseUnit(id, name) {
         setUnitId(id);
         setUnit(name);
@@ -152,7 +156,6 @@ export default function AddItem({ navigation }) {
         setDescription("");
         setItemPrice("");
         setItemQuantity("");
-
     }
 
     const onChangeSearch = query => setSearchQuery(query);

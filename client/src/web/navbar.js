@@ -184,7 +184,7 @@ const NavBar =()  => {
                             <Nav.Link to="/" as={Link}>Home</Nav.Link>
                             <Nav.Link to="/" as={Link}>Services</Nav.Link>
                             <Nav.Link to="/" as={Link}>Our Vision</Nav.Link>
-                            <NavDropdown title="Other" id="collasible-nav-dropdown">
+                            <NavDropdown title="Other" id="collasible-nav-dropdown" drop="start">
                                 <NavDropdown.Item to="/" as={Link}>Contact Us</NavDropdown.Item>
                                 <NavDropdown.Item to="/" as={Link}>About Us</NavDropdown.Item>
                                 <NavDropdown.Item to="/" as={Link}>Terms and conditions </NavDropdown.Item>
