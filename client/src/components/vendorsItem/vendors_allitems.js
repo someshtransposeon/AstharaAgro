@@ -39,13 +39,18 @@ export default function VendorsAllItems({ navigation }) {
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/vendors_retrive_all_item/${userId}`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
-    }, [allItems, host,userId]);
+        .then(allItems => {
+            setAllItems(allItems);
+            console.log(allItems);
+        });
+
+    }, [allItems, host, userId]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -55,13 +60,14 @@ export default function VendorsAllItems({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>Vendor ItemList</Title>
+                    <Title style={{marginBottom: '20px'}}>Vendor ItemList</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}
+                        style={{marginBottom: '20px'}}
                     />
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
@@ -72,31 +78,32 @@ export default function VendorsAllItems({ navigation }) {
                         <DataTable.Title>Price</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
-                {allItems ?
-                    allItems.map((item)=>{
-                        if(item.item_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                        return (
-                            <DataTable.Row>
-                                <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.category_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.grade_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.unit_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.item_quantity}</DataTable.Cell>
-                                <DataTable.Cell>{item.item_price}</DataTable.Cell>
-                                <DataTable.Cell>
-                                    {Platform.OS=='android' ?
-                                        <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('VendorsEditItem', {itemId: item._id})}}>Details</Button>
-                                        :
-                                        <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/vendors_edititem/"+item._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                }
+
+                    {allItems ?
+                        allItems.map((item)=>{
+                            if(item.item_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{item.item_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.category_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.grade_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.unit_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.item_quantity}</DataTable.Cell>
+                                        <DataTable.Cell>{item.item_price}</DataTable.Cell>
+                                        <DataTable.Cell>
+                                            {Platform.OS=='android' ?
+                                                <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('VendorsEditItem', {itemId: item._id})}}>Details</Button>
+                                                :
+                                                <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/vendors_edititem/"+item._id}>Details</Link></Button>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
                 </DataTable>
             </View>
         </ScrollView>
@@ -106,18 +113,6 @@ export default function VendorsAllItems({ navigation }) {
 }
 //define stylesheet for the component (IOS styles to be added)
 const styles = StyleSheet.create({
-    view: {
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-            },
-            default: {
-                
-            }
-        })
-    },
     card: {
         margin: '2%',
         alignSelf: 'center',
@@ -146,9 +141,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

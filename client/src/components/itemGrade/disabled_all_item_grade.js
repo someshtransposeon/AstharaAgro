@@ -20,82 +20,69 @@ export default function DisabledAllItemGrade({ navigation }) {
     const [allItemGrade, setAllItemGrade] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-    const [itemGradeId, setItemGradeId] = useState("");
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_disabled_item_grade`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(grade => setAllItemGrade(grade));
+
     }, [allItemGrade, host]);
 
     const onChangeSearch = query => setSearchQuery(query);
-    const StatusChange = (s) => {
-            fetch(`http://${host}:5000/enabled_item_grade/${itemGradeId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    status: s,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                alert(data.message);
-                console.log(data);
-            });
-            // closeMenu(index);
-        }; 
+
     return (
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>Disabled Item Grades</Title>
+                    <Title style={{marginBottom: '20px'}}>Disabled Item Grades</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}
+                        style={{marginBottom: '20px'}}
                     />
                     <DataTable.Header>
                         <DataTable.Title>Item Grade</DataTable.Title>
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
-                {allItemGrade ?
-                    allItemGrade.map((item)=>{
-                        if(item.grade_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                        return (
-                            <DataTable.Row>
-                                <DataTable.Cell>{item.grade_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.status}</DataTable.Cell>
-                                <DataTable.Cell numeric>
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('DisabledEditItemGrade', {itemGradeId: item._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/disablededititemgrade/"+item._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                }
+
+                    {allItemGrade ?
+                        allItemGrade.map((item)=>{
+                            if(item.grade_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{item.grade_name}</DataTable.Cell>
+                                    <DataTable.Cell>{item.status}</DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('DisabledEditItemGrade', {itemGradeId: item._id})}}>Details</Button>
+                                            :
+                                            <Button mode="contained" style={{width: '100%'}}><Link to={"/disablededititemgrade/"+item._id}>Details</Link></Button>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                            }
+                        })
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
                 </DataTable>
             </View>
         </ScrollView>
@@ -145,9 +132,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

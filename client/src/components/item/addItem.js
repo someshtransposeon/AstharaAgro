@@ -43,10 +43,10 @@ export default function AddItem({ navigation }) {
     const [grade, setGrade] = useState("Choose Grade");
     const [itemDescription, setDescription] = useState("");
     const [unit,setUnit]=useState("Select unit of each item");
-    // const [myImg, setMyImg] = useState("");
     const [host, setHost] = useState("");
     //fetch all required item categories, units, grades
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
@@ -74,6 +74,7 @@ export default function AddItem({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(itemGrade => setItemGrade(itemGrade));
+
     }, [itemCategory,host,itemUnit,itemGrade]);
 
     function chooseCategory(id, name) {
@@ -87,6 +88,7 @@ export default function AddItem({ navigation }) {
         setGrade(name);
         closeMenu2();
     }
+
     function chooseUnit(id, name) {
         setUnitId(id);
         setUnit(name);
@@ -121,18 +123,8 @@ export default function AddItem({ navigation }) {
         setGrade("Choose Grade");
         setUnit("Select Unit of Each item");
         setDescription("");
+    }
 
-    }
-    // function uploadImg(){
-    //     console.log("ok")
-    // }
-    // myHandler = () =>{
-    //     console.log("yess")
-    // }
-    
-    const myImg = event => {
-        console.log(event)
-    }
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch1 = query => setSearchQuery1(query);
     const onChangeSearch2 = query => setSearchQuery2(query);
@@ -231,6 +223,7 @@ export default function AddItem({ navigation }) {
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <input type="file" name="myfile" 
+                    style={{border: '1px solid gray', marginTop: '2%', padding: '1%', borderRadius: '1px'}}
                     // onPress={()=>uploadImg} 
                     // onChange={myHandler}  
                     // onImageChange={myImg}
@@ -262,7 +255,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

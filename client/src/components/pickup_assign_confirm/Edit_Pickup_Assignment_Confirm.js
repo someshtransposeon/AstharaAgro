@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, CheckBox } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faUpload,faEdit,faStore, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { faMinusCircle, } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +15,6 @@ const theme = {
 };
 
 export default function Edit_Pickup_Assignment_Confirm(props, {route}) {
-
     
     var id="";
     var pickupConfirmId = ""; 
@@ -26,54 +25,47 @@ export default function Edit_Pickup_Assignment_Confirm(props, {route}) {
         pickupConfirmId = props.match.params.pickupConfirmId;
     }
 
-    
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
-    const [visible3, setVisible3] = useState(false);
-
-    const [isSelected, setSelection] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
-    const openMenu3 = () => setVisible3(true);
-    const closeMenu3 = () => setVisible3(false);
+
     const [pickupAssignId, setPickupAssignId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
     const [order_id, setOrderId] = useState("");
     const [indent_id, setIndentId] = useState("Choose Indent");
     const [buyer_id,setBuyerId] = useState("Choose Buyer");
-    // const [buyer_id,setPickupAssId] = useState("");
     const [status,setStatus] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
-    const [finalPrice,setFinalPrice] = useState("");
-
+    const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
-
-    
-
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
-
 
     function chooseIndent(i_id) {
         setIndentId(i_id);
         closeMenu1();
     }
+
     function chooseBuyer(buyerId) {
         setBuyerId(buyerId);
         closeMenu2();
     }
+
     function chooseVendor(vendorId) {
         setVendorId(vendorId);
         closeMenu2();
     }
+
     function choosePickup(pickupAssignId) {
         setPickupAssignId(pickupAssignId);
         closeMenu2();
     }
+
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setPickupAssignId(id);
@@ -81,11 +73,9 @@ export default function Edit_Pickup_Assignment_Confirm(props, {route}) {
         else{
             setHost("localhost");
             setPickupAssignId(pickupConfirmId);
-            // addValue(10);
-
         }
+
         if(pickupAssignId){
-       
             fetch(`http://${host}:5000/retrive_pickup_assignment_confirm/${pickupConfirmId}`, {
                 method: 'GET'
             })
@@ -102,22 +92,7 @@ export default function Edit_Pickup_Assignment_Confirm(props, {route}) {
                 setFlag(true);
                 console.log(item[0])
             });
-
-            // .then(item => {
-            // setItems(item[0].items);
-            // setFlag(true);
-            // });
-
-            
-       }
-
-       
-    //    fetch(`http://${host}:5000/retrive_all_transportation_category`, {
-    //         method: 'GET'
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(transportation_category => setTransportationCategory(transportation_category));
+        }
 
     }, [host,pickupAssignId,pickupConfirmId,id]);
 
@@ -133,11 +108,13 @@ export default function Edit_Pickup_Assignment_Confirm(props, {route}) {
         }
         setItems(values);
     };
+
     const handleRemoveFields = index => {
         const values = [...items];
         values.splice(index, 1);
         setItems(values);
     };
+
     const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -150,165 +127,60 @@ export default function Edit_Pickup_Assignment_Confirm(props, {route}) {
         }
         setItems(values);
     };
-    // function submitForm() {
-    //     fetch(`http://${host}:5000/update_purchase_order_confirm/${purchaseconfirmid}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             indent_id:indent_id,
-    //             order_id:order_id,
-    //             items:items,   
-    //             vendor_id:vendor_id, 
-    //             status:status,          
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });   
-    // }
-    function submitForm3(){
-        alert("Payment in progress!");
-    };
-   
-    
-    // for update inventory function
-        function submitForm2() {
-            fetch(`http://${host}:5000/update_inventory`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                // indent_id:indent_id,
-                // purchaseConfirmId:purchaseConfirmId,
-                // order_id:order_id,
-                items:items,   
-                // vendor_id:vendor_id, 
-                // status:status,                    
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });   
-    }
-    function chooseIndent(i_id) {
-        setIndentId(i_id);
-        closeMenu1();
-    }
-     function submitForm() {
-            fetch(`http://${host}:5000/create_pickup_assign_confirm`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        
-            body: JSON.stringify({
-                indent_id:indent_id,
-                purchaseId:purchaseId,
-                order_id:order_id,
-                items:items,   
-                vendor_id:vendor_id,
-                buyer_id:buyer_id,
-                pickupAssignId:pickupAssignId, 
-                status:status,          
-
-                          
-            })
-        }
-
-        )
-        
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-            
-        });   
-    }
-
-
 
     return (
         <Provider theme={theme}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View>
                 <Card style={styles.card}>
                     <Card.Title title="Edit Pickup Assignment Confirm"/>
                     <Card.Content>
-                    
-                    {pickupAssignId &&
-                    <Menu 
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{pickupAssignId}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>choosePickup(pickupAssignId)} />
-                    </Menu>
-                    }
-                    {buyer_id &&
-                    <Menu 
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{buyer_id}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
-                    </Menu>
-                    }
-                    {vendor_id &&
-                    <Menu 
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{vendor_id}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
-                    </Menu>
-                    }
+                        {pickupAssignId &&
+                            <Menu 
+                            visible={visible2}
+                            onDismiss={closeMenu2}
+                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Pickup Assign ID: {pickupAssignId}</Button>}>
+                                <Menu.Item title="${pId}" onPress={()=>choosePickup(pickupAssignId)} />
+                            </Menu>
+                        }
 
-                    {indent_id &&
-                    <Menu 
-                    visible={visible1}
-                    onDismiss={closeMenu1}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{indent_id}</Button>}>
-                        <Menu.Item title="${indentId}" onPress={()=>chooseIndent(indent_id)} />
-                    </Menu>
-                    }
-                    {items && flag &&
-                    <DataTable style={styles.datatable}>
-                    {items.map((it, index) => (
-                        <DataTable.Row>
-                            <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={it.itemName} /></DataTable.Cell>
-                            <DataTable.Cell><TextInput mode="outlined" label="Unit" value={it.itemUnit} /></DataTable.Cell>
-                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} /></DataTable.Cell>
-                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={it.itemPrice} onChangeText={(text)=>ItemChange2(index, "itemPrice", text, '')} /></DataTable.Cell>
-                            <DataTable.Cell><View style={{flexDirection: 'row'}}>
-                                {Platform.OS=="android" ?
-                                    <>
-                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
-                                    </>
-                                    :
-                                    <>
-                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
-                                }
-                            </View></DataTable.Cell>
-                        </DataTable.Row>
-                    ))}
-                    </DataTable>
-                    }
+                        {buyer_id &&
+                            <Menu 
+                            visible={visible2}
+                            onDismiss={closeMenu2}
+                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Buyer ID: {buyer_id}</Button>}>
+                                <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
+                            </Menu>
+                        }
 
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>submitForm()} >Confirm Pickup Assignment</Button> */}
-                    
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} 
-                    onPress={()=>submitForm3()}
-                     >Payment</Button>
-                   
-                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} 
-                    onPress={()=>submitForm2()}
-                     >Update Inventory</Button>              */}
+                        {vendor_id &&
+                            <Menu 
+                            visible={visible2}
+                            onDismiss={closeMenu2}
+                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Vendor ID: {vendor_id}</Button>}>
+                                <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
+                            </Menu>
+                        }
+
+                        {items &&
+                            <DataTable style={styles.datatable}>
+                                <DataTable.Row style={styles.input}>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>ItemChange(0, "quantity", text, '')} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>ItemChange2(0, "itemPrice", text, '')} /></DataTable.Cell>
+                                    <DataTable.Cell><View style={{flexDirection: 'row'}}>
+                                        {Platform.OS=="android" ?
+                                            <>
+                                                <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(0)}/>
+                                            </>
+                                            :
+                                            <>
+                                                <Button onPress={() => handleRemoveFields(0)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
+                                        }
+                                    </View></DataTable.Cell>
+                                </DataTable.Row>
+                            </DataTable>
+                        }
                     </Card.Content>
                 </Card>
             </View>
@@ -333,7 +205,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '70%',
+                width: '75%',
             }
         })
     },

@@ -15,7 +15,6 @@ const theme = {
     },
 };
 
-
 export default function All_Pending_Pickup_Assignment({ navigation }) {
 
     const [allPickupAssignment, setAllPickupAssignment] = useState();
@@ -24,18 +23,21 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
     const [visible, setVisible] = useState([]);
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_pending_pickup_assignment`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allPickupAssignment => setAllPickupAssignment(allPickupAssignment));
+
     }, [allPickupAssignment, host]);
 
     const openMenu = (index) => {
@@ -43,6 +45,7 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
         values[index]=true;
         setVisible(values);
     };
+
     const closeMenu = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -67,6 +70,7 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
         });
         closeMenu(index);
     };    
+
     const onChangeSearch = query => setSearchQuery(query);
 
     return (
@@ -75,71 +79,50 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
              <DataTable style={styles.datatable}>
-               <Title>All Pending Pickup Assignment</Title>
+               <Title style={{marginBottom: '20px'}}>All Pending Pickup Assignment</Title>
                <Searchbar
                     icon={() => <FontAwesomeIcon icon={ faSearch } />}
                     clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                     placeholder="Search"
                     onChangeText={onChangeSearch}
                     value={searchQuery}
+                    style={{marginBottom: '20px'}}
                 />
 
                 <DataTable.Header>
                     <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title numeric>Buyer ID</DataTable.Title>
+                    {/* <DataTable.Title numeric>Buyer ID</DataTable.Title> */}
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
-                                                                                                                                                                                                                        
-            {/* //comment code aug 31/08/2012 for testing....  */}
+                                                                    
                 {allPickupAssignment ?
                     allPickupAssignment.map((pickupAssignment,index)=>{
-                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
-                         return (
-                              <DataTable.Row>
-                                <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                <DataTable.Cell  numeric>
-                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
-                                        <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
-                                        <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
-                                    </Menu>
-                                </DataTable.Cell>   
-                                <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                             </DataTable.Row>
-                        )
+                        if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
+                                    {/* <DataTable.Cell numeric>{pickupAssignment.buyer_id}</DataTable.Cell> */}
+                                    <DataTable.Cell  numeric>
+                                        <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
+                                            <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
+                                            <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
+                                        </Menu>
+                                    </DataTable.Cell>   
+                                    <DataTable.Cell numeric> 
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
+                                            :
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
                         }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>
                 }
-                {/* {allPurchaseOrders ?
-                    allPurchaseOrders.map((purchaseOrder)=>{
-                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
-                         return (
-                              <DataTable.Row>
-                                <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
-                                <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                             </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                } */}
             </DataTable>
             </View>
         </ScrollView>
@@ -190,9 +173,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '80%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

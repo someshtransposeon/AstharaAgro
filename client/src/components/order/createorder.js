@@ -26,7 +26,6 @@ export default function CreateOrder({ navigation }) {
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:'', Grade: 'Choose Grade',}]);
-    // const [itemPrice, setItemPrice] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -43,11 +42,11 @@ export default function CreateOrder({ navigation }) {
     const [role,setRole]=useState("");
     const [userId,setUserId]=useState("");
     const [customerId,setCustomerId]=useState("");
-    const [requestedBy,setRequestedBy]=useState("");
     const [flag2,setFlag2]=useState(true);
     const [itemGrade, setItemGrade]=useState();
 
     useEffect(() => {
+
         async function fetchData() {
             await AsyncStorage.getItem('loginuserid')
             .then((userid) => {
@@ -116,13 +115,14 @@ export default function CreateOrder({ navigation }) {
         .catch(error => console.log(error))
         .then(itemGrade => setItemGrade(itemGrade));
 
-    }, [item,host,userId,flag2, itemGrade]);
+    }, [item, host, userId, flag2, itemGrade, address, landmark, district, state, country, pincode, role, category, customerId]);
 
     const openMenu = (index) => {
         const values = [...visible];
         values[index]=true;
         setVisible(values);
     };
+
     const closeMenu = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -137,6 +137,7 @@ export default function CreateOrder({ navigation }) {
         values[index]=true;
         setVisible4(values);
     };
+
     const closeMenu4 = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -158,6 +159,8 @@ export default function CreateOrder({ navigation }) {
                 values[index].itemId = obj._id;
                 values[index].itemUnit=obj.unit_name;
                 values[index].itemPrice=obj.item_price;
+                const itemsnames=[...new Set(data.map(x=>x.item_name))];
+                setItem(itemsnames);
             });
             closeMenu(index);
         }
@@ -165,51 +168,17 @@ export default function CreateOrder({ navigation }) {
             values[index].Grade=grade;
             closeMenu4(index);
         }
-        else{
+        else if (fieldname == "quantity"){
             values[index].quantity = fieldvalue;
         }
-        setItems(values);
-    };
-
-    //  const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-    //     const values = [...items];
-    //     if (fieldname === "item") {
-    //         values[index].itemId = itemId;
-    //         values[index].itemName = fieldvalue;
-    //         values[index].itemUnit=unit;
-    //     }
-    //     else{
-    //         values[index].itemPrice = fieldvalue;
-    //     }
-    //     setItems(values);
-    // };
-    const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit,price) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-            values[index].itemPrice=price;
+        else if (fieldname == "finalPrice"){
+            values[index].finalPrice = fieldvalue;
         }
         else{
             values[index].itemNegotiatePrice = fieldvalue;
         }
         setItems(values);
-        };
-
-    const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-            values[index].itemPrice=price;
-        }
-        else{
-            values[index].finalPrice = fieldvalue;
-        }
-        setItems(values);
-        };
+    };
 
     const CustomerChange = (id, email) => {
         setCustomerEmail(email);
@@ -246,7 +215,6 @@ export default function CreateOrder({ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // requestedBy:requestedBy,
                 userId: userId,
                 customerId: customerId,
                 name: name,
@@ -322,129 +290,120 @@ export default function CreateOrder({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="Create Sales Order"/>
                     <Card.Content>
-                    <View style={styles.customer}>
-                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
-                        <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
-                    </View>
-                    {flag &&
-                        <Menu
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
-                                <Searchbar
-                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                    placeholder="Search"
-                                    onChangeText={onChangeSearch2}
-                                    value={searchQuery2}
-                                />
-                                {customer ?
-                                    customer.map((item)=>{
-                                        if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
-                                            </>
-                                        )
-                                        }
-                                    })
-                                    :
-                                    <Menu.Item title="No Customers are available" />
-                                }
-                        </Menu>
-                    }
-                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
-                    <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
-                    <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
-                    <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
-                    <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
-                    <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
-                    {items.map((it, index) => (
-                        <View>
-                            <Menu
-                            visible={visible4[index]}
-                            onDismiss={()=>closeMenu4(index)}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu4(index)}>{it.Grade}</Button>}>
-                                <Searchbar
-                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                    placeholder="Search"
-                                    onChangeText={onChangeSearch4}
-                                    value={searchQuery4}
-                                />
-                                {itemGrade ?
-                                    itemGrade.map((grade)=>{
-                                        if(grade.grade_name.toUpperCase().search(searchQuery4.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={grade.grade_name} 
-                                            onPress={()=>ItemChange(index, "grade", "", "","","", grade.grade_name)}/>
-                                            </>
-                                        )
-                                        }
-                                    })
-                                    :
-                                    <Menu.Item title="No items are available" />
-                                }
-                            </Menu>
-                            <Menu
-                            visible={visible[index]}
-                            onDismiss={()=>closeMenu(index)}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
-                                <Searchbar
-                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                    placeholder="Search"
-                                    onChangeText={onChangeSearch1}
-                                    value={searchQuery1}
-                                />
-                                {typeof item!=='undefined' ?
-                                    item.map((item)=>{
-                                        if(item.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={item} 
-                                            onPress={()=>ItemChange(index, "item", item, "","","")}/>
-                                            </>
-                                        )
-                                        }
-                                    })
-                                    :
-                                    <Menu.Item title="No items are available" />
-                                }
-                            </Menu>
-                            <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                           
-                            {/* <TextInput  keyboardType='numeric' mode="outlined" label="Price"
-                             value={ (it.itemPrice / 100) * 30 +(it.itemPrice) } 
-                            /> */}
-
-                             <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
-                             value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
-                           onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
-                             />
-                            
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price"     value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
-                            <View style={{flexDirection: 'row'}}>
-                                {Platform.OS=="android" ?
-                                    <>
-                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
-                                        <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
-                                    </>
-                                    :
-                                    <>
-                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
-                                        <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
-                                    </>
-                                }
-                            </View>
+                        <View style={styles.customer}>
+                            <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
+                            <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
                         </View>
-                    ))}
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Order</Button>
+                        {flag &&
+                            <Menu
+                                visible={visible2}
+                                onDismiss={closeMenu2}
+                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
+                                    <Searchbar
+                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                        placeholder="Search"
+                                        onChangeText={onChangeSearch2}
+                                        value={searchQuery2}
+                                    />
+                                    {customer ?
+                                        customer.map((item)=>{
+                                            if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
+                                            return (
+                                                <>
+                                                <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
+                                                </>
+                                            )
+                                            }
+                                        })
+                                        :
+                                        <Menu.Item title="No Customers are available" />
+                                    }
+                            </Menu>
+                        }
+                        <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
+                        <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
+                        <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                        <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
+                        <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
+                        <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
+                        <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
+                        <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
+                        <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
+                        {items.map((it, index) => (
+                            <View>
+                                <Menu
+                                visible={visible4[index]}
+                                onDismiss={()=>closeMenu4(index)}
+                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu4(index)}>{it.Grade}</Button>}>
+                                    <Searchbar
+                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                        placeholder="Search"
+                                        onChangeText={onChangeSearch4}
+                                        value={searchQuery4}
+                                    />
+                                    {itemGrade ?
+                                        itemGrade.map((grade)=>{
+                                            if(grade.grade_name.toUpperCase().search(searchQuery4.toUpperCase())!=-1){
+                                                return (
+                                                    <>
+                                                    <Menu.Item title={grade.grade_name} 
+                                                    onPress={()=>ItemChange(index, "grade", "", "","","", grade.grade_name)}/>
+                                                    </>
+                                                )
+                                            }
+                                        })
+                                        :
+                                        <Menu.Item title="No items are available" />
+                                    }
+                                </Menu>
+                                <Menu
+                                visible={visible[index]}
+                                onDismiss={()=>closeMenu(index)}
+                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
+                                    <Searchbar
+                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                        placeholder="Search"
+                                        onChangeText={onChangeSearch1}
+                                        value={searchQuery1}
+                                    />
+                                    {typeof item!=='undefined' ?
+                                        item.map((item)=>{
+                                            if(item.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
+                                                return (
+                                                    <>
+                                                    <Menu.Item title={item} 
+                                                    onPress={()=>ItemChange(index, "item", item, "","","","")}/>
+                                                    </>
+                                                )
+                                            }
+                                        })
+                                        :
+                                        <Menu.Item title="No items are available" />
+                                    }
+                                </Menu>
+                                <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
+                                <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '', "", "", "")} />
+                                <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice" value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)} onChangeText={(text)=>ItemChange(index, "finalPrice", text, '', "", "", "")}/>
+                                <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price"     value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange(index, "itemNegotiatePrice", text, '', "", "", "")} />
+                                <View style={{flexDirection: 'row'}}>
+                                    {Platform.OS=="android" ?
+                                        <>
+                                            <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                            <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
+                                        </>
+                                        :
+                                        <>
+                                            <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
+                                            <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
+                                        </>
+                                    }
+                                </View>
+                            </View>
+                        ))}
+                        <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Order</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -471,7 +430,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

@@ -18,12 +18,14 @@ export default function AddItemGrade({ navigation }) {
     const [host, setHost] = useState("");
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+        
     }, [host]);
 
     function submitForm() {
@@ -40,7 +42,6 @@ export default function AddItemGrade({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
             setItemGradeName("");
         }); 
     }
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

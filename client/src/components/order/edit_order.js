@@ -43,6 +43,7 @@ export default function EditOrder(props,{route}) {
     const [flag, setFlag] = useState(true);
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setOrderId(id);
@@ -79,6 +80,7 @@ export default function EditOrder(props,{route}) {
                 setFlag(false);
             });
         }
+
     }, [item,host,orderId,id,orderid,flag]);
 
     const openMenu = (index) => {
@@ -86,6 +88,7 @@ export default function EditOrder(props,{route}) {
         values[index]=true;
         setVisible(values);
     };
+
     const closeMenu = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -105,6 +108,7 @@ export default function EditOrder(props,{route}) {
         }
         setItems(values);
     };
+
     const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -117,6 +121,7 @@ export default function EditOrder(props,{route}) {
         }
         setItems(values);
     };
+
     const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -128,7 +133,8 @@ export default function EditOrder(props,{route}) {
             values[index].itemNegotiatePrice = fieldvalue;
         }
         setItems(values);
-        };
+    };
+
     const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -141,7 +147,7 @@ export default function EditOrder(props,{route}) {
             values[index].finalPrice = fieldvalue;
         }
         setItems(values);
-        };
+    };
 
     const handleAddFields = () => {
         const values = [...items];
@@ -243,9 +249,9 @@ export default function EditOrder(props,{route}) {
                             <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
-                             value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
-                           onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
-                             />
+                            value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
+                            onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
+                            />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
@@ -290,7 +296,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, CheckBox } from 'react-native';
+import { View, StyleSheet, Platform, } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faUpload,faEdit,faStore, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { faMinusCircle, faStore } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +15,6 @@ const theme = {
 };
 
 export default function Edit_Pickup_Assignment(props, {route}) {
-
     
     var id="";
     var pickupId = ""; 
@@ -25,52 +24,38 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     else{
         pickupId = props.match.params.pickupId;
     }
-
     
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
-    const [visible3, setVisible3] = useState(false);
-
-    const [isSelected, setSelection] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
-    const openMenu3 = () => setVisible3(true);
-    const closeMenu3 = () => setVisible3(false);
+
     const [pickupAssignId, setPickupAssignId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
     const [order_id, setOrderId] = useState("");
     const [indent_id, setIndentId] = useState("Choose Indent");
     const [buyer_id,setBuyerId] = useState("Choose Buyer");
-    // const [buyer_id,setPickupAssId] = useState("");
     const [status,setStatus] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
-    const [finalPrice,setFinalPrice] = useState("");
-
+    const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
-
-    
-
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
 
-
-    function chooseIndent(i_id) {
-        setIndentId(i_id);
-        closeMenu1();
-    }
     function chooseBuyer(buyerId) {
         setBuyerId(buyerId);
         closeMenu2();
     }
+
     function chooseVendor(vendorId) {
         setVendorId(vendorId);
         closeMenu2();
     }
     
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setPickupAssignId(id);
@@ -78,9 +63,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         else{
             setHost("localhost");
             setPickupAssignId(pickupId);
-            // addValue(10);
-
         }
+
         if(pickupAssignId){
        
             fetch(`http://${host}:5000/retrive_pickup_assignment/${pickupId}`, {
@@ -97,116 +81,33 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setBuyerId(item[0].buyer_id);
                 setStatus(item[0].status);
                 setFlag(true);
-                // console.log(item)
             });
-
-            // .then(item => {
-            // setItems(item[0].items);
-            // setFlag(true);
-            // });
-
-            
-       }
-
-       
-    //    fetch(`http://${host}:5000/retrive_all_transportation_category`, {
-    //         method: 'GET'
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(transportation_category => setTransportationCategory(transportation_category));
+        }
 
     }, [host,pickupAssignId,pickupId,id]);
 
-    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].quantity = fieldvalue;
-        }
-        setItems(values);
-    };
     const handleRemoveFields = index => {
         const values = [...items];
         values.splice(index, 1);
         setItems(values);
     };
-    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].itemPrice = fieldvalue;
-        }
-        setItems(values);
+
+    const PriceChange = (value) => {
+        const values = items;
+        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:values.quantity, itemPrice:value});
     };
-    // function submitForm() {
-    //     fetch(`http://${host}:5000/update_purchase_order_confirm/${purchaseconfirmid}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             indent_id:indent_id,
-    //             order_id:order_id,
-    //             items:items,   
-    //             vendor_id:vendor_id, 
-    //             status:status,          
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });   
-    // }
-    function submitForm3(){
-        alert("Payment in progress!");
+
+    const QuantityChange = (value) => {
+        const values = items;
+        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:value, itemPrice:values.finalPrice});
     };
-   
-    
-    // for update inventory function
-        function submitForm2() {
-            fetch(`http://${host}:5000/update_inventory`, {
+
+    function submitForm() {
+        fetch(`http://${host}:5000/create_pickup_assign_confirm`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                // indent_id:indent_id,
-                // purchaseConfirmId:purchaseConfirmId,
-                // order_id:order_id,
-                items:items,   
-                // vendor_id:vendor_id, 
-                // status:status,                    
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });   
-    }
-    function chooseIndent(i_id) {
-        setIndentId(i_id);
-        closeMenu1();
-    }
-     function submitForm() {
-            fetch(`http://${host}:5000/create_pickup_assign_confirm`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        
             body: JSON.stringify({
                 indent_id:indent_id,
                 purchaseId:purchaseId,
@@ -215,14 +116,9 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 vendor_id:vendor_id,
                 buyer_id:buyer_id,
                 pickupAssignId:pickupAssignId, 
-                status:status,          
-
-                          
+                status:status,   
             })
-        }
-
-        )
-        
+        })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
@@ -232,72 +128,51 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         });   
     }
 
-
-
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
                     <Card.Title title="Edit Pickup Assignment2"/>
                     <Card.Content>
-                    
-                    {buyer_id &&
-                    <Menu 
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{buyer_id}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
-                    </Menu>
-                    }
-                    {vendor_id &&
-                    <Menu 
-                    visible={visible2}
-                    onDismiss={closeMenu2}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{vendor_id}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
-                    </Menu>
-                    }
+                        {buyer_id &&
+                            <Menu 
+                            visible={visible2}
+                            onDismiss={closeMenu2}
+                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Buyer ID: {buyer_id}</Button>}>
+                                <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
+                            </Menu>
+                        }
 
-                    {indent_id &&
-                    <Menu 
-                    visible={visible1}
-                    onDismiss={closeMenu1}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{indent_id}</Button>}>
-                        <Menu.Item title="${indentId}" onPress={()=>chooseIndent(indent_id)} />
-                    </Menu>
-                    }
-                    {items && flag &&
-                    <DataTable style={styles.datatable}>
-                    {items.map((it, index) => (
-                        <DataTable.Row>
-                            <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={it.itemName} /></DataTable.Cell>
-                            <DataTable.Cell><TextInput mode="outlined" label="Unit" value={it.itemUnit} /></DataTable.Cell>
-                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} /></DataTable.Cell>
-                            <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={it.itemPrice} onChangeText={(text)=>ItemChange2(index, "itemPrice", text, '')} /></DataTable.Cell>
-                            <DataTable.Cell><View style={{flexDirection: 'row'}}>
-                                {Platform.OS=="android" ?
-                                    <>
-                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
-                                    </>
-                                    :
-                                    <>
-                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
-                                }
-                            </View></DataTable.Cell>
-                        </DataTable.Row>
-                    ))}
-                    </DataTable>
-                    }
+                        {vendor_id &&
+                            <Menu 
+                            visible={visible2}
+                            onDismiss={closeMenu2}
+                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Vendor ID: {vendor_id}</Button>}>
+                                <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
+                            </Menu>
+                        }
 
-                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>submitForm()} >Confirm Pickup Assignment</Button>
-                    
-                    {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} 
-                    onPress={()=>submitForm3()}
-                     >Payment</Button>
-                   
-                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} 
-                    onPress={()=>submitForm2()}
-                     >Update Inventory</Button>   */}
+                        {items &&
+                            <DataTable style={styles.datatable}>
+                                <DataTable.Row style={styles.input}>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>QuantityChange(text)} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>PriceChange(text)} /></DataTable.Cell>
+                                    <DataTable.Cell><View style={{flexDirection: 'row'}}>
+                                        {Platform.OS=="android" ?
+                                            <>
+                                                <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(0)}/>
+                                            </>
+                                            :
+                                            <>
+                                                <Button onPress={() => handleRemoveFields(0)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
+                                        }
+                                    </View></DataTable.Cell>
+                                </DataTable.Row>
+                            </DataTable>
+                        }
+                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>submitForm()} >Confirm Pickup Assignment</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -322,7 +197,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '70%',
+                width: '75%',
             }
         })
     },

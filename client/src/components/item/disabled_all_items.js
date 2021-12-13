@@ -19,56 +19,42 @@ export default function Disabled_All_Items({ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
-    const [searchQuery, setSearchQuery] = useState('');
-    const [itemId, setItemId] = useState("");
+    const [searchQuery, setSearchQuery] = useState('')
+
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_disabled_items`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allItems => setAllItems(allItems));
+
     }, [allItems, host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
-      const StatusChange = (s) => {
-        fetch(`http://${host}:5000/enabled_item/${itemId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        // closeMenu(index);
-    }; 
     return (
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>Disabled Items</Title>
+                    <Title style={{marginBottom: '20px'}}>Disabled Items</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}
+                        style={{marginBottom: '20px'}}
                     />
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
@@ -77,43 +63,30 @@ export default function Disabled_All_Items({ navigation }) {
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
-                {allItems ?
-                    allItems.map((item)=>{
-                        if(item.item_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                        return (
-                            <DataTable.Row>
-                                <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.category_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.unit_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.status}</DataTable.Cell>
-                                <DataTable.Cell>
-                                     {/* {Platform.OS=='android' ?
-                                        <Button color="red" icon={() => 
-                                        <FontAwesomeIcon icon={ faEye } />
-                                        } mode="contained" style={{width: '100%'}} 
-                                        // onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}
-                                        >Details</Button>
-                                        :
-                                        <Button 
-                                        mode="contained" 
-                                        style={styles.button} color='green' 
-                                        // onPress={()=>submit2Form()} 
-                                        onPress={()=>StatusChange("enabled")}
-                                        >Enable</Button>
-                                    } */}    
-                                    {Platform.OS=='android' ?
-                                        <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('DisabledEditItem', {itemId: item._id})}}>Details</Button>
-                                        :
-                                        <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/disablededititem/"+item._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                }
+
+                    {allItems ?
+                        allItems.map((item)=>{
+                            if(item.item_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{item.item_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.category_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.unit_name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.status}</DataTable.Cell>
+                                        <DataTable.Cell>
+                                            {Platform.OS=='android' ?
+                                                <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('DisabledEditItem', {itemId: item._id})}}>Details</Button>
+                                                :
+                                                <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/disablededititem/"+item._id}>Details</Link></Button>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
                 </DataTable>
             </View>
         </ScrollView>
@@ -163,9 +136,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '50%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

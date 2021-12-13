@@ -18,12 +18,14 @@ export default function AddItemUnit({ navigation }) {
     const [host, setHost] = useState("");
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
     }, [host]);
 
     function submitForm() {
@@ -40,7 +42,6 @@ export default function AddItemUnit({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
             setItemUnitName("");
         }); 
     }
@@ -51,8 +52,8 @@ export default function AddItemUnit({ navigation }) {
                 <Card style={styles.card}>
                     <Card.Title title="ADD ITEM UNIT"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Item Unit Name" value={itemUnitName} onChangeText={itemUnitName => setItemUnitName(itemUnitName)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item Unit</Button>
+                        <TextInput style={styles.input} mode="outlined" label="Item Unit Name" value={itemUnitName} onChangeText={itemUnitName => setItemUnitName(itemUnitName)} />
+                        <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item Unit</Button>
                     </Card.Content>
                 </Card>
             </View>
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

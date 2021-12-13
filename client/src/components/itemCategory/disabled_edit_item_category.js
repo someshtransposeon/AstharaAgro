@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 
 const theme = {
@@ -26,7 +26,9 @@ export default function DisabledEditItemCategory(props,{route}) {
     const [itemCategoryId, setItemCategoryId] = useState("");
     const [itemCategoryName, setItemCategoryName] = useState("");
     const [host, setHost] = useState("");
+
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setItemCategoryId(id);
@@ -46,6 +48,7 @@ export default function DisabledEditItemCategory(props,{route}) {
                 setItemCategoryName(item[0].category_name);
             });
         }
+        
     }, [host,itemCategoryId,id,itemCategoryid]);
 
     function submitForm() {
@@ -62,21 +65,11 @@ export default function DisabledEditItemCategory(props,{route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         }); 
     }
 
-    //  function submitForm2() {
-         const StatusChange = (s) => {
-        // fetch(`http://${host}:5000/update_purchase_status/${id}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         status: s,
-        //     })
-        // })
+    // function submitForm2() {
+    const StatusChange = (s) => {
         fetch(`http://${host}:5000/enabled_item_category/${itemCategoryId}`, {
             method: 'PUT',
             headers: {
@@ -90,25 +83,7 @@ export default function DisabledEditItemCategory(props,{route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         });
-        // closeMenu(index);
-    
-        // fetch(`http://${host}:5000/disabled_item_category/${itemCategoryId}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         status: "disabled",
-        //     })
-        // })
-        // .then(res => res.json())
-        // .catch(error => console.log(error))
-        // .then(data => {
-        //     alert(data.message);
-        //     console.log(data);
-        // }); 
     }
 
     return (
@@ -118,17 +93,9 @@ export default function DisabledEditItemCategory(props,{route}) {
                 <Card style={styles.card}>
                     <Card.Title title="EDIT ITEM CATEGORY"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Item Category Name" value={itemCategoryName} onChangeText={itemCategoryName => setItemCategoryName(itemCategoryName)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Category </Button>
-                    
-                    <Button mode="contained" style={styles.button} color='red' 
-                    onPress={()=>StatusChange("enabled")}
-                    >Enable Category</Button>
-
-                    {/* <Button mode="contained" style={styles.button} color='red' 
-                    onPress={()=>StatusChange2("enabled")}
-                    >Enabled Item</Button> */}
-
+                        <TextInput style={styles.input} mode="outlined" label="Item Category Name" value={itemCategoryName} onChangeText={itemCategoryName => setItemCategoryName(itemCategoryName)} />
+                        <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Category </Button>
+                        <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("enabled")}>Enable Category</Button>
                     </Card.Content>
                 </Card>
                 :
@@ -155,7 +122,9 @@ const styles = StyleSheet.create({
             },
             default: {
                 marginTop: '4%',
-                width: '50%',
+                width: '75%',
+                border: '1px solid gray',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })
     },

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 
 const theme = {
@@ -26,7 +26,9 @@ export default function DisabledEditItemGrade(props,{route}) {
     const [itemGradeId, setItemGradeId] = useState("");
     const [itemGradeName, setItemGradeName] = useState("");
     const [host, setHost] = useState("");
+
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setItemGradeId(id);
@@ -46,6 +48,7 @@ export default function DisabledEditItemGrade(props,{route}) {
                 setItemGradeName(item[0].grade_name);
             });
         }
+
     }, [host,itemGradeId,id,itemGradeid]);
 
     function submitForm() {
@@ -66,7 +69,7 @@ export default function DisabledEditItemGrade(props,{route}) {
         }); 
     }
        
-      const StatusChange = (s) => {
+    const StatusChange = (s) => {
         fetch(`http://${host}:5000/enabled_item_grade/${itemGradeId}`, {
             method: 'PUT',
             headers: {
@@ -82,7 +85,6 @@ export default function DisabledEditItemGrade(props,{route}) {
             alert(data.message);
             console.log(data);
         });
-        // closeMenu(index);
     }; 
 
     return (
@@ -92,10 +94,9 @@ export default function DisabledEditItemGrade(props,{route}) {
                 <Card style={styles.card}>
                     <Card.Title title="EDIT ITEM GRADE"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Item Grade Name" value={itemGradeName} onChangeText={itemGradeName => setItemGradeName(itemGradeName)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Grade </Button>
-                    <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("enabled")}
-                    >Enable Item Grade</Button>
+                        <TextInput style={styles.input} mode="outlined" label="Item Grade Name" value={itemGradeName} onChangeText={itemGradeName => setItemGradeName(itemGradeName)} />
+                        <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item Grade </Button>
+                        <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("enabled")}>Enable Item Grade</Button>
                     </Card.Content>
                 </Card>
                 :
@@ -122,7 +123,9 @@ const styles = StyleSheet.create({
             },
             default: {
                 marginTop: '4%',
-                width: '50%',
+                width: '75%',
+                border: '1px solid gray',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })
     },

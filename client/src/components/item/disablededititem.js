@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator, } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -54,13 +54,9 @@ export default function DisabledEditItem(props,{route}) {
     const [unit,setUnit]=useState("Select unit of each item");
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(true);
-    const [flag2, setFlag2] = useState(true);
-    const [disabled, setDisabled] = useState(true);
-    const [enabled, setEnabled] = useState(true);
-    const [status, setStatus] = useState(true);
-    const [disable, setDisable] = React.useState(false);
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setItemId(id);
@@ -69,6 +65,7 @@ export default function DisabledEditItem(props,{route}) {
             setHost("localhost");
             setItemId(itemid);
         }
+
         if(itemId && flag){
             fetch(`http://${host}:5000/retrive_item/${itemId}`, {
                 method: 'GET'
@@ -84,45 +81,30 @@ export default function DisabledEditItem(props,{route}) {
                 setCategory(item[0].category_name);
                 setItemName(item[0].item_name);
                 setDescription(item[0].description);
-                setStatus(item[0].status);
-
-                if(item[0].status=="disabled"){
-                    console.log("ON");
-                    // setEnabled(false)
-                    setDisabled(true);
-                    // setEnabled(true);
-                }else{
-                    console.log("OFF");
-                    setDisabled(true);
-                    // setEnabled(false);
-                    // setDisabled(true);
-                    // setEnabled(false);
-                }
             });
-            
             setFlag(false);
         }
 
-            fetch(`http://${host}:5000/retrive_all_item_category`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(itemCategory => setItemCategory(itemCategory));
+        fetch(`http://${host}:5000/retrive_all_item_category`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(itemCategory => setItemCategory(itemCategory));
 
-            fetch(`http://${host}:5000/retrive_all_item_unit`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(itemUnit => setItemUnit(itemUnit));
+        fetch(`http://${host}:5000/retrive_all_item_unit`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(itemUnit => setItemUnit(itemUnit));
 
-            fetch(`http://${host}:5000/retrive_all_item_grade`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(itemGrade => setItemGrade(itemGrade));
+        fetch(`http://${host}:5000/retrive_all_item_grade`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(itemGrade => setItemGrade(itemGrade));
 
     }, [host,itemId,id,itemid,itemGrade,itemUnit,itemCategory,flag]);
 
@@ -168,36 +150,15 @@ export default function DisabledEditItem(props,{route}) {
                 unit_name: unit,
                 grade_name: grade,
                 description: itemDescription,
-
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         }); 
     }
 
-
-      const StatusChange = (s) => {
-        fetch(`http://${host}:5000/disabled_item/${itemId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        // closeMenu(index);
-    };  
     const StatusChange2 = (s) => {
         fetch(`http://${host}:5000/enabled_item/${itemId}`, {
             method: 'PUT',
@@ -212,33 +173,8 @@ export default function DisabledEditItem(props,{route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         });
-        // closeMenu(index);
     };  
-
-        
-//this funtion is for disabled item 
-    //   function submit2Form() {
-    //     fetch(`http://${host}:5000/disabled_item/${itemId}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             status: status,
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     }); 
-    //         //  this.props.navigation.navigate('Home')
-                                
-        
-    // }
 
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch1 = query => setSearchQuery1(query);
@@ -326,29 +262,7 @@ export default function DisabledEditItem(props,{route}) {
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item</Button>
-                   
-                        
-                   
-                    {/* <Button mode="contained" style={styles.button} color='red' 
-                    // onPress={()=>submit2Form()} 
-                    onPress={()=>StatusChange("disabled")}
-                    // setDisabled
-                    // disabled="false"
-                    // disabled={disabled}
-                    // enabled2={enabled2}
-                    // enabled={enabled}
-                    >Disable Item</Button> */}
-
-                    <Button mode="contained" style={styles.button} color='red' 
-                    // onPress={()=>submit2Form()} 
-                    onPress={()=>StatusChange2("enabled")}
-                    // disabled="true"
-                    // disabled={false}
-                    enabled={enabled}
-                    // disabled={disabled}
-
-                    >Enabled Item</Button>
-
+                    <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange2("enabled")}>Enabled Item</Button>
                     </Card.Content>
                 </Card>
                 :
@@ -375,7 +289,9 @@ const styles = StyleSheet.create({
             },
             default: {
                 marginTop: '4%',
-                width: '50%',
+                width: '75%',
+                border: '1px solid gray',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })
     },

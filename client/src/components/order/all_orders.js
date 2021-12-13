@@ -24,12 +24,14 @@ export default function AllOrders({ navigation }) {
     const [flag, setFlag] = useState(false);
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_order`, {
             method: 'GET'
         })
@@ -38,6 +40,7 @@ export default function AllOrders({ navigation }) {
         .then(orders => {
             setAllOrders(orders);
         });
+
         if(flag && AllOrders.length > 0){
             for(let i = 0; i < AllOrders.length; i++){
                 const values = [...visible];
@@ -46,6 +49,7 @@ export default function AllOrders({ navigation }) {
             }
             setFlag(true);
         }
+
     }, [allOrders, host, visible, flag]);
 
     const openMenu = (index) => {
@@ -53,6 +57,7 @@ export default function AllOrders({ navigation }) {
         values[index]=true;
         setVisible(values);
     };
+
     const closeMenu = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -86,13 +91,14 @@ export default function AllOrders({ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>All Orders</Title>
+                    <Title style={{marginBottom: '20px'}}>All Orders</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}
+                        style={{marginBottom: '20px'}}
                     />
                     <DataTable.Header>
                     <DataTable.Title>Order ID</DataTable.Title>
@@ -104,6 +110,7 @@ export default function AllOrders({ navigation }) {
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
+
                     {allOrders ?
                         allOrders.map((item, index)=>{
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
@@ -187,9 +194,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '95%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })
