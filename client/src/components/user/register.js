@@ -30,12 +30,14 @@ export default function Register({ navigation }) {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     useEffect(() => {
+
         fetch('http://localhost:5000/retrive_all_user_category', {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(userCategory => setUserCategory(userCategory));
+
     }, [userCategory]);
 
     const openMenu1 = () => setVisible1(true);
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },
