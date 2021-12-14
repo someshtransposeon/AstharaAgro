@@ -15,7 +15,6 @@ const theme = {
     },
 };
 
-
 export default function All_Delivery({ navigation }) {
 
     const [allUpdateDelivery, setAllUpdateDelivery] = useState();
@@ -24,18 +23,21 @@ export default function All_Delivery({ navigation }) {
     const [visible, setVisible] = useState([]);
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         fetch(`http://${host}:5000/retrive_all_update_delivery`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allUpdateDelivery => setAllUpdateDelivery(allUpdateDelivery));
+
     }, [allUpdateDelivery, host]);
 
     const openMenu = (index) => {
@@ -43,6 +45,7 @@ export default function All_Delivery({ navigation }) {
         values[index]=true;
         setVisible(values);
     };
+
     const closeMenu = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -66,81 +69,61 @@ export default function All_Delivery({ navigation }) {
             console.log(data);
         });
         closeMenu(index);
-    };    
+    };   
+
     const onChangeSearch = query => setSearchQuery(query);
 
     return (
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
-            <View style={styles.view}>
-             <DataTable style={styles.datatable}>
-               <Title>All Delivery </Title>
-               <Searchbar
-                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                    placeholder="Search"
-                    onChangeText={onChangeSearch}
-                    value={searchQuery}
-                />
+            <View>
+                <DataTable style={styles.datatable}>
+                    <Title style={{marginBottom: '20px'}}>All Delivery </Title>
+                    <Searchbar
+                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+                        value={searchQuery}
+                        style={{marginBottom: '20px'}}
+                    />
 
-                <DataTable.Header>
-                    <DataTable.Title>Delivery ID</DataTable.Title>
-                    <DataTable.Title >Sales ID</DataTable.Title>
-                    <DataTable.Title numeric>Status</DataTable.Title>
-                    <DataTable.Title numeric>Action</DataTable.Title>
-                </DataTable.Header>
-                                                                  
-                {allUpdateDelivery ?
-                    allUpdateDelivery.map((updateDelivery,index)=>{
-                         if(updateDelivery._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
-                         return (
-                              <DataTable.Row>
-                                <DataTable.Cell>{updateDelivery._id}</DataTable.Cell>
-                                <DataTable.Cell>{updateDelivery.sales_id+"_"+updateDelivery.delivery_date}</DataTable.Cell>
-                                {/* <DataTable.Cell numeric>{updateDelivery.status}</DataTable.Cell> */}
-                                <DataTable.Cell  numeric>
-                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{updateDelivery.status}</Button>}>
-                                        <Menu.Item title="Accept" onPress={()=>StatusChange("Customer Accepted",  updateDelivery._id, index)}/>
-                                        <Menu.Item title="Decline" onPress={()=>StatusChange("Customer Decline",  updateDelivery._id, index)}/>
-                                    </Menu>
-                                </DataTable.Cell>   
-                                <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Accepted_Delivery', {deliveryId: updateDelivery._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Accepted_Delivery/"+updateDelivery._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                             </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                }
-                {/* {allPurchaseOrders ?
-                    allPurchaseOrders.map((purchaseOrder)=>{
-                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
-                         return (
-                              <DataTable.Row>
-                                <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
-                                <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                             </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                } */}
-            </DataTable>
+                    <DataTable.Header>
+                        <DataTable.Title>Delivery ID</DataTable.Title>
+                        <DataTable.Title >Sales ID</DataTable.Title>
+                        <DataTable.Title numeric>Status</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
+                    </DataTable.Header>
+                                                                    
+                    {allUpdateDelivery ?
+                        allUpdateDelivery.map((updateDelivery,index)=>{
+                            if(updateDelivery._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{updateDelivery._id}</DataTable.Cell>
+                                        <DataTable.Cell>{updateDelivery.sales_id+"_"+updateDelivery.delivery_date}</DataTable.Cell>
+                                        <DataTable.Cell  numeric>
+                                            <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{updateDelivery.status}</Button>}>
+                                                <Menu.Item title="Accept" onPress={()=>StatusChange("Customer Accepted",  updateDelivery._id, index)}/>
+                                                <Menu.Item title="Decline" onPress={()=>StatusChange("Customer Decline",  updateDelivery._id, index)}/>
+                                            </Menu>
+                                        </DataTable.Cell>   
+                                        <DataTable.Cell numeric> 
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Accepted_Delivery', {deliveryId: updateDelivery._id})}}>Details</Button>
+                                                :
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Accepted_Delivery/"+updateDelivery._id}>Details</Link></Button>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
+                </DataTable>
             </View>
         </ScrollView>
         </SafeAreaView>
@@ -149,18 +132,6 @@ export default function All_Delivery({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    view: {
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-            },
-            default: {
-                
-            }
-        })
-    },
     card: {
         margin: '2%',
         alignSelf: 'center',
@@ -176,7 +147,6 @@ const styles = StyleSheet.create({
             }
         })
     },
-
     datatable: {
         alignSelf: 'center',
         marginTop: '2%',
@@ -190,9 +160,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '95%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

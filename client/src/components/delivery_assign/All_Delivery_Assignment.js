@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu  } from 'react-native-paper';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
@@ -21,15 +21,16 @@ export default function All_Delivery_Assignment({ navigation }) {
     const [allPickupAssignment, setAllPickupAssignment] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-    const [visible, setVisible] = useState([]);
 
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
+
         //define a function for retrive the data in corresponding database
         fetch(`http://${host}:5000/retrive_all_delivery_assignment`, {
             method: 'GET'
@@ -37,116 +38,57 @@ export default function All_Delivery_Assignment({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allPickupAssignment => setAllPickupAssignment(allPickupAssignment));
+
     }, [allPickupAssignment, host]);
 
-    const openMenu = (index) => {
-        const values = [...visible];
-        values[index]=true;
-        setVisible(values);
-    };
-    const closeMenu = (index) => {
-        const values = [...visible];
-        values[index]=false;
-        setVisible(values);
-    };
-    //define a function for update the data in corresponding database
-    const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_purchase_status/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        closeMenu(index);
-    };    
     const onChangeSearch = query => setSearchQuery(query);
     //define all the required input fields
     return (
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
-            <View style={styles.view}>
-             <DataTable style={styles.datatable}>
-               <Title>All Delivery Assignment</Title>
-               <Searchbar
-                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                    placeholder="Search"
-                    onChangeText={onChangeSearch}
-                    value={searchQuery}
-                />
+            <View>
+                <DataTable style={styles.datatable}>
+                    <Title style={{marginBottom: '20px'}}>All Delivery Assignment</Title>
+                    <Searchbar
+                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+                        value={searchQuery}
+                        style={{marginBottom: '20px'}}
+                    />
 
-                <DataTable.Header>
-                    <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title >Sales ID</DataTable.Title>
-                    <DataTable.Title numeric>Status</DataTable.Title>
-                    <DataTable.Title numeric>Action</DataTable.Title>
-                </DataTable.Header>
-                                                                   
-                {allPickupAssignment ?
-                    allPickupAssignment.map((pickupAssignment,index)=>{
-                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
-                         return (
-                              <DataTable.Row>
-                                <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
-                                <DataTable.Cell>{pickupAssignment.sales_id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                {/* <DataTable.Cell  numeric>
-                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
-                                    <Menu.Item title="Approve" onPress={()=>StatusChange("Approve", pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Reject" onPress={()=>StatusChange("Reject", pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Pending" onPress={()=>StatusChange("Pending",  pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Accept" onPress={()=>StatusChange("Accepted",  pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Decline" onPress={()=>StatusChange("Decline",  pickupAssignment._id, index)}/>
-                                    <Menu.Item title="Cancel" onPress={()=>StatusChange("Cancel",  pickupAssignment._id, index)}/>
-                                    
-                                    </Menu>
-                                </DataTable.Cell>    */}
-                                <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                             </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                }
-                {/* {allPurchaseOrders ?
-                    allPurchaseOrders.map((purchaseOrder)=>{
-                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
-                         return (
-                              <DataTable.Row>
-                                <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
-                                <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                             </DataTable.Row>
-                        )
-                        }
-                    })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
-                } */}
-            </DataTable>
+                    <DataTable.Header>
+                        <DataTable.Title>Pickup ID</DataTable.Title>
+                        <DataTable.Title >Sales ID</DataTable.Title>
+                        <DataTable.Title numeric>Status</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
+                    </DataTable.Header>
+                                                                    
+                    {allPickupAssignment ?
+                        allPickupAssignment.map((pickupAssignment,index)=>{
+                            if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignment.sales_id}</DataTable.Cell>
+                                        <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
+                                        <DataTable.Cell numeric> 
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
+                                                :
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
+                </DataTable>
             </View>
         </ScrollView>
         </SafeAreaView>
@@ -155,18 +97,6 @@ export default function All_Delivery_Assignment({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    view: {
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-            },
-            default: {
-                
-            }
-        })
-    },
     card: {
         margin: '2%',
         alignSelf: 'center',
@@ -196,9 +126,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '80%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

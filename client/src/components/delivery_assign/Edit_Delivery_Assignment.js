@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle,faMinusCircle, faSearch, faTimes, } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 
 const theme = {
@@ -52,8 +52,8 @@ export default function Edit_Delivery_Assignment(props,{route}) {
         closeMenu3();
     }
 
-
     useEffect(() => {
+
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
             setDeliveryId(id);
@@ -91,6 +91,7 @@ export default function Edit_Delivery_Assignment(props,{route}) {
                 setFlag(false);
             });
         }
+
     }, [item,host,deliveryId,id,deliveryid,flag]);
 
     const openMenu = (index) => {
@@ -98,6 +99,7 @@ export default function Edit_Delivery_Assignment(props,{route}) {
         values[index]=true;
         setVisible(values);
     };
+
     const closeMenu = (index) => {
         const values = [...visible];
         values[index]=false;
@@ -117,18 +119,7 @@ export default function Edit_Delivery_Assignment(props,{route}) {
         }
         setItems(values);
     };
-    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].itemPrice = fieldvalue;
-        }
-        setItems(values);
-    };
+
     const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -140,7 +131,8 @@ export default function Edit_Delivery_Assignment(props,{route}) {
             values[index].itemNegotiatePrice = fieldvalue;
         }
         setItems(values);
-        };
+    };
+
     const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
         const values = [...items];
         if (fieldname === "item") {
@@ -153,7 +145,7 @@ export default function Edit_Delivery_Assignment(props,{route}) {
             values[index].finalPrice = fieldvalue;
         }
         setItems(values);
-        };
+    };
 
     const handleAddFields = () => {
         const values = [...items];
@@ -167,154 +159,83 @@ export default function Edit_Delivery_Assignment(props,{route}) {
         setItems(values);
     };
 
-    // function submitForm() {
-    //     fetch(`http://${host}:5000/update_order/${orderId}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             name: name,
-    //             email: email,
-    //             mobile_no: mobileNo,
-    //             address: address,
-    //             landmark: landmark,
-    //             district: district,
-    //             state: state,
-    //             country: country,
-    //             postal_code: pincode,
-    //             items: items,
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });
-    // }
-    // function submitForm() {
-    //         fetch(`http://${host}:5000/update_inventory`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-                
-    //             name: name,
-    //             email: email,
-    //             mobile_no: mobileNo,
-    //             address: address,
-    //             landmark: landmark,
-    //             district: district,
-    //             state: state,
-    //             country: country,
-    //             postal_code: pincode,
-    //             items: items, 
-    //             status:status,                    
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });   
-    // }
-
-    // function deleteOrder() {
-    //     fetch(`http://${host}:5000/delete_order/${orderId}`, {
-    //         method: 'GET',
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });
-    // }
-
     const onChangeSearch1 = query => setSearchQuery1(query);
 
     return (
         <Provider theme={theme}>
             <SafeAreaView>
             <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Card style={styles.card}>
-                    <Card.Title title="Edit Delivery Assignment"/>
-                    <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
-                    <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
-                    <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
-                    <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
-                    <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
-                    <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
-                    {items.map((it, index) => (
-                        <View>
-                            <Menu
-                            visible={visible[index]}
-                            onDismiss={()=>closeMenu(index)}
-                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
-                                <Searchbar
-                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                    placeholder="Search"
-                                    onChangeText={onChangeSearch1}
-                                    value={searchQuery1}
-                                />
-                                {item ?
-                                    item.map((item)=>{
-                                        if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit)}/>
-                                            </>
-                                        )
+                <View>
+                    <Card style={styles.card}>
+                        <Card.Title title="Edit Delivery Assignment"/>
+                        <Card.Content>
+                            <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
+                            <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
+                            <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                            <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
+                            <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
+                            <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
+                            <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
+                            <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
+                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
+                            {items.map((it, index) => (
+                                <View>
+                                    <Menu
+                                    visible={visible[index]}
+                                    onDismiss={()=>closeMenu(index)}
+                                    anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
+                                        <Searchbar
+                                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                            placeholder="Search"
+                                            onChangeText={onChangeSearch1}
+                                            value={searchQuery1}
+                                        />
+                                        {item ?
+                                            item.map((item)=>{
+                                                if(item.item_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
+                                                    return (
+                                                        <>
+                                                        <Menu.Item title={item.item_name+" ("+item.grade+") "} onPress={()=>ItemChange(index, "item", item.item_name, item._id,item.unit)}/>
+                                                        </>
+                                                    )
+                                                }
+                                            })
+                                            :
+                                            <Menu.Item title="No items are available" />
                                         }
-                                    })
-                                    :
-                                    <Menu.Item title="No items are available" />
-                                }
-                            </Menu>
-                            <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
-                             value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
-                           onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
-                             />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
-                            <View style={{flexDirection: 'row'}}>
-                                {Platform.OS=="android" ?
-                                    <>
-                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
-                                        <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
-                                    </>
-                                    :
-                                    <>
-                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
-                                        <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
-                                    </>
-                                }
-                            </View>
-                        </View>
-                    ))}
-                    {sales_id &&
-                    <Menu 
-                    visible={visible3}
-                    onDismiss={closeMenu3}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu3}>{sales_id}</Button>}>
-                        <Menu.Item title="${pId}" onPress={()=>chooseSales(sales_id)} />
-                    </Menu>
-                    }
-                    {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} > Update Delivery</Button> */}
-                    {/* <Button mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} color="red" onPress={()=>deleteOrder()} >Delete Order</Button> */}
-                    </Card.Content>
-                </Card>
-            </View>
+                                    </Menu>
+                                    <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
+                                    <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
+                                    <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice" value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)} onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')} />
+                                    <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
+                                    <View style={{flexDirection: 'row'}}>
+                                        {Platform.OS=="android" ?
+                                            <>
+                                                <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
+                                                <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
+                                            </>
+                                            :
+                                            <>
+                                                <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
+                                                <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
+                                            </>
+                                        }
+                                    </View>
+                                </View>
+                            ))}
+
+                            {sales_id &&
+                                <Menu 
+                                visible={visible3}
+                                onDismiss={closeMenu3}
+                                anchor={<Button style={styles.input} mode="outlined" onPress={openMenu3}>{sales_id}</Button>}>
+                                    <Menu.Item title="${pId}" onPress={()=>chooseSales(sales_id)} />
+                                </Menu>
+                            }
+                        </Card.Content>
+                    </Card>
+                </View>
             </ScrollView>
             </SafeAreaView>
         </Provider>
@@ -338,7 +259,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

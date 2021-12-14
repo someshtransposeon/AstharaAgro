@@ -66,7 +66,6 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         }
 
         if(pickupAssignId){
-       
             fetch(`http://${host}:5000/retrive_pickup_assignment/${pickupId}`, {
                 method: 'GET'
             })
@@ -123,8 +122,6 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
-            
         });   
     }
 

@@ -87,8 +87,8 @@ export default function CreateOrder({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data =>{
-            setCategory(data[0]._id);
-            setRole(data[0].category_name);
+            setCategory(data._id);
+            setRole(data.category_name);
         });
 
         if(flag2 && userId!=""){
@@ -235,7 +235,7 @@ export default function CreateOrder({ navigation }) {
             alert(data.message);
         }); 
 
-        if(flag==false) {
+        if(!flag) {
             fetch('http://localhost:5000/create_user', {
                 method: 'POST',
                 headers: {
@@ -299,26 +299,26 @@ export default function CreateOrder({ navigation }) {
                                 visible={visible2}
                                 onDismiss={closeMenu2}
                                 anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={openMenu2}>{customerEmail}</Button>}>
-                                    <Searchbar
-                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                        placeholder="Search"
-                                        onChangeText={onChangeSearch2}
-                                        value={searchQuery2}
-                                    />
-                                    {customer ?
-                                        customer.map((item)=>{
-                                            if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
-                                            return (
-                                                <>
-                                                <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
-                                                </>
-                                            )
-                                            }
-                                        })
-                                        :
-                                        <Menu.Item title="No Customers are available" />
-                                    }
+                                <Searchbar
+                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                    placeholder="Search"
+                                    onChangeText={onChangeSearch2}
+                                    value={searchQuery2}
+                                />
+                                {customer ?
+                                    customer.map((item)=>{
+                                        if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
+                                        return (
+                                            <>
+                                            <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
+                                            </>
+                                        )
+                                        }
+                                    })
+                                    :
+                                    <Menu.Item title="No Customers are available" />
+                                }
                             </Menu>
                         }
                         <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
