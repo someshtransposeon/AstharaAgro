@@ -6,6 +6,46 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const mongoose = require('mongoose');
+const Grid = require("gridfs-stream");
+
+let gfs;
+
+mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+})
+.then(() => console.log('Database Connected Successfully'))
+.catch((err) => console.error('Database Connection Failed'));
+
+const conn = mongoose.connection;
+
+conn.once('open', () => {
+    // initialize stream
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: "photos"
+    });
+});
+
+app.route('/file/:filename').get((req, res, next) => {
+    gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+        if (!files[0] || files.length === 0) {
+            return res.status(200).json({
+                success: false,
+                message: 'No files available',
+            });
+        }
+        if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/svg+xml') {
+            // render image to browser
+            gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+        } else {
+            res.status(404).json({
+                err: 'Not an image',
+            });
+        }
+    });
+});
 
 const create_user_category = require('./routes/userCategory/create_user_category');
 const delete_user_category = require('./routes/userCategory/delete_user_category');
@@ -152,16 +192,6 @@ const update_delivery_assign = require('./routes/delivery_assign/update_delivery
 const create_update_delivery = require('./routes/update_delivery/create_update_delivery');
 const retrive_update_delivery = require('./routes/update_delivery/retrive_update_delivery');
 const update_delivery = require('./routes/update_delivery/update_delivery');
-
-
-mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mongodb.net/astharadb?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-})
-.then(() => console.log('Database Connected Successfully'))
-.catch((err) => console.error('Database Connection Failed'));
 
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");

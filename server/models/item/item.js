@@ -47,6 +47,9 @@ const itemSchema = new mongoose.Schema({
     status:{
         type:String,
         default:"enabled"
+    },
+    image:{
+        type:String,
     }
 });
 

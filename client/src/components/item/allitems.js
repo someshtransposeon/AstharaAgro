@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView, Image } from 'react-native';
 import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -61,6 +61,7 @@ export default function AllItems({ navigation }) {
                         <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title>Category</DataTable.Title>
                         <DataTable.Title>unit</DataTable.Title>
+                        <DataTable.Title>image</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItems ?
@@ -71,6 +72,16 @@ export default function AllItems({ navigation }) {
                                 <DataTable.Cell>{item.item_name}</DataTable.Cell>
                                 <DataTable.Cell>{item.category_name}</DataTable.Cell>
                                 <DataTable.Cell>{item.unit_name}</DataTable.Cell>
+                                {item.image ?
+                                    <DataTable.Cell>
+                                        <Image
+                                            style={{width: 50, height: 50}}
+                                            source={item.image}
+                                        />
+                                    </DataTable.Cell>
+                                :
+                                    <DataTable.Cell>No Image</DataTable.Cell>
+                                }
                                 <DataTable.Cell>
                                     {Platform.OS=='android' ?
                                         <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>

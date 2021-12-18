@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform} from 'react-native';
+import { View, StyleSheet, Platform,} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -44,6 +44,8 @@ export default function AddItem({ navigation }) {
     const [itemDescription, setDescription] = useState("");
     const [unit,setUnit]=useState("Select unit of each item");
     const [host, setHost] = useState("");
+    const [file, setFile] = useState();
+    const [imgurl, setImgurl] = useState("");
     //fetch all required item categories, units, grades
     useEffect(() => {
 
@@ -110,6 +112,7 @@ export default function AddItem({ navigation }) {
                 unit_name: unit,
                 grade_name: grade,
                 description: itemDescription,
+                image: imgurl,
             })
         })
         .then(res => res.json())
@@ -117,12 +120,31 @@ export default function AddItem({ navigation }) {
         .then(data => {
             alert(data.message);
             console.log(data);
-        }); 
-        setItemName("");
-        setCategory("Choose Category");
-        setGrade("Choose Grade");
-        setUnit("Select Unit of Each item");
-        setDescription("");
+        });
+    }
+
+    function ImageSubmitForm() {
+        const data = new FormData();
+        // Update the formData object
+        data.append(
+            "file",
+            file
+        );
+
+        fetch('http://localhost:5000/uploadfile', {
+            method: 'POST',
+            body:data,
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(Image => {
+            setImgurl(Image.img);
+        });
+    }
+
+    function getFiles(event){
+        setFile(event.target.files[0]);
+        console.log(event.target.files[0]);
     }
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -222,14 +244,11 @@ export default function AddItem({ navigation }) {
                         }
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
-                    <input type="file" name="myfile" 
+                    <input type="file" name="file" 
                     style={{border: '1px solid gray', marginTop: '2%', padding: '1%', borderRadius: '1px'}}
-                    // onPress={()=>uploadImg} 
-                    // onChange={myHandler}  
-                    // onImageChange={myImg}
-                    // onChange={myImg => setMyImg(myImg)}
-                    // onChange={itemImg => setItemImg(itemImg)}      
+                    onChange={getFiles}
                     />
+                    <Button mode="contained" style={styles.button} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>
