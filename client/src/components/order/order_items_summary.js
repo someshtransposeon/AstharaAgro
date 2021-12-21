@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { OrderSummary } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,7 @@ const theme = {
     },
 };
 
-export default function OrderItemsSummary({ navigation }) {
+export default function OrderItemsSummary(props, { navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
@@ -30,17 +31,13 @@ export default function OrderItemsSummary({ navigation }) {
             setHost("localhost");
         }
 
-        //to fetch the all orders details 
-        fetch(`http://${host}:5000/retrive_all_order_items`, {
-            method: 'GET'
+        setHost(props.host);
+        OrderSummary(host)
+        .then(function(result) {
+            setAllOrders(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(orders => {
-            setAllOrders(orders);
-        });
 
-    }, [allOrders, host]);
+    }, [allOrders, host, props.host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -64,35 +61,34 @@ export default function OrderItemsSummary({ navigation }) {
                         <DataTable.Title>Item Name</DataTable.Title>
                         <DataTable.Title>Unit</DataTable.Title>
                         <DataTable.Title>Quantity</DataTable.Title>
+                        <DataTable.Title>Grade</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                     {allOrders ?
-                        allOrders.map((item) => {      
-                            return item.items.map(item2 => {
-                                if(item2.itemName.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                        allOrders.map((order) => { 
+                            if(order.item.quantity>0){
+                                if(order.item.itemName.toUpperCase().search(searchQuery.toUpperCase())!=-1 || order.item._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                     return(
                                         <DataTable.Row>
-                                            <DataTable.Cell >{item._id}</DataTable.Cell>
-                                            <DataTable.Cell >{item2.itemName}</DataTable.Cell>
-                                            <DataTable.Cell >{item2.itemUnit}</DataTable.Cell>
-                                            <DataTable.Cell >{item2.quantity}</DataTable.Cell>
+                                            <DataTable.Cell >{order._id}</DataTable.Cell>
+                                            <DataTable.Cell >{order.item.itemName}</DataTable.Cell>
+                                            <DataTable.Cell >{order.item.itemUnit}</DataTable.Cell>
+                                            <DataTable.Cell >{order.item.quantity}</DataTable.Cell>
+                                            <DataTable.Cell >{order.item.Grade}</DataTable.Cell>
                                             <DataTable.Cell numeric>
                                             {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrderItem', {itemId: item2.itemId,orderId:item._id})}}>Details</Button>
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrderItem', {itemId: order.item.itemId,orderId:order._id})}}>Details</Button>
                                                 :
-                                                <Link to={"/editorderitem/"+item._id+"/"+item2.itemId}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                <Link to={"/editorderitem/"+order._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
                                             }
                                             </DataTable.Cell>
                                         </DataTable.Row>
                                     )
                                 }
-                                else{
-                                    return "";
-                                }
-                            })
+                            }
                         })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
+                        :
+                        <ActivityIndicator color="#794BC4" size={60}/>
                     }
                 </DataTable>
             </View>

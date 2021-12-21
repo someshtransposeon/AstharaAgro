@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-nati
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
+import { Order_by_id } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -17,9 +18,8 @@ const theme = {
 export default function EditOrder(props,{route}) {
 
     var orderid = "";
-    var id="";
     if(Platform.OS=="android"){
-        id = route.params.orderId;
+        orderid = route.params.orderId;
     }
     else{
         orderid = props.match.params.orderid;
@@ -30,7 +30,7 @@ export default function EditOrder(props,{route}) {
     const [visible, setVisible] = useState([]);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
-    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:''}]);
+    const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:0}]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -44,14 +44,8 @@ export default function EditOrder(props,{route}) {
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setOrderId(id);
-        }
-        else{
-            setHost("localhost");
-            setOrderId(orderid);
-        }
+        setHost(props.host);
+        setOrderId(orderid);
 
         fetch(`http://${host}:5000/vendors_retrive_all_item`, {
             method: 'GET'
@@ -60,28 +54,24 @@ export default function EditOrder(props,{route}) {
         .catch(error => console.log(error))
         .then(item => setItem(item));
 
-        if(flag && orderId){
-            fetch(`http://${host}:5000/retrive_order/${orderId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(order => {
-                setName(order[0].name);
-                setEmail(order[0].email);
-                setMobileNo(order[0].mobile_no);
-                setAddress(order[0].address);
-                setLandmark(order[0].landmark);
-                setDistrict(order[0].landmark);
-                setState(order[0].state);
-                setCountry(order[0].country);
-                setPincode(order[0].postal_code);
-                setItems(order[0].items);
+        if(flag && orderid && host){
+            Order_by_id(host, orderid)
+            .then(function(result) {
+                setName(result[0].name);
+                setEmail(result[0].email);
+                setMobileNo(result[0].mobile_no);
+                setAddress(result[0].address);
+                setLandmark(result[0].landmark);
+                setDistrict(result[0].landmark);
+                setState(result[0].state);
+                setCountry(result[0].country);
+                setPincode(result[0].postal_code);
+                setItems(result[0].items);
                 setFlag(false);
-            });
+            })
         }
 
-    }, [item,host,orderId,id,orderid,flag]);
+    }, [item,host,orderid,flag,props.host]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -103,48 +93,14 @@ export default function EditOrder(props,{route}) {
             values[index].itemUnit=unit;
             closeMenu(index);
         }
-        else{
-            values[index].quantity = fieldvalue;
-        }
-        setItems(values);
-    };
-
-    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
+        else if (fieldname === "finalPrice") {
             values[index].itemPrice = fieldvalue;
         }
-        setItems(values);
-    };
-
-    const ItemChange3 = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
+        else if (fieldname === "itemNegotiatePrice") {
             values[index].itemNegotiatePrice = fieldvalue;
         }
-        setItems(values);
-    };
-
-    const ItemChange4 = (index, fieldname, fieldvalue, itemId,unit,price) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-            values[index].itemPrice=price;
-        }
         else{
-            values[index].finalPrice = fieldvalue;
+            values[index].quantity = fieldvalue;
         }
         setItems(values);
     };
@@ -206,7 +162,7 @@ export default function EditOrder(props,{route}) {
         <Provider theme={theme}>
             <SafeAreaView>
             <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View>
                 <Card style={styles.card}>
                     <Card.Title title="Edit Order"/>
                     <Card.Content>
@@ -248,11 +204,8 @@ export default function EditOrder(props,{route}) {
                             </Menu>
                             <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="FinalPrice"
-                            value={it.finalPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)}
-                            onChangeText={(text)=>ItemChange4(index, "finalPrice", text, '')}
-                            />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange3(index, "itemNegotiatePrice", text, '')} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Item Price" value={it.itemPrice} onChangeText={(text)=>ItemChange(index, "finalPrice", text, '')} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange(index, "itemNegotiatePrice", text, '')} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>

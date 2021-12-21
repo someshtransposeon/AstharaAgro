@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const orderSchema = new mongoose.Schema({
-    // requestedBy:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    // },
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
@@ -59,7 +55,6 @@ const orderSchema = new mongoose.Schema({
         type:String,
         default:"new",
     },
-
     order_date:{
         type:Date,
         default: Date.now,

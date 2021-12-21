@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from "react-native";
+import { Platform, Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faUserPlus, faUser, faSignInAlt, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -28,7 +28,6 @@ import Create_Purchase_Order from '../components/purchase_order/Create_Purchase_
 import All_Purchase_Orders from '../components/purchase_order/All_Purchase_Orders';
 import Edit_Purchase_Order from '../components/purchase_order/Edit_Purchase_Order';
 import AllItemCategories from '../components/itemCategory/all_item_categories';
-import AllOrders from '../components/order/all_orders';
 import Profile from '../components/profile/profile';
 import AllUserCategories from '../components/userCategory/all_user_categories';
 import EditItemCategory from '../components/itemCategory/edit_item_category';
@@ -133,14 +132,28 @@ import All_Confirm_Delivery from '../components/update_delivery/All_Confirm_Deli
 import Edit_Accepted_Delivery from '../components/update_delivery/Edit_Accepted_Delivery';
 import Edit_Confirm_Delivery from '../components/update_delivery/Edit_Confirm_Delivery';
 
+import AllOrders from '../components/order/all_orders';
+import ApprovedOrders from '../components/order/approved_orders';
+import PendingOrders from '../components/order/pending_orders';
+import ViewOrder from '../components/order/view_order';
+
 const NavBar =()  => {
 
     const [email, setEmail] = useState("");
     const [role, setRole] = useState("");
     const [roleas, setRoleas] = useState("");
     const [flag, setFlag] = useState(false);
+    const [host, setHost] = useState("");
 
     useEffect(() => {
+
+        if(Platform.OS=="android"){
+            setHost("10.0.2.2");
+        }
+        else{
+            setHost("localhost");
+        }
+
         async function fetchData() {
             await AsyncStorage.getItem('loginemail')
             .then((loginemail) => {
@@ -156,7 +169,8 @@ const NavBar =()  => {
             }
         }
         fetchData();
-    }, [email, role, flag]);
+        
+    }, [email, role, flag, host]);
 
     function changeRole(r){
         setRoleas(r);
@@ -295,9 +309,13 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
+                                {(roleas=="sales" || roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/allorders" as={Link}>All Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/approvedorders" as={Link}>Approved Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/pendingorders" as={Link}>Pending Orders</NavDropdown.Item>
                                     </>
                                 }
                                 </NavDropdown>
@@ -508,7 +526,13 @@ const NavBar =()  => {
                     <Profile/>
                 </Route>
                 <Route path="/allorders">
-                    <AllOrders/>
+                    <AllOrders roleas={roleas} host={host}/>
+                </Route>
+                <Route path="/approvedorders">
+                    <ApprovedOrders roleas={roleas} host={host}/>
+                </Route>
+                <Route path="/pendingorders">
+                    <PendingOrders roleas={roleas} host={host}/>
                 </Route>
                 <Route path="/allusercategories">
                     <AllUserCategories/>
@@ -537,7 +561,8 @@ const NavBar =()  => {
                 <Route path="/allusers">
                     <AllUsers/>
                 </Route>
-                <Route path="/editorder/:orderid" render={(props) => <EditOrder {...props} />} exact />
+                <Route path="/vieworder/:orderid" render={(props) => <ViewOrder roleas={roleas} host={host} {...props} />} exact />
+                <Route path="/editorder/:orderid" render={(props) => <EditOrder roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/disabled_item/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
@@ -698,9 +723,9 @@ const NavBar =()  => {
                     <CreateGrn/>
                 </Route>
                 <Route path="/order_items_summary">
-                    <OrderItemsSummary/>
+                    <OrderItemsSummary host={host}/>
                 </Route>
-                <Route path="/editorderitem/:orderid/:itemid" render={(props) => <EditOrderItem {...props} />} exact />
+                <Route path="/editorderitem/:orderid" render={(props) => <EditOrderItem {...props} />} exact />
                 <Route path="/Pickup_Purchase">
                     <Pickup_Purchase/>
                 </Route>    
@@ -766,10 +791,6 @@ const NavBar =()  => {
                 </Route>    
                 <Route path="/Edit_Accepted_Delivery/:deliveryid" render={(props) => <Edit_Accepted_Delivery {...props} />} exact />
                 <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
-                        
-
-
-
 
                 </Switch>
         </Router>

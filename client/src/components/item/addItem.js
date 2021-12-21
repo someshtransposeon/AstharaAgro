@@ -119,8 +119,8 @@ export default function AddItem({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         });
+        setImgurl("");
     }
 
     function ImageSubmitForm() {
@@ -249,7 +249,9 @@ export default function AddItem({ navigation }) {
                     onChange={getFiles}
                     />
                     <Button mode="contained" style={styles.button} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
+                    {imgurl &&
+                        <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
+                    }
                     </Card.Content>
                 </Card>
             </View>

@@ -2,20 +2,10 @@ const express = require('express');
 const router = express.Router();
 /* Required Model for store in database*/
 const Order = require('../../models/order/order');
+const OrderSummary = require('../../models/order/order_item_summary');
 //Define ROute to  retrive all orders 
 router.get('/retrive_all_order',(req, res)=>{
-    Order.find({status:"pending"}, function(err, orders){
-        if(err){
-            console.log(err);
-        }
-        else {
-            res.json(orders);
-        }
-    });
-});
-
-router.get('/retrive_all_completed_order',(req, res)=>{
-    Order.find({completion_status:"pending for sales"}, function(err, orders){
+    Order.find(function(err, orders){
         if(err){
             console.log(err);
         }
@@ -36,8 +26,8 @@ router.get('/retrive_order/:id',(req, res)=>{
    });
 });
 
-router.get('/retrive_all_rejected_order',(req, res)=>{
-    Order.find({status:"rejected"}, function(err, orders){
+router.get('/retrive_orders_by_status/:status',(req, res)=>{
+    Order.find({status:req.params.status}, function(err, orders){
         if(err){
             console.log(err);
         }
@@ -46,8 +36,10 @@ router.get('/retrive_all_rejected_order',(req, res)=>{
         }
     });
 });
-router.get('/retrive_all_approved_order',(req, res)=>{
-    Order.find({status:"approved"}, function(err, orders){
+
+//Define ROute to  retrive order item Summary 
+router.get('/retrive_all_order_item_summary',(req, res)=>{
+    OrderSummary.find({}, function(err, orders){
         if(err){
             console.log(err);
         }
@@ -56,8 +48,9 @@ router.get('/retrive_all_approved_order',(req, res)=>{
         }
     });
 });
-router.get('/retrive_all_order_items',(req, res)=>{
-    Order.find({}, function(err, orders){
+
+router.get('/retrive_all_order_item_summary_by_id/:id',(req, res)=>{
+    OrderSummary.find({_id:req.params.id}, function(err, orders){
         if(err){
             console.log(err);
         }
@@ -66,4 +59,5 @@ router.get('/retrive_all_order_items',(req, res)=>{
         }
     });
 });
+
 module.exports = router;

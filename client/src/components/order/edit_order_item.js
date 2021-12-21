@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { OrderSummary_by_id } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -16,14 +17,11 @@ const theme = {
 export default function EditOrderItem(props,{route}) {
 
     var orderid = "";
-    var id = '';
-    var itemid = '';
     if(Platform.OS == 'android'){
-        id = route.params.orderId;
+        orderid = route.params.orderId;
     }
     else{
         orderid = props.match.params.orderid;
-        itemid = props.match.params.itemid;
     }
 
     const [visible2, setVisible2] = useState(false);
@@ -31,12 +29,12 @@ export default function EditOrderItem(props,{route}) {
     const [host, setHost] = useState("");
     const [items, setItems] = useState();
     const [order_id, setOrderId] = useState("");
-    const [item_id, setItem_id] = useState("");
     const [vendors,setVendors] = useState();
     const [vendor_id, setVendorId] = useState();
     const [vendor_email, setVendorEmail] = useState("Choose Vendor");
     const [user_id, setUserId] = useState();
     const [flag, setFlag] = useState(true);
+    const [quantity, setQuantity] = useState();
 
     useEffect(() => {
 
@@ -50,12 +48,11 @@ export default function EditOrderItem(props,{route}) {
 
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
-            setOrderId(id);
+            setOrderId(orderid);
         }
         else{
             setHost("localhost");
             setOrderId(orderid);
-            setItem_id(itemid);
         }
 
         // fetch all vendors
@@ -67,28 +64,41 @@ export default function EditOrderItem(props,{route}) {
         .then(vendors => setVendors(vendors));
 
         if(flag && order_id){
-            fetch(`http://${host}:5000/retrive_order/${order_id}`, {
-                method: 'GET'// const [orderId, setOrderId] = useState("");
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(order => {
-                var it=order[0].items.find(x => x.itemId === item_id);
-                setItems(it);
+            OrderSummary_by_id(host, order_id)
+            .then(function(result) {
+                setItems(result[0].item);
+                setQuantity(result[0].item.quantity);
                 setFlag(false);
             });
         }
 
-    }, [vendors, host, order_id, id, orderid, flag, item_id, itemid, items]);
-
-    const QuantityChange = (quantity) => {
-        const values = items;
-        values.quantity = quantity;
-        setItems(values);
-    };
+    }, [vendors, host, order_id, orderid, flag]);
 
     //submitForm() for sending the data in corresponding database
     function submitForm(){
+
+        const values = items;
+        values.quantity = 0;
+        setItems(values);
+
+        fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item:items,
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        }); 
+
+        const values2 = items;
+        values2.quantity = quantity;
+        setItems(values2);
+
         fetch(`http://${host}:5000/create_purchase_order`, {
             method: 'POST',
             headers: {
@@ -143,7 +153,8 @@ export default function EditOrderItem(props,{route}) {
                                 <View>                         
                                     <TextInput mode="outlined" style={styles.input} label="Item Name" value={items.itemName} />
                                     <TextInput mode="outlined" style={styles.input} label="unit of each item" value={items.itemUnit} />
-                                    <TextInput  keyboardType='numeric' mode="outlined" style={styles.input} label="Quantity" value={items.quantity} onChangeText={(text)=>QuantityChange(text)} />
+                                    <TextInput keyboardType='numeric' mode="outlined" style={styles.input} label="Quantity" value={quantity} onChangeText={(text)=>setQuantity(text)} />
+                                    <TextInput mode="outlined" style={styles.input} label="Grade" value={items.Grade} />
                                 </View>
                             }
                             <Button mode="contained" style={styles.button} onPress={()=>submitForm()} >Create Purchase</Button>

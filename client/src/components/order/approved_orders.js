@@ -4,7 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
-import { allOrder } from '../../services/order_api';
+import { Order_by_status } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -16,21 +16,35 @@ const theme = {
     },
 };
 
-export default function AllOrders(props, { navigation }) {
+export default function ApprovedOrders(props, { navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
+    const [visible, setVisible] = useState([]);
     const [host, setHost] = useState("");
+    const [flag, setFlag] = useState(false);
+    const  [roleas, setRoleas] = useState("");
 
     useEffect(() => {
 
         setHost(props.host);
-        allOrder(host)
+        setRoleas(props.roleas);
+
+        Order_by_status(host, "approved")
         .then(function(result) {
             setAllOrders(result);
         })
 
-    }, [allOrders, host, props.host]);
+        if(flag && allOrders.length > 0){
+            for(let i = 0; i < allOrders.length; i++){
+                const values = [...visible];
+                values[i]=true;
+                setVisible(values);
+            }
+            setFlag(true);
+        }
+
+    }, [allOrders, host, visible, flag, roleas, props.roleas, props.host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -38,9 +52,9 @@ export default function AllOrders(props, { navigation }) {
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
-            <View>
+            <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title style={{marginBottom: '20px'}}>All Orders</Title>
+                    <Title style={{marginBottom: '20px'}}>Approved Orders</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -54,8 +68,7 @@ export default function AllOrders(props, { navigation }) {
                         <DataTable.Title>Sales ID</DataTable.Title>
                         <DataTable.Title>Email</DataTable.Title>
                         <DataTable.Title>Full Name</DataTable.Title>
-                        <DataTable.Title>Status</DataTable.Title>
-                        <DataTable.Title numeric>Action</DataTable.Title>
+                        <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
 
                     {allOrders ?
@@ -66,15 +79,26 @@ export default function AllOrders(props, { navigation }) {
                                         <DataTable.Cell>{item._id}</DataTable.Cell>
                                         <DataTable.Cell>{item.userId}</DataTable.Cell>
                                         <DataTable.Cell>{item.email}</DataTable.Cell>
+                                        {Platform.OS !== "android" &&
                                         <DataTable.Cell>{item.name}</DataTable.Cell>
-                                        <DataTable.Cell>{item.status}</DataTable.Cell>
-                                        <DataTable.Cell>
-                                            {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
-                                                :
-                                                <Link to={"/vieworder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                            }
-                                        </DataTable.Cell>
+                                        }
+                                        {roleas=="manager" ?
+                                            <DataTable.Cell>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/editorder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                            :
+                                            <DataTable.Cell>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/vieworder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                        }
                                     </DataTable.Row>
                                 )
                             }
@@ -91,6 +115,18 @@ export default function AllOrders(props, { navigation }) {
 }
 
 const styles = StyleSheet.create({
+    view: {
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+            },
+            default: {
+                
+            }
+        })
+    },
     card: {
         margin: '2%',
         alignSelf: 'center',
