@@ -52,3 +52,25 @@ export function OrderSummary_by_id(host, id){
         return orders;
     });
 }
+//retrive_all_completed_order
+export function all_completed_order(host){
+    return fetch(`http://${host}:5000/retrive_all_completed_order`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(orders => {
+             return orders;
+    });
+}
+//retrive_all_completed_order by id
+export function all_completed_order_by_id(host, id){
+    return fetch(`http://${host}:5000/retrive_all_order_item_summary_by_id/${id}`, {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .catch(error => console.log(error))
+    .then(orders => {
+        return orders;
+    });
+}
