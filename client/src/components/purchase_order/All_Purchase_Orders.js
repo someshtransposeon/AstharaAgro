@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -16,22 +17,24 @@ const theme = {
 };
 
 
-export default function All_Purchase_Orders({ navigation }) {
+export default function All_Purchase_Orders(props,{ navigation }) {
 
     const [allPurchaseOrders, setAllPurchaseOrders] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
+    const  [roleas, setRoleas] = useState("");
 
     useEffect(() => {
-
+        
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
-        
+        setRoleas(props.roleas);
+
         fetch(`http://${host}:5000/retrive_all_purchase_order`, {
             method: 'GET'
         })
@@ -39,38 +42,8 @@ export default function All_Purchase_Orders({ navigation }) {
         .catch(error => console.log(error))
         .then(allPurchaseOrders => setAllPurchaseOrders(allPurchaseOrders));
 
-    }, [allPurchaseOrders, host]);
+    }, [allPurchaseOrders, roleas,host,props.roleas]);
 
-    const openMenu = (index) => {
-        const values = [...visible];
-        values[index]=true;
-        setVisible(values);
-    };
-
-    const closeMenu = (index) => {
-        const values = [...visible];
-        values[index]=false;
-        setVisible(values);
-    };
-
-    const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_purchase_status/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
-        closeMenu(index);
-    };    
-    
     const onChangeSearch = query => setSearchQuery(query);
 
     return (
@@ -89,7 +62,10 @@ export default function All_Purchase_Orders({ navigation }) {
                     style={{marginBottom: '20px'}}
                 />
                 <DataTable.Header>
-                    <DataTable.Title>Purchase ID</DataTable.Title>
+                    <DataTable.Title>*Purchase ID</DataTable.Title>
+                    <DataTable.Title>Order ID</DataTable.Title>
+                    <DataTable.Title>Vendor ID</DataTable.Title>
+                    <DataTable.Title>Item ID</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -100,19 +76,39 @@ export default function All_Purchase_Orders({ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                    <DataTable.Cell numeric>
-                                        <Menu visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{purchaseOrder.status}</Button>}>
-                                            <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  purchaseOrder._id, index)}/>
-                                            <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  purchaseOrder._id, index)}/>
-                                        </Menu>
-                                    </DataTable.Cell>   
-                                    <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
+                                    <DataTable.Cell>{purchaseOrder.order_id}</DataTable.Cell>
+                                    <DataTable.Cell>{purchaseOrder.vendor_id}</DataTable.Cell>
+                                    {Platform.OS !== "android" &&
+                                        <DataTable.Cell>{purchaseOrder.items.itemId}</DataTable.Cell>
                                     }
-                                    </DataTable.Cell>
+                                    <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
+                                    {/* <DataTable.Cell numeric>  */}
+                                    {/* {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
+                                        :
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
+                                    } */}
+
+                                    {roleas=="vendor" ?
+                                            <DataTable.Cell>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                            :
+                                            <DataTable.Cell>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                        }    
+
+
+                                    {/* </DataTable.Cell> */}
                                 </DataTable.Row>
                             )
                         }

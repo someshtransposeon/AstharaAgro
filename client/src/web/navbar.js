@@ -136,6 +136,7 @@ import AllOrders from '../components/order/all_orders';
 import ApprovedOrders from '../components/order/approved_orders';
 import PendingOrders from '../components/order/pending_orders';
 import ViewOrder from '../components/order/view_order';
+import View_Purchase_Order from '../components/purchase_order/View_Purchase_Order';
 
 const NavBar =()  => {
 
@@ -640,7 +641,7 @@ const NavBar =()  => {
                 <Route path="/EditTransportation/:transportationid" render={(props) => <EditTransportation {...props} />} exact />
                 <Route path="/Edit_Purchase_Order/:purchaseid" render={(props) => <Edit_Purchase_Order {...props} />} exact />
                 <Route path="/Edit_Vendor_Purchase_Order/:purchaseid" render={(props) => <Edit_Vendor_Purchase_Order {...props} />} exact />
-                
+                <Route path="/View_Purchase_Order/:purchaseid" render={(props) => <View_Purchase_Order roleas={roleas} {...props} />} exact />
                 <Route path="/Edit_Purchase_Order_confirm/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm {...props} />} exact />
                 <Route path="/Edit_Purchase_Order_confirm2/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm2 {...props} />} exact />
                 <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 {...props} />} exact />
