@@ -15,7 +15,7 @@ const orderSummarySchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        default:"pending",
+        default:"Full Order",
     },
     date:{
         type:Date,

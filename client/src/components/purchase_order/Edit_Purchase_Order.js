@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -32,6 +32,7 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [items, setItems] = useState();
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(true);
+    const [quantity, setQuantity] = useState();
 
     useEffect(() => {
 
@@ -56,23 +57,38 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
                 setFlag(false);
-                console.log(item);
+                setQuantity(item[0].items.quantity);
             });
         }
 
     }, [host, purchaseId, purchaseid, id, items, order_id, vendor_id, status, flag]);
 
-    const PriceChange = (value) => {
-        const values = items;
-        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:values.quantity, itemPrice:value});
-    };
-
-    const QuantityChange = (value) => {
-        const values = items;
-        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:value, itemPrice:values.finalPrice});
-    };
-
     function submitForm() {
+
+        const values2 = items;
+        values2.quantity = items.quantity-quantity;
+        setItems(values2);
+        
+        //for splitted orders remaining quantity purchase order creation process
+        fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item:items,
+                status:"Splitted by Vendor"
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        }); 
+
+        const values = items;
+        values.quantity = quantity;
+        setItems(values);
+
         fetch(`http://${host}:5000/update_purchase_order/${purchaseid}`, {
             method: 'PUT',
             headers: {
@@ -88,12 +104,10 @@ export default function Edit_Purchase_Order(props, {route}) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
+            // alert(data.message);
         });   
-    }
-    
-    // for create Purchase Receipt
-    function submitForm2() {
+
+        // for create Purchase Receipt
         fetch(`http://${host}:5000/create_purchase_confirm`, {
             method: 'POST',
             headers: {
@@ -110,8 +124,63 @@ export default function Edit_Purchase_Order(props, {route}) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
+            // alert(data.message);
         });   
+
+        //for change the status
+        fetch(`http://${host}:5000/update_purchase_status/${purchaseid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: "Vendor Accepted",
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });
+
+        alert("Accepted Available Quantity");
+    }
+
+    function submitForm2() {
+        
+        //for splitted orders remaining quantity purchase order creation process
+        fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item:items,
+                status:"Full Order"
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        }); 
+
+        //for change the status
+        fetch(`http://${host}:5000/update_purchase_status/${purchaseid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: "Vendor Rejected",
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });
+
+        alert("Purchase Order Rejected Successfully");
     }
 
     return (
@@ -125,13 +194,13 @@ export default function Edit_Purchase_Order(props, {route}) {
                                 <DataTable.Row>
                                     <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>QuantityChange(text)} /></DataTable.Cell>
-                                    <TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>PriceChange(text)} />
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={quantity} onChangeText={(text)=>setQuantity(text)} /></DataTable.Cell>
+                                    <TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} />
                                 </DataTable.Row>
                             </DataTable>
                         }   
-                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Update Purchase</Button>
-                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faReceipt } />} style={styles.button} onPress={()=>submitForm2()} >Create Purchase Confirm</Button>
+                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Accept Available Quantity</Button>
+                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} onPress={()=>submitForm2()} color="red" >Reject The Purchase Order</Button>
                     </Card.Content>
                 </Card>
             </View>

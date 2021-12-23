@@ -345,9 +345,9 @@ const NavBar =()  => {
                                 }
                                 {(roleas=="vendor" || roleas=="manager") &&
                                     <>
-                                        <NavDropdown.Item to="/All_Pending_Purchase_Orders" as={Link}>All Pending Purchase Orders</NavDropdown.Item>
+                                        <NavDropdown.Item to="/All_Pending_Purchase_Orders" as={Link}>All Pending for Vendor</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Accepted_Purchase_Orders" as={Link}>All Accepted Purchase Orders </NavDropdown.Item>
+                                        <NavDropdown.Item to="/All_Accepted_Purchase_Orders" as={Link}>All Accepted By Vendor </NavDropdown.Item>
                                     </>
                                 }
                                 </NavDropdown>

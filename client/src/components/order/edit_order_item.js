@@ -88,6 +88,7 @@ export default function EditOrderItem(props,{route}) {
             },
             body: JSON.stringify({
                 item:items,
+                status:"Full Order",
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

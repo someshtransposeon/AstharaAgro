@@ -20,7 +20,6 @@ export default function All_Pending_Purchase_Orders({ navigation }) {
     const [allPurchaseOrders, setAllPurchaseOrders] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-    const [visible, setVisible] = useState([]);
 
     useEffect(() => {
 
@@ -39,36 +38,6 @@ export default function All_Pending_Purchase_Orders({ navigation }) {
         .then(allPurchaseOrders => setAllPurchaseOrders(allPurchaseOrders));
 
     }, [allPurchaseOrders, host]);
-
-    const openMenu = (index) => {
-        const values = [...visible];
-        values[index]=true;
-        setVisible(values);
-    };
-
-    const closeMenu = (index) => {
-        const values = [...visible];
-        values[index]=false;
-        setVisible(values);
-    };
-
-    const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_purchase_status/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
-        closeMenu(index);
-    };    
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -101,10 +70,7 @@ export default function All_Pending_Purchase_Orders({ navigation }) {
                               <DataTable.Row>
                                 <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
                                 <DataTable.Cell numeric>
-                                    <Menu visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{purchaseOrder.status}</Button>}>
-                                    <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  purchaseOrder._id, index)}/>
-                                    <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  purchaseOrder._id, index)}/>
-                                    </Menu>
+                                    {purchaseOrder.status}
                                 </DataTable.Cell>   
                                 <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
