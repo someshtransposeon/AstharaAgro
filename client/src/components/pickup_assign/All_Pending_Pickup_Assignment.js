@@ -15,13 +15,13 @@ const theme = {
     },
 };
 
-export default function All_Pending_Pickup_Assignment({ navigation }) {
+export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
 
     const [allPickupAssignment, setAllPickupAssignment] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
-
+    const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -30,6 +30,7 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
         else{
             setHost("localhost");
         }
+        setRoleas(props.roleas);
 
         fetch(`http://${host}:5000/retrive_all_pending_pickup_assignment`, {
             method: 'GET'
@@ -38,7 +39,7 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
         .catch(error => console.log(error))
         .then(allPickupAssignment => setAllPickupAssignment(allPickupAssignment));
 
-    }, [allPickupAssignment, host]);
+    }, [allPickupAssignment, host,roleas,props.roleas]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -109,13 +110,23 @@ export default function All_Pending_Pickup_Assignment({ navigation }) {
                                             <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
                                         </Menu>
                                     </DataTable.Cell>   
-                                    <DataTable.Cell numeric> 
-                                        {Platform.OS=='android' ?
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment', {pickupId: pickupAssignment._id})}}>Details</Button>
+                                    {roleas=="buyer" ?
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
                                             :
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
                                         }
-                                    </DataTable.Cell>
                                 </DataTable.Row>
                             )
                         }

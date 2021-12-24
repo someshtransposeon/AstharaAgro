@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 
-
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -15,7 +14,6 @@ const theme = {
         accent: '#f1c40f',
     },
 };
-
 
 export default function All_Purchase_Orders(props,{ navigation }) {
 
@@ -64,8 +62,7 @@ export default function All_Purchase_Orders(props,{ navigation }) {
                 <DataTable.Header>
                     <DataTable.Title>*Purchase ID</DataTable.Title>
                     <DataTable.Title>Order ID</DataTable.Title>
-                    <DataTable.Title>Vendor ID</DataTable.Title>
-                    <DataTable.Title>Item ID</DataTable.Title>
+                    <DataTable.Title numeric>Item Name</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -77,38 +74,17 @@ export default function All_Purchase_Orders(props,{ navigation }) {
                                 <DataTable.Row>
                                     <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
                                     <DataTable.Cell>{purchaseOrder.order_id}</DataTable.Cell>
-                                    <DataTable.Cell>{purchaseOrder.vendor_id}</DataTable.Cell>
                                     {Platform.OS !== "android" &&
-                                        <DataTable.Cell>{purchaseOrder.items.itemId}</DataTable.Cell>
+                                        <DataTable.Cell numeric>{purchaseOrder.items.itemName}</DataTable.Cell>
                                     }
                                     <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
-                                    {/* <DataTable.Cell numeric>  */}
-                                    {/* {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Purchase_Order/"+purchaseOrder._id}>Details</Link></Button>
-                                    } */}
-
-                                    {roleas=="vendor" ?
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
                                             :
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                        }    
-
-
-                                    {/* </DataTable.Cell> */}
+                                            <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>       
                                 </DataTable.Row>
                             )
                         }

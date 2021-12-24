@@ -50,6 +50,7 @@ import All_Purchase_Order_Confirm from '../components/purchase_confirm/All_Purch
 import Edit_Purchase_Order_Confirm from '../components/purchase_confirm/Edit_Purchase_Order_Confirm';
 import Edit_Purchase_Order_Confirm2 from '../components/purchase_confirm/Edit_Purchase_Order_Confirm2';
 import Edit_Purchase_Order_Confirm3 from '../components/purchase_confirm/Edit_Purchase_Order_Confirm3';
+import View_Purchase_Order_Confirm3 from '../components/purchase_confirm/View_Purchase_Order_Confirm3';
 
 import AllTransportation from '../components/confidential/transportation/allTransportation';
 import AddTransportation from '../components/confidential/transportation/addTransportation';
@@ -103,6 +104,7 @@ import Pickup_Purchase from '../components/purchase_order/Pickup_Purchase';
 import All_Pickup_Assignment from '../components/pickup_assign/All_Pickup_Assignment';
 import Edit_Pickup_Assignment from '../components/pickup_assign/Edit_Pickup_Assignment';
 import Edit_Pickup_Assignment2 from '../components/pickup_assign/Edit_Pickup_Assignment2';
+import View_Pickup_Assignment2 from '../components/pickup_assign/View_Pickup_Assignment2';
 import All_Pending_Pickup_Assignment from '../components/pickup_assign/All_Pending_Pickup_Assignment';
 import All_Accepted_Pickup_Assignment from '../components/pickup_assign/All_Accepted_Pickup_Assignment';
 
@@ -639,12 +641,13 @@ const NavBar =()  => {
                     <ShowTransportation/>
                 </Route>
                 <Route path="/EditTransportation/:transportationid" render={(props) => <EditTransportation {...props} />} exact />
-                <Route path="/Edit_Purchase_Order/:purchaseid" render={(props) => <Edit_Purchase_Order {...props} />} exact />
+                <Route path="/Edit_Purchase_Order/:purchaseid" render={(props) => <Edit_Purchase_Order roleas={roleas} {...props} />} exact />
                 <Route path="/Edit_Vendor_Purchase_Order/:purchaseid" render={(props) => <Edit_Vendor_Purchase_Order {...props} />} exact />
                 <Route path="/View_Purchase_Order/:purchaseid" render={(props) => <View_Purchase_Order roleas={roleas} {...props} />} exact />
                 <Route path="/Edit_Purchase_Order_confirm/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm {...props} />} exact />
                 <Route path="/Edit_Purchase_Order_confirm2/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm2 {...props} />} exact />
-                <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 {...props} />} exact />
+                <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 roleas={roleas} {...props} />} exact />
+                <Route path="/View_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <View_Purchase_Order_Confirm3 roleas={roleas} {...props} />} exact />
 
                 
                 <Route path="/disabled_all_items">
@@ -684,7 +687,7 @@ const NavBar =()  => {
                     <CustomerAccountDeleteRequests/>
                 </Route>
                 <Route path="/All_Pending_Purchase_Orders">
-                    <All_Pending_Purchase_Orders/>
+                    <All_Pending_Purchase_Orders roleas={roleas}/>
                 </Route>
                 <Route path="/All_Accepted_Purchase_Orders">
                     <All_Accepted_Purchase_Orders/>
@@ -698,7 +701,7 @@ const NavBar =()  => {
                     <AllInventory/>
                 </Route>
                 <Route path="/All_Pending_Purchase_Order_Confirm">
-                    <All_Pending_Purchase_Order_Confirm/>
+                    <All_Pending_Purchase_Order_Confirm roleas={roleas}/>
                 </Route>
                 <Route path="/all_invoice">
                     <AllInvoice/>
@@ -735,11 +738,11 @@ const NavBar =()  => {
                     <All_Pickup_Assignment/>
                 </Route>
                 <Route path="/Edit_Pickup_Assignment/:pickupId" render={(props) => <Edit_Pickup_Assignment {...props} />} exact />
-                <Route path="/Edit_Pickup_Assignment2/:pickupId" render={(props) => <Edit_Pickup_Assignment2 {...props} />} exact />
+                <Route path="/Edit_Pickup_Assignment2/:pickupId" render={(props) => <Edit_Pickup_Assignment2 roleas={roleas} {...props} />} exact />
+                <Route path="/View_Pickup_Assignment2/:pickupId" render={(props) => <View_Pickup_Assignment2 roleas={roleas} {...props} />} exact />
                 {/* <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 {...props} />} exact /> */}
-
                 <Route path="/all_pending_pickup_assignment">
-                    <All_Pending_Pickup_Assignment/>
+                    <All_Pending_Pickup_Assignment roleas={roleas} />
                 </Route>
                 <Route path="/all_accepted_pickup_assignment">
                     <All_Accepted_Pickup_Assignment/>

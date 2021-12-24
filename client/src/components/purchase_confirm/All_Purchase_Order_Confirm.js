@@ -72,9 +72,9 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                                         <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
                                         <DataTable.Cell numeric> 
                                             {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
                                                 :
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}>Details</Link></Button>
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}>Details</Link></Button>
                                             }
                                         </DataTable.Cell>
                                     </DataTable.Row>

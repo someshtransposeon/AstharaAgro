@@ -60,9 +60,8 @@ export default function All_Accepted_Purchase_Orders(props,{ navigation }) {
 
                     <DataTable.Header>
                         <DataTable.Title>Purchase ID</DataTable.Title>
-                        <DataTable.Title>Order ID</DataTable.Title>
-                        <DataTable.Title>Vendor ID</DataTable.Title>
-                        <DataTable.Title>Item ID</DataTable.Title>
+                        <DataTable.Title >Order ID</DataTable.Title>
+                        <DataTable.Title numeric>Item Name</DataTable.Title>
                         <DataTable.Title numeric>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
@@ -73,27 +72,16 @@ export default function All_Accepted_Purchase_Orders(props,{ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                    <DataTable.Cell>{purchaseOrder.order_id}</DataTable.Cell>
-                                    <DataTable.Cell>{purchaseOrder.vendor_id}</DataTable.Cell>
-                                    <DataTable.Cell>{purchaseOrder.items.itemId}</DataTable.Cell>
+                                    <DataTable.Cell >{purchaseOrder.order_id}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{purchaseOrder.items.itemName}</DataTable.Cell>
                                     <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
-                                   {roleas=="vendor" ?
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '50%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
                                             :
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                        }   
+                                            <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>
                                 </DataTable.Row>
                             )
                             }

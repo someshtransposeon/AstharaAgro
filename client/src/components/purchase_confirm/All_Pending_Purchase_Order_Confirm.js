@@ -15,12 +15,12 @@ const theme = {
     },
 };
 
-export default function All_Purchase_Order_Confirm({ navigation }) {
+export default function All_Purchase_Order_Confirm(props,{ navigation }) {
 
     const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -29,15 +29,16 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
         else{
             setHost("localhost");
         }
-
+        setRoleas(props.roleas);
         fetch(`http://${host}:5000/retrive_all_pending_purchase_order_confirm`, {
             method: 'GET'
         })
+        
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allPurchaseOrderConfirm => setAllPurchaseOrderConfirm(allPurchaseOrderConfirm));
         
-    }, [allPurchaseOrderConfirm, host]);
+    }, [allPurchaseOrderConfirm, host,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -70,13 +71,23 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                                     <DataTable.Row>
                                         <DataTable.Cell>{purchaseOrderConfirm._id}</DataTable.Cell>
                                         <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
-                                        <DataTable.Cell numeric> 
-                                            {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
-                                                :
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}>Details</Link></Button>
-                                            }
-                                        </DataTable.Cell>
+                                        {roleas=="manager" ?
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                            :
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/View_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                        }
                                     </DataTable.Row>
                                 )
                             }
