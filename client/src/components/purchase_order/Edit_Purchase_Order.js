@@ -33,6 +33,7 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(true);
     const [quantity, setQuantity] = useState();
+    const [actualQuantity, setActualQuantity] = useState();
 
     useEffect(() => {
 
@@ -61,12 +62,23 @@ export default function Edit_Purchase_Order(props, {route}) {
             });
         }
 
+        if(order_id){
+            fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(item => {
+                setActualQuantity(item.quantity);
+            });
+        }
+
     }, [host, purchaseId, purchaseid, id, items, order_id, vendor_id, status, flag]);
 
     function submitForm() {
 
         const values2 = items;
-        values2.quantity = items.quantity-quantity;
+        values2.quantity = parseInt(actualQuantity)+parseInt(items.quantity)-parseInt(quantity);
         setItems(values2);
         
         //for splitted orders remaining quantity purchase order creation process
@@ -148,6 +160,10 @@ export default function Edit_Purchase_Order(props, {route}) {
 
     function submitForm2() {
         
+        const values2 = items;
+        values2.quantity = parseInt(actualQuantity)+parseInt(items.quantity);
+        setItems(values2);
+
         //for splitted orders remaining quantity purchase order creation process
         fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
             method: 'PUT',
@@ -156,7 +172,7 @@ export default function Edit_Purchase_Order(props, {route}) {
             },
             body: JSON.stringify({
                 item:items,
-                status:"Full Order"
+                status:"Rejected by Vendor"
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

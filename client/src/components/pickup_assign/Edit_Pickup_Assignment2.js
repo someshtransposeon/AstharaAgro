@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faMinusCircle, faStore } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
     ...DefaultTheme,
@@ -24,14 +24,6 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     else{
         pickupId = props.match.params.pickupId;
     }
-    
-    const [visible1, setVisible1] = useState(false);
-    const [visible2, setVisible2] = useState(false);
-
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
 
     const [pickupAssignId, setPickupAssignId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
@@ -42,17 +34,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [host, setHost] = useState("");
-    const [flag, setFlag] = useState(false);
-
-    function chooseBuyer(buyerId) {
-        setBuyerId(buyerId);
-        closeMenu2();
-    }
-
-    function chooseVendor(vendorId) {
-        setVendorId(vendorId);
-        closeMenu2();
-    }
+    const [quantity, setQuantity] = useState();
+    const [actualQuantity, setActualQuantity] = useState();
     
     useEffect(() => {
 
@@ -79,29 +62,49 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setVendorId(item[0].vendor_id);
                 setBuyerId(item[0].buyer_id);
                 setStatus(item[0].status);
-                setFlag(true);
+                setQuantity(item[0].items.quantity);
             });
         }
 
-    }, [host,pickupAssignId,pickupId,id]);
+        if(order_id){
+            fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(item => {
+                setActualQuantity(item.quantity);
+            });
+        }
 
-    const handleRemoveFields = index => {
-        const values = [...items];
-        values.splice(index, 1);
-        setItems(values);
-    };
-
-    const PriceChange = (value) => {
-        const values = items;
-        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:values.quantity, itemPrice:value});
-    };
-
-    const QuantityChange = (value) => {
-        const values = items;
-        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:value, itemPrice:values.finalPrice});
-    };
+    }, [host,pickupAssignId,pickupId,id, order_id]);
 
     function submitForm() {
+
+        const values2 = items;
+        values2.quantity = parseInt(actualQuantity)+parseInt(items.quantity)-parseInt(quantity);
+        setItems(values2);
+
+        //for splitted orders remaining quantity purchase order creation process
+        fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item:items,
+                status:"Splitted by Buyer"
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        }); 
+
+        const values = items;
+        values.quantity = quantity;
+        setItems(values);
+
         fetch(`http://${host}:5000/create_pickup_assign_confirm`, {
             method: 'POST',
             headers: {
@@ -121,8 +124,65 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
+            // alert(data.message);
         });   
+
+        fetch(`http://${host}:5000/update_pickup_assign_status/${pickupAssignId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: "Buyer Accepted from Vendor",
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });
+
+        alert("Successfully Accepted From vendor");
+    }
+
+    function submitForm2() {
+
+        const values2 = items;
+        values2.quantity = parseInt(actualQuantity)+parseInt(items.quantity);
+        setItems(values2);
+    
+        //for splitted orders remaining quantity purchase order creation process
+        fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item:items,
+                status:"Rejected from Buyer"
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        }); 
+
+        fetch(`http://${host}:5000/update_pickup_assign_status/${pickupAssignId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: "Buyer Rejected from Vendor",
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });
+
+        alert("Successfully Rejected");
     }
 
     return (
@@ -132,21 +192,11 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                     <Card.Title title="Edit Pickup Assignment2"/>
                     <Card.Content>
                         {buyer_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Buyer ID: {buyer_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
-                            </Menu>
+                            <TextInput style={styles.input} mode="outlined" label="Buyer Id" value={buyer_id} />
                         }
 
                         {vendor_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Vendor ID: {vendor_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
-                            </Menu>
+                            <TextInput style={styles.input} mode="outlined" label="Vendor Id" value={vendor_id} />
                         }
 
                         {items &&
@@ -154,22 +204,13 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                                 <DataTable.Row style={styles.input}>
                                     <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>QuantityChange(text)} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>PriceChange(text)} /></DataTable.Cell>
-                                    <DataTable.Cell><View style={{flexDirection: 'row'}}>
-                                        {Platform.OS=="android" ?
-                                            <>
-                                                <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(0)}/>
-                                            </>
-                                            :
-                                            <>
-                                                <Button onPress={() => handleRemoveFields(0)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
-                                        }
-                                    </View></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={quantity} onChangeText={(text)=>setQuantity(text)} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} /></DataTable.Cell>
                                 </DataTable.Row>
                             </DataTable>
                         }
-                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>submitForm()} >Confirm Pickup Assignment</Button>
+                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm()} >Accept Available Quantity</Button>
+                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faTrash } />} style={styles.button} onPress={()=>submitForm2()} color="red" >Reject for Whole Quantity</Button>
                     </Card.Content>
                 </Card>
             </View>

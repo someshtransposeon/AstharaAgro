@@ -60,4 +60,15 @@ router.get('/retrive_all_order_item_summary_by_id/:id',(req, res)=>{
     });
 });
 
+router.get('/retrive_order_item_summary_quantity/:id',(req, res)=>{
+    OrderSummary.find({'_id':req.params.id}, function(err, order){
+       if(err){
+           console.log(err);
+       }
+       else {
+           res.json({quantity: order[0].item.quantity});
+       }
+   });
+});
+
 module.exports = router;
