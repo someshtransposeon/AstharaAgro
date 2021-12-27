@@ -82,6 +82,7 @@ import Accepted_Purchase_Orders from '../components/purchase_order/Accepted_Purc
 import AllInventory from '../components/inventory/allinventory';
 
 import All_Pending_Purchase_Order_Confirm from '../components/purchase_confirm/All_Pending_Purchase_Order_Confirm';
+import All_Accepted_Purchase_Order_Confirm from '../components/purchase_confirm/All_Accepted_Purchase_Order_Confirm';
 
 import CreateInvoice from '../components/invoice/create_invoice';
 import AllInvoice from '../components/invoice/all_invoice';
@@ -114,11 +115,14 @@ import All_Accepted_Delivery_Beats from '../components/delivery_beat/All_Accepte
 
 import All_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm';
 import Edit_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/Edit_Pickup_Assignment_Confirm';
+import View_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/View_Pickup_Assignment_Confirm';
 
-import All_Pickup_Assignment_Confirm_Vendor from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm_Vendor';
+import All_Pending_Pickup_Assignment_Confirm_Vendor from '../components/pickup_assign_confirm/All_Pending_Pickup_Assignment_Confirm_Vendor';
+import All_Accepted_Pickup_Assignment_Confirm_Vendor from '../components/pickup_assign_confirm/All_Accepted_Pickup_Assignment_Confirm_Vendor';
 import All_Pickup_Assignment_Confirm_Buyer from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm_Buyer';
 
 import Edit_Pickup_Assignment_Confirm_Buyer from '../components/pickup_assign_confirm/Edit_Pickup_Assignment_Confirm_Buyer';
+import View_Pickup_Assignment_Confirm_Buyer from '../components/pickup_assign_confirm/View_Pickup_Assignment_Confirm_Buyer';
 
 import AllCompletedOrders from '../components/order/all_completed_orders';
 import EditCompletedOrder from '../components/order/edit_completed_order';
@@ -340,10 +344,6 @@ const NavBar =()  => {
                                     <>
                                         <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Purchase_Order_Confirm" as={Link}>All Purchase Order Confirm</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Pending_Purchase_Order_Confirm" as={Link}>All Pending Purchase Confirm</NavDropdown.Item>
-                                        <NavDropdown.Divider />
                                     </>
                                 }
                                 {(roleas=="vendor" || roleas=="manager") &&
@@ -351,6 +351,17 @@ const NavBar =()  => {
                                         <NavDropdown.Item to="/All_Pending_Purchase_Orders" as={Link}>All Pending for Vendor</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/All_Accepted_Purchase_Orders" as={Link}>All Accepted By Vendor </NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="vendor" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
+                                    <>
+                                        <NavDropdown.Item to="/All_Purchase_Order_Confirm" as={Link}>All Purchase Order Confirm</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Pending_Purchase_Order_Confirm" as={Link}>All Pending Purchase Confirm</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/All_Accepted_Purchase_Order_Confirm" as={Link}>All Accepted Purchase Confirm</NavDropdown.Item>
+                                        <NavDropdown.Divider />
                                     </>
                                 }
                                 </NavDropdown>
@@ -483,13 +494,21 @@ const NavBar =()  => {
 
                                         <NavDropdown.Item to="/all_pickup_assignment_confirm" as={Link}>All Pickup Assignment Confirm</NavDropdown.Item>        
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/all_pickup_assignment_confirm_buyer" as={Link}>All Pickup Assignment Confirm Buyer</NavDropdown.Item>        
-                                        <NavDropdown.Divider />
                                     </>
                                 }
                                 {(roleas=="vendor" || roleas=="manager" ) &&
                                     <> 
-                                        <NavDropdown.Item to="/all_pickup_assignment_confirm_vendor" as={Link}>All Pickup Assignment Confirm Vendor</NavDropdown.Item>        
+                                        <NavDropdown.Item to="/all_pending_pickup_assignment_confirm_vendor" as={Link}>All Pending Pickup Assignment Confirm Vendor</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+
+                                        <NavDropdown.Item to="/all_accepted_pickup_assignment_confirm_vendor" as={Link}>All Accepted Pickup Assignment Confirm Vendor</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {(roleas=="buyer" || roleas=="manager") &&
+                                    <> 
+                                        <NavDropdown.Item to="/all_pickup_assignment_confirm_buyer" as={Link}>All Pickup Assignment Confirm Buyer</NavDropdown.Item>        
+                                        <NavDropdown.Divider />
                                     </>
                                 }
                                 </NavDropdown>
@@ -703,6 +722,9 @@ const NavBar =()  => {
                 <Route path="/All_Pending_Purchase_Order_Confirm">
                     <All_Pending_Purchase_Order_Confirm roleas={roleas}/>
                 </Route>
+                <Route path="/All_Accepted_Purchase_Order_Confirm">
+                    <All_Accepted_Purchase_Order_Confirm roleas={roleas}/>
+                </Route>
                 <Route path="/all_invoice">
                     <AllInvoice/>
                 </Route>
@@ -745,7 +767,7 @@ const NavBar =()  => {
                     <All_Pending_Pickup_Assignment roleas={roleas} />
                 </Route>
                 <Route path="/all_accepted_pickup_assignment">
-                    <All_Accepted_Pickup_Assignment/>
+                    <All_Accepted_Pickup_Assignment roleas={roleas} />
                 </Route>
                 <Route path="/All_Delivery_Beats">
                     <All_Delivery_Beats/>
@@ -760,14 +782,19 @@ const NavBar =()  => {
                     <All_Pickup_Assignment_Confirm/>
                 </Route>
                     
-                <Route path="/all_pickup_assignment_confirm_vendor">
-                    <All_Pickup_Assignment_Confirm_Vendor/>
+                <Route path="/all_pending_pickup_assignment_confirm_vendor">
+                    <All_Pending_Pickup_Assignment_Confirm_Vendor roleas={roleas} />
+                </Route>
+                <Route path="/all_accepted_pickup_assignment_confirm_vendor">
+                    <All_Accepted_Pickup_Assignment_Confirm_Vendor  />
                 </Route>
                 <Route path="/all_pickup_assignment_confirm_buyer">
-                    <All_Pickup_Assignment_Confirm_Buyer/>
+                    <All_Pickup_Assignment_Confirm_Buyer roleas={roleas}/>
                 </Route>
                 <Route path="/Edit_Pickup_Assignment_Confirm/:pickupConfirmId" render={(props) => <Edit_Pickup_Assignment_Confirm {...props} />} exact />
-                <Route path="/Edit_Pickup_Assignment_Confirm_Buyer/:pickupConfirmId" render={(props) => <Edit_Pickup_Assignment_Confirm_Buyer {...props} />} exact />
+                <Route path="/View_Pickup_Assignment_Confirm/:pickupConfirmId" render={(props) => <View_Pickup_Assignment_Confirm {...props} />} exact />
+                <Route path="/Edit_Pickup_Assignment_Confirm_Buyer/:pickupConfirmId" render={(props) => <Edit_Pickup_Assignment_Confirm_Buyer roleas={roleas} {...props} />} exact />
+                <Route path="/View_Pickup_Assignment_Confirm_Buyer/:pickupConfirmId" render={(props) => <View_Pickup_Assignment_Confirm_Buyer roleas={roleas} {...props} />} exact />
                 
                 <Route path="/allcompletedorders">
                     <AllCompletedOrders/>

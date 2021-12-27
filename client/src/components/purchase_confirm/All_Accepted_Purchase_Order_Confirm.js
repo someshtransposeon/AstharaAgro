@@ -15,13 +15,12 @@ const theme = {
     },
 };
 
+export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }) {
 
-export default function All_Pickup_Assignment_Confirm({ navigation }) {
-
-    const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
+    const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -30,15 +29,16 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
         else{
             setHost("localhost");
         }
-
-        fetch(`http://${host}:5000/retrive_all_pickup_assignment_confirm`, {
+        setRoleas(props.roleas);
+        fetch(`http://${host}:5000/retrive_all_accepted_purchase_order_confirm`, {
             method: 'GET'
         })
+        
         .then(res => res.json())
         .catch(error => console.log(error))
-        .then(allPickupAssignmentConfirm => setAllPickupAssignment(allPickupAssignmentConfirm));
-
-    }, [allPickupAssignmentConfirm, host]);
+        .then(allPurchaseOrderConfirm => setAllPurchaseOrderConfirm(allPurchaseOrderConfirm));
+        
+    }, [allPurchaseOrderConfirm, host,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -46,9 +46,9 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
-            <View style={styles.view}>
+            <View>
                 <DataTable style={styles.datatable}>
-                    <Title style={{marginBottom: '20px'}}>All Pickup Assignment Confirm</Title>
+                    <Title style={{marginBottom: '20px'}}>All Accepted Purchase Order Confirm</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -59,27 +59,35 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                     />
 
                     <DataTable.Header>
-                        <DataTable.Title>Pickup ID</DataTable.Title>
-                        <DataTable.Title >Buyer ID</DataTable.Title>
+                        <DataTable.Title>PurchaseConfirm ID</DataTable.Title>
                         <DataTable.Title numeric>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
-                    
-                    {allPickupAssignmentConfirm ?
-                        allPickupAssignmentConfirm.map((pickupAssignmentConfirm,index)=>{
-                            if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+
+                    {allPurchaseOrderConfirm ?
+                        allPurchaseOrderConfirm.map((purchaseOrderConfirm,index)=>{
+                            if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
-                                        <DataTable.Cell numeric> 
-                                            {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
-                                                :
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Pickup_Assignment_Confirm/"+pickupAssignmentConfirm._id}>Details</Link></Button>
-                                            }
-                                        </DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm._id}</DataTable.Cell>
+                                        <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
+                                        {roleas=="manager" ?
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                            :
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/View_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                        }
                                     </DataTable.Row>
                                 )
                             }
@@ -111,6 +119,7 @@ const styles = StyleSheet.create({
             }
         })
     },
+
     datatable: {
         alignSelf: 'center',
         marginTop: '2%',
@@ -121,7 +130,7 @@ const styles = StyleSheet.create({
                 
             },
             android: {
-                width: '90%',
+                width: '80%',
             },
             default: {
                 width: '75%',

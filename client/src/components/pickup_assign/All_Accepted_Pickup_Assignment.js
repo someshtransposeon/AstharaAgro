@@ -15,12 +15,12 @@ const theme = {
     },
 };
 
-export default function All_Accepted_Pickup_Assignment({ navigation }) {
+export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
 
     const [allPickupAssignment, setAllPickupAssignment] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -29,7 +29,7 @@ export default function All_Accepted_Pickup_Assignment({ navigation }) {
         else{
             setHost("localhost");
         }
-
+        setRoleas(props.roleas);
         fetch(`http://${host}:5000/retrive_all_accepted_pickup_assignment`, {
             method: 'GET'
         })
@@ -37,7 +37,7 @@ export default function All_Accepted_Pickup_Assignment({ navigation }) {
         .catch(error => console.log(error))
         .then(allPickupAssignment => setAllPickupAssignment(allPickupAssignment));
 
-    }, [allPickupAssignment, host]);
+    }, [allPickupAssignment, host,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -72,13 +72,30 @@ export default function All_Accepted_Pickup_Assignment({ navigation }) {
                                 <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{pickupAssignment.buyer_id}</DataTable.Cell>
                                 <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                <DataTable.Cell numeric> 
+                                {/* <DataTable.Cell numeric> 
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {pickupId: pickupAssignment._id})}}>Details</Button>
                                         :
                                         <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
                                     }
+                                </DataTable.Cell> */}
+                                {roleas=="buyer" ?
+                                <DataTable.Cell numeric>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                        :
+                                        <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                    }
                                 </DataTable.Cell>
+                                :
+                                <DataTable.Cell numeric>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                        :
+                                        <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                    }
+                                </DataTable.Cell>
+                            }
                             </DataTable.Row>
                         )
                         }

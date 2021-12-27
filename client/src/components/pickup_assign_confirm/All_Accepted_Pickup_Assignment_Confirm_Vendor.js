@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator, Text } from 'react-native';
 import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu  } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -15,13 +15,13 @@ const theme = {
     },
 };
 
-export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
+export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ navigation }) {
 
     const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
-
+    const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -30,46 +30,17 @@ export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_pickup_assignment_confirm`, {
+        setRoleas(props.roleas);
+        fetch(`http://${host}:5000/retrive_all_accepted_pickup_assignment_confirm_buyer`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allPickupAssignmentConfirm => setAllPickupAssignment(allPickupAssignmentConfirm));
 
-    }, [allPickupAssignmentConfirm, host]);
+    }, [allPickupAssignmentConfirm, host,roleas, props.roleas]);
 
-    const openMenu = (index) => {
-        const values = [...visible];
-        values[index]=true;
-        setVisible(values);
-    };
-
-    const closeMenu = (index) => {
-        const values = [...visible];
-        values[index]=false;
-        setVisible(values);
-    };
-
-    const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_pickup_assign_confirm_vendor_status/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        closeMenu(index);
-    };    
-
+    
     const onChangeSearch = query => setSearchQuery(query);
 
     return (
@@ -78,7 +49,7 @@ export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
         <ScrollView>
             <View>
                 <DataTable style={styles.datatable}>
-                    <Title style={{marginBottom: '20px'}}>All Pickup Assignment Confirm Vendor</Title>
+                    <Title style={{marginBottom: '20px'}}>All Accepted Pickup Assignment Confirm Vendor</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -101,19 +72,30 @@ export default function All_Pickup_Assignment_Confirm_Vendor({ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
-                                    <DataTable.Cell>{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
-                                    <DataTable.Cell  numeric>
+                                    <DataTable.Cell numeric>{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
+                                    {/* <DataTable.Cell  numeric>
                                         <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignmentConfirm.status}</Button>}>
                                         <Menu.Item title="Accept" onPress={()=>StatusChange("vendor accepted",  pickupAssignmentConfirm._id, index)}/>
                                         <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignmentConfirm._id, index)}/>
                                         
                                         </Menu>
-                                    </DataTable.Cell>   
+                                    </DataTable.Cell>  */}
+                                    {/* <DataTable.Cell numeric>
+                                    {roleas=="vendor" ?
+                                            <Menu visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignmentConfirm.status}</Button>}>
+                                                    <Menu.Item title="Accept" onPress={()=>StatusChange("vendor accepted",  pickupAssignmentConfirm._id, index)}/>
+                                                    <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignmentConfirm._id, index)}/>
+                                            </Menu>
+                                            :
+                                            <Text >{pickupAssignmentConfirm.status}</Text>
+                                        }  
+                                    </DataTable.Cell>     */}
                                     <DataTable.Cell numeric> 
                                         {Platform.OS=='android' ?
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                             :
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment_Confirm/"+pickupAssignmentConfirm._id}>Details</Link></Button>
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Pickup_Assignment_Confirm/"+pickupAssignmentConfirm._id}>Details</Link></Button>
                                         }
                                     </DataTable.Cell>
                                 </DataTable.Row>

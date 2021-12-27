@@ -41,36 +41,36 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
 
     }, [allPickupAssignment, host,roleas,props.roleas]);
 
-    const openMenu = (index) => {
-        const values = [...visible];
-        values[index]=true;
-        setVisible(values);
-    };
+    // const openMenu = (index) => {
+    //     const values = [...visible];
+    //     values[index]=true;
+    //     setVisible(values);
+    // };
 
-    const closeMenu = (index) => {
-        const values = [...visible];
-        values[index]=false;
-        setVisible(values);
-    };
+    // const closeMenu = (index) => {
+    //     const values = [...visible];
+    //     values[index]=false;
+    //     setVisible(values);
+    // };
 
-    const StatusChange = (s, id, index) => {
-        fetch(`http://${host}:5000/update_pickup_assign_status/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        closeMenu(index);
-    };    
+    // const StatusChange = (s, id, index) => {
+    //     fetch(`http://${host}:5000/update_pickup_assign_status/${id}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             status: s,
+    //         })
+    //     })
+    //     .then(res => res.json())
+    //     .catch(error => console.log(error))
+    //     .then(data => {
+    //         alert(data.message);
+    //         console.log(data);
+    //     });
+    //     closeMenu(index);
+    // };    
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -103,13 +103,14 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
                                     {/* <DataTable.Cell numeric>{pickupAssignment.buyer_id}</DataTable.Cell> */}
-                                    <DataTable.Cell  numeric>
+                                    {/* <DataTable.Cell  numeric>
                                         <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
                                             <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
                                             <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
                                         </Menu>
-                                    </DataTable.Cell>   
+                                    </DataTable.Cell>    */}
                                     {roleas=="buyer" ?
                                             <DataTable.Cell numeric>
                                                 {Platform.OS=='android' ?
