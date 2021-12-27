@@ -66,7 +66,7 @@ router.get('/retrive_order_item_summary_quantity/:id',(req, res)=>{
            console.log(err);
        }
        else {
-           res.json({quantity: order[0].item.quantity});
+           res.json({quantity: order[0].item.quantity,vendor_rejected:order[0].vendor_rejected});
        }
    });
 });

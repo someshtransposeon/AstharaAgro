@@ -17,9 +17,7 @@ const orderSummarySchema = new mongoose.Schema({
         type:String,
         default:"Full Order",
     },
-    vendor_rejected: {
-        type: mongoose.Schema.Types.Mixed,
-    },
+    vendor_rejected: [],
     date:{
         type:Date,
         default: Date.now,

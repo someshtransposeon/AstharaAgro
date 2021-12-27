@@ -36,7 +36,10 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [host, setHost] = useState("");
     const [quantity, setQuantity] = useState();
     const [actualQuantity, setActualQuantity] = useState();
-    
+    const [vendorsid, setVendorsid] = useState([]);
+    const [flag2, setFlag2] = useState(true);
+    const [flag3, setFlag3] = useState(true);
+
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -66,7 +69,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
             });
         }
 
-        if(order_id){
+        if(flag3 && order_id){
             fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
                 method: 'GET'
             })
@@ -74,16 +77,27 @@ export default function Edit_Pickup_Assignment(props, {route}) {
             .catch(error => console.log(error))
             .then(item => {
                 setActualQuantity(item.quantity);
+                setVendorsid(item.vendor_rejected);
+                setFlag3(false);
             });
         }
+        if(vendorsid == null) {
+            setVendorsid([]);
+        }
 
-    }, [host,pickupAssignId,pickupId,id, order_id]);
+    }, [host,pickupAssignId,pickupId,id, order_id,flag2,vendorsid,flag3]);
 
     function submitForm() {
 
         const values2 = items;
         values2.quantity = parseInt(actualQuantity)+parseInt(items.quantity)-parseInt(quantity);
         setItems(values2);
+        
+        if(items.quantity!=0){
+            const values3 = vendorsid;
+            values3.push(vendor_id);
+            setVendorsid(values3);
+        }
 
         //for splitted orders remaining quantity purchase order creation process
         fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
@@ -93,7 +107,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
             },
             body: JSON.stringify({
                 item:items,
-                status:"Splitted by Buyer"
+                status:"Splitted by Buyer",
+                vendor_rejected:vendorsid,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))
@@ -150,7 +165,11 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         const values2 = items;
         values2.quantity = parseInt(actualQuantity)+parseInt(items.quantity);
         setItems(values2);
-    
+        
+        const values3 = vendorsid;
+        values3.push(vendor_id);
+        setVendorsid(values3);
+
         //for splitted orders remaining quantity purchase order creation process
         fetch(`http://${host}:5000/update_quantity_order_item_summary/${order_id}`, {
             method: 'PUT',
@@ -159,7 +178,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
             },
             body: JSON.stringify({
                 item:items,
-                status:"Rejected from Buyer"
+                status:"Rejected from Buyer",
+                vendor_rejected:vendorsid,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

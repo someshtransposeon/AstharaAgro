@@ -35,6 +35,7 @@ export default function EditOrderItem(props,{route}) {
     const [user_id, setUserId] = useState();
     const [flag, setFlag] = useState(true);
     const [quantity, setQuantity] = useState();
+    const [vendorsid, setVendorsid] = useState([]);
 
     useEffect(() => {
 
@@ -63,6 +64,17 @@ export default function EditOrderItem(props,{route}) {
         .catch(error => console.log(error))
         .then(vendors => setVendors(vendors));
 
+        if(order_id){
+            fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(item => {
+                setVendorsid(item.vendor_rejected);  
+            });
+        }
+
         if(flag && order_id){
             OrderSummary_by_id(host, order_id)
             .then(function(result) {
@@ -89,6 +101,7 @@ export default function EditOrderItem(props,{route}) {
             body: JSON.stringify({
                 item:items,
                 status:"Full Order",
+                vendor_rejected:vendorsid,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

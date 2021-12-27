@@ -26,6 +26,7 @@ export default function PendingOrders(props, { navigation }) {
     const [flag, setFlag] = useState(false);
     const [roleas, setRoleas] = useState("");
     const [userId, setUserId] = useState("");
+    const [vendorsid, setVendorsid] = useState([]);
 
     useEffect(() => {
 
@@ -82,6 +83,7 @@ export default function PendingOrders(props, { navigation }) {
                     userId: userId,
                     orderId: id,
                     item: item,
+                    vendor_rejected: vendorsid,
                 })
             })
             .then(res => res.json())
