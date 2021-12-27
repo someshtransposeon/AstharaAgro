@@ -89,7 +89,8 @@ export default function Edit_Purchase_Order(props, {route}) {
             },
             body: JSON.stringify({
                 item:items,
-                status:"Splitted by Vendor"
+                status:"Splitted by Vendor",
+                vendor_rejected:vendor_id,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

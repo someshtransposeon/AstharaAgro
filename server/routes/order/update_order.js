@@ -120,6 +120,7 @@ router.put('/update_quantity_order_item_summary/:id',(req, res) =>{
     var order_update = {
         item: req.body.item,
         status: req.body.status,
+        vendor_rejected:req.body.vendor_rejected,
     }
     OrderSummary.findOneAndUpdate({'_id':req.params.id}, order_update)
     .then((order) => {
