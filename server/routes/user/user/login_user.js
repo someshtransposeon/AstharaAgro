@@ -23,6 +23,7 @@ router.post('/login_user', (req, res)=>{
                         email:user.email, 
                         user_id:user._id, 
                         role:user.role, 
+                        nick_name:user.nick_name,
                         message: "successfully login"
                     }
                     

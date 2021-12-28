@@ -49,12 +49,13 @@ export default function Login({ navigation }) {
             console.log(error);
         })
         .then(data => {
-            console.log(data.message);
+            console.log(data);
             alert(data.message);
             if(data.token){
                 AsyncStorage.setItem('token', data.token);
                 AsyncStorage.setItem('loginuserid', data.user_id);
                 AsyncStorage.setItem('loginemail', data.email);
+                AsyncStorage.setItem('nick_name', data.nick_name);
                 AsyncStorage.setItem('role', data.role);
                 setEmail("");
                 setPassword("");

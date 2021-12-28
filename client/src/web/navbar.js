@@ -187,6 +187,8 @@ const NavBar =()  => {
         await AsyncStorage.removeItem('token');
         await AsyncStorage.removeItem('loginemail');
         await AsyncStorage.removeItem('loginuserid');
+        await AsyncStorage.removeItem('nick_name');
+        await AsyncStorage.removeItem('role');
         setEmail("");
         console.log("Logout Success");
     }
