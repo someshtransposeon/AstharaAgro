@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator, Text  } from 'react-native';
 import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu  } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -41,36 +41,36 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
 
     }, [allPickupAssignment, host,roleas,props.roleas]);
 
-    // const openMenu = (index) => {
-    //     const values = [...visible];
-    //     values[index]=true;
-    //     setVisible(values);
-    // };
+    const openMenu = (index) => {
+        const values = [...visible];
+        values[index]=true;
+        setVisible(values);
+    };
 
-    // const closeMenu = (index) => {
-    //     const values = [...visible];
-    //     values[index]=false;
-    //     setVisible(values);
-    // };
+    const closeMenu = (index) => {
+        const values = [...visible];
+        values[index]=false;
+        setVisible(values);
+    };
 
-    // const StatusChange = (s, id, index) => {
-    //     fetch(`http://${host}:5000/update_pickup_assign_status/${id}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             status: s,
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });
-    //     closeMenu(index);
-    // };    
+    const StatusChange = (s, id, index) => {
+        fetch(`http://${host}:5000/update_pickup_assign_status/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: s,
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
+        closeMenu(index);
+    };    
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -92,7 +92,6 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Pickup ID</DataTable.Title>
-                    {/* <DataTable.Title numeric>Buyer ID</DataTable.Title> */}
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -103,31 +102,23 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
-                                    <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                    {/* <DataTable.Cell numeric>{pickupAssignment.buyer_id}</DataTable.Cell> */}
-                                    {/* <DataTable.Cell  numeric>
+                                    <DataTable.Cell  numeric>
+                                    {roleas=="buyer" ?
                                         <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
                                             <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
                                             <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
                                         </Menu>
-                                    </DataTable.Cell>    */}
-                                    {roleas=="buyer" ?
-                                            <DataTable.Cell numeric>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
+                                        :
+                                        <Text>{pickupAssignment.status}</Text>
+                                    }
+                                    </DataTable.Cell>   
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
                                             :
-                                            <DataTable.Cell numeric>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
+                                            <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
                                         }
+                                    </DataTable.Cell>
                                 </DataTable.Row>
                             )
                         }
