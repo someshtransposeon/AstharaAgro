@@ -64,7 +64,13 @@ router.post('/create_user', async (req, res)=>{
                 });   
             })
             .catch(err => {
-                var message = {message:"something wrong!",error:err};
+                var message = {message:"All field required!",error:err};
+                if( err.code=="11000" && Object.keys(err.keyValue)[0] == "nick_name"){
+                   message.message="username already exist!";
+                }
+                else if(err.code=="11000" && Object.keys(err.keyValue)[0]  == "email"){
+                   message.message="email already exist!";
+                }
                 res.json(message);
             })
                 

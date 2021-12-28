@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     mobile_no: {
         type: Number,
+        required: true,
     },
     gst_no: {
         type: String,
@@ -32,6 +33,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: true,
     },
     status:{
         type:String,
