@@ -129,11 +129,7 @@ export default function PendingOrders(props, { navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
-                        <DataTable.Title>Sales ID</DataTable.Title>
                         <DataTable.Title>Email</DataTable.Title>
-                        {Platform.OS !== "android" &&
-                        <DataTable.Title>Full Name</DataTable.Title>
-                        }
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
@@ -141,14 +137,11 @@ export default function PendingOrders(props, { navigation }) {
                     {allOrders ?
                         allOrders.map((item, index)=>{
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                var date=item.order_date.substring(0,10);
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{item._id}</DataTable.Cell>
-                                        <DataTable.Cell>{item.userId}</DataTable.Cell>
+                                        <DataTable.Cell>{item.nick_name+"_"+item.postal_code+"_"+date}</DataTable.Cell>
                                         <DataTable.Cell>{item.email}</DataTable.Cell>
-                                        {Platform.OS !== "android" &&
-                                        <DataTable.Cell>{item.name}</DataTable.Cell>
-                                        }
                                         <DataTable.Cell>
                                         {roleas=="manager" ?
                                             <Menu

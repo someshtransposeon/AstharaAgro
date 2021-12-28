@@ -19,13 +19,6 @@ const vendorsItemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ItemUnit',
     },
-    full_name: {
-        type: String,
-        required: true,
-        // required: true,
-        // type: mongoose.Schema.Types.ObjectId,
-        // ref: 'User',
-    },
     item_name: {
         type: String,
         required: true,

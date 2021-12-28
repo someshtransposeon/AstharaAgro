@@ -8,6 +8,7 @@ router.post('/create_order', (req, res)=>{
     var newOrder = new Order({
         userId: req.body.userId,
         customerId: req.body.customerId,
+        nick_name: req.body.nick_name,
         name: req.body.name,
         email: req.body.email,
         mobile_no: req.body.mobile_no,

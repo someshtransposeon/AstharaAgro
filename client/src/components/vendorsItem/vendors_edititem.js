@@ -84,7 +84,6 @@ export default function VendorsEditItem(props,{route}) {
                 setDescription(item[0].description);
                 setItemPrice(item[0].item_price);
             });
-            
             setFlag(false);
         }
 

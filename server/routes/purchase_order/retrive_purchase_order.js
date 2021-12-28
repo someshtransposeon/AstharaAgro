@@ -35,7 +35,7 @@ router.get('/retrive_all_pending_purchase_order',(req, res)=>{
     });
 });
 router.get('/retrive_all_accepted_purchase_order',(req, res)=>{
-    PurchaseOrder.find({status:"accepted"}, function(err, purchase_orders){
+    PurchaseOrder.find({status:"Vendor Accepted"}, function(err, purchase_orders){
         if(err){
             console.log(err);
         }

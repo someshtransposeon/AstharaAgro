@@ -26,6 +26,7 @@ export default function CreateOrder({ navigation }) {
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:'', Grade: 'Choose Grade',}]);
+    const [nick_name, setNickName] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
@@ -189,6 +190,7 @@ export default function CreateOrder({ navigation }) {
         .catch(error => console.log(error))
         .then(customer => {
             setEmail(customer[0].email);
+            setNickName(customer[0].nick_name);
             setName(customer[0].full_name);
             setMobileNo(customer[0].mobile_no);
             setCustomerId(customer[0].userId);
@@ -217,6 +219,7 @@ export default function CreateOrder({ navigation }) {
             body: JSON.stringify({
                 userId: userId,
                 customerId: customerId,
+                nick_name: nick_name,
                 name: name,
                 email: email,
                 mobile_no: mobileNo,
@@ -321,6 +324,7 @@ export default function CreateOrder({ navigation }) {
                                 }
                             </Menu>
                         }
+                        <TextInput style={styles.input} mode="outlined" label="Nick Name" value={nick_name} onChangeText={nick_name => setNickName(name)} />
                         <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                         <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                         <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />

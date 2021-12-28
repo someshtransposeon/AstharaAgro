@@ -40,14 +40,13 @@ export default function VendorsAllItems({ navigation }) {
             setHost("localhost");
         }
 
-        fetch(`http://${host}:5000/vendors_retrive_all_item/${userId}`, {
+        fetch(`http://${host}:5000/vendors_retrive_all_items`, {
             method: 'GET'
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allItems => {
             setAllItems(allItems);
-            console.log(allItems);
         });
 
     }, [allItems, host, userId]);

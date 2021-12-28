@@ -9,6 +9,9 @@ const orderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Customer',
     },
+    nick_name:{
+        type:String,
+    },
     name:{
         type:String,
     },

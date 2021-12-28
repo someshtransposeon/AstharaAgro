@@ -42,7 +42,6 @@ export default function AddItem({ navigation }) {
     const [unitId, setUnitId] = useState("");
     const [gradeId, setGradeId] = useState("");
     const [itemName, setItemName] = useState("");
-    const [fullName, setFullName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
     const [itemDescription, setDescription,] = useState("");
     const [itemPrice,setItemPrice]=useState("");
@@ -56,7 +55,6 @@ export default function AddItem({ navigation }) {
             await AsyncStorage.getItem('loginuserid')
             .then((userid,username) => {
                 setUserId(userid);
-                setFullName(username);
             })
         }
         fetchData();    
@@ -90,7 +88,7 @@ export default function AddItem({ navigation }) {
         .catch(error => console.log(error))
         .then(itemGrade => setItemGrade(itemGrade));
 
-    }, [userId, fullName, itemCategory, host, itemUnit, itemGrade]);
+    }, [userId, itemCategory, host, itemUnit, itemGrade]);
 
     function chooseCategory(id, name) {
         setCategoryId(id);
@@ -122,7 +120,6 @@ export default function AddItem({ navigation }) {
                 unit: unitId,
                 grade: gradeId,
                 item_name: itemName,
-                full_name:fullName,
                 category_name: category,
                 unit_name: unit,
                 grade_name: grade,
@@ -134,7 +131,6 @@ export default function AddItem({ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            console.log(fullName);
             alert(data.message);
         }); 
     }
