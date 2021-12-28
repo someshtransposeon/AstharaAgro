@@ -19,6 +19,7 @@ router.post('/vendors_create_item', (req, res)=>{
         description: req.body.description,
         item_quantity:req.body.item_quantity,
         item_price:req.body.item_price,
+        nick_name:req.body.nick_name,
     })
     newItem.save()
     .then(item => {

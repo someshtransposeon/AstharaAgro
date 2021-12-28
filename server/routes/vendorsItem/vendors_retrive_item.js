@@ -68,4 +68,16 @@ router.get('/retrive_vendor_item_by_name_grade/:itemname/:grade',(req, res)=>{
     });
 });
 
+router.get('/retrive_vendor_item_by_name_grade_lower_price/:itemname/:grade',(req, res)=>{
+    VendorsItem.find({'item_name':req.params.itemname, 'grade_name':req.params.grade},{'nick_name':1,'userId':1}).sort({"item_price":1}).exec(function(err, item){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(item);
+            console.log(item.nick_name);
+        }
+    });
+});
+
 module.exports = router;

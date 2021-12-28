@@ -48,13 +48,18 @@ export default function AddItem({ navigation }) {
     const [itemQuantity,setItemQuantity]=useState("");
     const [unit,setUnit]=useState("Select unit of each item");
     const [host, setHost] = useState("");
+    const [nick_name, setNickName] = useState("");
     //fetch all required item categories, units, grades
     useEffect(() => {
 
         async function fetchData() {
             await AsyncStorage.getItem('loginuserid')
-            .then((userid,username) => {
+            .then((userid) => {
                 setUserId(userid);
+            })
+            await AsyncStorage.getItem('nick_name')
+            .then((nick_name) => {
+                setNickName(nick_name);
             })
         }
         fetchData();    
@@ -88,7 +93,7 @@ export default function AddItem({ navigation }) {
         .catch(error => console.log(error))
         .then(itemGrade => setItemGrade(itemGrade));
 
-    }, [userId, itemCategory, host, itemUnit, itemGrade]);
+    }, [userId, itemCategory, host, itemUnit, itemGrade,nick_name]);
 
     function chooseCategory(id, name) {
         setCategoryId(id);
@@ -126,6 +131,7 @@ export default function AddItem({ navigation }) {
                 item_price:itemPrice,
                 item_quantity:itemQuantity,
                 description: itemDescription,
+                nick_name:nick_name,
             })
         })
         .then(res => res.json())

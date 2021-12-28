@@ -44,6 +44,9 @@ const vendorsItemSchema = new mongoose.Schema({
     item_price: {
         type: Double,
     },
+    nick_name: {
+        type: String
+    },
     status:{
         type:String,
         default:"enabled"

@@ -56,14 +56,6 @@ export default function EditOrderItem(props,{route}) {
             setOrderId(orderid);
         }
 
-        // fetch all vendors
-        fetch("http://localhost:5000/retrive_all_vendors", {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(vendors => setVendors(vendors));
-
         if(order_id){
             fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
                 method: 'GET'
@@ -84,7 +76,16 @@ export default function EditOrderItem(props,{route}) {
             });
         }
 
-    }, [vendors, host, order_id, orderid, flag]);
+        if(items){
+        // fetch all vendors
+        fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade_lower_price/${items.itemName}/${items.Grade}`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(vendors => setVendors(vendors));
+    }
+    }, [vendors, host, order_id, items, orderid, flag]);
 
     //submitForm() for sending the data in corresponding database
     function submitForm(){
@@ -156,7 +157,7 @@ export default function EditOrderItem(props,{route}) {
                                 {vendors ?
                                     vendors.map((item)=>{
                                         return (
-                                            <Menu.Item title={item.full_name+" ("+item.email+")" } onPress={()=>chooseVendor(item._id, item.email)} />
+                                            <Menu.Item title={item.nick_name} onPress={()=>chooseVendor(item.userId, item.nick_name)} />
                                         )
                                     })
                                     :
