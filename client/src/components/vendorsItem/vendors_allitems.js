@@ -16,13 +16,13 @@ const theme = {
     },
 };
 //define all item components
-export default function VendorsAllItems({ navigation }) {
+export default function VendorsAllItems(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [userId, setUserId] = useState('');
-
+    const [roleas, setRoleas] = useState("");
     useEffect(() => {
         //to get the id of current vendor
         async function fetchData() {
@@ -39,7 +39,7 @@ export default function VendorsAllItems({ navigation }) {
         else{
             setHost("localhost");
         }
-
+        setRoleas(props.roleas);
         fetch(`http://${host}:5000/vendors_retrive_all_items`, {
             method: 'GET'
         })
@@ -49,7 +49,7 @@ export default function VendorsAllItems({ navigation }) {
             setAllItems(allItems);
         });
 
-    }, [allItems, host, userId]);
+    }, [allItems, host, userId, roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -89,13 +89,30 @@ export default function VendorsAllItems({ navigation }) {
                                         <DataTable.Cell>{item.unit_name}</DataTable.Cell>
                                         <DataTable.Cell>{item.item_quantity}</DataTable.Cell>
                                         <DataTable.Cell>{item.item_price}</DataTable.Cell>
-                                        <DataTable.Cell>
+                                        {/* <DataTable.Cell>
                                             {Platform.OS=='android' ?
                                                 <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('VendorsEditItem', {itemId: item._id})}}>Details</Button>
                                                 :
                                                 <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/vendors_edititem/"+item._id}>Details</Link></Button>
                                             }
-                                        </DataTable.Cell>
+                                        </DataTable.Cell> */}
+                                        {roleas=="vendor" ?
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('VendorsEditItem', {itemId: item._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/vendors_edititem/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                            :
+                                            <DataTable.Cell numeric>
+                                                {Platform.OS=='android' ?
+                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('VendorsViewItem', {itemId: item._id})}}>Details</Button>
+                                                    :
+                                                    <Link to={"/vendors_view_item/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                }
+                                            </DataTable.Cell>
+                                        }
                                     </DataTable.Row>
                                 )
                             }
