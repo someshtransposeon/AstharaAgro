@@ -93,7 +93,7 @@ import VendorsEditItem from '../components/vendorsItem/vendors_edititem';
 import VendorsViewItem from '../components/vendorsItem/vendors_view_item';
 import VendorAddAddress from '../components/vendor_address/add_vendor_address';
 import VendorAllAddress from '../components/vendor_address/all_vendor_address';
-
+import VendorEditAddress from '../components/vendor_address/edit_vendor_address';
 
 import Edit_Vendor_Purchase_Order from '../components/purchase_order/Edit_Vendor_Purchase_Order';
 import All_Declined_Purchase_Orders from '../components/purchase_order/All_Declined_Purchase_Orders';
@@ -607,6 +607,7 @@ const NavBar =()  => {
                 <Route path="/edititemgrade/:itemGradeid" render={(props) => <EditItemGrade {...props} />} exact />
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact />
+                <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>

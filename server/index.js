@@ -94,6 +94,7 @@ const update_address = require('./routes/address/update_address');
 const create_vendor_address = require('./routes/vendor_address/create_vendor_address');
 const retrive_vendor_address = require('./routes/vendor_address/retrieve_vendor_address');
 const update_vendor_address = require('./routes/vendor_address/update_vendor_address');
+const delete_vendor_address = require('./routes/vendor_address/delete_vendor_address');
 
 const create_bank = require('./routes/bankDetails/create_bank');
 const delete_bank = require('./routes/bankDetails/delete_bank');
@@ -248,6 +249,8 @@ app.use('/', update_address);
 app.use('/', create_vendor_address);
 app.use('/', retrive_vendor_address);
 app.use('/', update_vendor_address);
+app.use('/', delete_vendor_address);
+
 
 app.use('/', create_bank);
 app.use('/', delete_bank);
