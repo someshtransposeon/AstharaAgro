@@ -26,7 +26,7 @@ export default function Edit_Purchase_Order(props, {route}) {
     }
 
     const [purchaseId, setPurchaseId] = useState("");
-    const [order_id, setOrderId] = useState("");
+    const [order_id, setOrder_Id] = useState("");
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [status,setStatus] = useState("");
     const [items, setItems] = useState();
@@ -37,6 +37,8 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [quantity, setQuantity] = useState();
     const [actualQuantity, setActualQuantity] = useState();
     const [vendorsid, setVendorsid] = useState([]);
+    const [orderId, setOrderId] = useState("");
+    const [custom_orderId, setCustomId] = useState("");
 
     useEffect(() => {
 
@@ -56,12 +58,14 @@ export default function Edit_Purchase_Order(props, {route}) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
-                setOrderId(item[0].order_id)
+                setOrder_Id(item[0].order_id)
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
                 setFlag(false);
                 setQuantity(item[0].items.quantity);
+                setCustomId(item[0].custom_orderId);
+                setOrderId(item[0].orderId);
             });
         }
 
@@ -80,8 +84,6 @@ export default function Edit_Purchase_Order(props, {route}) {
         if(vendorsid == null) {
             setVendorsid([]);
         }
-         console.log(vendorsid);
-        // console.log(actualQuantity);
 
     }, [host, purchaseId, purchaseid, id, items, order_id, vendor_id, status, flag,vendorsid,actualQuantity,flag2,flag3]);
 
@@ -145,6 +147,8 @@ export default function Edit_Purchase_Order(props, {route}) {
             body: JSON.stringify({
                 purchaseId:purchaseId,
                 order_id:order_id,
+                orderId:orderId,
+                custom_orderId:custom_orderId,
                 items:items,   
                 vendor_id:vendor_id, 
                 status:status,      
@@ -230,7 +234,7 @@ export default function Edit_Purchase_Order(props, {route}) {
                         {items &&
                             <DataTable style={styles.datatable}>
                                 <DataTable.Row>
-                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={quantity} onChangeText={(text)=>setQuantity(text)} /></DataTable.Cell>
                                     <TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} />

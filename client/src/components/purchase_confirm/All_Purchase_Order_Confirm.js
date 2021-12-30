@@ -58,7 +58,8 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                     />
 
                     <DataTable.Header>
-                        <DataTable.Title>Purchase ID</DataTable.Title>
+                        <DataTable.Title>Order ID</DataTable.Title>
+                        <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title numeric>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
@@ -68,7 +69,8 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                             if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{purchaseOrderConfirm._id}</DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm.items.itemName+" ("+purchaseOrderConfirm.items.Grade+")"}</DataTable.Cell>
                                         <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
                                         <DataTable.Cell numeric> 
                                             {Platform.OS=='android' ?

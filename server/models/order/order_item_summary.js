@@ -9,6 +9,9 @@ const orderSummarySchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Order',
     },
+    custom_orderId:{
+        type:String,
+    },
     item: {
         type: mongoose.Schema.Types.Mixed,
         required: true,

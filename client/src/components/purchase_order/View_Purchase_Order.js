@@ -56,7 +56,6 @@ export default function View_Purchase_Order(props, {route}) {
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
                 setFlag(false);
-                console.log(item);
             });
         }
     }, [host, purchaseId, purchaseid, id, items, order_id, vendor_id, status, flag]);
@@ -70,7 +69,7 @@ export default function View_Purchase_Order(props, {route}) {
                         {items &&
                             <DataTable style={styles.datatable}>
                                 <DataTable.Row>
-                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} /></DataTable.Cell>
                                     <TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} />

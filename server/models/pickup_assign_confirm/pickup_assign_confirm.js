@@ -1,22 +1,20 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const pickupAssignConfirmSchema = new mongoose.Schema({
-    
-    requestedBy:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
     order_id:{
         type:mongoose.Schema.Types.ObjectId,
+        ref:'OrderSummary'
+    },
+    orderId:{
+        type:mongoose.Schema.Types.ObjectId,
         ref:'Order'
+    },
+    custom_orderId:{
+        type:String,
     },
     purchaseId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Purchase'
-    },
-    indent_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Indent'
     },
     user_id:{
         type:mongoose.Schema.Types.ObjectId,

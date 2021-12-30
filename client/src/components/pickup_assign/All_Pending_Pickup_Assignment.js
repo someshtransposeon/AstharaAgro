@@ -91,7 +91,8 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                 />
 
                 <DataTable.Header>
-                    <DataTable.Title>Pickup ID</DataTable.Title>
+                    <DataTable.Title>Order ID</DataTable.Title>
+                    <DataTable.Title>Item</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -101,7 +102,8 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                             return (
                                 <DataTable.Row>
-                                    <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
                                     <DataTable.Cell  numeric>
                                     {roleas=="buyer" ?
                                         <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>

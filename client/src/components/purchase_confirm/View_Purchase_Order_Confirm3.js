@@ -89,12 +89,12 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         <Provider theme={theme}>
             <View>
                 <Card style={styles.card}>
-                    <Card.Title title="View Confirm Purchase Order(Assign Buyer to pickup)"/>
+                    <Card.Title title="View Confirm Purchase Order"/>
                     <Card.Content>
                         {items &&
                             <DataTable style={{marginTop: '20px'}}>
                                 <DataTable.Row>
-                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity}  /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice}  /></DataTable.Cell>

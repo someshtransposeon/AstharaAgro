@@ -1,18 +1,16 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
 const purchaseorderSchema = new mongoose.Schema({
-    
-    requestedBy:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
     order_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'OrderSummary'
+    },
+    orderId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Order'
     },
-    indent_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Indent'
+    custom_orderId:{
+        type:String,
     },
     user_id:{
         type:mongoose.Schema.Types.ObjectId,
@@ -36,7 +34,6 @@ const purchaseorderSchema = new mongoose.Schema({
         type: String,
         default:"pending for vendor acceptance",
     },
-
 });
 
 const PurchaseOrder = mongoose.model('PurchaseOrder', purchaseorderSchema);

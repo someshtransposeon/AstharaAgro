@@ -47,8 +47,8 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title style={{marginBottom: '20px'}}>All Pickup Assignment Confirm Buyers</Title>
-                    <Searchbar
+                        <Title style={{marginBottom: '20px'}}>All Pickup Assignment Confirm Buyers</Title>
+                        <Searchbar
                             icon={() => <FontAwesomeIcon icon={ faSearch } />}
                             clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                             placeholder="Search"
@@ -62,8 +62,8 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
                             <DataTable.Title >Order ID</DataTable.Title>
                             <DataTable.Title >Buyer ID</DataTable.Title>
                             <DataTable.Title >Vendor ID</DataTable.Title>
-                            <DataTable.Title numeric>Status</DataTable.Title>
-                            <DataTable.Title numeric>Action</DataTable.Title>
+                            <DataTable.Title>Status</DataTable.Title>
+                            <DataTable.Title>Action</DataTable.Title>
                         </DataTable.Header>
                                                                               
                         {allPickupAssignmentConfirm ?
@@ -75,16 +75,9 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
                                         <DataTable.Cell >{pickupAssignmentConfirm.order_id}</DataTable.Cell>
                                         <DataTable.Cell >{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
                                         <DataTable.Cell >{pickupAssignmentConfirm.vendor_id}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
-                                        {/* <DataTable.Cell numeric> 
-                                            {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
-                                                :
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment_Confirm_Buyer/"+pickupAssignmentConfirm._id}>Details</Link></Button>
-                                            }
-                                        </DataTable.Cell> */}
+                                        <DataTable.Cell>{pickupAssignmentConfirm.status}</DataTable.Cell>
                                         {roleas=="buyer" ?
-                                            <DataTable.Cell numeric>
+                                            <DataTable.Cell>
                                                 {Platform.OS=='android' ?
                                                     <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                                     :
@@ -92,7 +85,7 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
                                                 }
                                             </DataTable.Cell>
                                             :
-                                            <DataTable.Cell numeric>
+                                            <DataTable.Cell>
                                                 {Platform.OS=='android' ?
                                                     <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                                     :

@@ -58,10 +58,7 @@ export default function OrderItemsSummary(props, { navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
-                        <DataTable.Title>Item Name</DataTable.Title>
-                        <DataTable.Title>Unit</DataTable.Title>
-                        <DataTable.Title>Quantity</DataTable.Title>
-                        <DataTable.Title>Grade</DataTable.Title>
+                        <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
@@ -71,11 +68,8 @@ export default function OrderItemsSummary(props, { navigation }) {
                                 if(order.item.itemName.toUpperCase().search(searchQuery.toUpperCase())!=-1 || order.item._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                     return(
                                         <DataTable.Row>
-                                            <DataTable.Cell >{order._id}</DataTable.Cell>
-                                            <DataTable.Cell >{order.item.itemName}</DataTable.Cell>
-                                            <DataTable.Cell >{order.item.itemUnit}</DataTable.Cell>
-                                            <DataTable.Cell >{order.item.quantity}</DataTable.Cell>
-                                            <DataTable.Cell >{order.item.Grade}</DataTable.Cell>
+                                            <DataTable.Cell >{order.custom_orderId}</DataTable.Cell>
+                                            <DataTable.Cell >{order.item.itemName} ({order.item.Grade})</DataTable.Cell>
                                             <DataTable.Cell >{order.status}</DataTable.Cell>
                                             <DataTable.Cell numeric>
                                             {Platform.OS=='android' ?

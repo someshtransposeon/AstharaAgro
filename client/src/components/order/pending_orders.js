@@ -69,28 +69,31 @@ export default function PendingOrders(props, { navigation }) {
         setVisible(values);
     };
 
-    const StatusChange = (s, id, index, items) => {
+    const StatusChange = (s, id, index, items, custom_orderId) => {
 
-        items.forEach(myFunction);
+        if(s=="approved"){
+            items.forEach(myFunction);
 
-        function myFunction(item) {
-            fetch(`http://${host}:5000/create_order_item_summary`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    orderId: id,
-                    item: item,
-                    vendor_rejected: vendorsid,
+            function myFunction(item) {
+                fetch(`http://${host}:5000/create_order_item_summary`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        orderId: id,
+                        custom_orderId: custom_orderId,
+                        item: item,
+                        vendor_rejected: vendorsid,
+                    })
                 })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                // alert(data.message);
-            });
+                .then(res => res.json())
+                .catch(error => console.log(error))
+                .then(data => {
+                    // alert(data.message);
+                });
+            }
         }
 
         fetch(`http://${host}:5000/update_status/${id}`, {
@@ -138,9 +141,11 @@ export default function PendingOrders(props, { navigation }) {
                         allOrders.map((item, index)=>{
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                 var date=item.order_date.substring(0,10);
+                                var hour=item.order_date.substring(11,13);
+                                var custom_orderId=item.nick_name+"_"+item.postal_code+"_"+date+"_"+hour;
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{item.nick_name+"_"+item.postal_code+"_"+date}</DataTable.Cell>
+                                        <DataTable.Cell>{custom_orderId}</DataTable.Cell>
                                         <DataTable.Cell>{item.email}</DataTable.Cell>
                                         <DataTable.Cell>
                                         {roleas=="manager" ?
@@ -148,8 +153,8 @@ export default function PendingOrders(props, { navigation }) {
                                                 visible={visible[index]}
                                                 onDismiss={()=>closeMenu(index)}
                                                 anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
-                                                    <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items)}/>
-                                                    <Menu.Item title="Pending" onPress={()=>StatusChange("pending", item._id, index, item.items)}/>
+                                                    <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId)}/>
+                                                    <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId)}/>
                                             </Menu>
                                             :
                                             <Text>{item.status}</Text>

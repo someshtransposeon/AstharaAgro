@@ -4,17 +4,15 @@ const PurchaseOrderConfirm = require('../../models/purchase_confirm/purchase_con
 
 router.post('/create_purchase_confirm', (req, res)=>{
     var newPurchaseOrderConfirm = new PurchaseOrderConfirm({
-        
-        requestedBy:req.body.userId,
+        orderId:req.body.orderId,
+        custom_orderId:req.body.custom_orderId,
         order_id:req.body.order_id,
         items:req.body.items,
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,
-        indent_id:req.body.indent_id,
         purchaseId:req.body.purchaseId,
         purchase_order_date:req.body.purchase_order_date,
         purchase_order_time:req.body.purchase_order_tiem,
-        // status:req.body.status,
     })
     newPurchaseOrderConfirm.save()
     .then(post => {

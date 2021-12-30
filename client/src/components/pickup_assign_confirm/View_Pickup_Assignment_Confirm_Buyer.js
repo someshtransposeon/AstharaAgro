@@ -176,63 +176,31 @@ export default function View_Pickup_Assignment_Confirm_Buyer(props, {route}) {
                     <Card.Title title="View Pickup Assignment Confirm Buyer"/>
                     <Card.Content>
                         {order_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Order ID: {order_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseOrder(order_id)} />
-                            </Menu>
+                           <TextInput style={styles.input} mode="outlined" label="Order Id" value={order_id} />
                         }
 
                         {pickupAssignId &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Pickup Assign ID: {pickupAssignId}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>choosePickup(pickupAssignId)} />
-                            </Menu>
+                            <TextInput style={styles.input} mode="outlined" label="Pickup Assign ID" value={pickupAssignId} />
                         }
 
                         {buyer_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Buyer ID: {buyer_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
-                            </Menu>
+                            <TextInput style={styles.input} mode="outlined" label="Buyer ID" value={buyer_id} />
                         }
 
                         {vendor_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Vendor ID: {vendor_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
-                            </Menu>
+                            <TextInput style={styles.input} mode="outlined" label="Vendor ID" value={vendor_id} />
                         }
 
                         {items &&
                             <DataTable style={styles.datatable}>
                                 <DataTable.Row style={styles.input}>
-                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>ItemChange(0, "quantity", text, '')} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>ItemChange2(0, "itemPrice", text, '')} /></DataTable.Cell>
-                                    {/* <DataTable.Cell><View style={{flexDirection: 'row'}}>
-                                        {Platform.OS=="android" ?
-                                            <>
-                                                <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(0)}/>
-                                            </>
-                                            :
-                                            <>
-                                                <Button onPress={() => handleRemoveFields(0)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
-                                        }
-                                    </View></DataTable.Cell> */}
                                 </DataTable.Row>
                             </DataTable>            
                         }
-                        {/* <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faEdit } />} style={styles.button} onPress={()=>submitForm3()}>Payment</Button>
-                        <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>{submitForm2();submitForm4()}}>Update Inventoryy</Button>  */}
                     </Card.Content>
                 </Card>
             </View>

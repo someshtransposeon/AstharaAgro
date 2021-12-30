@@ -37,6 +37,7 @@ router.post('/create_order_item_summary', (req, res)=>{
     var newOrder = new OrderSummary({
         userId: req.body.userId,
         orderId: req.body.orderId,
+        custom_orderId: req.body.custom_orderId,
         item: req.body.item,
     })
     newOrder.save()

@@ -28,7 +28,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const closeMenu3 = () => setVisible3(false);
     const [purchaseConfirmId, setPurchaseConfirmId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
-    const [order_id, setOrderId] = useState("");
+    const [order_id, setOrder_Id] = useState("");
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [status,setStatus] = useState("");
     const [items, setItems] = useState();
@@ -36,6 +36,8 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [host, setHost] = useState("");
     const [buyer_id, setBuyerId] = useState("");
     const [buyer_email, setBuyerEmail] = useState("Choose Buyer");
+    const [orderId, setOrderId] = useState("");
+    const [custom_orderId, setCustomId] = useState("");
     
     useEffect(() => {
 
@@ -63,11 +65,13 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
-                setOrderId(item[0].order_id);
+                setOrder_Id(item[0].order_id);
                 setPurchaseId(item[0].purchaseId);
                 setItems(item[0].items);
                 setVendorId(item[0].vendor_id);
                 setStatus(item[0].status);
+                setOrderId(item[0].orderId);
+                setCustomId(item[0].custom_orderId);
             });
         }
 
@@ -95,6 +99,8 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
             body: JSON.stringify({
                 purchaseId:purchaseId,
                 order_id:order_id,
+                orderId:orderId,
+                custom_orderId:custom_orderId,
                 items:items,   
                 vendor_id:vendor_id,
                 buyer_id:buyer_id, 
@@ -131,7 +137,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                             {buyer ?
                                 buyer.map((item)=>{
                                     return (
-                                        <Menu.Item title={item.full_name+" ("+item.email+")" } onPress={()=>chooseBuyer(item._id, item.email)} />
+                                        <Menu.Item title={item.nick_name} onPress={()=>chooseBuyer(item._id, item.email)} />
                                     )
                                 })
                                 :
@@ -142,7 +148,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                         {items &&
                             <DataTable style={{marginTop: '20px'}}>
                                 <DataTable.Row>
-                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>QuantityChange(text)} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>PriceChange(text)} /></DataTable.Cell>

@@ -21,6 +21,7 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [roleas, setRoleas] = useState("");
+
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -58,10 +59,10 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
                 />
 
                 <DataTable.Header>
-                    <DataTable.Title>Pickup ID</DataTable.Title>
-                    <DataTable.Title >Buyer ID</DataTable.Title>
-                    <DataTable.Title numeric>Status</DataTable.Title>
-                    <DataTable.Title numeric>Action</DataTable.Title>
+                    <DataTable.Title>Order ID</DataTable.Title>
+                    <DataTable.Title>Item</DataTable.Title>
+                    <DataTable.Title>Status</DataTable.Title>
+                    <DataTable.Title>Action</DataTable.Title>
                 </DataTable.Header>
 
                 {allPickupAssignment ?
@@ -69,33 +70,26 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                         return (
                             <DataTable.Row>
-                                <DataTable.Cell>{pickupAssignment._id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{pickupAssignment.buyer_id}</DataTable.Cell>
-                                <DataTable.Cell numeric>{pickupAssignment.status}</DataTable.Cell>
-                                {/* <DataTable.Cell numeric> 
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {pickupId: pickupAssignment._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell> */}
+                                <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
+                                <DataTable.Cell>{pickupAssignment.status}</DataTable.Cell>
                                 {roleas=="buyer" ?
-                                <DataTable.Cell numeric>
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
-                                        :
-                                        <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                    }
-                                </DataTable.Cell>
-                                :
-                                <DataTable.Cell numeric>
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
-                                        :
-                                        <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                    }
-                                </DataTable.Cell>
-                            }
+                                    <DataTable.Cell>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                            :
+                                            <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>
+                                    :
+                                    <DataTable.Cell>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                            :
+                                            <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>
+                                }
                             </DataTable.Row>
                         )
                         }

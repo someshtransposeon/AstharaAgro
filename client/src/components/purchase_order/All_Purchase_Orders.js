@@ -60,9 +60,8 @@ export default function All_Purchase_Orders(props,{ navigation }) {
                     style={{marginBottom: '20px'}}
                 />
                 <DataTable.Header>
-                    <DataTable.Title>*Purchase ID</DataTable.Title>
                     <DataTable.Title>Order ID</DataTable.Title>
-                    <DataTable.Title numeric>Item Name</DataTable.Title>
+                    <DataTable.Title numeric>Item</DataTable.Title>
                     <DataTable.Title numeric>Status</DataTable.Title>
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
@@ -72,11 +71,8 @@ export default function All_Purchase_Orders(props,{ navigation }) {
                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                             return (
                                 <DataTable.Row>
-                                    <DataTable.Cell>{purchaseOrder._id}</DataTable.Cell>
-                                    <DataTable.Cell>{purchaseOrder.order_id}</DataTable.Cell>
-                                    {Platform.OS !== "android" &&
-                                        <DataTable.Cell numeric>{purchaseOrder.items.itemName}</DataTable.Cell>
-                                    }
+                                    <DataTable.Cell>{purchaseOrder.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{purchaseOrder.items.itemName+" ("+purchaseOrder.items.Grade+")"}</DataTable.Cell>
                                     <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
                                     <DataTable.Cell numeric>
                                         {Platform.OS=='android' ?

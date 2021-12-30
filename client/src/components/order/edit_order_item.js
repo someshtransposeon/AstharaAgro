@@ -28,7 +28,7 @@ export default function EditOrderItem(props,{route}) {
 
     const [host, setHost] = useState("");
     const [items, setItems] = useState();
-    const [order_id, setOrderId] = useState("");
+    const [order_id, setOrder_Id] = useState("");
     const [vendors,setVendors] = useState();
     const [vendor_id, setVendorId] = useState();
     const [vendor_email, setVendorEmail] = useState("Choose Vendor");
@@ -36,6 +36,8 @@ export default function EditOrderItem(props,{route}) {
     const [flag, setFlag] = useState(true);
     const [quantity, setQuantity] = useState();
     const [vendorsid, setVendorsid] = useState([]);
+    const [custom_orderId, setCustomId] = useState();
+    const [orderId, setOrderId] = useState("");
 
     useEffect(() => {
 
@@ -49,11 +51,11 @@ export default function EditOrderItem(props,{route}) {
 
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
-            setOrderId(orderid);
+            setOrder_Id(orderid);
         }
         else{
             setHost("localhost");
-            setOrderId(orderid);
+            setOrder_Id(orderid);
         }
 
         if(order_id){
@@ -72,6 +74,8 @@ export default function EditOrderItem(props,{route}) {
             .then(function(result) {
                 setItems(result[0].item);
                 setQuantity(result[0].item.quantity);
+                setCustomId(result[0].custom_orderId);
+                setOrderId(result[0].orderId);
                 setFlag(false);
             });
         }
@@ -85,7 +89,7 @@ export default function EditOrderItem(props,{route}) {
         .catch(error => console.log(error))
         .then(vendors => setVendors(vendors));
     }
-    }, [vendors, host, order_id, items, orderid, flag]);
+    }, [vendors, host, order_id, items, orderid, flag, custom_orderId]);
 
     //submitForm() for sending the data in corresponding database
     function submitForm(){
@@ -121,6 +125,8 @@ export default function EditOrderItem(props,{route}) {
             },
             body: JSON.stringify({
                 order_id:order_id,
+                custom_orderId: custom_orderId,
+                orderId: orderId,
                 items:items,
                 user_id:user_id,
                 vendor_id:vendor_id,

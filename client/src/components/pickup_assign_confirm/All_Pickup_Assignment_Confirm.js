@@ -59,10 +59,10 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                     />
 
                     <DataTable.Header>
-                        <DataTable.Title>Pickup ID</DataTable.Title>
-                        <DataTable.Title >Buyer ID</DataTable.Title>
-                        <DataTable.Title numeric>Status</DataTable.Title>
-                        <DataTable.Title numeric>Action</DataTable.Title>
+                        <DataTable.Title>Order Id</DataTable.Title>
+                        <DataTable.Title >Item</DataTable.Title>
+                        <DataTable.Title>Status</DataTable.Title>
+                        <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
                     
                     {allPickupAssignmentConfirm ?
@@ -70,10 +70,10 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                             if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{pickupAssignmentConfirm.status}</DataTable.Cell>
-                                        <DataTable.Cell numeric> 
+                                        <DataTable.Cell>{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.status}</DataTable.Cell>
+                                        <DataTable.Cell> 
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                                 :
