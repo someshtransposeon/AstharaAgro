@@ -15,7 +15,7 @@ const theme = {
     },
 };
 //define edit item component
-export default function VendorsEditItem(props,{route}) {
+export default function VendorsViewItem(props,{route}) {
 
     var itemid = "";
     var id="";
@@ -193,7 +193,7 @@ export default function VendorsEditItem(props,{route}) {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 {grade ?
                 <Card style={styles.card}>
-                    <Card.Title title="VENDORS EDIT ITEM"/>
+                    <Card.Title title="VENDORS VIEW ITEM"/>
                     <Card.Content>
                         <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
                         <Menu key={1}
@@ -272,8 +272,8 @@ export default function VendorsEditItem(props,{route}) {
                         </Menu>
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Price" numeric value={item_price} onChangeText={item_price => setItemPrice(item_price)} />
-                        <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item</Button>
-                        <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("disabled")}>Disable Item</Button>
+                        {/* <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update Item</Button>
+                        <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("disabled")}>Disable Item</Button> */}
                     </Card.Content>
                 </Card>
                 :

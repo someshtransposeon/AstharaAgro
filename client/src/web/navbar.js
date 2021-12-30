@@ -90,6 +90,7 @@ import AllInvoice from '../components/invoice/all_invoice';
 import VenodrsAddItem from '../components/vendorsItem/vendors_addItem';
 import VendorsAllItems from '../components/vendorsItem/vendors_allitems';
 import VendorsEditItem from '../components/vendorsItem/vendors_edititem';
+import VendorsViewItem from '../components/vendorsItem/vendors_view_item';
 
 import Edit_Vendor_Purchase_Order from '../components/purchase_order/Edit_Vendor_Purchase_Order';
 import All_Declined_Purchase_Orders from '../components/purchase_order/All_Declined_Purchase_Orders';
@@ -737,9 +738,10 @@ const NavBar =()  => {
                     <VenodrsAddItem/>
                 </Route>
                 <Route path="/vendors_allitems">
-                    <VendorsAllItems/>
+                    <VendorsAllItems roleas={roleas}/>
                 </Route>    
-                <Route path="/vendors_edititem/:itemid" render={(props) => <VendorsEditItem {...props} />} exact />        
+                <Route path="/vendors_edititem/:itemid" render={(props) => <VendorsEditItem roleas={roleas} {...props} />} exact />       
+                <Route path="/vendors_view_item/:itemid" render={(props) => <VendorsViewItem roleas={roleas} {...props} />} exact />        
                 
                 <Route path="/All_Declined_Purchase_Orders">
                     <All_Declined_Purchase_Orders/>
