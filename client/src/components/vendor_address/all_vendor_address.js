@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, Text, SafeAreaView, ScrollView} from 'react-native';
 import { Card, Provider, DefaultTheme, Button, Paragraph } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {all_vendor_addresses} from '../../services/vendor_address_api';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -36,13 +36,10 @@ export default function All_addresses({ navigation }) {
         }
 
         if(vendorId){
-            fetch(`http://${host}:5000/retrieve_vendor_address_by_vendorId/${vendorId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(address => {
-                setAddress(address);
+            //Retrieve item category 
+            all_vendor_addresses(host,vendorId)
+            .then(function(result) {
+                setAddress(result);
             });
         }
     }, [address, host, vendorId ]);
@@ -53,10 +50,10 @@ export default function All_addresses({ navigation }) {
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 { address  ?
-                    address.map((address)=>{
+                    address.map((address,index)=>{
                         return(
-                        <Card style={styles.card} >
-                            <Card.Content style={{marginTop:"3%"}} id={address._id}>
+                        <Card style={styles.card} key={index}>
+                            <Card.Content style={{marginTop:"3%"}} >
                                 <>
                                     <Text style={styles.text2}>Address: {address.address}</Text>
                                     <Text style={styles.text2}>Landmark: {address.landmark}</Text>
