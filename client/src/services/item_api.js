@@ -32,7 +32,7 @@ export function item_grade(host){
     });
 }
 //retrive all item grade by id
-export function item_grade(host,itemGradeid){
+export function item_grade_by_grade_id(host,itemGradeId){
     return fetch(`http://${host}:5000/retrive_item_grade/${itemGradeId}`, {
             method: 'GET'
     })
@@ -87,18 +87,18 @@ export function item_unit(host){
     });
 }
 //retrive all item disabled units
-export function item_unit(host){
+export function item_unit_diasabled(host){
     return fetch(`http://${host}:5000/retrive_all_disabled_item_unit`, {
         method: 'GET'
     })
     .then(res => res.json())
     .catch(error => console.log(error))
     .then(unit =>{
-            return itemUnit;
+            return unit;
     });
 }
 //retrive all item units by id
-export function item_unit(host,itemUnitId){
+export function item_unit_by_unitid(host,itemUnitId){
     return fetch(`http://${host}:5000/retrive_item_unit/${itemUnitId}`, {
         method: 'GET'
     })

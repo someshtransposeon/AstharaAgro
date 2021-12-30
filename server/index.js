@@ -91,6 +91,10 @@ const delete_address = require('./routes/address/delete_address');
 const retrive_address = require('./routes/address/retrive_address');
 const update_address = require('./routes/address/update_address');
 
+const create_vendor_address = require('./routes/vendor_address/create_vendor_address');
+const retrive_vendor_address = require('./routes/vendor_address/retrieve_vendor_address');
+const update_vendor_address = require('./routes/vendor_address/update_vendor_address');
+
 const create_bank = require('./routes/bankDetails/create_bank');
 const delete_bank = require('./routes/bankDetails/delete_bank');
 const retrive_bank = require('./routes/bankDetails/retrive_bank');
@@ -240,6 +244,10 @@ app.use('/', create_address);
 app.use('/', delete_address);
 app.use('/', retrive_address);
 app.use('/', update_address);
+
+app.use('/', create_vendor_address);
+app.use('/', retrive_vendor_address);
+app.use('/', update_vendor_address);
 
 app.use('/', create_bank);
 app.use('/', delete_bank);

@@ -91,6 +91,9 @@ import VenodrsAddItem from '../components/vendorsItem/vendors_addItem';
 import VendorsAllItems from '../components/vendorsItem/vendors_allitems';
 import VendorsEditItem from '../components/vendorsItem/vendors_edititem';
 import VendorsViewItem from '../components/vendorsItem/vendors_view_item';
+import VendorAddAddress from '../components/vendor_address/add_vendor_address';
+import VendorAllAddress from '../components/vendor_address/all_vendor_address';
+
 
 import Edit_Vendor_Purchase_Order from '../components/purchase_order/Edit_Vendor_Purchase_Order';
 import All_Declined_Purchase_Orders from '../components/purchase_order/All_Declined_Purchase_Orders';
@@ -279,6 +282,10 @@ const NavBar =()  => {
                                         <NavDropdown.Item to="/vendors_additem" as={Link}>Vendors Add Item</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/vendors_allitems" as={Link}>Vendors All Items</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/vendors_add_address" as={Link}>Add new pickup address</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/vendors_all_addresses" as={Link}>All addresses</NavDropdown.Item>   
                                     </NavDropdown>
                                     <NavDropdown.Divider />
                                     </>
@@ -737,6 +744,12 @@ const NavBar =()  => {
                 <Route path="/vendors_additem">
                     <VenodrsAddItem/>
                 </Route>
+               <Route path="/vendors_add_address">
+                  <VendorAddAddress />
+               </Route>
+               <Route path="/vendors_all_addresses">
+                   <VendorAllAddress />
+               </Route>
                 <Route path="/vendors_allitems">
                     <VendorsAllItems roleas={roleas}/>
                 </Route>    

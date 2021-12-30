@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform,} from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar ,Text} from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-
+import {item_category,item_unit,item_grade} from  '../../services/item_api';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -46,7 +46,7 @@ export default function AddItem({ navigation }) {
     const [host, setHost] = useState("");
     const [file, setFile] = useState();
     const [imgurl, setImgurl] = useState("");
-    //fetch all required item categories, units, grades
+
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -55,27 +55,21 @@ export default function AddItem({ navigation }) {
         else{
             setHost("localhost");
         }
-
-        fetch(`http://${host}:5000/retrive_all_item_category`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemCategory => setItemCategory(itemCategory));
-
-        fetch(`http://${host}:5000/retrive_all_item_unit`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemUnit => setItemUnit(itemUnit));
-
-        fetch(`http://${host}:5000/retrive_all_item_grade`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemGrade => setItemGrade(itemGrade));
+        //Retrieve item category 
+        item_category(host)
+        .then(function(result) {
+            setItemCategory(result);
+        });
+        //Retrieve item unit
+        item_unit(host)
+        .then(function(result) {
+            setItemUnit(result);
+        });
+        //Retrieve item Grade 
+        item_grade(host)
+        .then(function(result) {
+            setItemGrade(result);
+        });
 
     }, [itemCategory,host,itemUnit,itemGrade]);
 
@@ -154,11 +148,10 @@ export default function AddItem({ navigation }) {
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Card style={styles.card}>
+                <Card style={styles.card} >
                     <Card.Title title="ADD ITEM"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
-                    <View></View>
                     <Menu key={1}
                     visible={visible1}
                     onDismiss={closeMenu1}
