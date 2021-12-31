@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import { item_grade_by_grade_id } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -38,18 +39,23 @@ export default function DisabledEditItemGrade(props,{route}) {
             setItemGradeId(itemGradeid);
         }
 
-        if(itemGradeId){
-            fetch(`http://${host}:5000/retrive_item_grade/${itemGradeId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setItemGradeName(item[0].grade_name);
-            });
+        if(itemGradeId && host){
+        //Retrieve disbled item grade by ItemGradeid
+        item_grade_by_grade_id(host,itemGradeId)
+        .then(function(result) {
+            setItemGradeName(result[0].grade_name);
+        })
+            // fetch(`http://${host}:5000/retrive_item_grade/${itemGradeId}`, {
+            //     method: 'GET'
+            // })
+            // .then(res => res.json())
+            // .catch(error => console.log(error))
+            // .then(item => {
+            //     setItemGradeName(item[0].grade_name);
+            // });
         }
 
-    }, [host,itemGradeId,id,itemGradeid]);
+    }, [host,itemGradeId,id,itemGradeid, props.host ]);
 
     function submitForm() {
         fetch(`http://${host}:5000/update_item_grade/${itemGradeId}`, {

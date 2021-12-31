@@ -4,6 +4,7 @@ import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { item_by_item_id } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -66,23 +67,20 @@ export default function EditItem(props,{route}) {
             setItemId(itemid);
         }
 
-        if(itemId && flag){
-            fetch(`http://${host}:5000/retrive_item/${itemId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setGradeId(item[0].grade);
-                setUnitId(item[0].unit);
-                setCategoryId(item[0].category);
-                setGrade(item[0].grade_name);
-                setUnit(item[0].unit_name);
-                setCategory(item[0].category_name);
-                setItemName(item[0].item_name);
-                setDescription(item[0].description);
+        if(itemId && flag && host){
+            //Retrieve item by itemId
+            item_by_item_id(host,itemId)
+            .then(function(result) {
+                setGradeId(result[0].grade);
+                setUnitId(result[0].unit);
+                setCategoryId(result[0].category);
+                setGrade(result[0].grade_name);
+                setUnit(result[0].unit_name);
+                setCategory(result[0].category_name);
+                setItemName(result[0].item_name);
+                setDescription(result[0].description);
                 setFlag(false);
-            });
+            })
         }
 
         fetch(`http://${host}:5000/retrive_all_item_category`, {

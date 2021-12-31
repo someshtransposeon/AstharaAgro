@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { allitem } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -16,29 +17,27 @@ const theme = {
 };
 
 //define all item components
-export default function AllItems({ navigation }) {
+export default function AllItems(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
-        
-        fetch(`http://${host}:5000/retrive_all_item`, {
-            method: 'GET'
+        setHost(props.host);
+        //Retrieve all items
+        allitem(host)
+        .then(function(result) {
+            setAllItems(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
 
-    }, [allItems, host]);
+    }, [allItems, host, props.host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

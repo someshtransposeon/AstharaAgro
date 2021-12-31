@@ -570,7 +570,7 @@ const NavBar =()  => {
                     <AllUserCategories/>
                 </Route>
                 <Route path="/allitemcategories">
-                    <AllItemCategories/>
+                    <AllItemCategories host={host}/>
                 </Route>
                 <Route path="/allitemunits">
                     <AllItemUnit/>
@@ -588,7 +588,7 @@ const NavBar =()  => {
                     <AddItem/>
                 </Route>
                 <Route path="/allitems">
-                    <AllItems/>
+                    <AllItems host={host} />
                 </Route>
                 <Route path="/allusers">
                     <AllUsers/>
@@ -681,10 +681,10 @@ const NavBar =()  => {
 
                 
                 <Route path="/disabled_all_items">
-                    <DisabledAllItems/>
+                    <DisabledAllItems host={host}/>
                 </Route>
                 <Route path="/disabled_all_item_categories">
-                    <DisabledAllItemCategories/>
+                    <DisabledAllItemCategories host={host}/>
                 </Route>
                 <Route path="/disabled_all_item_grade">
                     <DisabledAllItemGrade/>
@@ -703,11 +703,11 @@ const NavBar =()  => {
                 </Route>
                 
                 <Route path="/disablededititem/:itemid" render={(props) => <DisabledEditItem {...props} />} exact />
-                <Route path="/disablededititemcategory/:itemCategoryid" render={(props) => <DisabledEditItemCategory {...props} />} exact />
+                <Route path="/disablededititemcategory/:itemCategoryid" render={(props) => <DisabledEditItemCategory host={host} {...props} />} exact />
                 <Route path="/disablededititemgrade/:itemGradeid" render={(props) => <DisabledEditItemGrade {...props} />} exact />
                 <Route path="/disablededititemunit/:itemUnitid" render={(props) => <DisabledEditItemUnit {...props} />} exact />
-                <Route path="/disablededituser/:userid" render={(props) => <DisabledEditUser {...props} />} exact />
-                <Route path="/disablededitusercategory/:userCategoryid" render={(props) => <DisabledEditUserCategory {...props} />} exact />
+                <Route path="/disablededituser/:userid" render={(props) => <DisabledEditUser host={host} {...props} />} exact />
+                <Route path="/disablededitusercategory/:userCategoryid" render={(props) => <DisabledEditUserCategory host={host} {...props} />} exact />
                 
                 {/* <Route path="/delete_account_requests">
                     <DeleteAccountRequests/>

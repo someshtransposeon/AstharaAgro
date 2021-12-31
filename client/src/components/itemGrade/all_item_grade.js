@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button,Title, DataTable, Searchbar } from 'reac
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { item_grade } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,7 @@ const theme = {
     },
 };
 
-export default function AllItemGrades({ navigation }) {
+export default function AllItemGrades(props,{ navigation }) {
 
     const [allItemGrade, setAllItemGrade] = useState();
     const [host, setHost] = useState("");
@@ -29,14 +30,11 @@ export default function AllItemGrades({ navigation }) {
         else{
             setHost("localhost");
         }
-
-        fetch(`http://${host}:5000/retrive_all_item_grade`, {
-            method: 'GET'
+        //Retrieve all item grade
+        item_grade(host)
+        .then(function(result) {
+            setAllItemGrade(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(grade => setAllItemGrade(grade));
-
     }, [allItemGrade, host]);
 
     const onChangeSearch = query => setSearchQuery(query);

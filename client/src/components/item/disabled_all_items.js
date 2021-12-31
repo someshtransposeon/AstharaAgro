@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { all_disabled_item } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,7 @@ const theme = {
     },
 };
 //define all item components
-export default function Disabled_All_Items({ navigation }) {
+export default function Disabled_All_Items(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
@@ -30,14 +31,14 @@ export default function Disabled_All_Items({ navigation }) {
             setHost("localhost");
         }
 
-        fetch(`http://${host}:5000/retrive_all_disabled_items`, {
-            method: 'GET'
+        setHost(props.host);
+        //Retrieve all disbaled items
+        all_disabled_item(host)
+        .then(function(result) {
+            setAllItems(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
 
-    }, [allItems, host]);
+    }, [allItems, host,props.host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

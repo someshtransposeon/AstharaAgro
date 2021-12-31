@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import { item_unit_by_unitid } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -39,14 +40,11 @@ export default function DisabledEditItemUnit(props,{route}) {
         }
 
         if(itemUnitId){
-            fetch(`http://${host}:5000/retrive_item_unit/${itemUnitId}`, {
-                method: 'GET'
+            //Retrieve disabled item Unit by itemUnitId
+            item_unit_by_unitid(host, itemUnitId)
+            .then(function(result) {
+                setItemUnitName(result[0].unit_name);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setItemUnitName(item[0].unit_name);
-            });
         }
 
     }, [host,itemUnitId,id,itemUnitid]);

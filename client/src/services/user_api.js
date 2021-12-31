@@ -1,5 +1,6 @@
-//retrive users
-export function all_users_by_category(host){
+
+//retrive users by category
+export function all_users(host){
     return fetch(`http://${host}:5000/retrive_all_user`, {
          method: 'GET'
     })
@@ -54,8 +55,8 @@ export function disabled_user_category(host){
     });
 }
 //retive all disabled users category by id
-export function disabled_user_category(host,userCategoryId){
-    return fetch(`http://${host}:5000/retrive_user_category/${userCategoryId}`, {
+export function disabled_all_disabled_user_category(host){
+    return fetch(`http://${host}:5000/retrive_user_category`, {
         method: 'GET'
     })
     .then(res => res.json())

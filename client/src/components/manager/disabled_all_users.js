@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { disabled_users } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,7 @@ const theme = {
     },
 };
 
-export default function DisabledAllUsers({ navigation }) {
+export default function DisabledAllUsers(props,{ navigation }) {
 
     const [allUsers, setAllUsers] = useState();
     const [host, setHost] = useState("");
@@ -28,13 +29,13 @@ export default function DisabledAllUsers({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch(`http://${host}:5000/retrive_all_disabled_user`, {
-            method: 'GET'
+
+        //Retrieve all diabled users
+        disabled_users(host)
+        .then(function(result) {
+            setAllUsers(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allusers => setAllUsers(allusers));
-    }, [allUsers, host]);
+    }, [allUsers, host,props.host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

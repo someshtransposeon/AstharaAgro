@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import { item_category_by_id } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -38,18 +39,15 @@ export default function EditItemCategory(props,{route}) {
             setItemCategoryId(itemCategoryid);
         }
 
-        if(itemCategoryId){
-            fetch(`http://${host}:5000/retrive_item_category/${itemCategoryId}`, {
-                method: 'GET'
+        if(itemCategoryId && host){
+            //Retrieve item_category by itemCategoryId
+            item_category_by_id(host, itemCategoryId)
+            .then(function(result) {
+                 setItemCategoryName(result[0].category_name);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setItemCategoryName(item[0].category_name);
-            });
         }
         
-    }, [host,itemCategoryId,id,itemCategoryid]);
+    }, [host,itemCategoryId,id,itemCategoryid,props.host]);
 
     function submitForm() {
         fetch(`http://${host}:5000/update_item_category/${itemCategoryId}`, {

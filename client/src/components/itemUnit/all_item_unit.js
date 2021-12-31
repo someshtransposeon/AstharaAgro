@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button,Title, DataTable, Searchbar } from 'reac
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { item_unit } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,7 @@ const theme = {
     },
 };
 
-export default function AllItemUnits({ navigation }) {
+export default function AllItemUnits(props,{ navigation }) {
 
     const [allItemUnit, setAllItemUnit] = useState();
     const [host, setHost] = useState("");
@@ -29,14 +30,11 @@ export default function AllItemUnits({ navigation }) {
         else{
             setHost("localhost");
         }
-
-        fetch(`http://${host}:5000/retrive_all_item_unit`, {
-            method: 'GET'
+        //Retrieve all item Unit
+        item_unit(host)
+        .then(function(result) {
+            setAllItemUnit(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(unit => setAllItemUnit(unit));
-
     }, [allItemUnit, host]);
 
     const onChangeSearch = query => setSearchQuery(query);

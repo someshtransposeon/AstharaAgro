@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button,Title, DataTable, Searchbar } from 'reac
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { all_disabled_item_grade } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -30,12 +31,11 @@ export default function DisabledAllItemGrade({ navigation }) {
             setHost("localhost");
         }
 
-        fetch(`http://${host}:5000/retrive_all_disabled_item_grade`, {
-            method: 'GET'
+        //Retrieve all disbled item grade
+        all_disabled_item_grade(host)
+        .then(function(result) {
+            setAllItemGrade(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(grade => setAllItemGrade(grade));
 
     }, [allItemGrade, host]);
 

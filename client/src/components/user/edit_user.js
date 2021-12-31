@@ -4,6 +4,7 @@ import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { users_by_id, user_category} from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -53,30 +54,45 @@ export default function EditUser(props, {route}) {
         }
 
         if(flag){
-            fetch('http://localhost:5000/retrive_all_user_category', {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(userCategory => {
+            //Retrieve all user category
+            user_category(host)
+            .then(function(result) {
                 setUserCategory(userCategory);
                 setFlag(false);
-            });
+            })
+            // fetch('http://localhost:5000/retrive_all_user_category', {
+            //     method: 'GET'
+            // })
+            // .then(res => res.json())
+            // .catch(error => console.log(error))
+            // .then(userCategory => {
+            //     setUserCategory(userCategory);
+            //     setFlag(false);
+            // });
         }
 
         if(userId){
-            fetch(`http://${host}:5000/retrive_user/${userId}`, {
-                method: 'GET'
+            //Retrieve user by userId
+            users_by_id(host, userId)
+            .then(function(result) {
+                setFullName(result[0].full_name);
+                setEmail(result[0].email);
+                setMobileNo(result[0].mobile_no);
+                setCategory(result[0].role);
+                setCategoryId(result[0].category);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(user => {
-                setFullName(user[0].full_name);
-                setEmail(user[0].email);
-                setMobileNo(user[0].mobile_no);
-                setCategory(user[0].role);
-                setCategoryId(user[0].category);
-            });
+            // fetch(`http://${host}:5000/retrive_user/${userId}`, {
+            //     method: 'GET'
+            // })
+            // .then(res => res.json())
+            // .catch(error => console.log(error))
+            // .then(user => {
+            //     setFullName(user[0].full_name);
+            //     setEmail(user[0].email);
+            //     setMobileNo(user[0].mobile_no);
+            //     setCategory(user[0].role);
+            //     setCategoryId(user[0].category);
+            // });
         }
     }, [host,userId,id,userid,userCategory,flag]);
 
@@ -180,18 +196,19 @@ const styles = StyleSheet.create({
         padding: '1%',
         ...Platform.select({
             ios: {
-                
+                //to be updated for IOS
+                marginTop: '10%',
+                width: '90%',
             },
             android: {
                 marginTop: '10%',
-                marginBottom: '10%',
                 width: '90%',
             },
             default: {
-                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
-                marginBottom: '4%',
-                width: '50%',
+                width: '75%',
+                border: '1px solid gray',
+                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })
     },

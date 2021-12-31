@@ -9,6 +9,17 @@ export function allitem(host){
         return allItems;
     });
 }
+//retrive item by item_Id
+export function item_by_item_id(host,itemId){
+    return fetch(`http://${host}:5000/retrive_item/${itemId}`, {
+            method: 'GET'
+    })
+    .then(res => res.json())
+    .catch(error => console.log(error))
+    .then(item => {
+        return item;
+    });
+}
 //retrive all disabled items
 export function all_disabled_item(host){
     return fetch(`http://${host}:5000/retrive_all_disabled_items`, {
@@ -29,6 +40,17 @@ export function item_grade(host){
     .catch(error => console.log(error))
     .then(itemGrade => {
             return itemGrade;
+    });
+}
+//retrive all disabled items
+export function all_disabled_item_grade(host){
+    return fetch(`http://${host}:5000/retrive_all_disabled_item_grade`, {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .catch(error => console.log(error))
+    .then(itemGrades =>{
+            return itemGrades;
     });
 }
 //retrive all item grade by id

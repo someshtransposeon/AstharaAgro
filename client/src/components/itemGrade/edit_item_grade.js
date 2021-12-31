@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import { item_grade_by_grade_id } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -38,15 +39,12 @@ export default function EditItemGrade(props,{route}) {
             setItemGradeId(itemGradeid);
         }
 
-        if(itemGradeId){
-            fetch(`http://${host}:5000/retrive_item_grade/${itemGradeId}`, {
-                method: 'GET'
+        if(itemGradeId && host){
+            //Retrieve item grade by ItemGradeid
+            item_grade_by_grade_id(host,itemGradeId)
+            .then(function(result) {
+                setItemGradeName(result[0].grade_name);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setItemGradeName(item[0].grade_name);
-            });
         }
 
     }, [host,itemGradeId,id,itemGradeid]);
