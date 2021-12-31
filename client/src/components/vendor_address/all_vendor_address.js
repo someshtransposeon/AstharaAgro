@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '60%',
+                width: '75%',
                 border: '1px solid gray',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }

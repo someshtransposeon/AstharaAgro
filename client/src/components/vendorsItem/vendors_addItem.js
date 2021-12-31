@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {all_vendor_addresses} from '../../services/vendor_address_api';
 
 const theme = {
     ...DefaultTheme,
@@ -21,6 +22,7 @@ export default function AddItem({ navigation }) {
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [visible3, setVisible3] = useState(false);
+    const [visible4, setVisible4] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -28,10 +30,13 @@ export default function AddItem({ navigation }) {
     const closeMenu2 = () => setVisible2(false);
     const openMenu3 = () => setVisible3(true);
     const closeMenu3 = () => setVisible3(false);
+    const openMenu4 = () => setVisible4(true);
+    const closeMenu4 = () => setVisible4(false);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchQuery1, setSearchQuery1] = useState('');
     const [searchQuery2, setSearchQuery2] = useState('');
+    const [searchQuery4, setSearchQuery4] = useState('');
 
     const [userId, setUserId] = useState('');
     const [itemUnit, setItemUnit] = useState();
@@ -49,6 +54,13 @@ export default function AddItem({ navigation }) {
     const [unit,setUnit]=useState("Select unit of each item");
     const [host, setHost] = useState("");
     const [nick_name, setNickName] = useState("");
+    const [address, setAddress] = useState('');
+    const [landmark, setLandmark] = useState('');
+    const [district, setDistrict] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [pincode, setPincode] = useState('Choose Address');
+    const [vendorAddress, setVendorAddress] = useState();
     //fetch all required item categories, units, grades
     useEffect(() => {
 
@@ -93,6 +105,14 @@ export default function AddItem({ navigation }) {
         .catch(error => console.log(error))
         .then(itemGrade => setItemGrade(itemGrade));
 
+        if(userId){
+            //Retrieve item category 
+            all_vendor_addresses(host,userId)
+            .then(function(result) {
+                setVendorAddress(result);
+            });
+        }
+
     }, [userId, itemCategory, host, itemUnit, itemGrade,nick_name]);
 
     function chooseCategory(id, name) {
@@ -111,6 +131,23 @@ export default function AddItem({ navigation }) {
         setUnitId(id);
         setUnit(name);
         closeMenu3();
+    }
+
+    function chooseAddress(addressId) {
+        fetch(`http://${host}:5000/retrieve_vendor_address/${addressId}`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(item => {
+            setAddress(item[0].address);
+            setLandmark(item[0].landmark);
+            setPincode(item[0]. postal_code);
+            setState(item[0].state);
+            setDistrict(item[0].district);
+            setCountry(item[0].country);
+        });
+        closeMenu4();
     }
     //define a function for sending the data in corresponding database
     function submitForm() {
@@ -132,6 +169,12 @@ export default function AddItem({ navigation }) {
                 item_quantity:itemQuantity,
                 description: itemDescription,
                 nick_name:nick_name,
+                address: address,
+                landmark: landmark,
+                district: district,
+                state: state,
+                country: country,
+                postal_code: pincode,
             })
         })
         .then(res => res.json())
@@ -144,6 +187,7 @@ export default function AddItem({ navigation }) {
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch1 = query => setSearchQuery1(query);
     const onChangeSearch2 = query => setSearchQuery2(query);
+    const onChangeSearch4 = query => setSearchQuery4(query);
 
     return (
         <Provider theme={theme}>
@@ -170,9 +214,9 @@ export default function AddItem({ navigation }) {
                             {itemCategory ?
                                 itemCategory.map((item)=>{
                                     if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                                    return (
-                                        <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
-                                    )
+                                        return (
+                                            <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
+                                        )
                                     }
                                 })
                                 :
@@ -198,9 +242,9 @@ export default function AddItem({ navigation }) {
                             {itemGrade ?
                                 itemGrade.map((item)=>{
                                     if(item.grade_name.toUpperCase().search(searchQuery1.toUpperCase())!=-1){
-                                    return (
-                                        <Menu.Item title={item.grade_name} onPress={()=>chooseGrade(item._id, item.grade_name)} />
-                                    )
+                                        return (
+                                            <Menu.Item title={item.grade_name} onPress={()=>chooseGrade(item._id, item.grade_name)} />
+                                        )
                                     }
                                 })
                                 :
@@ -221,14 +265,14 @@ export default function AddItem({ navigation }) {
                             {Platform.OS=='android' ?
                                 <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemUnit')}}>Add Unit</Button>
                                 :
-                                <Link to="/additemunits"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Unit</Button></Link>
+                                <Link to="/additemgrades"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Vendor Address</Button></Link>
                             }
                             {itemUnit ?
                                 itemUnit.map((item)=>{
                                     if(item.unit_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
-                                    return (
-                                        <Menu.Item title={item.unit_name} onPress={()=>chooseUnit(item._id, item.unit_name)} />
-                                    )
+                                        return (
+                                            <Menu.Item title={item.unit_name} onPress={()=>chooseUnit(item._id, item.unit_name)} />
+                                        )
                                     }
                                 })
                                 :
@@ -239,6 +283,41 @@ export default function AddItem({ navigation }) {
                         <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice)} />
+                        <Menu key={4}
+                        visible={visible4}
+                        onDismiss={closeMenu4}
+                        anchor={<Button style={styles.input} mode="outlined" onPress={openMenu4}>{pincode}</Button>}>
+                            <Searchbar
+                                icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                placeholder="Search"
+                                onChangeText={onChangeSearch4}
+                                value={searchQuery4}
+                            />
+                            {Platform.OS=='android' ?
+                                <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemGrade')}}>Add Grade</Button>
+                                :
+                                <Link to="/vendors_add_address"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Vendor Address</Button></Link>
+                            }
+                            {vendorAddress ?
+                                vendorAddress.map((item)=>{
+                                    return (
+                                        <Menu.Item title={item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
+                                    )
+                                })
+                                :
+                                <Menu.Item title="No Address Available" />
+                            }
+                        </Menu>
+                        {pincode!=="Choose Address" && 
+                            <>
+                                <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
+                                <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
+                                <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
+                                <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
+                                <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
+                            </>
+                        }                        
                         <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>

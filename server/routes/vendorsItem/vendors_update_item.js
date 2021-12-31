@@ -15,6 +15,12 @@ router.put('/vendors_update_item/:id',(req, res) =>{
         unit_name:req.body.unit_name,
         item_price:req.body.item_price,
         item_quantity:req.body.item_quantity,
+        address: req.body.address,
+        landmark: req.body.landmark,
+        district: req.body.district,
+        state: req.body.state,
+        country: req.body.country,
+        postal_code: req.body.postal_code,
     }
     VendorsItem.findOneAndUpdate({'_id':req.params.id}, item_update)
     .then((item) => {

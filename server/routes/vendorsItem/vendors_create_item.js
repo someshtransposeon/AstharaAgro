@@ -7,7 +7,6 @@ router.post('/vendors_create_item', (req, res)=>{
     var newItem = new VendorsItem({
         userId: req.body.userId,
         category: req.body.category,
-
         grade: req.body.grade,
         unit: req.body.unit,
         added_by: req.body.added_by,
@@ -19,6 +18,12 @@ router.post('/vendors_create_item', (req, res)=>{
         description: req.body.description,
         item_quantity:req.body.item_quantity,
         item_price:req.body.item_price,
+        address: req.body.address,
+        landmark: req.body.landmark,
+        district: req.body.district,
+        state: req.body.state,
+        country: req.body.country,
+        postal_code: req.body.postal_code,
         nick_name:req.body.nick_name,
     })
     newItem.save()
