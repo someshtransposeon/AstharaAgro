@@ -39,21 +39,6 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [host, setHost] = useState(""); 
 
-    function chooseBuyer(buyerId) {
-        setBuyerId(buyerId);
-        closeMenu2();
-    }
-
-    function chooseVendor(vendorId) {
-        setVendorId(vendorId);
-        closeMenu2();
-    }
-
-    function choosePickup(pickupAssignId) {
-        setPickupAssignId(pickupAssignId);
-        closeMenu2();
-    }
-
     function chooseOrder(order_id) {
         setOrderId(order_id);
         closeMenu2();
@@ -88,38 +73,6 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
         }
 
     }, [host,pickupAssignId,order_id,pickupConfirmId,id]);
-
-    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].quantity = fieldvalue;
-        }
-        setItems(values);
-    };
-
-    const handleRemoveFields = index => {
-        const values = [...items];
-        values.splice(index, 1);
-        setItems(values);
-    };
-
-    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].itemPrice = fieldvalue;
-        }
-        setItems(values);
-    };
 
     function submitForm3(){
         alert("Payment in progress!");
@@ -176,58 +129,28 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
                     <Card.Title title="Edit Pickup Assignment Confirm Buyer"/>
                     <Card.Content>
                         {order_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Order ID: {order_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseOrder(order_id)} />
-                            </Menu>
+                            <Button style={styles.input} mode="outlined">Order ID: {order_id}</Button>
                         }
 
                         {pickupAssignId &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Pickup Assign ID: {pickupAssignId}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>choosePickup(pickupAssignId)} />
-                            </Menu>
+                            <Button style={styles.input} mode="outlined">Pickup Assign ID: {pickupAssignId}</Button>
                         }
 
                         {buyer_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Buyer ID: {buyer_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseBuyer(buyer_id)} />
-                            </Menu>
+                            <Button style={styles.input} mode="outlined">Buyer ID: {buyer_id}</Button>
                         }
 
                         {vendor_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Vendor ID: {vendor_id}</Button>}>
-                                <Menu.Item title="${pId}" onPress={()=>chooseVendor(vendor_id)} />
-                            </Menu>
+                            <Button style={styles.input} mode="outlined">Vendor ID: {vendor_id}</Button>
                         }
 
                         {items &&
                             <DataTable style={styles.datatable}>
                                 <DataTable.Row style={styles.input}>
-                                    <DataTable.Cell><TextInput mode="outlined" label="Item Name" value={items.itemName} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>ItemChange(0, "quantity", text, '')} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>ItemChange2(0, "itemPrice", text, '')} /></DataTable.Cell>
-                                    <DataTable.Cell><View style={{flexDirection: 'row'}}>
-                                        {Platform.OS=="android" ?
-                                            <>
-                                                <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(0)}/>
-                                            </>
-                                            :
-                                            <>
-                                                <Button onPress={() => handleRemoveFields(0)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>                                    </>
-                                        }
-                                    </View></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} /></DataTable.Cell>
                                 </DataTable.Row>
                             </DataTable>            
                         }

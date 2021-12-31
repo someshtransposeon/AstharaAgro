@@ -38,6 +38,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [buyer_email, setBuyerEmail] = useState("Choose Buyer");
     const [orderId, setOrderId] = useState("");
     const [custom_orderId, setCustomId] = useState("");
+    const [custom_vendorId, setCustomVendorId] = useState("");
     
     useEffect(() => {
 
@@ -72,6 +73,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 setStatus(item[0].status);
                 setOrderId(item[0].orderId);
                 setCustomId(item[0].custom_orderId);
+                setCustomVendorId(item[0].custom_vendorId);
             });
         }
 
@@ -101,6 +103,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 order_id:order_id,
                 orderId:orderId,
                 custom_orderId:custom_orderId,
+                custom_vendorId:custom_vendorId,
                 items:items,   
                 vendor_id:vendor_id,
                 buyer_id:buyer_id, 
@@ -111,7 +114,23 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-        });     
+        });
+
+        //for change the status
+        fetch(`http://${host}:5000/update_purchase_confirm_status/${purchaseconfirmid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: "Buyer Assigned",
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });  
     }
 
     const PriceChange = (value) => {

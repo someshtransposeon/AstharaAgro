@@ -6,6 +6,7 @@ router.post('/create_purchase_confirm', (req, res)=>{
     var newPurchaseOrderConfirm = new PurchaseOrderConfirm({
         orderId:req.body.orderId,
         custom_orderId:req.body.custom_orderId,
+        custom_vendorId:req.body.custom_vendorId,
         order_id:req.body.order_id,
         items:req.body.items,
         user_id:req.body.user_id,

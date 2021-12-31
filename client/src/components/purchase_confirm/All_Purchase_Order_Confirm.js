@@ -59,8 +59,9 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
 
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
+                        <DataTable.Title>Vendor ID</DataTable.Title>
                         <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title numeric>Status</DataTable.Title>
+                        <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
@@ -70,8 +71,9 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{purchaseOrderConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm.custom_vendorId}</DataTable.Cell>
                                         <DataTable.Cell>{purchaseOrderConfirm.items.itemName+" ("+purchaseOrderConfirm.items.Grade+")"}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm.status}</DataTable.Cell>
                                         <DataTable.Cell numeric> 
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>

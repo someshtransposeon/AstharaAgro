@@ -59,9 +59,10 @@ export default function All_Pickup_Assignment({ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Order ID</DataTable.Title>
+                    <DataTable.Title>Vendor ID</DataTable.Title>
                     <DataTable.Title>Item</DataTable.Title>
                     <DataTable.Title>Status</DataTable.Title>
-                    <DataTable.Title>Action</DataTable.Title>
+                    <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
 
                 {allPickupAssignment ?
@@ -70,9 +71,10 @@ export default function All_Pickup_Assignment({ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
                                     <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
                                     <DataTable.Cell>{pickupAssignment.status}</DataTable.Cell>
-                                    <DataTable.Cell> 
+                                    <DataTable.Cell numeric> 
                                         {Platform.OS=='android' ?
                                             <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {pickupId: pickupAssignment._id})}}>Details</Button>
                                             :

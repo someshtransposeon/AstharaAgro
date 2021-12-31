@@ -39,6 +39,7 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [vendorsid, setVendorsid] = useState([]);
     const [orderId, setOrderId] = useState("");
     const [custom_orderId, setCustomId] = useState("");
+    const [custom_vendorId, setCustomVendorId] = useState();
 
     useEffect(() => {
 
@@ -66,6 +67,7 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setQuantity(item[0].items.quantity);
                 setCustomId(item[0].custom_orderId);
                 setOrderId(item[0].orderId);
+                setCustomVendorId(item[0].custom_vendorId);
             });
         }
 
@@ -149,9 +151,10 @@ export default function Edit_Purchase_Order(props, {route}) {
                 order_id:order_id,
                 orderId:orderId,
                 custom_orderId:custom_orderId,
+                custom_vendorId:custom_vendorId,
                 items:items,   
                 vendor_id:vendor_id, 
-                status:status,      
+                status:status,
             })
         }) 
         .then(res => res.json())

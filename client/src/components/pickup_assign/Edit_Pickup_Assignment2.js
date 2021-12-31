@@ -40,6 +40,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [flag3, setFlag3] = useState(true);
     const [orderId, setOrderId] = useState("");
     const [custom_orderId, setCustomId] = useState("");
+    const [custom_vendorId, setCustomVendorId] = useState();
 
     useEffect(() => {
 
@@ -68,6 +69,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setQuantity(item[0].items.quantity);
                 setOrderId(item[0].orderId);
                 setCustomId(item[0].custom_orderId);
+                setCustomVendorId(item[0].custom_vendorId);
             });
         }
 
@@ -132,6 +134,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 order_id:order_id,
                 orderId:orderId,
                 custom_orderId:custom_orderId,
+                custom_vendorId:custom_vendorId,
                 items:items,   
                 vendor_id:vendor_id,
                 buyer_id:buyer_id,

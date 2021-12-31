@@ -60,9 +60,10 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
 
                     <DataTable.Header>
                         <DataTable.Title>Order Id</DataTable.Title>
+                        <DataTable.Title>Vendor Id</DataTable.Title>
                         <DataTable.Title >Item</DataTable.Title>
                         <DataTable.Title>Status</DataTable.Title>
-                        <DataTable.Title>Action</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                     
                     {allPickupAssignmentConfirm ?
@@ -71,9 +72,10 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
                                         <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
                                         <DataTable.Cell>{pickupAssignmentConfirm.status}</DataTable.Cell>
-                                        <DataTable.Cell> 
+                                        <DataTable.Cell numeric> 
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                                 :

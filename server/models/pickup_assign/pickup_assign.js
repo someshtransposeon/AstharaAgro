@@ -12,6 +12,9 @@ const pickupAssignSchema = new mongoose.Schema({
     custom_orderId:{
         type:String,
     },
+    custom_vendorId:{
+        type:String,
+    },
     purchaseId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Purchase'

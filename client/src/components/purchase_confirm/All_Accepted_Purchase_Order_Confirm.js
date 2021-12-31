@@ -21,6 +21,7 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [roleas, setRoleas] = useState("");
+
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -33,7 +34,6 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
         fetch(`http://${host}:5000/retrive_all_accepted_purchase_order_confirm`, {
             method: 'GET'
         })
-        
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(allPurchaseOrderConfirm => setAllPurchaseOrderConfirm(allPurchaseOrderConfirm));
@@ -59,8 +59,9 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
                     />
 
                     <DataTable.Header>
-                        <DataTable.Title>PurchaseConfirm ID</DataTable.Title>
-                        <DataTable.Title numeric>Status</DataTable.Title>
+                        <DataTable.Title>Order ID</DataTable.Title>
+                        <DataTable.Title>Vendor ID</DataTable.Title>
+                        <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
@@ -69,25 +70,16 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
                             if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{purchaseOrderConfirm._id}</DataTable.Cell>
-                                        <DataTable.Cell numeric>{purchaseOrderConfirm.status}</DataTable.Cell>
-                                        {roleas=="manager" ?
-                                            <DataTable.Cell numeric>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                            :
-                                            <DataTable.Cell numeric>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/View_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                        }
+                                        <DataTable.Cell>{purchaseOrderConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm.custom_vendorId}</DataTable.Cell>
+                                        <DataTable.Cell>{purchaseOrderConfirm.items.itemName+" ("+purchaseOrderConfirm.items.Grade+")"}</DataTable.Cell>
+                                        <DataTable.Cell numeric>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/View_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
                                     </DataTable.Row>
                                 )
                             }

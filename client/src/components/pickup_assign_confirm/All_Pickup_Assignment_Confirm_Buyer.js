@@ -58,11 +58,9 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
                         />
 
                         <DataTable.Header>
-                            <DataTable.Title>Pickup ID</DataTable.Title>
                             <DataTable.Title >Order ID</DataTable.Title>
-                            <DataTable.Title >Buyer ID</DataTable.Title>
                             <DataTable.Title >Vendor ID</DataTable.Title>
-                            <DataTable.Title>Status</DataTable.Title>
+                            <DataTable.Title>Item</DataTable.Title>
                             <DataTable.Title>Action</DataTable.Title>
                         </DataTable.Header>
                                                                               
@@ -71,11 +69,9 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
                                 if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
-                                        <DataTable.Cell>{pickupAssignmentConfirm._id}</DataTable.Cell>
-                                        <DataTable.Cell >{pickupAssignmentConfirm.order_id}</DataTable.Cell>
-                                        <DataTable.Cell >{pickupAssignmentConfirm.buyer_id}</DataTable.Cell>
-                                        <DataTable.Cell >{pickupAssignmentConfirm.vendor_id}</DataTable.Cell>
-                                        <DataTable.Cell>{pickupAssignmentConfirm.status}</DataTable.Cell>
+                                        <DataTable.Cell >{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell >{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
                                         {roleas=="buyer" ?
                                             <DataTable.Cell>
                                                 {Platform.OS=='android' ?

@@ -12,6 +12,9 @@ const purchaseorderSchema = new mongoose.Schema({
     custom_orderId:{
         type:String,
     },
+    custom_vendorId:{
+        type:String,
+    },
     user_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'

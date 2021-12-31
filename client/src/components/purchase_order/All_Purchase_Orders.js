@@ -61,9 +61,10 @@ export default function All_Purchase_Orders(props,{ navigation }) {
                 />
                 <DataTable.Header>
                     <DataTable.Title>Order ID</DataTable.Title>
-                    <DataTable.Title numeric>Item</DataTable.Title>
-                    <DataTable.Title numeric>Status</DataTable.Title>
-                    <DataTable.Title numeric>Action</DataTable.Title>
+                    <DataTable.Title>Vendor ID</DataTable.Title>
+                    <DataTable.Title>Item</DataTable.Title>
+                    <DataTable.Title>Status</DataTable.Title>
+                    <DataTable.Title>Action</DataTable.Title>
                 </DataTable.Header>
 
                 {allPurchaseOrders ?
@@ -72,9 +73,10 @@ export default function All_Purchase_Orders(props,{ navigation }) {
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{purchaseOrder.custom_orderId}</DataTable.Cell>
-                                    <DataTable.Cell numeric>{purchaseOrder.items.itemName+" ("+purchaseOrder.items.Grade+")"}</DataTable.Cell>
-                                    <DataTable.Cell numeric>{purchaseOrder.status}</DataTable.Cell>
-                                    <DataTable.Cell numeric>
+                                    <DataTable.Cell>{purchaseOrder.custom_vendorId}</DataTable.Cell>
+                                    <DataTable.Cell>{purchaseOrder.items.itemName+" ("+purchaseOrder.items.Grade+")"}</DataTable.Cell>
+                                    <DataTable.Cell>{purchaseOrder.status}</DataTable.Cell>
+                                    <DataTable.Cell>
                                         {Platform.OS=='android' ?
                                             <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
                                             :

@@ -61,8 +61,8 @@ export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ na
 
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
+                        <DataTable.Title>Vendor ID</DataTable.Title>
                         <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
                                                                         
@@ -72,8 +72,8 @@ export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ na
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
                                     <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
-                                    <DataTable.Cell>{pickupAssignmentConfirm.status}</DataTable.Cell>
                                     <DataTable.Cell> 
                                         {Platform.OS=='android' ?
                                             <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>

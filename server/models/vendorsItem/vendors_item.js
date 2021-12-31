@@ -74,6 +74,10 @@ const vendorsItemSchema = new mongoose.Schema({
     status:{
         type:String,
         default:"enabled"
+    },
+    date: {
+        type: Date,
+        default: Date.now,
     }
 });
 

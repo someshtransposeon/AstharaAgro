@@ -31,13 +31,13 @@ export default function EditOrderItem(props,{route}) {
     const [order_id, setOrder_Id] = useState("");
     const [vendors,setVendors] = useState();
     const [vendor_id, setVendorId] = useState();
-    const [vendor_email, setVendorEmail] = useState("Choose Vendor");
     const [user_id, setUserId] = useState();
     const [flag, setFlag] = useState(true);
     const [quantity, setQuantity] = useState();
     const [vendorsid, setVendorsid] = useState([]);
     const [custom_orderId, setCustomId] = useState();
     const [orderId, setOrderId] = useState("");
+    const [custom_vendorId, setCustomVendorId] = useState('Choose Vendor');
 
     useEffect(() => {
 
@@ -82,13 +82,16 @@ export default function EditOrderItem(props,{route}) {
 
         if(items){
         // fetch all vendors
-        fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade_lower_price/${items.itemName}/${items.Grade}`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(vendors => setVendors(vendors));
-    }
+            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade_lower_price/${items.itemName}/${items.Grade}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(vendors => {
+                setVendors(vendors);
+            });
+        }
+
     }, [vendors, host, order_id, items, orderid, flag, custom_orderId]);
 
     //submitForm() for sending the data in corresponding database
@@ -130,6 +133,7 @@ export default function EditOrderItem(props,{route}) {
                 items:items,
                 user_id:user_id,
                 vendor_id:vendor_id,
+                custom_vendorId: custom_vendorId,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))
@@ -139,9 +143,9 @@ export default function EditOrderItem(props,{route}) {
     }
 
     //chooseVendor() function for select the Vendor   
-    function chooseVendor(id, email){
+    function chooseVendor(id, email, dates, pincode){
         setVendorId(id)
-        setVendorEmail(email);
+        setCustomVendorId(email+"_"+pincode+"_"+dates.substring(0,10)+"_"+dates.substring(11,13));
         closeMenu2();
     }
 
@@ -159,11 +163,11 @@ export default function EditOrderItem(props,{route}) {
                             <Menu
                             visible={visible2}
                             onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{vendor_email} </Button>}>
+                            anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{custom_vendorId} </Button>}>
                                 {vendors ?
                                     vendors.map((item)=>{
                                         return (
-                                            <Menu.Item title={item.nick_name} onPress={()=>chooseVendor(item.userId, item.nick_name)} />
+                                            <Menu.Item title={item.nick_name} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
                                         )
                                     })
                                     :

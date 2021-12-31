@@ -6,6 +6,7 @@ router.post('/create_pickup_assign', (req, res)=>{
     var newPickupAssign = new PickupAssign({
         orderId:req.body.orderId,
         custom_orderId:req.body.custom_orderId,
+        custom_vendorId:req.body.custom_vendorId,
         order_id:req.body.order_id,
         items:req.body.items,
         user_id:req.body.user_id,

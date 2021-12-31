@@ -91,9 +91,10 @@ export default function All_Pending_Pickup_Assignment_Confirm_Vendor(props,{ nav
 
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
+                        <DataTable.Title>Vendor ID</DataTable.Title>
                         <DataTable.Title>Item</DataTable.Title>
                         <DataTable.Title>Status</DataTable.Title>
-                        <DataTable.Title>Action</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                                                                         
                     {allPickupAssignmentConfirm ?
@@ -102,6 +103,7 @@ export default function All_Pending_Pickup_Assignment_Confirm_Vendor(props,{ nav
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
                                     <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
                                     <DataTable.Cell>
                                     {roleas=="vendor" ?
@@ -113,7 +115,7 @@ export default function All_Pending_Pickup_Assignment_Confirm_Vendor(props,{ nav
                                         <Text >{pickupAssignmentConfirm.status}</Text>
                                     }  
                                     </DataTable.Cell>    
-                                    <DataTable.Cell> 
+                                    <DataTable.Cell numeric> 
                                         {Platform.OS=='android' ?
                                             <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
                                             :

@@ -60,8 +60,8 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
 
                 <DataTable.Header>
                     <DataTable.Title>Order ID</DataTable.Title>
+                    <DataTable.Title>Vendor ID</DataTable.Title>
                     <DataTable.Title>Item</DataTable.Title>
-                    <DataTable.Title>Status</DataTable.Title>
                     <DataTable.Title>Action</DataTable.Title>
                 </DataTable.Header>
 
@@ -71,8 +71,8 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
                                 <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
-                                <DataTable.Cell>{pickupAssignment.status}</DataTable.Cell>
                                 {roleas=="buyer" ?
                                     <DataTable.Cell>
                                         {Platform.OS=='android' ?

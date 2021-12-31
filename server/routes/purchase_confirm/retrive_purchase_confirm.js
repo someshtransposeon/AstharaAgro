@@ -36,7 +36,7 @@ router.get('/retrive_all_pending_purchase_order_confirm',(req, res)=>{
 });
 
 router.get('/retrive_all_accepted_purchase_order_confirm',(req, res)=>{
-    PurchaseOrderConfirm.find({"status":"accepted by manager"}, function(err, purchase_order_confirm){
+    PurchaseOrderConfirm.find({"status":"Buyer Assigned"}, function(err, purchase_order_confirm){
         if(err){
             console.log(err);
         }
