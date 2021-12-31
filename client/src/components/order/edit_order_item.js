@@ -65,7 +65,7 @@ export default function EditOrderItem(props,{route}) {
             .then(res => res.json())
             .catch(error => console.log(error))
             .then(item => {
-                setVendorsid(item.vendor_rejected);  
+                setVendorsid(item.vendor_rejected);
             });
         }
 
@@ -92,7 +92,7 @@ export default function EditOrderItem(props,{route}) {
             });
         }
 
-    }, [vendors, host, order_id, items, orderid, flag, custom_orderId]);
+    }, [vendors, host, order_id, items, orderid, flag, custom_orderId, vendorsid]);
 
     //submitForm() for sending the data in corresponding database
     function submitForm(){
@@ -164,11 +164,19 @@ export default function EditOrderItem(props,{route}) {
                             visible={visible2}
                             onDismiss={closeMenu2}
                             anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{custom_vendorId} </Button>}>
-                                {vendors ?
+                                {vendors && vendorsid ?
                                     vendors.map((item)=>{
-                                        return (
-                                            <Menu.Item title={item.nick_name} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
-                                        )
+                                        var f=0;
+                                        vendorsid.map((id)=>{
+                                            if(id==item.userId){
+                                                f=1;
+                                            }
+                                        })
+                                        if(f==0){
+                                            return (
+                                                <Menu.Item title={item.nick_name} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
+                                            )
+                                        }
                                     })
                                     :
                                     <Menu.Item title="No Vendor Available" />
