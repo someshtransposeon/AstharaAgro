@@ -174,7 +174,7 @@ export default function EditOrderItem(props,{route}) {
                                         })
                                         if(f==0){
                                             return (
-                                                <Menu.Item title={item.nick_name} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
+                                                <Menu.Item title={item.nick_name+"_"+item.postal_code} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
                                             )
                                         }
                                     })
