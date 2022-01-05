@@ -1,4 +1,12 @@
 
+var jwt = require('jsonwebtoken');
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export function current_user(){
+
+    return console.log(jwt.decode(AsyncStorage.getItem('toen')));
+
+}
 //retrive users by category
 export function all_users(host){
     return fetch(`http://${host}:5000/retrive_all_user`, {

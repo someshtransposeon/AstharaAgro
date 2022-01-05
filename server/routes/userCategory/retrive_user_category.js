@@ -1,9 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const UserCategory = require('../../models/userCategory/user_category');
+const verifyUser=require('../../middleware/auth');
 
-router.get('/retrive_all_user_category',(req, res)=>{
+router.get('/retrive_all_user_category',verifyUser, (req, res)=>{
     UserCategory.find({status:"enabled"}, function(err, categories){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(categories);
+        }
+    });
+});
+router.get('/retrive_all_users_category',verifyUser, (req, res)=>{
+    UserCategory.find({}, function(err, categories){
         if(err){
             console.log(err);
         }

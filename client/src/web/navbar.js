@@ -148,6 +148,8 @@ import PendingOrders from '../components/order/pending_orders';
 import ViewOrder from '../components/order/view_order';
 import View_Purchase_Order from '../components/purchase_order/View_Purchase_Order';
 
+import PageNotFound from '../auth/notfound';
+
 const NavBar =()  => {
 
     const [email, setEmail] = useState("");
@@ -155,6 +157,7 @@ const NavBar =()  => {
     const [roleas, setRoleas] = useState("");
     const [flag, setFlag] = useState(false);
     const [host, setHost] = useState("");
+    const [token,setToken] = useState();
 
     useEffect(() => {
 
@@ -170,6 +173,10 @@ const NavBar =()  => {
             .then((loginemail) => {
                 setEmail(loginemail);
             })
+            await AsyncStorage.getItem('token')
+            .then((token) => {
+                setToken(token);
+            })
             if(flag==false) {
                 await AsyncStorage.getItem('role')
                 .then((role) => {
@@ -180,8 +187,7 @@ const NavBar =()  => {
             }
         }
         fetchData();
-        
-    }, [email, role, flag, host]);
+    }, [email, role, flag, host,token]);
 
     function changeRole(r){
         setRoleas(r);
@@ -553,7 +559,21 @@ const NavBar =()  => {
                     </Navbar.Collapse>
                 </Navbar> */}
                 </div>
-                <Switch>
+                {typeof token == 'object' ?
+                    <Switch>
+                        <Route path="/" exact>
+                            <Home />
+                        </Route>
+                        <Route path="/login">
+                            <Login />
+                        </Route>
+                        <Route path="/register">
+                            <Register />
+                        </Route>
+                        <Route component={PageNotFound}  />
+                    </Switch>
+                :
+                <Switch>  
                 <Route path="/profile">
                     <Profile/>
                 </Route>
@@ -569,6 +589,7 @@ const NavBar =()  => {
                 <Route path="/allusercategories">
                     <AllUserCategories/>
                 </Route>
+                {/* <PrivateRoutes exact path="/allusercategory" name="Allusercategory" component={props => <AllUserCategories {...props}/>} /> */}
                 <Route path="/allitemcategories">
                     <AllItemCategories host={host}/>
                 </Route>
@@ -610,12 +631,6 @@ const NavBar =()  => {
                 <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
-                </Route>
-                <Route path="/login">
-                    <Login/>
-                </Route>
-                <Route path="/register">
-                    <Register/>
                 </Route>
                 <Route path="/addvendor">
                     <Buyer_add_vendor/>
@@ -840,8 +855,9 @@ const NavBar =()  => {
                 </Route>    
                 <Route path="/Edit_Accepted_Delivery/:deliveryid" render={(props) => <Edit_Accepted_Delivery {...props} />} exact />
                 <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
-
+                <Route component={PageNotFound}  />
                 </Switch>
+            }
         </Router>
     )
 }
