@@ -25,11 +25,11 @@ const pickupAssignSchema = new mongoose.Schema({
     },
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Vendor'
+        ref:'User'
     },
     buyer_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Buyer'
+        ref:'User'
     },
     items:{
         type:mongoose.Schema.Types.Mixed,

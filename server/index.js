@@ -155,10 +155,6 @@ const retrive_purchase_order_confirm = require('./routes/purchase_confirm/retriv
 const retrive_all_purchase_order_confirm = require('./routes/purchase_confirm/retrive_purchase_confirm');
 const update_purchase_order_confirm = require('./routes/purchase_confirm/update_purchase_confirm');
 
-const add_transportation = require('./routes/confidential/transportation/add_transportation');
-const retrive_transportation = require('./routes/confidential/transportation/retrive_transportation');
-const update_transportation = require('./routes/confidential/transportation/update_transportation');
-
 const disabled_item = require('./routes/item/disabled_item');
 const disabled_item_category = require('./routes/itemCategory/disabled_item_category');
 const disabled_item_grade = require('./routes/itemGrade/disabled_item_grade');
@@ -180,10 +176,6 @@ const vendors_update_item = require('./routes/vendorsItem/vendors_update_item');
 const create_pickup_assign = require('./routes/pickup_assign/create_pickup_assign');
 const retrive_pickup_assign = require('./routes/pickup_assign/retrive_pickup_assign');
 const update_pickup_assign = require('./routes/pickup_assign/update_purchase_order');
-// const retrive_pickup_assign = require('./routes/pickup_assign/retrive_pickup_assign');
-
-const create_delivery_beat = require('./routes/delivery_beat/create_delivery_beat');
-const retrive_delivery_beat = require('./routes/delivery_beat/retrive_delivery_beat');
 
 const create_pickup_assign_confirm = require('./routes/pickup_assign_confirm/create_pickup_assign_confirm');
 const retrive_pickup_assign_confirm = require('./routes/pickup_assign_confirm/retrive_pickup_assign_confirm');
@@ -311,11 +303,6 @@ app.use('/', retrive_purchase_order_confirm);
 app.use('/', retrive_all_purchase_order_confirm);
 app.use('/', update_purchase_order_confirm);
 
-app.use('/', add_transportation);
-app.use('/', retrive_transportation);
-app.use('/', update_transportation);
-
-
 app.use('/', disabled_item);
 app.use('/', disabled_item_category);
 app.use('/', disabled_item_grade);
@@ -338,9 +325,6 @@ app.use('/', vendors_update_item);
 app.use('/', create_pickup_assign);
 app.use('/', retrive_pickup_assign);
 app.use('/', update_pickup_assign);
-
-app.use('/', create_delivery_beat);
-app.use('/', retrive_delivery_beat);
 
 app.use('/', create_pickup_assign_confirm);
 app.use('/', retrive_pickup_assign_confirm);

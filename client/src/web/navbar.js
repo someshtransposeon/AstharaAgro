@@ -52,12 +52,6 @@ import Edit_Purchase_Order_Confirm2 from '../components/purchase_confirm/Edit_Pu
 import Edit_Purchase_Order_Confirm3 from '../components/purchase_confirm/Edit_Purchase_Order_Confirm3';
 import View_Purchase_Order_Confirm3 from '../components/purchase_confirm/View_Purchase_Order_Confirm3';
 
-import AllTransportation from '../components/confidential/transportation/allTransportation';
-import AddTransportation from '../components/confidential/transportation/addTransportation';
-import ShowTransportation from '../components/confidential/transportation/showTransportation';
-import EditTransportation from '../components/confidential/transportation/editTransportation';
-
-
 import DisabledAllItems from '../components/item/disabled_all_items';
 import DisabledAllItemCategories from '../components/itemCategory/disabled_all_item_categories';
 import DisabledAllItemGrade from '../components/itemGrade/disabled_all_item_grade';
@@ -104,7 +98,6 @@ import AllGrn from '../components/grn/all_grn';
 import OrderItemsSummary from '../components/order/order_items_summary';
 
 import EditOrderItem from '../components/order/edit_order_item';
-import Pickup_Purchase from '../components/purchase_order/Pickup_Purchase';
 
 import All_Pickup_Assignment from '../components/pickup_assign/All_Pickup_Assignment';
 import Edit_Pickup_Assignment from '../components/pickup_assign/Edit_Pickup_Assignment';
@@ -112,10 +105,6 @@ import Edit_Pickup_Assignment2 from '../components/pickup_assign/Edit_Pickup_Ass
 import View_Pickup_Assignment2 from '../components/pickup_assign/View_Pickup_Assignment2';
 import All_Pending_Pickup_Assignment from '../components/pickup_assign/All_Pending_Pickup_Assignment';
 import All_Accepted_Pickup_Assignment from '../components/pickup_assign/All_Accepted_Pickup_Assignment';
-
-import All_Delivery_Beats from '../components/delivery_beat/All_Delivery_Beats';
-import All_Pending_Delivery_Beats from '../components/delivery_beat/All_Pending_Delivery_Beats';
-import All_Accepted_Delivery_Beats from '../components/delivery_beat/All_Accepted_Delivery_Beats';
 
 import All_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/All_Pickup_Assignment_Confirm';
 import Edit_Pickup_Assignment_Confirm from '../components/pickup_assign_confirm/Edit_Pickup_Assignment_Confirm';
@@ -343,18 +332,6 @@ const NavBar =()  => {
                                 }
                                 </NavDropdown>
                                 <NavDropdown.Divider />
-                                {/* {(roleas=="buyer" || roleas=="manager" ) &&
-                                    <>
-                                        <NavDropdown.Item to="/Create_Indent" as={Link}>Create Indent</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Indents" as={Link}>All Indents</NavDropdown.Item> 
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/Create_Purchase_Order" as={Link}>Create Purchase Order</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>All Purchase Orders</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                    </>
-                                } */}
                                 <NavDropdown title="Purchase Order" id="collasible-nav-dropdown" drop="right"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                 {(roleas=="vendor" || roleas=="buyer" || roleas=="manager" || roleas=="accountant") &&
                                     <>
@@ -381,19 +358,7 @@ const NavBar =()  => {
                                     </>
                                 }
                                 </NavDropdown>
-                                {/* <NavDropdown.Divider />
-                                <NavDropdown  drop="right" title="Delivery Beats" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
-                                {(roleas=="manager" || roleas=="field_executive") &&
-                                    <>
-                                        <NavDropdown.Item to="/All_Delivery_Beats" as={Link}>All Delivery Beats</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Pending_Delivery_Beats" as={Link}>Pending Delivery Beats</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/All_Accepted_Delivery_Beats" as={Link}>Accepted Delivery Beats</NavDropdown.Item>
-                                    </>
-                                }        
-                                </NavDropdown> */}
-                            </NavDropdown>
+                              </NavDropdown>
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 {roleas=="manager" &&
                                     <>
@@ -469,8 +434,6 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/all_grn" as={Link}>All GRNs</NavDropdown.Item>
                                     </NavDropdown>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item to="/Pickup_Purchase" as={Link}>Pickup Purchase</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/order_items_summary" as={Link}>Order Items Summary</NavDropdown.Item>
                                         <NavDropdown.Divider />
@@ -676,16 +639,6 @@ const NavBar =()  => {
                 <Route path="/All_Purchase_Order_Confirm">
                     <All_Purchase_Order_Confirm/>
                 </Route>
-                <Route path="/AllTransportation">
-                    <AllTransportation/>
-                </Route>
-                <Route path="/AddTransportation">
-                    <AddTransportation/>
-                </Route>
-                <Route path="/ShowTransportation">
-                    <ShowTransportation/>
-                </Route>
-                <Route path="/EditTransportation/:transportationid" render={(props) => <EditTransportation {...props} />} exact />
                 <Route path="/Edit_Purchase_Order/:purchaseid" render={(props) => <Edit_Purchase_Order roleas={roleas} {...props} />} exact />
                 <Route path="/Edit_Vendor_Purchase_Order/:purchaseid" render={(props) => <Edit_Vendor_Purchase_Order {...props} />} exact />
                 <Route path="/View_Purchase_Order/:purchaseid" render={(props) => <View_Purchase_Order roleas={roleas} {...props} />} exact />
@@ -693,8 +646,7 @@ const NavBar =()  => {
                 <Route path="/Edit_Purchase_Order_confirm2/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm2 {...props} />} exact />
                 <Route path="/Edit_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <Edit_Purchase_Order_Confirm3 roleas={roleas} {...props} />} exact />
                 <Route path="/View_Purchase_Order_confirm3/:purchaseconfirmid" render={(props) => <View_Purchase_Order_Confirm3 roleas={roleas} {...props} />} exact />
-
-                
+     
                 <Route path="/disabled_all_items">
                     <DisabledAllItems host={host}/>
                 </Route>
@@ -785,10 +737,6 @@ const NavBar =()  => {
                     <OrderItemsSummary host={host}/>
                 </Route>
                 <Route path="/editorderitem/:orderid" render={(props) => <EditOrderItem {...props} />} exact />
-                <Route path="/Pickup_Purchase">
-                    <Pickup_Purchase/>
-                </Route>    
-
                 <Route path="/all_pickup_assignment">
                     <All_Pickup_Assignment/>
                 </Route>
@@ -802,15 +750,6 @@ const NavBar =()  => {
                 <Route path="/all_accepted_pickup_assignment">
                     <All_Accepted_Pickup_Assignment roleas={roleas} />
                 </Route>
-                <Route path="/All_Delivery_Beats">
-                    <All_Delivery_Beats/>
-                </Route> 
-                <Route path="/All_Pending_Delivery_Beats">
-                    <All_Pending_Delivery_Beats/>
-                </Route> 
-                <Route path="/All_Accepted_Delivery_Beats">
-                    <All_Accepted_Delivery_Beats/>
-                </Route>    
                 <Route path="/all_pickup_assignment_confirm">
                     <All_Pickup_Assignment_Confirm/>
                 </Route>

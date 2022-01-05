@@ -25,7 +25,7 @@ const purchaseorderConfirmSchema = new mongoose.Schema({
     },
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Vendor'
+        ref:'User'
     },
     items:{
         type:mongoose.Schema.Types.Mixed,

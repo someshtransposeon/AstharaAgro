@@ -15,7 +15,7 @@ const pickup_assignmentSchema = new mongoose.Schema({
     }, 
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Vendor'
+        ref:'User'
     },
     item_description:[{
         itemId:{

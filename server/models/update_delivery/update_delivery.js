@@ -24,7 +24,7 @@ const updateDeliverySchema = new mongoose.Schema({
     },
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Vendor'
+        ref:'User'
     },
     sales_id:{
         type:mongoose.Schema.Types.ObjectId,

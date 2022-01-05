@@ -20,7 +20,7 @@ const inventorySchema = new mongoose.Schema({
     },
     emp_id:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
+        ref: 'User',
     },
     indent_id:{
         type: mongoose.Schema.Types.ObjectId,
@@ -32,11 +32,11 @@ const inventorySchema = new mongoose.Schema({
     },
     vendor_id:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor',
+        ref: 'User',
     },
     buyer_id:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Buyer',
+        ref: 'User',
     },
     pickupAssignId:{
         type: mongoose.Schema.Types.ObjectId,
