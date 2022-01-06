@@ -537,6 +537,9 @@ const NavBar =()  => {
                     </Switch>
                 :
                 <Switch>  
+                <Route path="/register">
+                    <Register />
+                </Route>
                 <Route path="/profile">
                     <Profile/>
                 </Route>

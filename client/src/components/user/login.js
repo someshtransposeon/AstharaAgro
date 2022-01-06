@@ -3,7 +3,6 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useHistory, Link } from 'react-router-dom';
-var jwt = require('jsonwebtoken');
 
 const theme = {
     ...DefaultTheme,
@@ -53,7 +52,6 @@ export default function Login({ navigation }) {
             console.log(data);
             alert(data.message);
             if(data.token){
-                console.log(jwt.decode(data.token));
                 AsyncStorage.setItem('token', data.token);
                 AsyncStorage.setItem('loginuserid', data.user_id);
                 AsyncStorage.setItem('loginemail', data.email);
