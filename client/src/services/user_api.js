@@ -32,8 +32,8 @@ export function disabled_users(host){
     });
 }
 //retive all users by category
-export function all_users_by_category(host,category){
-    return fetch(`http://${host}:5000/retrive_user_category_type/${category}`, {
+export function all_users_by_role(host,role){
+    return fetch(`http://${host}:5000/retrive_user_by_role/${role}`, {
         method: 'GET'
     })
     .then(res => res.json())
@@ -106,60 +106,5 @@ export function user_category(host){
     .catch(error => console.log(error))
     .then(userCategory => {
         return userCategory;
-    });
-}
-//retrive_all_customer
-export function all_customer(host){
-    return fetch(`http://${host}:5000/retrive_all_customer`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(customer =>{
-         return customer;
-    });
-}
-//retrive_all_customer by id
-export function customer_by_id(host,id){
-    return fetch(`http://${host}:5000/retrive_customer/${id}`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => {
-            return customer;
-    });
-}
-//retrive all vendor
-export function all_vendors(host){
-    return fetch('http://localhost:5000/retrive_all_vendor', {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(vendors=>{
-        return vendors;
-    });
-}
-//retrive vendor by id
-export function vendor_by_id(host,vendorId){
-    return fetch(`http://${host}:5000/retrive_vendor/${vendorId}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(vendor => {
-        return vendor;
-    });
-}
-//retrive_all_sales person
-export function all_sales(host){
-    return fetch(`http://${host}:5000/retrive_all_sales`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(sales => {
-        return sales;
     });
 }

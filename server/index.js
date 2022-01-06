@@ -52,19 +52,12 @@ const delete_user_category = require('./routes/userCategory/delete_user_category
 const retrive_user_category = require('./routes/userCategory/retrive_user_category');
 const update_user_category = require('./routes/userCategory/update_user_category');
 
-const create_user = require('./routes/user/user/create_user');
-const delete_user = require('./routes/user/user/delete_user');
-const login_user = require('./routes/user/user/login_user');
-const retrive_user = require('./routes/user/user/retrive_user');
-const update_user = require('./routes/user/user/update_user');
+const create_user = require('./routes/user/create_user');
+const delete_user = require('./routes/user/delete_user');
+const login_user = require('./routes/user/login_user');
+const retrive_user = require('./routes/user/retrive_user');
+const update_user = require('./routes/user/update_user');
 const reset_password=require('./routes/forgotpassword/resetpassword');
-
-const retrive_vendor = require('./routes/user/vendor/retrive_vendor');
-const deactivate_vendor=require('./routes/user/vendor/deactivated_vendor');
-const update_vendor=require('./routes/user/vendor/update_vendor');
-
-const retrive_customer= require('./routes/user/customer/retrive_customer');
-const update_customer=require('./routes/user/customer/update_customer');
 
 const create_item_category = require('./routes/itemCategory/create_item_category');
 const delete_item_category = require('./routes/itemCategory/delete_item_category');
@@ -159,14 +152,14 @@ const disabled_item = require('./routes/item/disabled_item');
 const disabled_item_category = require('./routes/itemCategory/disabled_item_category');
 const disabled_item_grade = require('./routes/itemGrade/disabled_item_grade');
 const disabled_item_unit = require('./routes/itemUnit/disabled_item_unit');
-const disabled_user = require('./routes/user/user/disabled_user');
+const disabled_user = require('./routes/user/disabled_user');
 const disabled_user_category = require('./routes/userCategory/disabled_user_category');
 
 const enabled_item = require('./routes/item/enabled_item');
 const enabled_item_category = require('./routes/itemCategory/enabled_item_category');
 const enabled_item_unit = require('./routes/itemUnit/enabled_item_unit');
 const enabled_item_grade = require('./routes/itemGrade/enabled_item_grade');
-const enabled_user = require('./routes/user/user/enabled_user');
+const enabled_user = require('./routes/user/enabled_user');
 const enabled_user_category = require('./routes/userCategory/enabled_user_category');
 
 const vendors_create_item = require('./routes/vendorsItem/vendors_create_item');
@@ -198,13 +191,6 @@ app.use('/', create_user_category);
 app.use('/', delete_user_category);
 app.use('/', retrive_user_category);
 app.use('/', update_user_category);
-
-app.use('/', retrive_vendor);
-app.use('/', deactivate_vendor);
-app.use('/', update_vendor);
-
-app.use('/', retrive_customer);
-app.use('/', update_customer);
 
 app.use('/', create_user);
 app.use('/', login_user);

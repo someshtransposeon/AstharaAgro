@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../../models/user/user');
+const User = require('../../models/user/user');
 
 router.put('/disabled_user/:id',(req, res) =>{
     var user_update = {

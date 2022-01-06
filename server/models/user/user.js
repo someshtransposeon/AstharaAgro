@@ -27,10 +27,6 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    gst_no: {
-        type: String,
-        default:"",
-    },
     password: {
         type: String,
         required: true,
@@ -38,10 +34,6 @@ const userSchema = new mongoose.Schema({
     status:{
         type:String,
         default:"enabled"
-    },
-    remark:{
-        type:String,
-        default:""
     },
 });
 
