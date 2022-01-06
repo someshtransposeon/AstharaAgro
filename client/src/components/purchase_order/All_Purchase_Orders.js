@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu  } fr
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { purchase_order } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -18,29 +19,18 @@ const theme = {
 export default function All_Purchase_Orders(props,{ navigation }) {
 
     const [allPurchaseOrders, setAllPurchaseOrders] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-    const [visible, setVisible] = useState([]);
     const  [roleas, setRoleas] = useState("");
 
     useEffect(() => {
         
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
         setRoleas(props.roleas);
-
-        fetch(`http://${host}:5000/retrive_all_purchase_order`, {
-            method: 'GET'
+        purchase_order()
+        .then(result => {
+            setAllPurchaseOrders(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allPurchaseOrders => setAllPurchaseOrders(allPurchaseOrders));
 
-    }, [allPurchaseOrders, roleas,host,props.roleas]);
+    }, [allPurchaseOrders, roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

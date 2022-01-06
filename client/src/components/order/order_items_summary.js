@@ -20,24 +20,15 @@ export default function OrderItemsSummary(props, { navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
-    const [host, setHost] = useState("");
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-
-        setHost(props.host);
-        OrderSummary(host)
-        .then(function(result) {
+        OrderSummary()
+        .then(result=> {
             setAllOrders(result);
         })
 
-    }, [allOrders, host, props.host]);
+    }, [allOrders]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

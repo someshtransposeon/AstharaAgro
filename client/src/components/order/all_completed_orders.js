@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu } fro
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { all_completed_order } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -30,15 +31,11 @@ export default function AllCompletedOrders({ navigation }) {
         else{
             setHost("localhost");
         }
-
-        fetch(`http://${host}:5000/retrive_all_completed_order`, {
-            method: 'GET'
+        //Retierve all completed order
+        all_completed_order()
+        .then(result=>{
+            setAllOrders(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(orders => {
-            setAllOrders(orders);
-        });
         
     }, [allOrders, host, visible]);
 

@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { purchase_order_by_id } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -30,35 +31,28 @@ export default function View_Purchase_Order(props, {route}) {
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [status,setStatus] = useState("");
     const [items, setItems] = useState();
-    const [host, setHost] = useState("");
     const [flag, setFlag] = useState(true);
 
     useEffect(() => {
 
         if(Platform.OS=="android"){
-            setHost("10.0.2.2");
             setPurchaseId(id);
         }
         else{
-            setHost("localhost");
             setPurchaseId(purchaseid);
         }
-
         if(flag && purchaseId){
-            fetch(`http://${host}:5000/retrive_purchase_order/${purchaseid}`, {
-                method: 'GET'
+            purchase_order_by_id(purchaseId)
+            .then(result => {
+                    setOrderId(result[0].order_id)
+                    setItems(result[0].items);
+                    setVendorId(result[0].vendor_id);
+                    setStatus(result[0].status);
+                    setFlag(false);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setOrderId(item[0].order_id)
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setStatus(item[0].status);
-                setFlag(false);
-            });
         }
-    }, [host, purchaseId, purchaseid, id, items, order_id, vendor_id, status, flag]);
+
+    }, [ purchaseId, purchaseid, id, items, order_id, vendor_id, status, flag]);
 
     return (
         <Provider theme={theme}>

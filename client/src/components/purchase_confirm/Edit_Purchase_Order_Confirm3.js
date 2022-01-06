@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
-
+import  {all_users_by_role} from '../../services/user_api';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -52,12 +52,10 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         }
 
         // fetch all Buyer
-        fetch("http://localhost:5000/retrive_all_buyers", {
-            method: 'GET'
+        all_users_by_role("buyer")
+        .then(result => {
+            setBuyer(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(buyer => setBuyer(buyer));
       
         if(purchaseConfirmId){
             fetch(`http://${host}:5000/retrive_purchase_order_confirm/${purchaseconfirmid}`, {

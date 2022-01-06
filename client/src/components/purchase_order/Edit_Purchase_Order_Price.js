@@ -3,7 +3,7 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faReceipt } from '@fortawesome/free-solid-svg-icons';
-
+import { purchase_order_by_id } from '../../services/order_api';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -44,17 +44,13 @@ export default function Edit_Purchase_Order_Price(props, {route}) {
         }
 
         if(purchaseId){
-            fetch(`http://${host}:5000/retrive_purchase_order/${purchaseid}`, {
-                method: 'GET'
+            purchase_order_by_id(purchaseId)
+            .then(result=>{
+                setOrderId(result[0].order_id)
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setStatus(result[0].status);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setOrderId(item[0].order_id)
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setStatus(item[0].status);
-            });
         }
 
     }, [host,purchaseId,purchaseid,id]);

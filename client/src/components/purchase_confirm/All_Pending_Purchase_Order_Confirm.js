@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 're
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { all_pending_purchase_order } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -18,27 +19,18 @@ const theme = {
 export default function All_Purchase_Order_Confirm(props,{ navigation }) {
 
     const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
+        
         setRoleas(props.roleas);
-        fetch(`http://${host}:5000/retrive_all_pending_purchase_order_confirm`, {
-            method: 'GET'
+        all_pending_purchase_order()
+        .then(result=>{
+            setAllPurchaseOrderConfirm(result);
         })
         
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allPurchaseOrderConfirm => setAllPurchaseOrderConfirm(allPurchaseOrderConfirm));
-        
-    }, [allPurchaseOrderConfirm, host,roleas,props.roleas]);
+    }, [allPurchaseOrderConfirm,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

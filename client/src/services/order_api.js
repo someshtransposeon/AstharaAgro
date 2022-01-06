@@ -1,76 +1,91 @@
-export function allOrder(host){
-    return fetch(`http://${host}:5000/retrive_all_order`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(orders => {
-        return orders;
-    });
+import {url} from '../utils/url';
+import axios from 'axios';
+//retrive all items
+export const allOrder = () => {
+    return axios.get(url + '/retrive_all_order')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+//retrive all oreder by status 
+export const Order_by_status = (status) => {
+    return axios.get(url + '/retrive_orders_by_status/'+ status)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+//retrive all oreder by id 
+export const Order_by_id = (id) => {
+    return axios.get(url + '/retrive_order/'+ id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+export const OrderSummary = () => {
+    return axios.get(url + '/retrive_all_order_item_summary')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+export const OrderSummary_by_id = (id) => {
+    return axios.get(url + '/retrive_all_order_item_summary_by_id/'+id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 
-export function Order_by_status(host, status){
-    return fetch(`http://${host}:5000/retrive_orders_by_status/${status}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(orders => {
-        return orders;
-    });
-}
-
-export function Order_by_id(host, id){
-    return fetch(`http://${host}:5000/retrive_order/${id}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(orders => {
-        return orders;
-    });
-}
-
-export function OrderSummary(host){
-    return fetch(`http://${host}:5000/retrive_all_order_item_summary`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(orders => {
-        return orders;
-    });
-}
-
-export function OrderSummary_by_id(host, id){
-    return fetch(`http://${host}:5000/retrive_all_order_item_summary_by_id/${id}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(orders => {
-        return orders;
-    });
-}
 //retrive_all_completed_order
-export function all_completed_order(host){
-    return fetch(`http://${host}:5000/retrive_all_completed_order`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(orders => {
-             return orders;
-    });
+export const all_completed_order = () => {
+    return axios.get(url + '/retrive_all_completed_order')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+//retrive_all_order
+export const order_item_summary_quantity = (id) => {
+    return axios.get(url + '/retrive_order_item_summary_quantity/'+id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+//retrive_all_completed_order by id
+export const all_completed_order_by_id = (id) => {
+    return axios.get(url + '/retrive_all_order_item_summary_by_id/'+id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retrive_all_completed_order by id
-export function all_completed_order_by_id(host, id){
-    return fetch(`http://${host}:5000/retrive_all_order_item_summary_by_id/${id}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(orders => {
-        return orders;
-    });
+export const all_pending_purchase_order = () => {
+    return axios.get(url + '/retrive_all_pending_purchase_order')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
+//retrive_all_completed_order by id
+export const purchase_order_by_id = (id) => {
+    return axios.get(url + '/retrive_purchase_order/'+ id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+export const purchase_order= () => {
+    return axios.get(url + '/retrive_all_purchase_order')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+export const all_accepted_purchase_order= () => {
+    return axios.get(url + '/retrive_all_accepted_purchase_order')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+export const all_confirm_purchase_order= (id) => {
+    return axios.get(url + '/retrive_purchase_order_confirm/'+id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+

@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { all_confirm_purchase_order } from '../../services/order_api';
+import { all_users_by_role } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -49,41 +51,43 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         }
 
         // fetch all Buyer
-        fetch("http://localhost:5000/retrive_all_buyers", {
-            method: 'GET'
+        all_users_by_role("buyer")
+        .then(result => {
+            setBuyer(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(buyer => setBuyer(buyer));
-      
+        
         if(purchaseConfirmId){
-            fetch(`http://${host}:5000/retrive_purchase_order_confirm/${purchaseconfirmid}`, {
-                method: 'GET'
+            all_confirm_purchase_order(purchaseConfirmId)
+            .then(result=>{
+                console.log(result);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setOrderId(item[0].order_id);
-                setPurchaseId(item[0].purchaseId);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setStatus(item[0].status);
-            });
+            // fetch(`http://${host}:5000/retrive_purchase_order_confirm/${purchaseconfirmid}`, {
+            //     method: 'GET'
+            // })
+            // .then(res => res.json())
+            // .catch(error => console.log(error))
+            // .then(item => {
+            //     //setOrderId(item[0].order_id);
+            //     //setPurchaseId(item[0].purchaseId);
+            //     //setItems(item[0].items);
+            //     //setVendorId(item[0].vendor_id);
+            //     //setStatus(item[0].status);
+            // });
         }
 
     }, [host, purchaseConfirmId, purchaseconfirmid, id]);
   
     //chooseBuyer() function for select the Buyer   
-    function chooseBuyer(id, email){
-        setBuyerId(id)
-        setBuyerEmail(email);
-        fetch(`http://${host}:5000/retrive_buyer/${id}`, {
-            method: 'GET'
-        })        
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        closeMenu3();
-    }
+    // function chooseBuyer(id, email){
+    //     setBuyerId(id)
+    //     setBuyerEmail(email);
+    //     fetch(`http://${host}:5000/retrive_buyer/${id}`, {
+    //         method: 'GET'
+    //     })        
+    //     .then(res => res.json())
+    //     .catch(error => console.log(error))
+    //     closeMenu3();
+    // }
     
     return (
         <Provider theme={theme}>

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { users_by_id } from '../../services/user_api';
+import { purchase_order } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -19,7 +20,6 @@ const theme = {
 export default function All_Purchase_Order_Confirm({ navigation }) {
 
     const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState(false);
     const [vendor, setVendor] = useState();
@@ -29,21 +29,12 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-        
-        fetch(`http://${host}:5000/retrive_all_purchase_order_confirm`, {
-            method: 'GET'
+        purchase_order()
+        .then(result=>{
+            setAllPurchaseOrderConfirm(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allPurchaseOrderConfirm => setAllPurchaseOrderConfirm(allPurchaseOrderConfirm));
 
-    }, [allPurchaseOrderConfirm, host]);
+    }, [allPurchaseOrderConfirm]);
 
     function VendorDetails(id) {
         users_by_id(id)

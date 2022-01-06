@@ -31,3 +31,17 @@ export const all_vendor_items_by_itemid = (id) => {
         return res.data;
     }).catch(err => console.log(err))
 }
+//retrieve all items 
+export const all_vendor_items = () => {
+    return axios.get(url + '/vendors_retrive_all_item')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+export const vendor_by_low_price = (itemname,grade) => {
+    return axios.get(url + '/retrive_vendor_item_by_name_grade_lower_price/'+itemname + "/" + grade)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}

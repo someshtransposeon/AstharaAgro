@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { Order_by_id } from '../../services/order_api';
+import { all_vendor_items } from '../../services/vendor_api';
 
 const theme = {
     ...DefaultTheme,
@@ -46,17 +47,14 @@ export default function EditOrder(props,{route}) {
 
         setHost(props.host);
         setOrderId(orderid);
-
-        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
-            method: 'GET'
+        
+        all_vendor_items()
+        .then(result =>{
+            setItem(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(item => setItem(item));
-
         if(flag && orderid && host){
-            Order_by_id(host, orderid)
-            .then(function(result) {
+            Order_by_id(orderid)
+            .then(result => {
                 setName(result[0].name);
                 setEmail(result[0].email);
                 setMobileNo(result[0].mobile_no);

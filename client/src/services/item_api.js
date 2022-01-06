@@ -15,15 +15,11 @@ export const item_by_item_id = (itemId) => {
     }).catch(err => console.log(err))
 }
 //retrive all disabled items
-export function all_disabled_item(host){
-    return fetch(`http://${host}:5000/retrive_all_disabled_items`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(allItems =>{
-            return allItems;
-    });
+export const all_disabled_item = () => {
+    return axios.get(url + '/retrive_all_disabled_items')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retrive all item grade
 export const item_grade = () => {
@@ -33,15 +29,11 @@ export const item_grade = () => {
     }).catch(err => console.log(err))
 }
 //retrive all disabled items
-export function all_disabled_item_grade(host){
-    return fetch(`http://${host}:5000/retrive_all_disabled_item_grade`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(itemGrades =>{
-            return itemGrades;
-    });
+export const all_disabled_item_grade= (id) => {
+    return axios.get(url + '/retrive_all_disabled_item_grade')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retrive all item grade by id
 export const item_grade_by_grade_id = (id) => {
@@ -65,15 +57,12 @@ export const item_category_by_id = (id) => {
     }).catch(err => console.log(err))
 }
 //retrive all disabled item categories
-export function all_disabled_item_category(host){
-    return fetch(`http://${host}:5000/retrive_all_disabled_item_category`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(categories => {
-            return categories;
-    });
+
+export const all_disabled_item_category = () => {
+    return axios.get(url + 'retrive_all_disabled_item_category')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retrive all item units
 export const item_unit = () => {
@@ -83,15 +72,11 @@ export const item_unit = () => {
     }).catch(err => console.log(err))
 }
 //retrive all item disabled units
-export function item_unit_diasabled(host){
-    return fetch(`http://${host}:5000/retrive_all_disabled_item_unit`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(unit =>{
-            return unit;
-    });
+export const item_unit_diasabled = () => {
+    return axios.get(url + '/retrive_all_disabled_item_unit')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retrive all item units by id
 export const item_unit_by_unitid = (id) => {

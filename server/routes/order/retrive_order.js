@@ -36,6 +36,16 @@ router.get('/retrive_orders_by_status/:status',(req, res)=>{
         }
     });
 });
+router.get('/retrive_all_completed_order',(req, res)=>{
+    Order.find({status:"completed"}, function(err, orders){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(orders);
+        }
+    });
+});
 
 //Define ROute to  retrive order item Summary 
 router.get('/retrive_all_order_item_summary',(req, res)=>{

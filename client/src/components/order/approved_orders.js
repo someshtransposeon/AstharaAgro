@@ -27,11 +27,10 @@ export default function ApprovedOrders(props, { navigation }) {
 
     useEffect(() => {
 
-        setHost(props.host);
         setRoleas(props.roleas);
 
-        Order_by_status(host, "approved")
-        .then(function(result) {
+        Order_by_status("approved")
+        .then(result=> {
             setAllOrders(result);
         })
 
@@ -44,7 +43,7 @@ export default function ApprovedOrders(props, { navigation }) {
             setFlag(true);
         }
 
-    }, [allOrders, host, visible, flag, roleas, props.roleas, props.host]);
+    }, [allOrders,  visible, flag, roleas, props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

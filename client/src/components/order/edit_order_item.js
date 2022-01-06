@@ -3,7 +3,8 @@ import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-nati
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { OrderSummary_by_id } from '../../services/order_api';
-
+import {vendor_by_low_price} from '../../services/vendor_api';
+import {order_item_summary_quantity} from '../../services/order_api';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -59,19 +60,15 @@ export default function EditOrderItem(props,{route}) {
         }
 
         if(order_id){
-            fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
-                method: 'GET'
+            order_item_summary_quantity()
+            .then(result =>{
+                setVendorsid(result);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setVendorsid(item.vendor_rejected);
-            });
         }
 
         if(flag && order_id){
-            OrderSummary_by_id(host, order_id)
-            .then(function(result) {
+            OrderSummary_by_id(order_id)
+            .then(result => {
                 setItems(result[0].item);
                 setQuantity(result[0].item.quantity);
                 setCustomId(result[0].custom_orderId);
@@ -81,15 +78,11 @@ export default function EditOrderItem(props,{route}) {
         }
 
         if(items){
-        // fetch all vendors
-            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade_lower_price/${items.itemName}/${items.Grade}`, {
-                method: 'GET'
+            // fetch all vendors
+            vendor_by_low_price(items.itemName,items.Grade)
+            .then(result =>{
+                setVendors(result);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(vendors => {
-                setVendors(vendors);
-            });
         }
 
     }, [vendors, host, order_id, items, orderid, flag, custom_orderId, vendorsid]);
@@ -114,7 +107,7 @@ export default function EditOrderItem(props,{route}) {
         }).then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            // alert(data.message);
+             //alert(data.message);
         }); 
 
         const values2 = items;

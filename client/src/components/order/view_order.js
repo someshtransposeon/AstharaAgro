@@ -22,22 +22,19 @@ export default function ViewOrder(props,{route}) {
     else{
         orderid = props.match.params.orderid;
     }
-
+    
     const [order, setOrder] = useState();
-    const [host, setHost] = useState("");
 
     useEffect(() => {
 
-        setHost(props.host);
-
         if(orderid){
-            Order_by_id("localhost", orderid)
-            .then(function(result) {
+            Order_by_id(orderid)
+            .then(result=> {
                 setOrder(result);
             })
         }
 
-    }, [host,orderid, props.host, order]);
+    }, [orderid, order]);
 
     return (
         <Provider theme={theme}>

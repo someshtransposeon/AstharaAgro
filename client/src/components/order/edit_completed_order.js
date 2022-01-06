@@ -3,7 +3,8 @@ import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-nati
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle, faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
-
+import { Order_by_id } from '../../services/order_api';
+import {all_vendor_items} from '../../services/vendor_api';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -73,35 +74,27 @@ export default function EditCompletedOrder(props, { route }) {
         }
 
         if (flag2){
-            fetch(`http://${host}:5000/vendors_retrive_all_item`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setItem(item);
+            all_vendor_items()
+            .then(result=>{
+                setItem(result);
                 setFlag2(false);
-            });
+            })
         }
 
         if (flag && orderId) {
-            fetch(`http://${host}:5000/retrive_order/${orderId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(order => {
-                setName(order[0].name);
-                setEmail(order[0].email);
-                setMobileNo(order[0].mobile_no);
-                setAddress(order[0].address);
-                setLandmark(order[0].landmark);
-                setDistrict(order[0].district);
-                setState(order[0].state);
-                setCountry(order[0].country);
-                setPincode(order[0].postal_code);
-                setItems(order[0].items);
-                setUserId(order[0].userId);
+            Order_by_id(orderId)
+            .then(result=> {
+                setName(result[0].name);
+                setEmail(result[0].email);
+                setMobileNo(result[0].mobile_no);
+                setAddress(result[0].address);
+                setLandmark(result[0].landmark);
+                setDistrict(result[0].district);
+                setState(result[0].state);
+                setCountry(result[0].country);
+                setPincode(result[0].postal_code);
+                setItems(result[0].items);
+                setUserId(result[0].userId);
                 setFlag(false);
             });
         }

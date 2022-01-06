@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Order_by_status } from '../../services/order_api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {host} from '../../utils/host';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -22,7 +22,6 @@ export default function PendingOrders(props, { navigation }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
     const [visible, setVisible] = useState([]);
-    const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
     const [roleas, setRoleas] = useState("");
     const [userId, setUserId] = useState("");
@@ -38,11 +37,10 @@ export default function PendingOrders(props, { navigation }) {
         }
         fetchData();
 
-        setHost(props.host);
         setRoleas(props.roleas);
 
-        Order_by_status(host, "pending")
-        .then(function(result) {
+        Order_by_status("pending")
+        .then(result=> {
             setAllOrders(result);
         })
 
@@ -55,7 +53,7 @@ export default function PendingOrders(props, { navigation }) {
             setFlag(true);
         }
 
-    }, [allOrders, host, visible, flag, roleas, props.roleas, props.host]);
+    }, [allOrders,  visible, flag, roleas, props.roleas]);
 
     const openMenu = (index) => {
         const values = [...visible];

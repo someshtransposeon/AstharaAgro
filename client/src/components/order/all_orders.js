@@ -20,17 +20,15 @@ export default function AllOrders(props, { navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
-    const [host, setHost] = useState("");
 
     useEffect(() => {
-
-        setHost(props.host);
-        allOrder(host)
-        .then(function(result) {
+        
+        allOrder()
+        .then(result=> {
             setAllOrders(result);
         })
 
-    }, [allOrders, host, props.host]);
+    }, [allOrders]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
