@@ -4,7 +4,8 @@ import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar ,Text}
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import {item_category,item_unit,item_grade} from  '../../services/item_api';
+// import {item_category,item_unit,item_grade} from  '../../services/item_api';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -56,20 +57,20 @@ export default function AddItem({ navigation }) {
             setHost("localhost");
         }
         //Retrieve item category 
-        item_category(host)
-        .then(function(result) {
-            setItemCategory(result);
-        });
+        // item_category(host)
+        // .then(function(result) {
+        //     setItemCategory(result);
+        // });
         //Retrieve item unit
-        item_unit(host)
-        .then(function(result) {
-            setItemUnit(result);
-        });
-        //Retrieve item Grade 
-        item_grade(host)
-        .then(function(result) {
-            setItemGrade(result);
-        });
+        // item_unit(host)
+        // .then(function(result) {
+        //     setItemUnit(result);
+        // });
+        // //Retrieve item Grade 
+        // item_grade(host)
+        // .then(function(result) {
+        //     setItemGrade(result);
+        // });
 
     }, [itemCategory,host,itemUnit,itemGrade]);
 

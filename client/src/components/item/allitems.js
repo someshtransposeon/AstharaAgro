@@ -24,16 +24,9 @@ export default function AllItems(props,{ navigation }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-        setHost(props.host);
         //Retrieve all items
-        allitem(host)
-        .then(function(result) {
+        allitem()
+        .then(result => {
             setAllItems(result);
         })
 

@@ -19,23 +19,17 @@ const theme = {
 export default function AllItemUnits(props,{ navigation }) {
 
     const [allItemUnit, setAllItemUnit] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
         //Retrieve all item Unit
-        item_unit(host)
-        .then(function(result) {
+        item_unit()
+        .then(result => {
             setAllItemUnit(result);
         })
-    }, [allItemUnit, host]);
+
+    }, [allItemUnit]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

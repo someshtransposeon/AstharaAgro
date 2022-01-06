@@ -15,7 +15,7 @@ router.get('/vendors_retrive_all_item',(req, res)=>{
 });
 //Define route to retrive item by item id
 router.get('/vendors_retrive_item/:vendorid',(req, res)=>{
-    VendorsItem.find({}, function(err, item){
+    VendorsItem.find({userId:req.params.vendorid}, function(err, item){
         if(err){
             console.log(err);
         }
@@ -34,6 +34,7 @@ router.get('/retrive_vendor_item/:id',(req, res)=>{
         }
     });
 });
+
 router.get('/vendors_retrive_all_disabled_items',(req, res)=>{
     VendorsItem.find({ status: "disabled"}, function(err, items){
         if(err){
@@ -43,28 +44,6 @@ router.get('/vendors_retrive_all_disabled_items',(req, res)=>{
             res.json(items);0.2
         }
     });
-});
-router.get('/vendors_retrive_all_items',(req, res)=>{
-    VendorsItem.find({status:"enabled"}, function(err, items){
-        if(err){
-            console.log(err);
-        }
-        else {
-            res.json(items);
-        }
-    });
-});
-router.get('/vendors_one_item',(req, res)=>{
-    VendorsItem.find({}, function(err, items){
-        if(err){
-            console.log(err);
-        }
-        else {
-            res.json(items);
-        }
-    }) .limit(1)
-    
-    
 });
 
 router.get('/retrive_vendor_item_by_name_grade/:itemname/:grade',(req, res)=>{

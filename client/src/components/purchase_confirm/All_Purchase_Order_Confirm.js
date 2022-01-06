@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 'react-native-paper';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator, Text  } from 'react-native';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Portal, Modal  } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,6 +21,11 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
     const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
+    const [visible, setVisible] = useState(false);
+    const [vendor, setVendor] = useState();
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
 
     useEffect(() => {
 
@@ -39,13 +45,35 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
 
     }, [allPurchaseOrderConfirm, host]);
 
+    function VendorDetails(id) {
+        users_by_id(id)
+        .then(result => {
+            setVendor(result[0]);
+            showModal();
+        })
+    }
+
     const onChangeSearch = query => setSearchQuery(query);
+
+    const containerStyle = {backgroundColor: 'white', padding: 20, width: '50%'};
 
     return (
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
             <View>
+                <Portal align="center" justify="center">
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                        {vendor &&
+                            <>
+                                <Text>Vendor Email: {vendor.email}</Text>
+                                <Text>Vendor Nick Name: {vendor.nick_name}</Text>
+                                <Text>Vendor Name: {vendor.full_name}</Text>
+                                <Text>Vendor Mobile: {vendor.mobile_no}</Text>
+                            </>
+                        }
+                    </Modal>
+                </Portal>
                 <DataTable style={styles.datatable}>
                     <Title style={{marginBottom: '20px'}}>All Confirm Purchase Order</Title>
                     <Searchbar
@@ -71,7 +99,7 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{purchaseOrderConfirm.custom_orderId}</DataTable.Cell>
-                                        <DataTable.Cell>{purchaseOrderConfirm.custom_vendorId}</DataTable.Cell>
+                                        <DataTable.Cell onPress={() => VendorDetails(purchaseOrderConfirm.vendor_id)}>{purchaseOrderConfirm.custom_vendorId}</DataTable.Cell>
                                         <DataTable.Cell>{purchaseOrderConfirm.items.itemName+" ("+purchaseOrderConfirm.items.Grade+")"}</DataTable.Cell>
                                         <DataTable.Cell>{purchaseOrderConfirm.status}</DataTable.Cell>
                                         <DataTable.Cell numeric> 

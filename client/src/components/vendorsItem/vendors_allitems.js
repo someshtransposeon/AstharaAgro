@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { all_vendor_items_by_id } from '../../services/vendor_api';
 
 const theme = {
     ...DefaultTheme,
@@ -40,14 +41,13 @@ export default function VendorsAllItems(props,{ navigation }) {
             setHost("localhost");
         }
         setRoleas(props.roleas);
-        fetch(`http://${host}:5000/vendors_retrive_all_items`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allItems => {
-            setAllItems(allItems);
-        });
+
+        if(userId){
+            all_vendor_items_by_id(userId)
+            .then(result => {
+                setAllItems(result);
+            });
+        }
 
     }, [allItems, host, userId, roleas,props.roleas]);
 

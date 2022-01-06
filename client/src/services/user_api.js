@@ -1,3 +1,5 @@
+import {url} from '../utils/url';
+import axios from 'axios';
 //retrive users by category
 export function all_users(host){
     return fetch(`http://${host}:5000/retrive_all_user`, {
@@ -10,15 +12,11 @@ export function all_users(host){
     });
 }
 //retrive user by id
-export function users_by_id(host,userId){
-    return fetch(`http://${host}:5000/retrive_user/${userId}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(user => {
-        return user;
-    });
+export const users_by_id = (userId) => {
+    return axios.get(url + '/retrive_user/' + userId)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retrive all disabled users
 export function disabled_users(host){
@@ -32,15 +30,11 @@ export function disabled_users(host){
     });
 }
 //retive all users by category
-export function all_users_by_role(host,role){
-    return fetch(`http://${host}:5000/retrive_user_by_role/${role}`, {
-        method: 'GET'
-    })
-    .then(res => res.json())
-    .catch(error => console.log(error))
-    .then(data =>{
-         return data;
-    });
+export const all_users_by_role = (role) => {
+    return axios.get(url + '/retrive_user_by_role/' + role)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
 }
 //retive all disabled users category
 export function disabled_user_category(host){

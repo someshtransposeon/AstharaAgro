@@ -89,6 +89,11 @@ const retrive_vendor_address = require('./routes/vendor_address/retrieve_vendor_
 const update_vendor_address = require('./routes/vendor_address/update_vendor_address');
 const delete_vendor_address = require('./routes/vendor_address/delete_vendor_address');
 
+const create_customer_address = require('./routes/customer_address/create_customer_address');
+const retrive_customer_address = require('./routes/customer_address/retrieve_customer_address');
+const update_customer_address = require('./routes/customer_address/update_customer_address');
+const delete_customer_address = require('./routes/customer_address/delete_customer_address');
+
 const create_bank = require('./routes/bankDetails/create_bank');
 const delete_bank = require('./routes/bankDetails/delete_bank');
 const retrive_bank = require('./routes/bankDetails/retrive_bank');
@@ -229,6 +234,10 @@ app.use('/', retrive_vendor_address);
 app.use('/', update_vendor_address);
 app.use('/', delete_vendor_address);
 
+app.use('/', create_customer_address);
+app.use('/', retrive_customer_address);
+app.use('/', update_customer_address);
+app.use('/', delete_customer_address);
 
 app.use('/', create_bank);
 app.use('/', delete_bank);
@@ -307,7 +316,6 @@ app.use('/', vendors_create_item);
 app.use('/', vendors_retrive_item);
 app.use('/', vendors_update_item);
 
-
 app.use('/', create_pickup_assign);
 app.use('/', retrive_pickup_assign);
 app.use('/', update_pickup_assign);
@@ -323,9 +331,6 @@ app.use('/', update_delivery_assign);
 app.use('/', create_update_delivery);
 app.use('/', retrive_update_delivery);
 app.use('/', update_delivery);
-
-
-
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");

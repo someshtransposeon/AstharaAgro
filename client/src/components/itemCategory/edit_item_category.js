@@ -39,10 +39,10 @@ export default function EditItemCategory(props,{route}) {
             setItemCategoryId(itemCategoryid);
         }
 
-        if(itemCategoryId && host){
+        if(itemCategoryId){
             //Retrieve item_category by itemCategoryId
-            item_category_by_id(host, itemCategoryId)
-            .then(function(result) {
+            item_category_by_id(itemCategoryId)
+            .then(result => {
                  setItemCategoryName(result[0].category_name);
             })
         }

@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator} from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { TextInput, Card, Provider, DefaultTheme } from 'react-native-paper';
+import { all_vendor_items_by_itemid } from '../../services/vendor_api';
 
 const theme = {
     ...DefaultTheme,
@@ -53,27 +51,22 @@ export default function VendorsViewItem(props,{route}) {
             setItemId(itemid);
         }
 
-        if(itemId && flag){
-            fetch(`http://${host}:5000/retrive_vendor_item/${itemId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setGrade(item[0].grade_name);
-                setUnit(item[0].unit_name);
-                setCategory(item[0].category_name);
-                setItemName(item[0].item_name);
-                setDescription(item[0].description);
-                setItemPrice(item[0].item_price);
-                setAddress(item[0].address);
-                setLandmark(item[0].landmark);
-                setDistrict(item[0].district);
-                setState(item[0].state);
-                setCountry(item[0].country);
-                setPincode(item[0].postal_code);
+        if(itemId){
+            all_vendor_items_by_itemid(itemId)
+            .then(result => {
+                setGrade(result[0].grade_name);
+                setUnit(result[0].unit_name);
+                setCategory(result[0].category_name);
+                setItemName(result[0].item_name);
+                setDescription(result[0].description);
+                setItemPrice(result[0].item_price);
+                setAddress(result[0].address);
+                setLandmark(result[0].landmark);
+                setDistrict(result[0].district);
+                setState(result[0].state);
+                setCountry(result[0].country);
+                setPincode(result[0].postal_code);
             });
-            setFlag(false);
         }
 
     }, [host,itemId,id,itemid,flag]);

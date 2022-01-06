@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { all_users_by_role, users_by_id } from '../../services/user_api';
+import { item_grade } from  '../../services/item_api';
+import { Link } from "react-router-dom";
+import { all_customer_items_by_id, customer_address_by_id } from '../../services/customer_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,9 +24,11 @@ export default function CreateOrder({ navigation }) {
     const [searchQuery1, setSearchQuery1] = useState('');
     const [searchQuery2, setSearchQuery2] = useState('');
     const [searchQuery4, setSearchQuery4] = useState('');
+    const [searchQuery5, setSearchQuery5] = useState('');
     const [visible, setVisible] = useState([]);
     const [visible4, setVisible4] = useState([]);
     const [visible2, setVisible2] = useState(false);
+    const [visible5, setVisible5] = useState(false);
     const [item, setItem] = useState();
     const [host, setHost] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:'',itemPrice:'',finalPrice:'', Grade: 'Choose Grade',}]);
@@ -35,7 +41,7 @@ export default function CreateOrder({ navigation }) {
     const [district, setDistrict] = useState('');
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
-    const [pincode, setPincode] = useState('');
+    const [pincode, setPincode] = useState("Choose Address");
     const [flag, setFlag] = useState(true);
     const [customer, setCustomer] = useState();
     const [customerEmail, setCustomerEmail] = useState("Choose customer");
@@ -45,6 +51,7 @@ export default function CreateOrder({ navigation }) {
     const [customerId,setCustomerId]=useState("");
     const [flag2,setFlag2]=useState(true);
     const [itemGrade, setItemGrade]=useState();
+    const [customerAddress, setCustomerAddress] = useState();
 
     useEffect(() => {
 
@@ -75,12 +82,10 @@ export default function CreateOrder({ navigation }) {
             }
         });
 
-        fetch(`http://${host}:5000/retrive_all_customer`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => setCustomer(customer));
+        all_users_by_role("customer")
+        .then(result => {
+            setCustomer(result);
+        })                     
 
         fetch('http://localhost:5000/retrive_user_category_type/customer', {
             method: 'GET'
@@ -92,29 +97,10 @@ export default function CreateOrder({ navigation }) {
             setRole(data.category_name);
         });
 
-        if(flag2 && userId!=""){
-            fetch(`http://${host}:5000/retrive_address_by_userId/${userId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(address => {
-                // setAddress(address[0].address);
-                // setLandmark(address[0].landmark);
-                // setDistrict(address[0].district);
-                // setState(address[0].state);
-                // setCountry(address[0].country);
-                // setPincode(address[0].postal_code);
-                setFlag2(false);
-            });
-        }
-
-        fetch(`http://${host}:5000/retrive_all_item_grade`, {
-            method: 'GET'
+        item_grade()
+        .then(result => {
+            setItemGrade(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemGrade => setItemGrade(itemGrade));
 
     }, [item, host, userId, flag2, itemGrade, address, landmark, district, state, country, pincode, role, category, customerId]);
 
@@ -132,6 +118,9 @@ export default function CreateOrder({ navigation }) {
 
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
+
+    const openMenu5 = () => setVisible5(true);
+    const closeMenu5 = () => setVisible5(false);
 
     const openMenu4 = (index) => {
         const values = [...visible];
@@ -183,18 +172,21 @@ export default function CreateOrder({ navigation }) {
 
     const CustomerChange = (id, email) => {
         setCustomerEmail(email);
-        fetch(`http://${host}:5000/retrive_customer/${id}`, {
-            method: 'GET'
+        
+        users_by_id(id)
+        .then(result => {
+            setEmail(result[0].email);
+            setNickName(result[0].nick_name);
+            setName(result[0].full_name);
+            setMobileNo(result[0].mobile_no);
+            setCustomerId(result[0].userId);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(customer => {
-            setEmail(customer[0].email);
-            setNickName(customer[0].nick_name);
-            setName(customer[0].full_name);
-            setMobileNo(customer[0].mobile_no);
-            setCustomerId(customer[0].userId);
-        });
+
+        all_customer_items_by_id(id)
+        .then(result => {
+            setCustomerAddress(result);
+        })
+
         closeMenu2();
     };
 
@@ -247,6 +239,7 @@ export default function CreateOrder({ navigation }) {
                 body: JSON.stringify({
                     category:category,
                     role:role,
+                    nick_name:nick_name,
                     full_name:name,
                     email:email,
                     mobile_no:mobileNo,
@@ -257,33 +250,26 @@ export default function CreateOrder({ navigation }) {
             .then(data => {
                 Alert("Successfully user created");
             });
-
-            fetch(`http://${host}:5000/create_address`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: userId,
-                    address: address,
-                    landmark: landmark,
-                    district: district,
-                    state: state,
-                    country: country,
-                    postal_code: pincode,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                Alert("New Address of user added");
-            }); 
         }
+    }
+
+    function chooseAddress(addressId) {
+        customer_address_by_id(addressId)
+        .then(result => {
+            setAddress(result[0].address);
+            setLandmark(result[0].landmark);
+            setPincode(result[0]. postal_code);
+            setState(result[0].state);
+            setDistrict(result[0].district);
+            setCountry(result[0].country);
+        });
+        closeMenu5();
     }
 
     const onChangeSearch1 = query => setSearchQuery1(query);
     const onChangeSearch2 = query => setSearchQuery2(query);
     const onChangeSearch4 = query => setSearchQuery4(query);
+    const onChangeSearch5 = query => setSearchQuery5(query);
 
     return (
         <Provider theme={theme}>
@@ -328,6 +314,34 @@ export default function CreateOrder({ navigation }) {
                         <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
                         <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                         <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                        {flag &&
+                            <Menu
+                            visible={visible5}
+                            onDismiss={closeMenu5}
+                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu5}>{pincode}</Button>}>
+                                <Searchbar
+                                    icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                    clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                    placeholder="Search"
+                                    onChangeText={onChangeSearch5}
+                                    value={searchQuery5}
+                                />
+                                {Platform.OS=='android' ?
+                                    <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemGrade')}}>Add Grade</Button>
+                                    :
+                                    <Link to="/customer_add_address"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Customer Address</Button></Link>
+                                }
+                                {customerAddress ?
+                                    customerAddress.map((item)=>{
+                                        return (
+                                            <Menu.Item title={item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
+                                        )
+                                    })
+                                    :
+                                    <Menu.Item title="No Address Available" />
+                                }
+                            </Menu>
+                        }
                         <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
                         <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
                         <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />

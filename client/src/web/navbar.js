@@ -89,6 +89,10 @@ import VendorAddAddress from '../components/vendor_address/add_vendor_address';
 import VendorAllAddress from '../components/vendor_address/all_vendor_address';
 import VendorEditAddress from '../components/vendor_address/edit_vendor_address';
 
+import CustomerAddAddress from '../components/customer_address/add_address';
+import CustomerAllAddress from '../components/customer_address/all_customer_address';
+import CustomerEditAddress from '../components/customer_address/edit_customer_address';
+
 import Edit_Vendor_Purchase_Order from '../components/purchase_order/Edit_Vendor_Purchase_Order';
 import All_Declined_Purchase_Orders from '../components/purchase_order/All_Declined_Purchase_Orders';
 
@@ -328,6 +332,14 @@ const NavBar =()  => {
                                         <NavDropdown.Item to="/approvedorders" as={Link}>Approved Orders</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item to="/pendingorders" as={Link}>Pending Orders</NavDropdown.Item>
+                                    </>
+                                }   
+                                {(roleas=="sales" || roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/customer_add_address" as={Link}>Add new customer address</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/customer_all_addresses" as={Link}>All Customer addresses</NavDropdown.Item>
                                     </>
                                 }
                                 </NavDropdown>
@@ -595,6 +607,7 @@ const NavBar =()  => {
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact />
                 <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
+                <Route path="/edit_customer_address/:addressid" render={(props) => <CustomerEditAddress  {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>
@@ -720,6 +733,12 @@ const NavBar =()  => {
                </Route>
                <Route path="/vendors_all_addresses">
                    <VendorAllAddress />
+               </Route>
+               <Route path="/customer_add_address">
+                  <CustomerAddAddress />
+               </Route>
+               <Route path="/customer_all_addresses">
+                   <CustomerAllAddress />
                </Route>
                 <Route path="/vendors_allitems">
                     <VendorsAllItems roleas={roleas}/>

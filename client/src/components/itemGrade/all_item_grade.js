@@ -19,23 +19,17 @@ const theme = {
 export default function AllItemGrades(props,{ navigation }) {
 
     const [allItemGrade, setAllItemGrade] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
         //Retrieve all item grade
-        item_grade(host)
-        .then(function(result) {
+        item_grade()
+        .then(result => {
             setAllItemGrade(result);
         })
-    }, [allItemGrade, host]);
+
+    }, [allItemGrade]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

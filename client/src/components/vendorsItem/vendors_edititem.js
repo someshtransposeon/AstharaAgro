@@ -4,7 +4,8 @@ import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import {all_vendor_addresses} from '../../services/vendor_address_api';
+import { all_vendor_addresses, all_vendor_items_by_itemid, vendor_address_by_id } from '../../services/vendor_api';
+import { item_all_category, item_grade, item_unit } from '../../services/item_api';
 
 const theme = {
     ...DefaultTheme,
@@ -80,59 +81,52 @@ export default function VendorsEditItem(props,{navigation, route}) {
             setHost("localhost");
             setItemId(itemid);
         }
-
+        
         if(itemId && flag){
-            fetch(`http://${host}:5000/retrive_vendor_item/${itemId}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setUserId(item[0].userId),
-                setGradeId(item[0].grade);
-                setUnitId(item[0].unit);
-                setCategoryId(item[0].category);
-                setGrade(item[0].grade_name);
-                setUnit(item[0].unit_name);
-                setCategory(item[0].category_name);
-                setItemName(item[0].item_name);
-                setDescription(item[0].description);
-                setItemPrice(item[0].item_price);
-                setAddress(item[0].address);
-                setLandmark(item[0].landmark);
-                setDistrict(item[0].district);
-                setState(item[0].state);
-                setCountry(item[0].country);
-                setPincode(item[0].postal_code);
+            all_vendor_items_by_itemid(itemId)
+            .then(result => {
+                setUserId(result[0].userId),
+                setGradeId(result[0].grade);
+                setUnitId(result[0].unit);
+                setCategoryId(result[0].category);
+                setGrade(result[0].grade_name);
+                setUnit(result[0].unit_name);
+                setCategory(result[0].category_name);
+                setItemName(result[0].item_name);
+                setDescription(result[0].description);
+                setItemPrice(result[0].item_price);
+                setAddress(result[0].address);
+                setLandmark(result[0].landmark);
+                setDistrict(result[0].district);
+                setState(result[0].state);
+                setCountry(result[0].country);
+                setPincode(result[0].postal_code);
+                setFlag(false);
             });
-            setFlag(false);
         }
 
-        fetch(`http://${host}:5000/retrive_all_item_category`, {
-            method: 'GET'
+        //Retrieve all item category
+        item_all_category()
+        .then(result => {
+            setItemCategory(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemCategory => setItemCategory(itemCategory));
 
-        fetch(`http://${host}:5000/retrive_all_item_unit`, {
-            method: 'GET'
+        //Retrieve all item unit
+        item_unit()
+        .then(result => {
+            setItemUnit(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemUnit => setItemUnit(itemUnit));
 
-        fetch(`http://${host}:5000/retrive_all_item_grade`, {
-            method: 'GET'
+        //Retrieve all item grade
+        item_grade()
+        .then(result => {
+            setItemGrade(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(itemGrade => setItemGrade(itemGrade));
 
+        //Retrieve vendor addresses
         if(userId){
-            //Retrieve item category 
-            all_vendor_addresses(host,userId)
-            .then(function(result) {
+            all_vendor_addresses(userId)
+            .then(result => {
                 setVendorAddress(result);
             });
         }
@@ -200,18 +194,14 @@ export default function VendorsEditItem(props,{navigation, route}) {
     }
 
     function chooseAddress(addressId) {
-        fetch(`http://${host}:5000/retrieve_vendor_address/${addressId}`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(item => {
-            setAddress(item[0].address);
-            setLandmark(item[0].landmark);
-            setPincode(item[0]. postal_code);
-            setState(item[0].state);
-            setDistrict(item[0].district);
-            setCountry(item[0].country);
+        vendor_address_by_id(addressId)
+        .then(result => {
+            setAddress(result[0].address);
+            setLandmark(result[0].landmark);
+            setPincode(result[0]. postal_code);
+            setState(result[0].state);
+            setDistrict(result[0].district);
+            setCountry(result[0].country);
         });
         closeMenu4();
     }

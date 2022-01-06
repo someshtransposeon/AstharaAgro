@@ -39,10 +39,10 @@ export default function EditItemGrade(props,{route}) {
             setItemGradeId(itemGradeid);
         }
 
-        if(itemGradeId && host){
+        if(itemGradeId){
             //Retrieve item grade by ItemGradeid
-            item_grade_by_grade_id(host,itemGradeId)
-            .then(function(result) {
+            item_grade_by_grade_id(itemGradeId)
+            .then(result => {
                 setItemGradeName(result[0].grade_name);
             })
         }

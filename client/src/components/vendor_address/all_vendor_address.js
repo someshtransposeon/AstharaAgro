@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {all_vendor_addresses} from '../../services/vendor_address_api';
+import { all_vendor_addresses } from '../../services/vendor_api';
 
 const theme = {
     ...DefaultTheme,
@@ -16,7 +16,6 @@ const theme = {
         accent: '#f1c40f',
     },
 };
-
 
 export default function All_addresses({ navigation }) {
 
@@ -41,13 +40,14 @@ export default function All_addresses({ navigation }) {
             setHost("localhost");
         }
 
+        //Retrieve vendors address
         if(vendorId){
-            //Retrieve item category 
-            all_vendor_addresses(host,vendorId)
-            .then(function(result) {
+            all_vendor_addresses(vendorId)
+            .then(result => {
                 setAddress(result);
             });
         }
+        
     }, [address, host, vendorId ]);
     
     const onChangeSearch = query => setSearchQuery(query);

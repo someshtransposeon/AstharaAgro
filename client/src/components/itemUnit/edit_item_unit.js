@@ -41,8 +41,8 @@ export default function EditItemUnit(props,{route}) {
 
         if(itemUnitId){
             //Retrieve item Unit by itemUnitId
-            item_unit_by_unitid(host, itemUnitId)
-            .then(function(result) {
+            item_unit_by_unitid(itemUnitId)
+            .then(result => {
                 setItemUnitName(result[0].unit_name);
             })
         }

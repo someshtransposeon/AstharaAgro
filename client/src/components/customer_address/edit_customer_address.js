@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
-import { vendor_address_by_id } from '../../services/vendor_api';
+import { customer_address_by_id } from '../../services/customer_api';
 
 const theme = {
     ...DefaultTheme,
@@ -27,7 +27,7 @@ export default function EditAddress(props, {route}) {
 
     //initialize all required state variables
     const [addressId,setAddressId]=useState("");
-    const [vendorId, setVendorId] = useState('');
+    const [customerId, setCustomerId] = useState('');
     const [address, setAddress] = useState('');
     const [landmark, setLandmark] = useState('');
     const [district, setDistrict] = useState('');
@@ -47,9 +47,9 @@ export default function EditAddress(props, {route}) {
         }
 
         if(addressId){
-            vendor_address_by_id(addressId)
+            customer_address_by_id(addressId)
             .then(result => {
-                setVendorId(result[0].vendorId);
+                setCustomerId(result[0].customerId);
                 setAddress(result[0].address);
                 setLandmark(result[0].landmark);
                 setPincode(result[0]. postal_code);
@@ -62,13 +62,13 @@ export default function EditAddress(props, {route}) {
     }, [host,id,addressId,addressid]);
     //define a function for sending the data in corresponding database
     function submitForm() {
-        fetch(`http://${host}:5000/update_vendor_address/${addressId}`, {
+        fetch(`http://${host}:5000/update_customer_address/${addressId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                vendorId: vendorId,
+                customerId: customerId,
                 address: address,
                 landmark: landmark,
                 district: district,
@@ -85,7 +85,7 @@ export default function EditAddress(props, {route}) {
         }); 
     }
     function deleteaddress(){
-        fetch(`http://${host}:5000/delete_vendor_address/${addressId}`, {
+        fetch(`http://${host}:5000/delete_customer_address/${addressId}`, {
             method: 'GET'
         })
         .then(res => res.json())
