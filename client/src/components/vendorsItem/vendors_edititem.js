@@ -58,6 +58,7 @@ export default function VendorsEditItem(props,{navigation, route}) {
     const [gradeId, setGradeId] = useState("");
     const [itemName, setItemName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
+    const [itemQuantity, setItemQuantity] = useState("");
     const [itemDescription, setDescription,] = useState("");
     const [item_price,setItemPrice]=useState("");
     const [unit,setUnit]=useState("Select unit of each item");
@@ -85,6 +86,7 @@ export default function VendorsEditItem(props,{navigation, route}) {
                 setUnit(result[0].unit_name);
                 setCategory(result[0].category_name);
                 setItemName(result[0].item_name);
+                setItemQuantity(result[0].item_quantity);
                 setDescription(result[0].description);
                 setItemPrice(result[0].item_price);
                 setAddress(result[0].address);
@@ -162,6 +164,7 @@ export default function VendorsEditItem(props,{navigation, route}) {
                 category_name: category,
                 unit_name: unit,
                 grade_name: grade,
+                item_quantity: itemQuantity,
                 description: itemDescription,
                 item_price:item_price,
                 address: address,
@@ -298,6 +301,7 @@ export default function VendorsEditItem(props,{navigation, route}) {
                                 <Menu.Item title="No item Unit Available" />
                             }
                         </Menu>
+                        <TextInput style={styles.input} mode="outlined" label="Item Quantity" multiline value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Price" numeric value={item_price} onChangeText={item_price => setItemPrice(item_price)} />
                         <Menu key={4}
