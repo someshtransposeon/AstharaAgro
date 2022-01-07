@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { item_grade_by_grade_id } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -16,81 +18,52 @@ const theme = {
 export default function DisabledEditItemGrade(props,{route}) {
 
     var itemGradeid = "";
-    var id="";
     if(Platform.OS=="android"){
-        id = route.params.itemGradeId;
+        itemGradeid = route.params.itemGradeId;
     }
     else{
         itemGradeid = props.match.params.itemGradeid;
     }
 
-    const [itemGradeId, setItemGradeId] = useState("");
     const [itemGradeName, setItemGradeName] = useState("");
-    const [host, setHost] = useState("");
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setItemGradeId(id);
-        }
-        else{
-            setHost("localhost");
-            setItemGradeId(itemGradeid);
-        }
-
-        if(itemGradeId && host){
+        if(itemGradeid){
         //Retrieve disbled item grade by ItemGradeid
-        item_grade_by_grade_id(host,itemGradeId)
-        .then(function(result) {
-            setItemGradeName(result[0].grade_name);
-        })
-            // fetch(`http://${host}:5000/retrive_item_grade/${itemGradeId}`, {
-            //     method: 'GET'
-            // })
-            // .then(res => res.json())
-            // .catch(error => console.log(error))
-            // .then(item => {
-            //     setItemGradeName(item[0].grade_name);
-            // });
+            item_grade_by_grade_id(itemGradeid)
+            .then(result=> {
+                setItemGradeName(result[0].grade_name);
+            })
+
         }
 
-    }, [host,itemGradeId,id,itemGradeid, props.host ]);
+    }, [itemGradeid, props.host ]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_item_grade/${itemGradeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                grade_name: itemGradeName,
-            })
+        axios.put(url + '/update_item_grade/'+itemGradeid, {
+            grade_name: itemGradeName,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        }); 
+          .then(function (response) {
+              console.log(response);
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
        
     const StatusChange = (s) => {
-        fetch(`http://${host}:5000/enabled_item_grade/${itemGradeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
+        axios.put(url + '/enabled_item_grade/'+itemGradeid, {
+            status: s,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
+          .then(function (response) {
+              console.log(response);
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }; 
 
     return (

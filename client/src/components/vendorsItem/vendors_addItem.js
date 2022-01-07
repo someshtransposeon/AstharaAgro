@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {all_vendor_addresses, vendor_address_by_id} from '../../services/vendor_api';
 import { item_all_category, item_grade, item_unit } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -144,12 +146,7 @@ export default function AddItem({ navigation }) {
     }
     //define a function for sending the data in corresponding database
     function submitForm() {
-        fetch(`http://${host}:5000/vendors_create_item`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        axios.post(url + '/vendors_create_item', {
                 userId: userId,
                 category: categoryId,
                 unit: unitId,
@@ -168,13 +165,13 @@ export default function AddItem({ navigation }) {
                 state: state,
                 country: country,
                 postal_code: pincode,
-            })
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        }); 
+          .then(function (response) {
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
     }
 
     const onChangeSearch = query => setSearchQuery(query);

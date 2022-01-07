@@ -29,7 +29,7 @@ export const item_grade = () => {
     }).catch(err => console.log(err))
 }
 //retrive all disabled items
-export const all_disabled_item_grade= (id) => {
+export const all_disabled_item_grade= () => {
     return axios.get(url + '/retrive_all_disabled_item_grade')
     .then(res => {
         return res.data;
@@ -59,7 +59,7 @@ export const item_category_by_id = (id) => {
 //retrive all disabled item categories
 
 export const all_disabled_item_category = () => {
-    return axios.get(url + 'retrive_all_disabled_item_category')
+    return axios.get(url + '/retrive_all_disabled_item_category')
     .then(res => {
         return res.data;
     }).catch(err => console.log(err))

@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { item_category_by_id } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -16,72 +18,53 @@ const theme = {
 export default function EditItemCategory(props,{route}) {
 
     var itemCategoryid = "";
-    var id="";
     if(Platform.OS=="android"){
-        id = route.params.itemCategoryId;
+        itemCategoryid = route.params.itemCategoryId;
     }
     else{
         itemCategoryid = props.match.params.itemCategoryid;
     }
-
-    const [itemCategoryId, setItemCategoryId] = useState("");
     const [itemCategoryName, setItemCategoryName] = useState("");
-    const [host, setHost] = useState("");
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setItemCategoryId(id);
-        }
-        else{
-            setHost("localhost");
-            setItemCategoryId(itemCategoryid);
-        }
-
-        if(itemCategoryId){
-            //Retrieve item_category by itemCategoryId
-            item_category_by_id(itemCategoryId)
+        if(itemCategoryid){
+            //Retrieve item_category by itemCategoryid
+            item_category_by_id(itemCategoryid)
             .then(result => {
                  setItemCategoryName(result[0].category_name);
             })
         }
         
-    }, [host,itemCategoryId,id,itemCategoryid,props.host]);
+    }, [itemCategoryid,props.host]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_item_category/${itemCategoryId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                category_name: itemCategoryName,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        }); 
+
+        axios.put(url + '/update_item_category/'+itemCategoryid, {
+            category_name: itemCategoryName,
+          })
+          .then(function (response) {
+              console.log(response);
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        
     }
 
     //  function submitForm2() {
     const StatusChange = (s) => {
-        fetch(`http://${host}:5000/disabled_item_category/${itemCategoryId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
+
+        axios.put(url + '/disabled_item_category/'+itemCategoryid, {
+            status: s,
+          })
+          .then(function (response) {
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
 
     return (

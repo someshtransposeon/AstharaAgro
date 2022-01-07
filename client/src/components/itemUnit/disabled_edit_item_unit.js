@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { item_unit_by_unitid } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -18,69 +20,51 @@ export default function DisabledEditItemUnit(props,{route}) {
     var itemUnitid = "";
     var id="";
     if(Platform.OS=="android"){
-        id = route.params.itemUnitId;
+        itemUnitid = route.params.itemUnitId;
     }
     else{
         itemUnitid = props.match.params.itemUnitid;
     }
 
-    const [itemUnitId, setItemUnitId] = useState("");
     const [itemUnitName, setItemUnitName] = useState("");
-    const [host, setHost] = useState("");
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setItemUnitId(id);
-        }
-        else{
-            setHost("localhost");
-            setItemUnitId(itemUnitid);
-        }
-
-        if(itemUnitId){
+        if(itemUnitid){
             //Retrieve disabled item Unit by itemUnitId
-            item_unit_by_unitid(host, itemUnitId)
-            .then(function(result) {
+            item_unit_by_unitid(itemUnitid)
+            .then(result =>{
                 setItemUnitName(result[0].unit_name);
             })
         }
 
-    }, [host,itemUnitId,id,itemUnitid]);
+    }, [itemUnitid]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_item_unit/${itemUnitId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                unit_name: itemUnitName,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        }); 
+
+        axios.put(url + '/update_item_unit/'+itemUnitid, {
+            unit_name: itemUnitName,
+          })
+          .then(function (response) {
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
+         
     }
     
     const StatusChange = (s) => {
-        fetch(`http://${host}:5000/enabled_item_unit/${itemUnitId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
+        
+        axios.put(url + '/enabled_item_unit/'+itemUnitid, {
+            status: s,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
+          .then(function (response) {
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
     }; 
 
     return (

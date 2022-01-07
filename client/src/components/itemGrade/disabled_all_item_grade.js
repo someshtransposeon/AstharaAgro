@@ -19,25 +19,17 @@ const theme = {
 export default function DisabledAllItemGrade({ navigation }) {
 
     const [allItemGrade, setAllItemGrade] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-
         //Retrieve all disbled item grade
-        all_disabled_item_grade(host)
-        .then(function(result) {
+        all_disabled_item_grade()
+        .then(result=> {
             setAllItemGrade(result);
         })
 
-    }, [allItemGrade, host]);
+    }, [allItemGrade]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

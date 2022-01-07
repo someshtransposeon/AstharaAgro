@@ -19,31 +19,18 @@ const theme = {
 export default function DisabledAllItemCategories(props,{ navigation }) {
 
     const [allItemCategories, setAllItemCategories] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-        setHost(props.host);
         //Retrieve all disabled item category
-        all_disabled_item_category(host)
-        .then(function(result) {
+        all_disabled_item_category()
+        .then(result=> {
+            console.log(result);
             setAllItemCategories(result);
         })
-        // fetch(`http://${host}:5000/retrive_all_disabled_item_category`, {
-        //     method: 'GET'
-        // })
-        // .then(res => res.json())
-        // .catch(error => console.log(error))
-        // .then(categories => setAllItemCategories(categories));
 
-    }, [allItemCategories, host,props.host]);
+    }, [allItemCategories]);
 
     const onChangeSearch = query => setSearchQuery(query);
     

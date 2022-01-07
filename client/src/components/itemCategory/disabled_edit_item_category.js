@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { item_category_by_id } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -49,38 +51,58 @@ export default function DisabledEditItemCategory(props,{route}) {
     }, [host,itemCategoryId,id,itemCategoryid, props.host]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_item_category/${itemCategoryId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                category_name: itemCategoryName,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        }); 
+
+        axios.put(url + '/update_item_category/'+itemCategoryId, {
+            category_name: itemCategoryName,
+          })
+          .then(function (response) {
+              console.log(response);
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        // fetch(`http://${host}:5000/update_item_category/${itemCategoryId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         category_name: itemCategoryName,
+        //     })
+        // })
+        // .then(res => res.json())
+        // .catch(error => console.log(error))
+        // .then(data => {
+        //     alert(data.message);
+        // }); 
     }
 
     // function submitForm2() {
     const StatusChange = (s) => {
-        fetch(`http://${host}:5000/enabled_item_category/${itemCategoryId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
+        axios.put(url + '/disabled_item_category/'+itemCategoryId, {
+            status: s,
+          })
+          .then(function (response) {
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        // fetch(`http://${host}:5000/enabled_item_category/${itemCategoryId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         status: s,
+        //     })
+        // })
+        // .then(res => res.json())
+        // .catch(error => console.log(error))
+        // .then(data => {
+        //     alert(data.message);
+        // });
     }
 
     return (

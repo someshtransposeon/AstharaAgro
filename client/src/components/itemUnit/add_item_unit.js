@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -15,35 +17,19 @@ const theme = {
 export default function AddItemUnit({ navigation }) {
 
     const [itemUnitName, setItemUnitName] = useState("");
-    const [host, setHost] = useState("");
-
-    useEffect(() => {
-
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-
-    }, [host]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/create_item_unit`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                unit_name: itemUnitName,
-            })
+        axios.post(url + '/create_item_unit', {
+            unit_name: itemUnitName,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
+          .then(function (response) {
+            alert(response.data.message);
             setItemUnitName("");
-        }); 
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
+         
     }
 
     return (

@@ -6,6 +6,8 @@ import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-ico
 import { Link } from 'react-router-dom';
 import { all_vendor_addresses, all_vendor_items_by_itemid, vendor_address_by_id } from '../../services/vendor_api';
 import { item_all_category, item_grade, item_unit } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -20,9 +22,8 @@ const theme = {
 export default function VendorsEditItem(props,{navigation, route}) {
 
     var itemid = "";
-    var id="";
     if(Platform.OS=="android"){
-        id = route.params.itemId;
+        itemid = route.params.itemId;
     }
     else{
         itemid = props.match.params.itemid;
@@ -72,18 +73,9 @@ export default function VendorsEditItem(props,{navigation, route}) {
     const [userId, setUserId] = useState('');
 
     useEffect(() => {
-
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setItemId(id);
-        }
-        else{
-            setHost("localhost");
-            setItemId(itemid);
-        }
         
-        if(itemId && flag){
-            all_vendor_items_by_itemid(itemId)
+        if(itemid && flag){
+            all_vendor_items_by_itemid(itemid)
             .then(result => {
                 setUserId(result[0].userId),
                 setGradeId(result[0].grade);
@@ -131,7 +123,7 @@ export default function VendorsEditItem(props,{navigation, route}) {
             });
         }
 
-    }, [host,itemId,id,itemid,itemGrade,itemUnit,itemCategory,flag, userId]);
+    }, [itemid,itemGrade,itemUnit,itemCategory,flag, userId]);
 
     function chooseGrade(name) {
         setGrade(name);
@@ -162,13 +154,8 @@ export default function VendorsEditItem(props,{navigation, route}) {
     }
     //define submit function for sending the data into database
     function submitForm() {
-        fetch(`http://${host}:5000/vendors_update_item/${itemId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                category: categoryId,
+        axios.put(url + '/vendors_update_item/'+itemid, {
+            category: categoryId,
                 unit: unitId,
                 grade: gradeId,
                 item_name: itemName,
@@ -183,14 +170,13 @@ export default function VendorsEditItem(props,{navigation, route}) {
                 state: state,
                 country: country,
                 postal_code: pincode,
-            })
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            // console.log(data);
-        }); 
+          .then(function (response) {
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
     }
 
     function chooseAddress(addressId) {

@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { item_grade_by_grade_id } from '../../services/item_api';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -18,69 +20,50 @@ export default function EditItemGrade(props,{route}) {
     var itemGradeid = "";
     var id="";
     if(Platform.OS=="android"){
-        id = route.params.itemGradeId;
+        itemGradeid = route.params.itemGradeId;
     }
     else{
         itemGradeid = props.match.params.itemGradeid;
     }
-
-    const [itemGradeId, setItemGradeId] = useState("");
     const [itemGradeName, setItemGradeName] = useState("");
     const [host, setHost] = useState("");
     
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setItemGradeId(id);
-        }
-        else{
-            setHost("localhost");
-            setItemGradeId(itemGradeid);
-        }
-
-        if(itemGradeId){
+        if(itemGradeid){
             //Retrieve item grade by ItemGradeid
-            item_grade_by_grade_id(itemGradeId)
+            item_grade_by_grade_id(itemGradeid)
             .then(result => {
                 setItemGradeName(result[0].grade_name);
             })
         }
 
-    }, [host,itemGradeId,id,itemGradeid]);
+    }, [itemGradeid]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_item_grade/${itemGradeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                grade_name: itemGradeName,
-            })
+        axios.put(url + '/update_item_grade/'+itemGradeid, {
+            grade_name: itemGradeName,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        }); 
+          .then(function (response) {
+              console.log(response);
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
     }
        
     const StatusChange = (s) => {
-        fetch(`http://${host}:5000/disabled_item_grade/${itemGradeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
+        axios.put(url + '/enabled_item_grade/'+itemGradeid, {
+            status: s,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
+          .then(function (response) {
+              console.log(response);
+            alert(response.data.message);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }; 
 
     return (

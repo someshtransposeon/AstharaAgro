@@ -20,7 +20,6 @@ const theme = {
 export default function VendorsAllItems(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [userId, setUserId] = useState('');
     const [roleas, setRoleas] = useState("");
@@ -34,12 +33,6 @@ export default function VendorsAllItems(props,{ navigation }) {
         }
         fetchData();
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
         setRoleas(props.roleas);
 
         if(userId){
@@ -49,7 +42,7 @@ export default function VendorsAllItems(props,{ navigation }) {
             });
         }
 
-    }, [allItems, host, userId, roleas,props.roleas]);
+    }, [allItems,userId, roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
