@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 're
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { all_accepted_pickup_assignment } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -24,21 +25,13 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
         setRoleas(props.roleas);
-        fetch(`http://${host}:5000/retrive_all_accepted_pickup_assignment`, {
-            method: 'GET'
+        all_accepted_pickup_assignment()
+        .then(result => {
+            setAllPickupAssignment(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allPickupAssignment => setAllPickupAssignment(allPickupAssignment));
 
-    }, [allPickupAssignment, host,roleas,props.roleas]);
+    }, [allPickupAssignment,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

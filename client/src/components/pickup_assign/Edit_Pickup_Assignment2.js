@@ -3,6 +3,8 @@ import { View, StyleSheet, Platform, } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { pickup_assignment_by_id } from '../../services/pickup_api';
+import { order_item_summary_quantity } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -54,36 +56,28 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         }
 
         if(pickupAssignId){
-            fetch(`http://${host}:5000/retrive_pickup_assignment/${pickupId}`, {
-                method: 'GET'
+            pickup_assignment_by_id(pickupAssignId)
+            .then(result=>{
+                setOrder_Id(result[0].order_id);
+                setPurchaseId(result[0].purchaseId);
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setBuyerId(result[0].buyer_id);
+                setStatus(result[0].status);
+                setQuantity(result[0].items.quantity);
+                setOrderId(result[0].orderId);
+                setCustomId(result[0].custom_orderId);
+                setCustomVendorId(result[0].custom_vendorId);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setOrder_Id(item[0].order_id);
-                setPurchaseId(item[0].purchaseId);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setBuyerId(item[0].buyer_id);
-                setStatus(item[0].status);
-                setQuantity(item[0].items.quantity);
-                setOrderId(item[0].orderId);
-                setCustomId(item[0].custom_orderId);
-                setCustomVendorId(item[0].custom_vendorId);
-            });
         }
 
         if(flag3 && order_id){
-            fetch(`http://${host}:5000/retrive_order_item_summary_quantity/${order_id}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setActualQuantity(item.quantity);
-                setVendorsid(item.vendor_rejected);
+            order_item_summary_quantity(order_id)
+            .then(result=>{
+                setActualQuantity(result.quantity);
+                setVendorsid(result.vendor_rejected);
                 setFlag3(false);
-            });
+            })
         }
         if(vendorsid == null) {
             setVendorsid([]);

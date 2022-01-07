@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform, CheckBox } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faUpload,faEdit,faStore, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { purchase_order_conformed_by_id } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -42,26 +43,13 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [purchaseConfirmId, setPurchaseConfirmId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
     const [order_id, setOrderId] = useState("");
-    const [indent_id, setIndentId] = useState("Choose Indent");
     const [vendor_id,setVendorId] = useState("Choose Buyer");
     const [status,setStatus] = useState("");
     const [items, setItems] = useState([{ itemId: '', itemName: 'Choose Item', quantity: 0 ,itemUnit:''}]);
-    const [finalPrice,setFinalPrice] = useState("");
-
-    const [transportation_id,setTransportationId] = useState("");  
-    const [transportationCharges, setTransportationCharges] = useState("");
-    const [handlingCharges, setHandlingCharges] = useState("");
-    const [flag1, setFlag1] = useState(true);
-    const [transportation, setTransportation] = useState();
-
+    
     const [host, setHost] = useState("");
     const [flag, setFlag] = useState(false);
 
-
-    function chooseIndent(i_id) {
-        setIndentId(i_id);
-        closeMenu1();
-    }
     function chooseVendor(vendorId) {
         setVendorId(vendorId);
         closeMenu2();
@@ -75,41 +63,20 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         else{
             setHost("localhost");
             setPurchaseConfirmId(purchaseconfirmid);
-            // addValue(10);
 
         }
         if(purchaseConfirmId){
        
-            fetch(`http://${host}:5000/retrive_purchase_order_confirm/${purchaseconfirmid}`, {
-                method: 'GET'
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setIndentId(item[0].indent_id);
-                setOrderId(item[0].order_id);
-                setPurchaseId(item[0].purchaseId);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setStatus(item[0].status);
+            purchase_order_conformed_by_id()
+            .then(result => {
+                setOrderId(result[0].order_id);
+                setPurchaseId(result[0].purchaseId);
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setStatus(result[0].status);
                 setFlag(true);
-            });
-            // .then(item => {
-            // setItems(item[0].items);
-            // setFlag(true);
-            // });
-
-            
+            })   
        }
-
-       
-    //    fetch(`http://${host}:5000/retrive_all_transportation_category`, {
-    //         method: 'GET'
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(transportation_category => setTransportationCategory(transportation_category));
-
     }, [host,purchaseConfirmId,purchaseconfirmid,id]);
 
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
@@ -141,32 +108,11 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         }
         setItems(values);
     };
-    // function submitForm() {
-    //     fetch(`http://${host}:5000/update_purchase_order_confirm/${purchaseconfirmid}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             indent_id:indent_id,
-    //             order_id:order_id,
-    //             items:items,   
-    //             vendor_id:vendor_id, 
-    //             status:status,          
-    //         })
-    //     })
-    //     .then(res => res.json())
-    //     .catch(error => console.log(error))
-    //     .then(data => {
-    //         alert(data.message);
-    //         console.log(data);
-    //     });   
-    // }
+  
     function submitForm3(){
         alert("Payment in progress!");
     };
    
-    
     // for update inventory function
         function submitForm2() {
             fetch(`http://${host}:5000/update_inventory`, {
@@ -175,12 +121,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // indent_id:indent_id,
-                // purchaseConfirmId:purchaseConfirmId,
-                // order_id:order_id,
                 items:items,   
                 vendor_id:vendor_id, 
-                // status:status,                    
             })
         })
         .then(res => res.json())
@@ -190,11 +132,6 @@ export default function Edit_Pickup_Assignment(props, {route}) {
             console.log(data);
         });   
     }
-    function chooseIndent(i_id) {
-        setIndentId(i_id);
-        closeMenu1();
-    }
-
 
     return (
         <Provider theme={theme}>
@@ -212,14 +149,6 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                     </Menu>
                     }
 
-                    {indent_id &&
-                    <Menu 
-                    visible={visible1}
-                    onDismiss={closeMenu1}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{indent_id}</Button>}>
-                        <Menu.Item title="${indentId}" onPress={()=>chooseIndent(indent_id)} />
-                    </Menu>
-                    }
                     {items && flag &&
                     <DataTable style={styles.datatable}>
                     {items.map((it, index) => (

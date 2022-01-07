@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 're
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { all_accepted_pickup_assignment_confirmed } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -18,26 +19,17 @@ const theme = {
 export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }) {
 
     const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [roleas, setRoleas] = useState("");
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-        setRoleas(props.roleas);    
-        fetch(`http://${host}:5000/retrive_all_accepted_pickup_assignment_confirm_buyer`, {
-            method: 'GET'
+        setRoleas(props.roleas);  
+        all_accepted_pickup_assignment_confirmed()  
+        .then(result => {
+            setAllPickupAssignment(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allPickupAssignmentConfirm => setAllPickupAssignment(allPickupAssignmentConfirm));
 
-    }, [allPickupAssignmentConfirm, host,roleas,props.roleas]);
+    }, [allPickupAssignmentConfirm,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

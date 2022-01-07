@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMinusCircle, faEdit,faStore } from '@fortawesome/free-solid-svg-icons';
+import { pickup_assignment_confirm_by_id } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -57,19 +58,15 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
         }
 
         if(pickupAssignId){
-            fetch(`http://${host}:5000/retrive_pickup_assignment_confirm/${pickupConfirmId}`, {
-                method: 'GET'
+            pickup_assignment_confirm_by_id(pickupAssignId)
+            .then(result => {
+                setIndentId(result[0].indent_id);
+                setOrderId(result[0].order_id);
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setBuyerId(result[0].buyer_id);
+                setStatus(result[0].status);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setIndentId(item[0].indent_id);
-                setOrderId(item[0].order_id);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setBuyerId(item[0].buyer_id);
-                setStatus(item[0].status);
-            });
         }
 
     }, [host,pickupAssignId,order_id,pickupConfirmId,id]);

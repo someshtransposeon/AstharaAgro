@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faMinusCircle, } from '@fortawesome/free-solid-svg-icons';
+import { TextInput, Card, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import {  pickup_assignment_confirm_by_id } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -16,117 +15,31 @@ const theme = {
 
 export default function View_Pickup_Assignment_Confirm(props, {route}) {
     
-    var id="";
     var pickupConfirmId = ""; 
     if(Platform.OS=="android"){
-        id = route.params.pickupAssignId;
+        pickupConfirmId = route.params.pickupAssignId;
     }
     else{
         pickupConfirmId = props.match.params.pickupConfirmId;
     }
 
-    const [visible1, setVisible1] = useState(false);
-    const [visible2, setVisible2] = useState(false);
-
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
-
-    const [pickupAssignId, setPickupAssignId] = useState("");
-    const [purchaseId, setPurchaseId] = useState("");
-    const [order_id, setOrderId] = useState("");
-    const [indent_id, setIndentId] = useState("Choose Indent");
     const [buyer_id,setBuyerId] = useState("Choose Buyer");
-    const [status,setStatus] = useState("");
     const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
-    const [host, setHost] = useState("");
-    const [flag, setFlag] = useState(false);
-
-    function chooseIndent(i_id) {
-        setIndentId(i_id);
-        closeMenu1();
-    }
-
-    function chooseBuyer(buyerId) {
-        setBuyerId(buyerId);
-        closeMenu2();
-    }
-
-    function chooseVendor(vendorId) {
-        setVendorId(vendorId);
-        closeMenu2();
-    }
-
-    function choosePickup(pickupAssignId) {
-        setPickupAssignId(pickupAssignId);
-        closeMenu2();
-    }
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setPickupAssignId(id);
-        }
-        else{
-            setHost("localhost");
-            setPickupAssignId(pickupConfirmId);
-        }
-
-        if(pickupAssignId){
-            fetch(`http://${host}:5000/retrive_pickup_assignment_confirm/${pickupConfirmId}`, {
-                method: 'GET'
+        if(pickupConfirmId){
+            pickup_assignment_confirm_by_id(pickupConfirmId)
+            .then(result=>{
+                console.log(result);
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setBuyerId(result[0].buyer_id);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setIndentId(item[0].indent_id);
-                setOrderId(item[0].order_id);
-                setPurchaseId(item[0].purchaseId);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setBuyerId(item[0].buyer_id);
-                setStatus(item[0].status);
-                setFlag(true);
-                console.log(item[0])
-            });
         }
 
-    }, [host,pickupAssignId,pickupConfirmId,id]);
-
-    const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].quantity = fieldvalue;
-        }
-        setItems(values);
-    };
-
-    const handleRemoveFields = index => {
-        const values = [...items];
-        values.splice(index, 1);
-        setItems(values);
-    };
-
-    const ItemChange2 = (index, fieldname, fieldvalue, itemId,unit) => {
-        const values = [...items];
-        if (fieldname === "item") {
-            values[index].itemId = itemId;
-            values[index].itemName = fieldvalue;
-            values[index].itemUnit=unit;
-        }
-        else{
-            values[index].itemPrice = fieldvalue;
-        }
-        setItems(values);
-    };
+    }, [pickupConfirmId]);
 
     return (
         <Provider theme={theme}>
@@ -134,8 +47,9 @@ export default function View_Pickup_Assignment_Confirm(props, {route}) {
                 <Card style={styles.card}>
                     <Card.Title title="View Pickup Assignment Confirm"/>
                     <Card.Content>
-                        {pickupAssignId &&
-                            <TextInput style={styles.input} mode="outlined" label="Pickup Aassign ID" value={pickupAssignId} />
+
+                        {pickupConfirmId &&
+                            <TextInput style={styles.input} mode="outlined" label="Pickup Assign ID" value={pickupConfirmId} />
                         }
 
                         {buyer_id &&
@@ -151,8 +65,8 @@ export default function View_Pickup_Assignment_Confirm(props, {route}) {
                                 <DataTable.Row style={styles.input}>
                                     <DataTable.Cell><TextInput mode="outlined" label="Item" value={items.itemName+" ("+items.Grade+")"} /></DataTable.Cell>
                                     <DataTable.Cell><TextInput mode="outlined" label="Unit" value={items.itemUnit} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} onChangeText={(text)=>ItemChange(0, "quantity", text, '')} /></DataTable.Cell>
-                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} onChangeText={(text)=>ItemChange2(0, "itemPrice", text, '')} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={items.quantity} /></DataTable.Cell>
+                                    <DataTable.Cell><TextInput  keyboardType='numeric' mode="outlined" label="Price" value={items.itemPrice} /></DataTable.Cell>
                                 </DataTable.Row>
                             </DataTable>
                         }

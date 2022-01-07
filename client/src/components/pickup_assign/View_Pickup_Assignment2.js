@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { pickup_assignment_by_id } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -14,65 +15,31 @@ const theme = {
 
 export default function View_Pickup_Assignment2(props, {route}) {
     
-    var id="";
     var pickupId = ""; 
     if(Platform.OS=="android"){
-        id = route.params.pickupAssignId;
+        pickupId = route.params.pickupAssignId;
     }
     else{
         pickupId = props.match.params.pickupId;
     }
-    
-    const [visible1, setVisible1] = useState(false);
-    const [visible2, setVisible2] = useState(false);
-
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
-
-    const [pickupAssignId, setPickupAssignId] = useState("");
-    const [purchaseId, setPurchaseId] = useState("");
-    const [order_id, setOrderId] = useState("");
-    const [indent_id, setIndentId] = useState("Choose Indent");
     const [buyer_id,setBuyerId] = useState("Choose Buyer");
-    const [status,setStatus] = useState("");
     const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
-    const [host, setHost] = useState("");
-    const [flag, setFlag] = useState(false);
     const [roleas, setRoleas] = useState("");
     
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setPickupAssignId(id);
-        }
-        else{
-            setHost("localhost");
-            setPickupAssignId(pickupId);
-        }
         setRoleas(props.roleas);
-        if(pickupAssignId){
-            fetch(`http://${host}:5000/retrive_pickup_assignment/${pickupId}`, {
-                method: 'GET'
+        if(pickupId){
+            pickup_assignment_by_id(pickupId)
+            .then(result=>{
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setBuyerId(result[0].buyer_id);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setIndentId(item[0].indent_id);
-                setOrderId(item[0].order_id);
-                setPurchaseId(item[0].purchaseId);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setBuyerId(item[0].buyer_id);
-                setStatus(item[0].status);
-                setFlag(true);
-            });
         }
 
-    }, [host,pickupAssignId,pickupId,id,roleas,props.roleas]);
+    }, [pickupId,roleas,props.roleas]);
 
     return (
         <Provider theme={theme}>
@@ -81,21 +48,11 @@ export default function View_Pickup_Assignment2(props, {route}) {
                     <Card.Title title="View Pickup Assignment2"/>
                     <Card.Content>
                         {buyer_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Buyer ID: {buyer_id}</Button>}>
-                                <Menu.Item title="${pId}" />
-                            </Menu>
+                            <TextInput mode="outlined" label="Buyer Id" value={ buyer_id}  />
                         }
 
                         {vendor_id &&
-                            <Menu 
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>Vendor ID: {vendor_id}</Button>}>
-                                <Menu.Item title="${pId}" />
-                            </Menu>
+                            <TextInput mode="outlined" label="Vendor Id" value={vendor_id}  />
                         }
 
                         {items &&
