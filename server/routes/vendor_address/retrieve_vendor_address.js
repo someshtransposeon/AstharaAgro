@@ -36,4 +36,16 @@ router.get('/retrieve_vendor_address_by_vendorId/:id',(req, res)=>{
     });
 });
 
+//Define Route for Retrieve address using user_id and pincode
+router.get('/vendors_retrive_item_by_vendorid_pincode/:id/:pincode',(req, res)=>{
+    Address.find({'vendorId':req.params.id, 'postal_code':req.params.pincode}, function(err, address){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(address);
+        }
+    });
+});
+
 module.exports = router;

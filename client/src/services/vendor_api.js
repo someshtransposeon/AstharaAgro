@@ -24,6 +24,14 @@ export const all_vendor_items_by_id = (vendorId) => {
     }).catch(err => console.log(err))
 }
 
+//retrieve all items using vendor id and pincode
+export const all_vendor_items_by_id_pincode = (vendorId, pincode) => {
+    return axios.get(url + '/vendors_retrive_item_by_vendorid_pincode/' + vendorId + "/" + pincode)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
 //retrieve all items using id
 export const all_vendor_items_by_itemid = (id) => {
     return axios.get(url + '/retrive_vendor_item/' + id)
