@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { all_confirm_purchase_order_by_id } from '../../services/order_api';
 import  {all_users_by_role} from '../../services/user_api';
 const theme = {
     ...DefaultTheme,
@@ -14,10 +15,9 @@ const theme = {
 
 export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     
-    var id="";
     var purchaseconfirmid = ""; 
     if(Platform.OS=="android"){
-        id = route.params.purchaseConfirmId;
+        purchaseconfirmid = route.params.purchaseConfirmId;
     }
     else{
         purchaseconfirmid = props.match.params.purchaseconfirmid;
@@ -26,7 +26,6 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [visible3, setVisible3] = useState(false)
     const openMenu3 = () => setVisible3(true);
     const closeMenu3 = () => setVisible3(false);
-    const [purchaseConfirmId, setPurchaseConfirmId] = useState("");
     const [purchaseId, setPurchaseId] = useState("");
     const [order_id, setOrder_Id] = useState("");
     const [vendor_id,setVendorId] = useState("Choose Vendor");
@@ -44,11 +43,9 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
 
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
-            setPurchaseConfirmId(id);
         }
         else{
             setHost("localhost");
-            setPurchaseConfirmId(purchaseconfirmid);
         }
 
         // fetch all Buyer
@@ -57,35 +54,26 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
             setBuyer(result);
         })
       
-        if(purchaseConfirmId){
-            fetch(`http://${host}:5000/retrive_purchase_order_confirm/${purchaseconfirmid}`, {
-                method: 'GET'
+        if(purchaseconfirmid){
+            all_confirm_purchase_order_by_id(purchaseconfirmid)
+            .then(result=>{
+                setOrder_Id(result[0].order_id);
+                setPurchaseId(result[0].purchaseId);
+                setItems(result[0].items);
+                setVendorId(result[0].vendor_id);
+                setStatus(result[0].status);
+                setOrderId(result[0].orderId);
+                setCustomId(result[0].custom_orderId);
+                setCustomVendorId(result[0].custom_vendorId);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setOrder_Id(item[0].order_id);
-                setPurchaseId(item[0].purchaseId);
-                setItems(item[0].items);
-                setVendorId(item[0].vendor_id);
-                setStatus(item[0].status);
-                setOrderId(item[0].orderId);
-                setCustomId(item[0].custom_orderId);
-                setCustomVendorId(item[0].custom_vendorId);
-            });
         }
 
-    }, [host, purchaseConfirmId, purchaseconfirmid, id]);
+    }, [host, purchaseconfirmid]);
   
     //chooseBuyer() function for select the Buyer   
     function chooseBuyer(id, email){
         setBuyerId(id)
         setBuyerEmail(email);
-        fetch(`http://${host}:5000/retrive_buyer/${id}`, {
-            method: 'GET'
-        })        
-        .then(res => res.json())
-        .catch(error => console.log(error))
         closeMenu3();
     }
     
@@ -133,12 +121,12 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
 
     const PriceChange = (value) => {
         const values = items;
-        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:values.quantity, itemPrice:value});
+        setItems({Grade:values.Grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:values.quantity, itemPrice:value});
     };
 
     const QuantityChange = (value) => {
         const values = items;
-        setItems({Grade:values.grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:value, itemPrice:values.finalPrice});
+        setItems({Grade:values.Grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:value, itemPrice:values.finalPrice});
     };
 
     return (

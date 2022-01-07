@@ -4,7 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 're
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
-import { all_accepted_purchase_order } from '../../services/order_api';
+import { all_accepted_confirm_purchase_order } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -25,10 +25,12 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
     useEffect(() => {
 
         setRoleas(props.roleas);
-        all_accepted_purchase_order()
-        .then(result => {
+
+        all_accepted_confirm_purchase_order()
+        .then(result=>{
             setAllPurchaseOrderConfirm(result);
         })
+
     }, [allPurchaseOrderConfirm,roleas,props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);

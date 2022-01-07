@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { users_by_id } from '../../services/user_api';
-import { purchase_order } from '../../services/order_api';
+import { all_confirm_purchase_order, purchase_order } from '../../services/order_api';
 
 const theme = {
     ...DefaultTheme,
@@ -29,7 +29,7 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
 
     useEffect(() => {
 
-        purchase_order()
+        all_confirm_purchase_order()
         .then(result=>{
             setAllPurchaseOrderConfirm(result);
         })

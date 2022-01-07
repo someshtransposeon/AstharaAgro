@@ -70,22 +70,45 @@ export const purchase_order_by_id = (id) => {
         return res.data;
     }).catch(err => console.log(err))
 }
+
 export const purchase_order= () => {
     return axios.get(url + '/retrive_all_purchase_order')
     .then(res => {
         return res.data;
     }).catch(err => console.log(err))
 }
+
 export const all_accepted_purchase_order= () => {
     return axios.get(url + '/retrive_all_accepted_purchase_order')
     .then(res => {
         return res.data;
     }).catch(err => console.log(err))
 }
-export const all_confirm_purchase_order= (id) => {
+
+export const all_confirm_purchase_order_by_id= (id) => {
     return axios.get(url + '/retrive_purchase_order_confirm/'+id)
     .then(res => {
         return res.data;
     }).catch(err => console.log(err))
 }
 
+export const all_confirm_purchase_order= () => {
+    return axios.get(url + '/retrive_all_purchase_order_confirm')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+export const all_pending_confirm_purchase_order= () => {
+    return axios.get(url + '/retrive_all_pending_purchase_order_confirm')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+export const all_accepted_confirm_purchase_order= () => {
+    return axios.get(url + '/retrive_all_accepted_purchase_order_confirm')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
