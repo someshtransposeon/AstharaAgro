@@ -4,6 +4,7 @@ import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { user_category } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,7 +16,7 @@ const theme = {
     },
 };
 
-export default function Register({ navigation }) {
+export default function Register(props,{ navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [visible1, setVisible1] = useState(false);
@@ -26,19 +27,23 @@ export default function Register({ navigation }) {
     const [nickName, setNickName] = useState("");
     const [email, setEmail] = useState("");
     const [mobileNo, setMobileNo] = useState("");
+    const [gstNo, setGstNo] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    const [roleas, setRoleas] = useState("");
+    const [host, setHost] = useState("");
     useEffect(() => {
+        setHost(props.host);
+        setRoleas(props.roleas);
+        //retrieve all user category
+        user_category()
+        .then(function(result) {
+            setUserCategory(result);
+            console.log(result)
+        });
 
-        fetch('http://localhost:5000/retrive_all_user_category', {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(userCategory => setUserCategory(userCategory));
 
-    }, [userCategory]);
+    }, [userCategory, host, props.host, props.roleas]);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -62,6 +67,7 @@ export default function Register({ navigation }) {
                 nick_name: nickName,
                 email: email,
                 mobile_no: mobileNo,
+                gst_no:gstNo,
                 password: password,
                 confirm_password: confirmPassword,
             })
@@ -105,9 +111,23 @@ export default function Register({ navigation }) {
                         {userCategory ?
                             userCategory.map((item)=>{
                                 if(item.category_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                                return (
-                                    <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
-                                )
+                                    if(roleas=='sales'){
+                                        if(item.category_name == 'customer')
+                                        return (
+                                            <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
+                                        )
+                                    }
+                                    else if(roleas=='buyer'){
+                                        if( item.category_name == 'vendor')
+                                        return (
+                                            <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
+                                        )
+                                    }
                                 }
                             })
                             :
@@ -118,6 +138,10 @@ export default function Register({ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Nick Name" value={nickName} onChangeText={nickName => setNickName(nickName)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                    
+                    {(category=="vendor" || category=="customer") &&
+                        <TextInput style={styles.input} mode="outlined" label="GST No" value={gstNo} onChangeText={gstNo => setGstNo(gstNo)} />
+                    }
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
                     <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} secureTextEntry={true}/>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Register</Button>

@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { all_users_by_role } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -15,11 +16,12 @@ const theme = {
     },
 };
 //define show vendor details component
-export default function Vendor_details({ navigation }) {
+export default function Vendor_details(props,{ navigation }) {
 
     const [allItems, setAllItems] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
+    const  [roleas, setRoleas] = useState("");
     //fetch all vendor details from the database
     useEffect(() => {
         if(Platform.OS=="android"){
@@ -28,12 +30,11 @@ export default function Vendor_details({ navigation }) {
         else{
             setHost("localhost");
         }
-        fetch('http://localhost:5000/retrive_all_vendor', {
-            method: 'GET'
+        //retrieve all vendors
+        all_users_by_role("vendor")
+        .then(result=> {
+            setAllItems(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allItems => setAllItems(allItems));
     }, [allItems, host]);
 
     const onChangeSearch = query => setSearchQuery(query);

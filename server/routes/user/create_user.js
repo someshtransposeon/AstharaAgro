@@ -12,6 +12,7 @@ router.post('/create_user', async (req, res)=>{
             const nick_name= req.body.nick_name;
             const email= req.body.email;
             const mobile_no= req.body.mobile_no;
+            const gst_no= req.body.gst_no;
             const password= hash;
             var newUser = new User({category,role,full_name,nick_name,email,mobile_no,gst_no,password})
             newUser.save()

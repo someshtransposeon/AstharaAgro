@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        required: true,
+        //required: true,
     },
     full_name: {
         type: String,
@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
     mobile_no: {
         type: Number,
         required: true,
+    },
+    gst_no: {
+        type: String,
     },
     password: {
         type: String,

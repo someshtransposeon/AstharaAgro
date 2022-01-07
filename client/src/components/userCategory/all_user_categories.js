@@ -5,6 +5,7 @@ import { Link , useHistory} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { user_category } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -32,25 +33,12 @@ export default function AllUserCategories({ navigation }) {
             })
         }
         fetchData();
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-        //console.log(typeof token);
-        if(token){
-            fetch(`http://${host}:5000/retrive_all_user_category`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+token,
-                },
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(categories => setAllUserCategories(categories));
-        }
+        //retrieve all user category
+        user_category()
+        .then(function(result) {
+            setAllUserCategories(result);
+            console.log(result)
+        });
         
     }, [allUserCategories, host,token, history]);
 

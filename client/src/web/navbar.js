@@ -388,21 +388,35 @@ const NavBar =()  => {
                                     <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="sales" || roleas=="buyer" || roleas=="manager") &&
+                                {(roleas=="buyer" ) &&
                                     <>
                                     <NavDropdown drop="right" title="Vendor" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
-                                        <NavDropdown.Item to="/addvendor" as={Link}>Add Vendor</NavDropdown.Item>
+                                        <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
                                         <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
+                                    </NavDropdown>
+                                    </>
+                                }
+                                {(roleas=="manager") &&
+                                    <>
+                                    <NavDropdown drop="right" title="Vendor" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/vendordetails" as={Link}>All Vendors</NavDropdown.Item>
                                     </NavDropdown>
                                     <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="sales" || roleas=="manager") &&
+                                {(roleas=="sales") &&
                                     <>
                                     <NavDropdown drop="right" title="Customer" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
-                                        <NavDropdown.Item to="/addcustomer" as={Link}>Add Customer</NavDropdown.Item>
+                                        <NavDropdown.Item to="/register" as={Link}>Add User</NavDropdown.Item>
                                         <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/customerdetails" as={Link}>All Customers</NavDropdown.Item>
+                                    </NavDropdown>
+                                    </>
+                                }
+                                {(roleas=="manager") &&
+                                    <>
+                                    <NavDropdown drop="right" title="Customer" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown.Item to="/customerdetails" as={Link}>All Customers</NavDropdown.Item>
                                     </NavDropdown>
                                     </>
@@ -550,7 +564,7 @@ const NavBar =()  => {
                 :
                 <Switch>  
                 <Route path="/register">
-                    <Register />
+                    <Register  roleas={roleas} host={host}/>
                 </Route>
                 <Route path="/profile">
                     <Profile/>

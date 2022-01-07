@@ -93,7 +93,7 @@ export function bank_by_userId(host,userId){
 }
 //retrive  user Category
 export function user_category(host){
-    return fetch(`http://${host}:5000/retrive_all_user_category`, {
+    return fetch(url+"/retrive_all_user_category", {
         method: 'GET'
     })
     .then(res => res.json())
