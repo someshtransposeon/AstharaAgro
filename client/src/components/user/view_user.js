@@ -16,7 +16,7 @@ const theme = {
     },
 };
 
-export default function EditUser(props, {route}) {
+export default function ViewUser(props, {route}) {
 
     var userid = "";
     var id="";
@@ -83,46 +83,6 @@ export default function EditUser(props, {route}) {
         closeMenu1();
     }
 
-    function submitForm() {
-        fetch(`http://${host}:5000/update_user/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                category: categoryId,
-                role: category,
-                full_name: fullName,
-                email: email,
-                mobile_no: mobileNo,
-                gst_no: gstNo,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        }); 
-    }
-     const StatusChange = (s) => {
-        fetch(`http://${host}:5000/disabled_user/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        // closeMenu(index);
-    }; 
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -131,41 +91,14 @@ export default function EditUser(props, {route}) {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 {fullName ?
                 <Card style={styles.card}>
-                    <Card.Title title="EDIT USER"/>
+                    <Card.Title title="VIEW USER"/>
                     <Card.Content>
-                    <Menu
-                    visible={visible1}
-                    onDismiss={closeMenu1}
-                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{category}</Button>}>
-                        <Searchbar
-                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                            placeholder="Search"
-                            onChangeText={onChangeSearch}
-                            value={searchQuery}
-                        />
-                        <Link to="/addusercategory"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Category</Button></Link>
-                        {userCategory ?
-                            userCategory.map((item)=>{
-                                return (
-                                    <Menu.Item title={item.category_name} onPress={()=>chooseCategory(item._id, item.category_name)} />
-                                )
-                            })
-                            :
-                            <Menu.Item title="No User Category Available" />
-                        }
-                    </Menu>
-                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    {(category=="vendor" || category=="customer") &&
-                        <TextInput style={styles.input} mode="outlined" label="GST No" value={gstNo} onChangeText={gstNo => setGstNo(gstNo)} />
-                    }
-                    {/* <TextInput style={styles.input} mode="outlined" label="Gst No" value={gstNo} onChangeText={gstNo => setGstNo(gstNo)} /> */}
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Update User</Button>
-                       <Button mode="contained" style={styles.button} color='red' 
-                    onPress={()=>StatusChange("disabled")}
-                    >Disable User</Button>
+                    <TextInput style={styles.input} mode="outlined" label="User Category" value={category} />
+                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} />
+                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} />
+                    <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} />
+                    <TextInput style={styles.input} mode="outlined" label="Gst No" value={gstNo} />
+                    
                     </Card.Content>
                 </Card>
                 :

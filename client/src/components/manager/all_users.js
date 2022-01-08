@@ -21,7 +21,8 @@ export default function AllUsers(props,{ navigation }) {
     const [allUsers, setAllUsers] = useState();
     const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [roleas, setRoleas] = useState("");
+    
     useEffect(() => {
         if(Platform.OS=="android"){
             setHost("10.0.2.2");
@@ -29,12 +30,13 @@ export default function AllUsers(props,{ navigation }) {
         else{
             setHost("localhost");
         }
+        setRoleas(props.roleas);
         //Retrieve all users
         all_users(host)
         .then(function(result) {
             setAllUsers(result);
         })
-    }, [allUsers, host]);
+    }, [allUsers, host,roleas, props.roleas]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -74,13 +76,30 @@ export default function AllUsers(props,{ navigation }) {
                                 <DataTable.Cell>{item.nick_name}</DataTable.Cell>
                                 
                                 <DataTable.Cell>{item.role}</DataTable.Cell>
-                                <DataTable.Cell>
+                                {roleas=="manager" ?
+                                    <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
                                         :
                                         <Button mode="contained" style={{width: '100%'}}><Link to={"/edituser/"+item._id}>Details</Link></Button>
                                     }
-                                </DataTable.Cell>
+                                    </DataTable.Cell>
+                                    :
+                                    <DataTable.Cell numeric>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
+                                        :
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/viewuser/"+item._id}>Details</Link></Button>
+                                    }
+                                    </DataTable.Cell>
+                                }
+                                {/* <DataTable.Cell>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
+                                        :
+                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edituser/"+item._id}>Details</Link></Button>
+                                    }
+                                </DataTable.Cell> */}
                             </DataTable.Row>
                         )
                         }
