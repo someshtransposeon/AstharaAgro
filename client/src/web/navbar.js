@@ -251,7 +251,7 @@ const NavBar =()  => {
                                     <NavDropdown title={email}>
                                             <NavDropdown.Item to="/profile" as={Link}>Edit Profile</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item to="/forgetpassword" as={Link}>Change Password</NavDropdown.Item>
+                                            <NavDropdown.Item to="/forgotpassword" as={Link}>Change Password</NavDropdown.Item>
                                     </NavDropdown>
                                     {/* <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> {email}</Button>{' '}</Nav.Link> */}
                                     <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
@@ -530,7 +530,8 @@ const NavBar =()  => {
                     <Switch>
                         <Route path="/" exact>
                             <Home />
-                        </Route>
+                        </Route>                        
+                        <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact/>
                         <Route path="/login">
                             <Login />
                         </Route>
@@ -596,7 +597,7 @@ const NavBar =()  => {
                 <Route path="/edititemunit/:itemUnitid" render={(props) => <EditItemUnit {...props} />} exact />
                 <Route path="/edititemgrade/:itemGradeid" render={(props) => <EditItemGrade {...props} />} exact />
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
-                <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact />
+                <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />}  exact/>
                 <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
                 <Route path="/edit_customer_address/:addressid" render={(props) => <CustomerEditAddress  {...props} />} exact />
                 <Route path="/createorder">
