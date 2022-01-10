@@ -102,3 +102,19 @@ export function user_category(host){
         return userCategory;
     });
 }
+
+//retrive user Address by userId
+export function user_address(userId){
+    return axios.get(url + '/retrive_address_by_userId/' + userId)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+//retrive user Bank Details by userId
+export function user_bank(userId){
+    return axios.get(url + '/retrive_bank_by_userId/' + userId)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}

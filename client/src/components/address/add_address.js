@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -14,7 +14,18 @@ const theme = {
 };
 
 //define add address component
-export default function AddAddress({ navigation }) {
+export default function AddAddress(props, {route}) {
+
+    var userid="";
+    if(Platform.OS=="android"){
+        userid = route.params.userid;
+    }
+    else{
+        userid = props.match.params.userid;
+    }
+
+    let history = useHistory();
+
     //initialize all required state variables
     const [userId, setUserId] = useState('');
     const [address, setAddress] = useState('');
@@ -26,20 +37,18 @@ export default function AddAddress({ navigation }) {
     const [host, setHost] = useState('');
     //fetch login user information for store corresponding the address data
     useEffect(() => {
-        async function fetchData() {
-            await AsyncStorage.getItem('loginuserid')
-            .then((userid) => {
-                setUserId(userid);
-            })
+        if(userid){
+            setUserId(userid);
         }
-        fetchData();
+
         if (Platform.OS === 'android'){
             setHost("10.0.2.2");
         }
         else{
             setHost("localhost");
         }
-    }, [host, userId]);
+
+    }, [host, userid]);
     //define a function for sending the data in corresponding database
     function submitForm() {
         fetch(`http://${host}:5000/create_address`, {
@@ -61,13 +70,7 @@ export default function AddAddress({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
-            setAddress("");
-            setLandmark("");
-            setDistrict("");
-            setState("");
-            setCountry("");
-            setPincode("");
+            history.push('/addbankdetails/'+userId);
         }); 
     }
     //define all the required input fields
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginTop: '4%',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },

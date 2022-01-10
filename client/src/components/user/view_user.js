@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
+import { TextInput, Card, Provider, DefaultTheme, Button } from 'react-native-paper';
 import { Link } from 'react-router-dom';
-import { users_by_id, user_category} from '../../services/user_api';
+import { users_by_id, user_address, user_bank, user_category} from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -19,91 +19,102 @@ const theme = {
 export default function ViewUser(props, {route}) {
 
     var userid = "";
-    var id="";
     if(Platform.OS=="android"){
-        id = route.params.userId;
+        userid = route.params.userId;
     }
     else{
         userid = props.match.params.userid;
     }
-
-    const [visible1, setVisible1] = useState(false);
-
-    const openMenu1 = () => setVisible1(true);
-    const closeMenu1 = () => setVisible1(false);
-
-    const [userId, setUserId] = useState("");
-    const [userCategory, setUserCategory] = useState();
-    const [category, setCategory] = useState("Choose Category");
-    const [categoryId, setCategoryId] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobileNo, setMobileNo] = useState("");
-    const [gstNo, setGstNo] = useState("");
-    const [host, setHost] = useState("");
-    const [flag, setFlag] = useState(true);
-    const [searchQuery, setSearchQuery] = useState('');
+    
+    const [user, setUser] = useState();
+    const [address, setAddress] = useState();
+    const [bank, setBank] = useState();
 
     useEffect(() => {
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-            setUserId(id);
-        }
-        else{
-            setHost("localhost");
-            setUserId(userid);
-        }
 
-        if(flag){
-            //Retrieve all user category
-            user_category(host)
-            .then(function(result) {
-                setUserCategory(userCategory);
-                setFlag(false);
-            })
-        }
-
-        if(userId){
+        if(userid){
             //Retrieve user by userId
-            users_by_id(userId)
-            .then(function(result) {
-                setFullName(result[0].full_name);
-                setEmail(result[0].email);
-                setMobileNo(result[0].mobile_no);
-                setGstNo(result[0].gst_no);
-                setCategory(result[0].role);
-                setCategoryId(result[0].category);
+            users_by_id(userid)
+            .then(result => {
+                setUser(result[0]);
+            })
+
+            user_address(userid)
+            .then(result => {
+                setAddress(result[0]);
+            })
+
+            user_bank(userid)
+            .then(result => {
+                setBank(result[0]);
             })
         }
-    }, [host,userId,id,userid,userCategory,flag]);
 
-    function chooseCategory(id, name) {
-        setCategoryId(id);
-        setCategory(name);
-        closeMenu1();
-    }
-
-
-    const onChangeSearch = query => setSearchQuery(query);
+    }, [userid]);
 
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {fullName ?
-                <Card style={styles.card}>
-                    <Card.Title title="VIEW USER"/>
-                    <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="User Category" value={category} />
-                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} />
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} />
-                    <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} />
-                    <TextInput style={styles.input} mode="outlined" label="Gst No" value={gstNo} />
-                    
-                    </Card.Content>
-                </Card>
-                :
-                <ActivityIndicator size={50}/>
-                }
+                    <Card style={styles.card}>
+                    {user &&
+                    <>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Card.Title style={{ flex: 2,}} title="USER Details:-"/>
+                            <Button>
+                                <Link to={"/edituser/"+user._id}>
+                                    <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                                </Link>
+                            </Button>
+                        </View>
+                        <Card.Content>
+                            <TextInput style={styles.input} mode="outlined" label="User Category" value={user.role} />
+                            <TextInput style={styles.input} mode="outlined" label="Full Name" value={user.full_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Email" value={user.email} />
+                            <TextInput style={styles.input} mode="outlined" label="Mobile No" value={user.mobile_no} />
+                            <TextInput style={styles.input} mode="outlined" label="Gst No" value={user.gst_no} />
+                        </Card.Content>
+                    </>
+                    }
+                    {address &&
+                    <>
+                        <View style={{ flexDirection: 'row', marginTop: '2%'}}>
+                            <Card.Title style={{ flex: 2,}} title="Address:-"/>
+                            <Button>
+                                <Link to={"/editaddress/"+address._id}>
+                                    <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                                </Link>
+                            </Button>
+                        </View>
+                        <Card.Content>
+                            <TextInput style={styles.input} mode="outlined" label="Address" value={address.address} />
+                            <TextInput style={styles.input} mode="outlined" label="Landmark" value={address.landmark} />
+                            <TextInput style={styles.input} mode="outlined" label="District" value={address.district} />
+                            <TextInput style={styles.input} mode="outlined" label="State" value={address.state} />
+                            <TextInput style={styles.input} mode="outlined" label="Country" value={address.country} />
+                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={address.postal_code} />
+                        </Card.Content>
+                    </>
+                    }
+                    {bank &&
+                    <>
+                        <View style={{ flexDirection: 'row', marginTop: '2%'}}>
+                            <Card.Title style={{ flex: 2,}} title="Bank Details:-"/>
+                            <Button>
+                                <Link to={"/editbankdetails/"+bank._id}>
+                                    <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                                </Link>
+                            </Button>
+                        </View>
+                        <Card.Content>
+                                <TextInput style={styles.input} mode="outlined" label="IFSC Code" value={bank.ifsc_code} />
+                            <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bank.bank_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Branch" value={bank.branch_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Account No" value={bank.account_number} />
+                            <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={bank.account_holder_name} />
+                        </Card.Content>
+                    </>
+                    }
+                    </Card>
             </View>
         </Provider>
     );

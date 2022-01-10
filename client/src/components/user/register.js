@@ -3,7 +3,7 @@ import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { user_category } from '../../services/user_api';
 
 const theme = {
@@ -17,6 +17,8 @@ const theme = {
 };
 
 export default function Register(props,{ navigation }) {
+
+    let history = useHistory();
 
     const [searchQuery, setSearchQuery] = useState('');
     const [visible1, setVisible1] = useState(false);
@@ -39,7 +41,6 @@ export default function Register(props,{ navigation }) {
         user_category()
         .then(function(result) {
             setUserCategory(result);
-            console.log(result)
         });
 
 
@@ -76,7 +77,9 @@ export default function Register(props,{ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
+            if(data){
+                history.push("/addaddress/"+data.data._id);
+            }
         })
         .catch(err=>{
             alert(err.message);

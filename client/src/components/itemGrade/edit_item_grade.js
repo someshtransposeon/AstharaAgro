@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { item_grade_by_grade_id } from '../../services/item_api';
 import axios from 'axios';

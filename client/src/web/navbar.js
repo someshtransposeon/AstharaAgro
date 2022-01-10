@@ -3,7 +3,7 @@ import { Platform, Text } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faUserPlus, faUser, faSignInAlt, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Button, FormControl, Form, InputGroup, } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Button, FormControl, Form, InputGroup, DropdownButton, Dropdown, } from 'react-bootstrap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from '../components/home/home';
@@ -247,13 +247,13 @@ const NavBar =()  => {
                                         :
                                         <Nav.Link><Button variant="outline-secondary">{role}</Button>{' '}</Nav.Link>
                                     }
-                                    
-                                    <NavDropdown title={email}>
-                                            <NavDropdown.Item to="/profile" as={Link}>Edit Profile</NavDropdown.Item>
+                                    <Nav.Link>
+                                        <DropdownButton title={email}>
+                                            <Dropdown.Item to="/profile" as={Link}>Profile</Dropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item to="/forgotpassword" as={Link}>Change Password</NavDropdown.Item>
-                                    </NavDropdown>
-                                    {/* <Nav.Link to="/profile" as={Link}><Button variant="outline-primary"><FontAwesomeIcon icon={ faUser } color={'#04FAA1'}/> {email}</Button>{' '}</Nav.Link> */}
+                                            <Dropdown.Item to="/forgotpassword" as={Link}>Change Password</Dropdown.Item>
+                                        </DropdownButton>
+                                    </Nav.Link>
                                     <Nav.Link><Button variant="outline-danger" onClick={()=>Logout()}><FontAwesomeIcon icon={ faSignOutAlt } color={'#04FAA1'}/> Logout</Button>{' '}</Nav.Link>
                                 </>
                                 :
@@ -624,12 +624,8 @@ const NavBar =()  => {
                 <Route path="/addusercategory" exact>
                     <AddUserCategory/>
                 </Route>
-                <Route path="/addaddress" exact>
-                    <AddAddress/>
-                </Route>
-                <Route path="/addbankdetails" exact>
-                    <AddBankDetails/>
-                </Route>
+                <Route path="/addaddress/:userid" render={(props) => <AddAddress {...props} />} exact />
+                <Route path="/addbankdetails/:userid" render={(props) => <AddBankDetails {...props} />} exact />
                 <Route path="/Create_Indent">
                     <Create_Indent/>
                 </Route>

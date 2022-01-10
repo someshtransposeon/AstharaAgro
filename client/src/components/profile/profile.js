@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, Text, SafeAreaView, ScrollView} from 'react-native';
-import { Card, Provider, DefaultTheme, Button, Paragraph } from 'react-native-paper';
+import { Card, Provider, DefaultTheme, Button, TextInput } from 'react-native-paper';
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTrash, faEdit} from '@fortawesome/free-solid-svg-icons';
+import { users_by_id, user_address, user_bank } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -17,15 +18,11 @@ const theme = {
 };
 
 export default function Profile({ navigation }) {
-    const [customerId, setCustomerId] = useState('');
 
     const [userId, setUserId] = useState('');
     const [user, setUser] = useState();
     const [address, setAddress] = useState();
     const [bank, setBank] = useState();
-    const [flag1, setFlag1] = useState(true);
-    const [flag2, setFlag2] = useState(true);
-    const [flag3, setFlag3] = useState(true);
     const [host, setHost] = useState("");
 
     useEffect(() => {
@@ -45,43 +42,24 @@ export default function Profile({ navigation }) {
         }
 
         if(userId){
-            if(flag1){
-                fetch(`http://${host}:5000/retrive_user/${userId}`, {
-                    method: 'GET'
-                })
-                .then(res => res.json())
-                .catch(error => console.log(error))
-                .then(user => {
-                    setUser(user);
-                    setFlag1(false);
-                });
-            }
+            //Retrieve user by userId
+            users_by_id(userId)
+            .then(result => {
+                setUser(result[0]);
+            })
 
-            if(flag2){
-                fetch(`http://${host}:5000/retrive_address_by_userId/${userId}`, {
-                    method: 'GET'
-                })
-                .then(res => res.json())
-                .catch(error => console.log(error))
-                .then(address => {
-                    setAddress(address);
-                    setFlag2(false);
-                });
-            }
+            user_address(userId)
+            .then(result => {
+                setAddress(result[0]);
+            })
 
-            if(flag3){
-                fetch(`http://${host}:5000/retrive_bank_by_userId/${userId}`, {
-                    method: 'GET'
-                })
-                .then(res => res.json())
-                .catch(error => console.log(error))
-                .then(bank => {
-                    setBank(bank);
-                    setFlag3(false);
-                });
-            }
+            user_bank(userId)
+            .then(result => {
+                setBank(result[0]);
+            })
         }
-    }, [user, address, bank, host, userId, flag1, flag2, flag3]);
+
+    }, [user, address, bank, host, userId]);
 
     function deleteaddress(id){
         fetch(`http://${host}:5000/delete_address/${id}`, {
@@ -106,6 +84,7 @@ export default function Profile({ navigation }) {
             setBank("");
         });  
     }
+    
     const StatusChange = (s) => {
         fetch(`http://${host}:5000/send_delete_account_remark/${userId}`, {
             method: 'PUT',
@@ -129,125 +108,108 @@ export default function Profile({ navigation }) {
         <Provider theme={theme}>
             <SafeAreaView>
             <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: '2%' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="Personal Details"/>
-                    <Card.Content>
-                        {user && 
-                            <>
-                                <Text style={styles.text1}>Full Name: {user[0].full_name}</Text>
-                                <Text style={styles.text1}>Email: {user[0].email}</Text>
-                                <Text style={styles.text1}>Mobile No: {user[0].mobile_no}</Text>
-                                <Text style={styles.text1}>Role: {user[0].role}</Text>
-                            </>
-                        }
-                    </Card.Content>
+                    {user &&
+                    <>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Card.Title style={{ flex: 2,}} title="USER Details:-"/>
+                            <Button>
+                                <Link to={"/edituser/"+user._id}>
+                                    <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                                </Link>
+                            </Button>
+                        </View>
+                        <Card.Content>
+                            <TextInput style={styles.input} mode="outlined" label="User Category" value={user.role} />
+                            <TextInput style={styles.input} mode="outlined" label="Full Name" value={user.full_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Email" value={user.email} />
+                            <TextInput style={styles.input} mode="outlined" label="Mobile No" value={user.mobile_no} />
+                            <TextInput style={styles.input} mode="outlined" label="Gst No" value={user.gst_no} />
+                        </Card.Content>
+                    </>
+                    }
                 </Card>
                 <Card style={styles.card}>
-                    <Card.Title title="Address"/>
-                    <Card.Content>
-                        {(address && address.length) ?
-                            <>
-                                <Text style={styles.text2}>Address: {address[0].address}</Text>
-                                <Text style={styles.text2}>Landmark: {address[0].landmark}</Text>
-                                <Text style={styles.text2}>District: {address[0].district}</Text>
-                                <Text style={styles.text2}>State: {address[0].state}</Text>
-                                <Text style={styles.text2}>Country: {address[0].country}</Text>
-                                <Text style={styles.text2}>Pin Code: {address[0].postal_code}</Text>
-                                <Paragraph >
-                                {Platform.OS=='android' ?
-                                    <FontAwesomeIcon icon={ faTrash }color="red" size={25} onPress={()=>deleteaddress(address[0]._id)} />
-                                    :
-                                    <Button onPress={()=>deleteaddress(address[0]._id)} >
-                                        <FontAwesomeIcon icon={ faTrash }color="red" size={25} />
-                                    </Button>
-                                }
-                                {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={25} onPress={() => {navigation.navigate('EditAddress', {addressId: address[0]._id})}} />
-                                    :
-                                    <Button>
-                                        <Link to={"/editaddress/"+address[0]._id}>
-                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
-                                        </Link>
-                                    </Button>
-                                }
-                                </Paragraph>
-                            </>
+                    {address ?
+                    <>
+                        <View style={{ flexDirection: 'row'}}>
+                            <Card.Title style={{ flex: 2,}} title="Address:-"/>
+                            <Button>
+                                <Link to={"/editaddress/"+address._id}>
+                                    <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                                </Link>
+                                <Button onPress={()=>deleteaddress(address[0]._id)} >
+                                    <FontAwesomeIcon icon={ faTrash }color="red" size={25} />
+                                </Button>
+                            </Button>
+                        </View>
+                        <Card.Content>
+                            <TextInput style={styles.input} mode="outlined" label="Address" value={address.address} />
+                            <TextInput style={styles.input} mode="outlined" label="Landmark" value={address.landmark} />
+                            <TextInput style={styles.input} mode="outlined" label="District" value={address.district} />
+                            <TextInput style={styles.input} mode="outlined" label="State" value={address.state} />
+                            <TextInput style={styles.input} mode="outlined" label="Country" value={address.country} />
+                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={address.postal_code} />
+                        </Card.Content>
+                    </>
+                    :
+                    <>
+                        <Card.Title style={{ flex: 2,}} title="Address:-"/>
+                        {Platform.OS=='android' ?
+                            <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddAddress')}}>Add Address</Button>
                             :
-                            <>
-                            {Platform.OS=='android' ?
-                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddAddress')}}>Add Address</Button>
-                                :
-                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addaddress">Add Address</Link></Button>
-                            }
-                            </>
+                            <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to={"/addaddress/"+userId}>Add Address</Link></Button>
                         }
-                    </Card.Content>
+                    </>
+                    }
                 </Card>
                 <Card style={styles.card}>
-                    <Card.Title title="Bank Details"/>
-                    <Card.Content>
-                        {(bank && bank.length) ?
-                            <>
-                                <Text style={styles.text3}>Bank Name: {bank[0].bank_name}</Text>
-                                <Text style={styles.text3}>Branch Name: {bank[0].branch_name}</Text>
-                                <Text style={styles.text3}>Account Holder Name: {bank[0].account_holder_name}</Text>
-                                <Text style={styles.text3}>Account Number: {bank[0].account_number}</Text>
-                                <Text style={styles.text3}>IFSC Code: {bank[0].ifsc_code}</Text>
-                                <Paragraph >
-                                {Platform.OS=='android' ?
-                                    <FontAwesomeIcon icon={ faTrash }color="red" size={25} onPress={()=>deletebank(bank[0]._id)} />
-                                    :
-                                    <Button onPress={()=>deletebank(bank[0]._id)} >
-                                        <FontAwesomeIcon icon={ faTrash }color="red" size={25} />
-                                    </Button>
-                                }
-                                {Platform.OS=='android' ?
-                                    <FontAwesomeIcon  icon={ faEdit } color="blue" size={25} onPress={() => {navigation.navigate('EditBankDetails', {bankId: bank[0]._id})}} />
-                                    :
-                                    <Button>
-                                        <Link to={"/editbankdetails/"+bank[0]._id}>
-                                            <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
-                                        </Link>
-                                    </Button>
-                                }
-                                </Paragraph>
-                            </>
+                    {bank ?
+                    <>
+                        <View style={{ flexDirection: 'row'}}>
+                            <Card.Title style={{ flex: 2,}} title="Bank Details:-"/>
+                            <Button>
+                                <Link to={"/editbankdetails/"+bank._id}>
+                                    <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                                </Link>
+                            </Button>
+                            <Button onPress={()=>deletebank(bank[0]._id)} >
+                                <FontAwesomeIcon icon={ faTrash } color="red" size={25} />
+                            </Button>
+                        </View>
+                        <Card.Content>
+                                <TextInput style={styles.input} mode="outlined" label="IFSC Code" value={bank.ifsc_code} />
+                            <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bank.bank_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Branch" value={bank.branch_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Account No" value={bank.account_number} />
+                            <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={bank.account_holder_name} />
+                        </Card.Content>
+                    </>
+                    :
+                    <>
+                        <Card.Title style={{ flex: 2,}} title="Bank Details:-"/>
+                        {Platform.OS=='android' ?
+                            <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddBankDetails')}}>Add Bank Details</Button>
                             :
-                            <>
-                            {Platform.OS=='android' ?
-                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddBankDetails')}}>Add Bank Details</Button>
-                                :
-                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addbankdetails">Add Bank Details</Link></Button>
-                            }
-                            </>
+                            <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to={"/addbankdetails/"+userId}>Add Bank Details</Link></Button>
                         }
-                    </Card.Content>
+                    </>
+                    }
                 </Card>
                 <Card style={styles.card}>
                     <Card.Title title="Delete Account"/>
                     <Card.Content>
                         {user && 
                             <>
-                                <Text style={styles.text1}> {user[0].remark}</Text>
+                                <Text style={styles.text1}> {user.remark}</Text>
                             </>
                         }
                     </Card.Content>
-                    <Card.Content>
-                            {/* <>
-                            {Platform.OS=='android' ?
-                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}} onPress={() => {navigation.navigate('AddAddress')}}>Delete Account</Button>
-                                :
-                                <Button mode="contained" style={{padding: '1%', marginTop: '2%'}}><Link to="/addaddress">Delete Account</Link></Button>
-                            }
-                            </> */}           
-                             <Button mode="contained" style={styles.button} color='red' 
-                    onPress={()=>StatusChange("detete account request sent!")}
-                    >Delete Account</Button>
+                    <Card.Content>    
+                        <Button mode="contained" style={styles.button} color='red' onPress={()=>StatusChange("detete account request sent!")}>Delete Account</Button>
                     </Card.Content>
                 </Card>
-             
-
             </View>
             </ScrollView>
             </SafeAreaView>
@@ -257,9 +219,9 @@ export default function Profile({ navigation }) {
 
 const styles = StyleSheet.create({
     card: {
-        marginTop: '2%',
         alignSelf: 'center',
         padding: '1%',
+        paddingBottom: '3%',
         ...Platform.select({
             ios: {
                 
@@ -271,7 +233,7 @@ const styles = StyleSheet.create({
             default: {
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
                 marginBottom: '4%',
-                width: '50%',
+                width: '75%',
             }
         })
     },
@@ -290,19 +252,4 @@ const styles = StyleSheet.create({
             }
         })
     },
-    text1: {
-        fontSize: 20,
-        marginTop: '5px',
-        color: 'blue',
-    },
-    text2: {
-        fontSize: 20,
-        marginTop: '5px',
-        color: 'red',
-    },
-    text3: {
-        fontSize: 20,
-        marginTop: '5px',
-        color: 'green',
-    }
 }); 
