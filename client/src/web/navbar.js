@@ -34,11 +34,10 @@ import EditItemCategory from '../components/itemCategory/edit_item_category';
 import EditUserCategory from '../components/userCategory/edit_user_category';
 import AllUsers from '../components/manager/all_users';
 import EditUser from '../components/user/edit_user.js';
+import ViewUser from '../components/user/view_user.js';
 import EditAddress from '../components/address/edit_address';
 import EditBankDetails from '../components/bank/edit_bank_details';
 import Forgotpassword from '../components/profile/forgotpassword';
-import EditVendor from '../components/buyer/edit_vendor';
-import EditCustomer from '../components/sales_person/edit_customer';
 import EditOrder from '../components/order/edit_order';
 import EditItemUnit from '../components/itemUnit/edit_item_unit';
 import AddItemUnit from '../components/itemUnit/add_item_unit';
@@ -605,15 +604,14 @@ const NavBar =()  => {
                     <AllItems host={host} />
                 </Route>
                 <Route path="/allusers">
-                    <AllUsers/>
+                    <AllUsers roleas={roleas}/>
                 </Route>
                 <Route path="/vieworder/:orderid" render={(props) => <ViewOrder roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/editorder/:orderid" render={(props) => <EditOrder roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />
                 <Route path="/disabled_item/:itemid" render={(props) => <EditItem {...props} />} exact />
-                <Route path="/edituser/:userid" render={(props) => <EditUser {...props} />} exact />
-                <Route path="/editvendordetails/:vendorid" render={(props) => <EditVendor {...props} />} exact />
-                <Route path="/editcustomerdetails/:customerid" render={(props) => <EditCustomer {...props} />} exact />
+                <Route path="/edituser/:userid" render={(props) => <EditUser roleas={roleas} {...props} />} exact />
+                <Route path="/viewuser/:userid" render={(props) => <ViewUser roleas={roleas} {...props} />} exact />
                 <Route path="/editaddress/:addressid" render={(props) => <EditAddress {...props} />} exact />
                 <Route path="/editbankdetails/:bankid" render={(props) => <EditBankDetails {...props} />} exact />
                 <Route path="/edititemcategory/:itemCategoryid" render={(props) => <EditItemCategory {...props} />} exact />
