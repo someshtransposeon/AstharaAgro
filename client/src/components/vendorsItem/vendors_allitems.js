@@ -36,8 +36,10 @@ export default function VendorsAllItems(props,{ navigation }) {
         setRoleas(props.roleas);
 
         if(userId){
+            
             all_vendor_items_by_id(userId)
             .then(result => {
+                console.log(result);
                 setAllItems(result);
             });
         }
