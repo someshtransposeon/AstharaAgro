@@ -140,8 +140,8 @@ import PendingOrders from '../components/order/pending_orders';
 import ViewOrder from '../components/order/view_order';
 import View_Purchase_Order from '../components/purchase_order/View_Purchase_Order';
 
-import PageNotFound from '../auth/notfound';
-
+import PageNotFound from '../components/pagenotfound/notfound';
+import {authHeader} from '../services/auth_header';
 const NavBar =()  => {
 
     const [email, setEmail] = useState("");
@@ -179,6 +179,7 @@ const NavBar =()  => {
             }
         }
         fetchData();
+        //console.log(authHeader());
     }, [email, role, flag, host,token]);
 
     function changeRole(r){
