@@ -5,6 +5,7 @@ import { faPlusCircle,faMinusCircle, faSearch, faTimes, faTrash, faEdit } from '
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { Order_by_id } from '../../services/order_api';
 import { all_vendor_items } from '../../services/vendor_api';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -17,6 +18,8 @@ const theme = {
 };
 
 export default function EditOrder(props,{route}) {
+
+    let history = useHistory();
 
     var orderid = "";
     if(Platform.OS=="android"){
@@ -138,7 +141,7 @@ export default function EditOrder(props,{route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
+            history.push('/pendingorders');
         });
     }
 
@@ -150,7 +153,7 @@ export default function EditOrder(props,{route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
+            history.push('/pendingorders');
         });
     }
 

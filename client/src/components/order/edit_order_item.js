@@ -1,10 +1,12 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { OrderSummary_by_id } from '../../services/order_api';
 import {vendor_by_low_price} from '../../services/vendor_api';
 import {order_item_summary_quantity} from '../../services/order_api';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -39,6 +41,7 @@ export default function EditOrderItem(props,{route}) {
     const [custom_orderId, setCustomId] = useState();
     const [orderId, setOrderId] = useState("");
     const [custom_vendorId, setCustomVendorId] = useState('Choose Vendor');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
 
@@ -145,6 +148,8 @@ export default function EditOrderItem(props,{route}) {
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
             <SafeAreaView>
@@ -157,6 +162,14 @@ export default function EditOrderItem(props,{route}) {
                             visible={visible2}
                             onDismiss={closeMenu2}
                             anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{custom_vendorId} </Button>}>
+                            <Searchbar
+                                icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                placeholder="Search"
+                                onChangeText={onChangeSearch}
+                                value={searchQuery}
+                                style={{marginBottom: '20px'}}
+                            />
                                 {vendors && vendorsid ?
                                     vendors.map((item)=>{
                                         var f=0;
@@ -166,9 +179,11 @@ export default function EditOrderItem(props,{route}) {
                                             }
                                         })
                                         if(f==0){
-                                            return (
-                                                <Menu.Item title={item.nick_name+"_"+item.postal_code} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
-                                            )
+                                            if((item.nick_name+"_"+item.postal_code).toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                                return (
+                                                    <Menu.Item title={item.nick_name+"_"+item.postal_code} onPress={()=>chooseVendor(item.userId, item.nick_name, String(item.date), item.postal_code)} />
+                                                )
+                                            }
                                         }
                                     })
                                     :

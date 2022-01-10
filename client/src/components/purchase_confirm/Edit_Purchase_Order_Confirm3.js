@@ -1,6 +1,8 @@
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable, Searchbar } from 'react-native-paper';
 import { all_confirm_purchase_order_by_id } from '../../services/order_api';
 import  {all_users_by_role} from '../../services/user_api';
 const theme = {
@@ -38,6 +40,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [orderId, setOrderId] = useState("");
     const [custom_orderId, setCustomId] = useState("");
     const [custom_vendorId, setCustomVendorId] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
     
     useEffect(() => {
 
@@ -129,6 +132,8 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         setItems({Grade:values.Grade, finalPrice:values.finalPrice, itemId:values.itemId, itemName:values.itemName, itemNegotiatePrice:values.itemNegotiatePrice, itemUnit:values.itemUnit, quantity:value, itemPrice:values.finalPrice});
     };
 
+    const onChangeSearch = query => setSearchQuery(query);
+
     return (
         <Provider theme={theme}>
             <View>
@@ -139,11 +144,21 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                         visible={visible3}
                         onDismiss={closeMenu3}
                         anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu3}>{buyer_email} </Button>}>
+                            <Searchbar
+                                icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                placeholder="Search"
+                                onChangeText={onChangeSearch}
+                                value={searchQuery}
+                                style={{marginBottom: '20px'}}
+                            />
                             {buyer ?
                                 buyer.map((item)=>{
-                                    return (
-                                        <Menu.Item title={item.nick_name} onPress={()=>chooseBuyer(item._id, item.email)} />
-                                    )
+                                    if(item.nick_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                        return (
+                                            <Menu.Item title={item.nick_name} onPress={()=>chooseBuyer(item._id, item.email)} />
+                                        )
+                                    }
                                 })
                                 :
                                 <Menu.Item title="No Buyer Available" />

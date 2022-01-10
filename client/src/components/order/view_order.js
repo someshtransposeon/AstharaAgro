@@ -1,7 +1,8 @@
 import React, {useState,useEffect} from 'react';
 import { View, StyleSheet, Platform, ScrollView, SafeAreaView } from 'react-native';
-import { TextInput, Card, Provider, DefaultTheme, DataTable, Title } from 'react-native-paper';
+import { TextInput, Card, Provider, DefaultTheme, DataTable, Title, Button } from 'react-native-paper';
 import { Order_by_id } from '../../services/order_api';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -14,6 +15,8 @@ const theme = {
 };
 
 export default function ViewOrder(props,{route}) {
+
+    let history = useHistory();
 
     var orderid = "";
     if(Platform.OS=="android"){
@@ -36,13 +39,20 @@ export default function ViewOrder(props,{route}) {
 
     }, [orderid, order]);
 
+    function goBack(){
+        history.push('/approvedorders');
+    }
+
     return (
         <Provider theme={theme}>
             <SafeAreaView>
             <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="View Order"/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Card.Title style={{ flex: 1,}} title="View Order"/>
+                        <Button mode="contained" style={styles.button, { flex: 1,}} onPress={()=>goBack()}>Go Back</Button>
+                    </View>
                     <Card.Content>
                     {order &&
                         <>
