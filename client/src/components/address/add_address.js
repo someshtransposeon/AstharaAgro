@@ -86,7 +86,7 @@ export default function AddAddress(props, {route}) {
                     <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
                     <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add address</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Submit & Add Bank</Button>
                 </Card.Content>
                 </Card>
             </View>

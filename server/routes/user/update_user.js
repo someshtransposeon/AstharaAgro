@@ -9,6 +9,8 @@ router.put('/update_user/:id',(req, res) =>{
         full_name: req.body.full_name,
         email: req.body.email,
         mobile_no: req.body.mobile_no,
+        idType: req.body.idType,
+        idNumber: req.body.idNumber,
         address: req.body.address,
         gst_no: req.body.gst_no,
         bank_details: req.body.bank_details,

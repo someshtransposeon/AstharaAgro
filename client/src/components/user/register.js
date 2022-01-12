@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link, useHistory } from 'react-router-dom';
 import { user_category } from '../../services/user_api';
+import { uploadImage } from '../../services/image';
 
 const theme = {
     ...DefaultTheme,
@@ -22,6 +23,7 @@ export default function Register(props,{ navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [visible1, setVisible1] = useState(false);
+    const [visible2, setVisible2] = useState(false);
     const [userCategory, setUserCategory] = useState();
     const [category, setCategory] = useState("Choose Category");
     const [categoryId, setCategoryId] = useState("");
@@ -34,6 +36,11 @@ export default function Register(props,{ navigation }) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [roleas, setRoleas] = useState("");
     const [host, setHost] = useState("");
+    const [file, setFile] = useState();
+    const [img, setImg] = useState();
+    const [idType, setIdType] = useState("Choose ID Type");
+    const [idNumber, setIdNumber] = useState();
+
     useEffect(() => {
         setHost(props.host);
         setRoleas(props.roleas);
@@ -43,11 +50,13 @@ export default function Register(props,{ navigation }) {
             setUserCategory(result);
         });
 
-
     }, [userCategory, host, props.host, props.roleas]);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
+
+    const openMenu2 = () => setVisible2(true);
+    const closeMenu2 = () => setVisible2(false);
 
     function chooseCategory(id, name) {
         setCategoryId(id);
@@ -68,6 +77,8 @@ export default function Register(props,{ navigation }) {
                 nick_name: nickName,
                 email: email,
                 mobile_no: mobileNo,
+                idType: idType,
+                idNumber: idNumber,
                 gst_no:gstNo,
                 password: password,
                 confirm_password: confirmPassword,
@@ -83,8 +94,36 @@ export default function Register(props,{ navigation }) {
         })
         .catch(err=>{
             alert(err.message);
+        }); 
+    }
+
+    function getFiles(event){
+        setFile(event.target.files[0]);
+    }
+
+    function ImageSubmitForm(){
+        const data = new FormData();
+        // Update the formData object
+        data.append(
+            "file",
+            file
+        );
+
+        return fetch(`http://${host}:5000/uploadfile`, {
+            method: 'POST',
+            body:data,
         })
-        ; 
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(Image => {
+            setImg(Image.img);
+            console.log(img);
+        });
+    }
+
+    function chooseIdType(idType){
+        setIdType(idType);
+        closeMenu2();
     }
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -139,15 +178,31 @@ export default function Register(props,{ navigation }) {
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
                     <TextInput style={styles.input} mode="outlined" label="Nick Name" value={nickName} onChangeText={nickName => setNickName(nickName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
+                    <TextInput style={styles.input} mode="outlined" label="Email/Login Id" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
-                    
+                    <Menu
+                    visible={visible2}
+                    onDismiss={closeMenu2}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu2}>{idType}</Button>}>
+                        <Menu.Item title="Aadhar Card" onPress={()=>chooseIdType("Aadhar Card")} />
+                        <Menu.Item title="Pan Card" onPress={()=>chooseIdType("Pan Card")} />
+                        <Menu.Item title="Voter Id" onPress={()=>chooseIdType("Voter Id")} />
+                        <Menu.Item title="Driving License" onPress={()=>chooseIdType("Driving License")} />
+                    </Menu>
+                    <TextInput style={styles.input} mode="outlined" label="ID Number" value={idNumber} onChangeText={idNumber => setIdNumber(idNumber)}/>
+                    {/* <View style={{flexDirection: 'row'}}>
+                        <input type="file" name="file" placeholder="Image"
+                        style={{flex: 3, border: '1px solid gray', marginLeft: '2%', padding: '1%', borderRadius: '1px'}}
+                        onChange={getFiles}
+                        />
+                        <Button mode="contained" style={styles.button, { flex: 1,}} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
+                    </View> */}
                     {(category=="vendor" || category=="customer") &&
                         <TextInput style={styles.input} mode="outlined" label="GST No" value={gstNo} onChangeText={gstNo => setGstNo(gstNo)} />
                     }
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
                     <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} secureTextEntry={true}/>
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Register</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Register & Add Address</Button>
                     </Card.Content>
                 </Card>
             </View>

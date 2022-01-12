@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    idType: {
+        type: String,
+        required: true,
+    },
+    idNumber: {
+        type: String,
+        required: true,
+    },
     gst_no: {
         type: String,
     },
