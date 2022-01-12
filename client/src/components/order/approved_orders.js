@@ -64,8 +64,8 @@ export default function ApprovedOrders(props, { navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
-                        <DataTable.Title>Email</DataTable.Title>
-                        <DataTable.Title>Action</DataTable.Title>
+                        <DataTable.Title>Customer Name</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
                     {allOrders ?
@@ -80,9 +80,9 @@ export default function ApprovedOrders(props, { navigation }) {
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{custom_orderId}</DataTable.Cell>
-                                        <DataTable.Cell>{item.email}</DataTable.Cell>
+                                        <DataTable.Cell>{item.name}</DataTable.Cell>
                                         {roleas=="manager" ?
-                                            <DataTable.Cell>
+                                            <DataTable.Cell numeric>
                                                 {Platform.OS=='android' ?
                                                     <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
                                                     :
@@ -90,7 +90,7 @@ export default function ApprovedOrders(props, { navigation }) {
                                                 }
                                             </DataTable.Cell>
                                             :
-                                            <DataTable.Cell>
+                                            <DataTable.Cell numeric>
                                                 {Platform.OS=='android' ?
                                                     <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
                                                     :

@@ -272,7 +272,7 @@ export default function AddItem({ navigation }) {
                         <TextInput style={styles.input} mode="outlined" label="Item name"  value={itemName} onChangeText={itemName => setItemName(itemName)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
-                        <TextInput style={styles.input} mode="outlined" label="Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice)} />
+                        <TextInput style={styles.input} mode="outlined" label="Unit Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice)} />
                         <Menu key={4}
                         visible={visible4}
                         onDismiss={closeMenu4}
