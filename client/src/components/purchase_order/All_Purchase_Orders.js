@@ -20,7 +20,7 @@ export default function All_Purchase_Orders(props,{ navigation }) {
 
     const [allPurchaseOrders, setAllPurchaseOrders] = useState();
     const [searchQuery, setSearchQuery] = useState('');
-    const  [roleas, setRoleas] = useState("");
+    const [roleas, setRoleas] = useState("");
 
     useEffect(() => {
         

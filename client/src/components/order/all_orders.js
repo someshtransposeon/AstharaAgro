@@ -49,7 +49,7 @@ export default function AllOrders(props, { navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Order ID</DataTable.Title>
-                        <DataTable.Title>Email</DataTable.Title>
+                        <DataTable.Title>Customer Name</DataTable.Title>
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
@@ -61,14 +61,14 @@ export default function AllOrders(props, { navigation }) {
                                 var d=new Date(item.order_date);
                                 d.toTimeString();
                                 d=String(d);
-                                var hour=d.substring(16,18);;
+                                var hour=d.substring(16,18);
                                 var custom_orderId=item.nick_name+"_"+item.postal_code+"_"+date+"_"+hour;
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{custom_orderId}</DataTable.Cell>
-                                        <DataTable.Cell>{item.email}</DataTable.Cell>
+                                        <DataTable.Cell>{item.name}</DataTable.Cell>
                                         <DataTable.Cell>{item.status}</DataTable.Cell>
-                                        <DataTable.Cell>
+                                        <DataTable.Cell numeric>
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
                                                 :
