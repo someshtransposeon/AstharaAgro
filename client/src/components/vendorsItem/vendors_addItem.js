@@ -3,7 +3,7 @@ import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {all_vendor_addresses, vendor_address_by_id} from '../../services/vendor_api';
 import { item_all_category, item_grade, item_unit } from '../../services/item_api';
@@ -64,6 +64,8 @@ export default function AddItem({ navigation }) {
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('Choose Address');
     const [vendorAddress, setVendorAddress] = useState();
+
+    let history = useHistory();
 
     useEffect(() => {
 
@@ -168,6 +170,7 @@ export default function AddItem({ navigation }) {
         })
           .then(function (response) {
             alert(response.data.message);
+            history.push('/vendors_allitems');
           })
           .catch(function (error) {
             console.log(error);

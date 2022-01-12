@@ -128,7 +128,11 @@ export default function CreateOrder({ navigation }) {
         const values = [...items];
         if (fieldname === "item") {
             values[index].itemName = fieldvalue;
-            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade/${fieldvalue}/${values[index].Grade}`, {
+            closeMenu(index);
+        }
+        else if (fieldname=="grade") {
+            values[index].Grade=grade;
+            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade/${values[index].itemName}/${grade}`, {
                 method: 'GET'
             })
             .then(res => res.json())
@@ -142,10 +146,6 @@ export default function CreateOrder({ navigation }) {
                 const itemsnames=[...new Set(data.map(x=>x.item_name))];
                 setItem(itemsnames);
             });
-            closeMenu(index);
-        }
-        else if (fieldname=="grade") {
-            values[index].Grade=grade;
             closeMenu4(index);
         }
         else if (fieldname == "quantity"){
@@ -341,32 +341,6 @@ export default function CreateOrder({ navigation }) {
                         {items.map((it, index) => (
                             <View>
                                 <Menu
-                                visible={visible4[index]}
-                                onDismiss={()=>closeMenu4(index)}
-                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu4(index)}>{it.Grade}</Button>}>
-                                    <Searchbar
-                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
-                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
-                                        placeholder="Search"
-                                        onChangeText={onChangeSearch4}
-                                        value={searchQuery4}
-                                    />
-                                    {itemGrade ?
-                                        itemGrade.map((grade)=>{
-                                            if(grade.grade_name.toUpperCase().search(searchQuery4.toUpperCase())!=-1){
-                                                return (
-                                                    <>
-                                                    <Menu.Item title={grade.grade_name} 
-                                                    onPress={()=>ItemChange(index, "grade", "", "","","", grade.grade_name)}/>
-                                                    </>
-                                                )
-                                            }
-                                        })
-                                        :
-                                        <Menu.Item title="No items are available" />
-                                    }
-                                </Menu>
-                                <Menu
                                 visible={visible[index]}
                                 onDismiss={()=>closeMenu(index)}
                                 anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
@@ -384,6 +358,32 @@ export default function CreateOrder({ navigation }) {
                                                     <>
                                                     <Menu.Item title={item} 
                                                     onPress={()=>ItemChange(index, "item", item, "","","","")}/>
+                                                    </>
+                                                )
+                                            }
+                                        })
+                                        :
+                                        <Menu.Item title="No items are available" />
+                                    }
+                                </Menu>
+                                <Menu
+                                visible={visible4[index]}
+                                onDismiss={()=>closeMenu4(index)}
+                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu4(index)}>{it.Grade}</Button>}>
+                                    <Searchbar
+                                        icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                        clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                        placeholder="Search"
+                                        onChangeText={onChangeSearch4}
+                                        value={searchQuery4}
+                                    />
+                                    {itemGrade ?
+                                        itemGrade.map((grade)=>{
+                                            if(grade.grade_name.toUpperCase().search(searchQuery4.toUpperCase())!=-1){
+                                                return (
+                                                    <>
+                                                    <Menu.Item title={grade.grade_name} 
+                                                    onPress={()=>ItemChange(index, "grade", "", "","","", grade.grade_name)}/>
                                                     </>
                                                 )
                                             }

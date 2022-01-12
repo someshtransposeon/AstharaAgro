@@ -3,7 +3,7 @@ import { View, StyleSheet, Platform, ActivityIndicator} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { all_vendor_addresses, all_vendor_items_by_itemid, vendor_address_by_id } from '../../services/vendor_api';
 import { item_all_category, item_grade, item_unit } from '../../services/item_api';
 import axios from 'axios';
@@ -72,6 +72,8 @@ export default function VendorsEditItem(props,{navigation, route}) {
     const [pincode, setPincode] = useState('');
     const [vendorAddress, setVendorAddress] = useState();
     const [userId, setUserId] = useState('');
+
+    let history = useHistory();
 
     useEffect(() => {
         
@@ -176,6 +178,7 @@ export default function VendorsEditItem(props,{navigation, route}) {
         })
           .then(function (response) {
             alert(response.data.message);
+            history.push('/vendors_allitems');
           })
           .catch(function (error) {
             console.log(error);
