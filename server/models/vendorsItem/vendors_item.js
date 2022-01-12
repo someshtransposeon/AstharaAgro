@@ -79,7 +79,8 @@ const vendorsItemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     }
+    }, {
+    timestamps: true
 });
-
 const vendorsItem = mongoose.model('vendorsItem', vendorsItemSchema);
 module.exports = vendorsItem;

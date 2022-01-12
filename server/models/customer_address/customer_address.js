@@ -30,6 +30,8 @@ const customeraddressSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    }, {
+    timestamps: true
 });
 
 const Customer_Address = mongoose.model('Customer_Address', customeraddressSchema);

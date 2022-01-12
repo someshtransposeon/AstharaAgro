@@ -29,8 +29,9 @@ const vendoraddressSchema = new mongoose.Schema({
     postal_code: {
         type: Number,
         required: true,
-    },
+    }
+    }, {
+    timestamps: true
 });
-
 const Vendor_Address = mongoose.model('Vendor_Address', vendoraddressSchema);
 module.exports = Vendor_Address;

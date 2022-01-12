@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
-import { TextInput, Card, Button, Provider, DefaultTheme ,Text} from 'react-native-paper';
+import { TextInput, Card, Button, Provider, DefaultTheme ,Text, Menu} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useHistory } from 'react-router-dom';
 import {bank_url} from '../../utils/bank';
@@ -40,6 +40,8 @@ export default function AddBankDetails(props, {route}) {
     const[flag,setFlag] = useState(false);
     const[error,setError] = useState("");
     const[account_error,setAccount_error] = useState(false);
+    const[account_type,setAccount_type] = useState("Choose Account Type");
+    const [visible1, setVisible1] = useState(false);
     //fetch login user information for store corresponding the bank details data
     useEffect(() => {
 
@@ -57,7 +59,7 @@ export default function AddBankDetails(props, {route}) {
         {
             axios.get(bank_url+ifsccode)
             .then(result =>{
-                console.log(result.data);
+                //console.log(result.data);
                 setBankName(result.data.BANK);
                 setBranchName(result.data.BRANCH);
                 setFlag(true);
@@ -76,6 +78,9 @@ export default function AddBankDetails(props, {route}) {
         }
 
     }, [host, userid,ifsccode,accountNumber,confirm_AccountNumber]);
+
+    const openMenu1 = () => setVisible1(true);
+    const closeMenu1 = () => setVisible1(false);
     //define a function for sending the data in corresponding database
     function submitForm() {
         fetch(`http://${host}:5000/create_bank`, {
@@ -90,12 +95,14 @@ export default function AddBankDetails(props, {route}) {
                 account_number: accountNumber,
                 account_holder_name: accountHolderName,
                 confirm_AccountNumber:confirm_AccountNumber,
-                ifsc_code: ifsccode
+                ifsc_code: ifsccode,
+                account_type: account_type,
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            console.log(data);
             if(data.bank!="")
             {
                 alert(data.message);
@@ -103,6 +110,10 @@ export default function AddBankDetails(props, {route}) {
             }
             alert(data.message);
         }); 
+    }
+    function chooseAccountType(accountType){
+        setAccount_type(accountType);
+        closeMenu1();
     }
     //define all the required input fields
     return (
@@ -127,6 +138,17 @@ export default function AddBankDetails(props, {route}) {
                         <span id={2} style={{color:"red"}}>{account_error}</span>
                     }
                     <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={accountHolderName} onChangeText={accountHolderName => setAccountHolderName(accountHolderName)} />
+                    <Menu
+                    visible={visible1}
+                    onDismiss={closeMenu1}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{account_type}</Button>}>
+                        <Menu.Item title="Current account" onPress={()=>chooseAccountType("Current account")} />
+                        <Menu.Item title="Savings account" onPress={()=>chooseAccountType("Savings account")} />
+                        <Menu.Item title="Salary account" onPress={()=>chooseAccountType("Salary account")} />
+                        <Menu.Item title="Fixed deposit account" onPress={()=>chooseAccountType("Fixed deposit account")} />
+                        <Menu.Item title="Recurring deposit account" onPress={()=>chooseAccountType("Recurring deposit account")} />
+                        <Menu.Item title="NRI accounts" onPress={()=>chooseAccountType("NRI accounts")} />
+                    </Menu>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Bank Details</Button>
                     </Card.Content>
                 </Card>

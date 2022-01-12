@@ -49,7 +49,8 @@ const pickupAssignConfirmSchema = new mongoose.Schema({
         type: String,
         default:"pending for vendor acceptance",
     },
-
+    }, {
+    timestamps: true
 });
 
 const PickupAssignConfirm = mongoose.model('PickupAssignConfirm', pickupAssignConfirmSchema);

@@ -8,6 +8,8 @@ const itemCategorySchema = new mongoose.Schema({
         type:String,
         default:"enabled"
     }
+    }, {
+    timestamps: true
 });
 
 const ItemCategory = mongoose.model('ItemCategory', itemCategorySchema);

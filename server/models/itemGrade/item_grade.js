@@ -8,7 +8,9 @@ const itemGradeSchema = new mongoose.Schema({
         type:String,
         default:"enabled"
     }
-});
+    }, {
+    timestamps: true
+}); 
 
 const ItemGrade = mongoose.model('ItemGrade', itemGradeSchema);
 module.exports = ItemGrade;

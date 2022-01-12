@@ -8,7 +8,8 @@ const userCategorySchema = new mongoose.Schema({
         type:String,
         default:"enabled"
     }
+    }, {
+    timestamps: true
 });
-
 const UserCategory = mongoose.model('UserCategory', userCategorySchema);
 module.exports = UserCategory;

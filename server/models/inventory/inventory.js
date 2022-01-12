@@ -50,6 +50,8 @@ const inventorySchema = new mongoose.Schema({
         type: String,
         default:"",
     }
+    }, {
+    timestamps: true
 });
 
 const Inventory = mongoose.model('Inventory', inventorySchema);

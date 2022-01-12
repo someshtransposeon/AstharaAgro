@@ -36,8 +36,9 @@ const purchaseorderSchema = new mongoose.Schema({
     status: {
         type: String,
         default:"pending for vendor acceptance",
-    },
-});
-
+    }
+    }, {
+        timestamps: true
+    });
 const PurchaseOrder = mongoose.model('PurchaseOrder', purchaseorderSchema);
 module.exports = PurchaseOrder;

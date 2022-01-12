@@ -12,6 +12,7 @@ router.post('/create_bank', (req, res)=>{
             account_number: req.body.account_number,
             account_holder_name: req.body.account_holder_name,
             ifsc_code: req.body.ifsc_code,
+            account_type: req.body.account_type,
         })
         newBank.save()
         .then(bank => {

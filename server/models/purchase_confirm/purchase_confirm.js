@@ -41,7 +41,8 @@ const purchaseorderConfirmSchema = new mongoose.Schema({
         type: String,
         default:"pending for manager acceptance",
     },
-
+    }, {
+    timestamps: true
 });
 
 const PurchaseOrderConfirm = mongoose.model('PurchaseOrderConfirm', purchaseorderConfirmSchema);

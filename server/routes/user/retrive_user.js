@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../../models/user/user');
 
 router.get('/retrive_all_user',(req, res)=>{
-    User.find({status:"enabled"}, function(err, users){
+    User.find({status:"enabled"}).sort({"_id":-1}).exec(function(err, users){
         if(err){
             console.log(err);
         }

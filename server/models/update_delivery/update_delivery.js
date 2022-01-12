@@ -77,8 +77,8 @@ const updateDeliverySchema = new mongoose.Schema({
         type:Date,
         default: Date.now,
     },
-
+    }, {
+    timestamps: true
 });
-
 const updateDelivery = mongoose.model('updateDelivery', updateDeliverySchema);
 module.exports = updateDelivery;

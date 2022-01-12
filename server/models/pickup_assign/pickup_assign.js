@@ -45,7 +45,8 @@ const pickupAssignSchema = new mongoose.Schema({
         type: String,
         default:"pending for buyer acceptance",
     },
-
+    }, {
+    timestamps: true
 });
 
 const PickupAssign = mongoose.model('PickupAssign', pickupAssignSchema);

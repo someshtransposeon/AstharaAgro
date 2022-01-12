@@ -51,6 +51,8 @@ const itemSchema = new mongoose.Schema({
     image:{
         type:String,
     }
+    }, {
+    timestamps: true
 });
 
 const Item = mongoose.model('Item', itemSchema);

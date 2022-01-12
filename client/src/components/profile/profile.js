@@ -179,10 +179,11 @@ export default function Profile({ navigation }) {
                             </Button>
                         </View>
                         <Card.Content>
-                                <TextInput style={styles.input} mode="outlined" label="IFSC Code" value={bank.ifsc_code} />
+                            <TextInput style={styles.input} mode="outlined" label="IFSC Code" value={bank.ifsc_code} />
                             <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bank.bank_name} />
                             <TextInput style={styles.input} mode="outlined" label="Branch" value={bank.branch_name} />
                             <TextInput style={styles.input} mode="outlined" label="Account No" value={bank.account_number} />
+                            <TextInput style={styles.input} mode="outlined" label="Accounbt Type" value={bank.account_type} />
                             <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={bank.account_holder_name} />
                         </Card.Content>
                     </>

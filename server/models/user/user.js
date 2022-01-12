@@ -45,7 +45,9 @@ const userSchema = new mongoose.Schema({
     status:{
         type:String,
         default:"enabled"
-    },
+    }
+    }, {
+    timestamps: true
 });
 
 const User = mongoose.model('User', userSchema);

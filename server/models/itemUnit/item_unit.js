@@ -8,6 +8,8 @@ const itemUnitSchema = new mongoose.Schema({
         type:String,
         default:"enabled"
     }
+    }, {
+    timestamps: true
 });
 
 const ItemUnit = mongoose.model('ItemUnit', itemUnitSchema);

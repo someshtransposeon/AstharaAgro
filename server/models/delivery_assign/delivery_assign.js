@@ -72,10 +72,10 @@ const deliveryAssignSchema = new mongoose.Schema({
     delivery_assign_date:{
         type:Date,
         default: Date.now,
-    },
-
-}
-);
+    }
+    }, {
+    timestamps: true
+});
 
 const deliveryAssign = mongoose.model('deliveryAssign', deliveryAssignSchema);
 module.exports = deliveryAssign;
