@@ -105,7 +105,6 @@ export default function AddBankDetails(props, {route}) {
             console.log(data);
             if(data.bank!="")
             {
-                alert(data.message);
                 history.push('/viewuser/'+userId);
             }
             alert(data.message);

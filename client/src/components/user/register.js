@@ -79,6 +79,7 @@ export default function Register(props,{ navigation }) {
                 mobile_no: mobileNo,
                 idType: idType,
                 idNumber: idNumber,
+                image: img,
                 gst_no:gstNo,
                 password: password,
                 confirm_password: confirmPassword,
@@ -102,23 +103,13 @@ export default function Register(props,{ navigation }) {
     }
 
     function ImageSubmitForm(){
-        const data = new FormData();
-        // Update the formData object
-        data.append(
-            "file",
-            file
-        );
 
-        return fetch(`http://${host}:5000/uploadfile`, {
-            method: 'POST',
-            body:data,
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(Image => {
-            setImg(Image.img);
-            console.log(img);
+        uploadImage(file)
+        .then(result => {
+            setImg(result);
+            alert("Image Uploaded successfully");
         });
+        
     }
 
     function chooseIdType(idType){
@@ -190,13 +181,13 @@ export default function Register(props,{ navigation }) {
                         <Menu.Item title="Driving License" onPress={()=>chooseIdType("Driving License")} />
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="ID Number" value={idNumber} onChangeText={idNumber => setIdNumber(idNumber)}/>
-                    {/* <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row'}}>
                         <input type="file" name="file" placeholder="Image"
                         style={{flex: 3, border: '1px solid gray', marginLeft: '2%', padding: '1%', borderRadius: '1px'}}
                         onChange={getFiles}
                         />
                         <Button mode="contained" style={styles.button, { flex: 1,}} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
-                    </View> */}
+                    </View>
                     {(category=="vendor" || category=="customer") &&
                         <TextInput style={styles.input} mode="outlined" label="GST No" value={gstNo} onChangeText={gstNo => setGstNo(gstNo)} />
                     }

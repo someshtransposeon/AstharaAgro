@@ -46,13 +46,14 @@ export default function AllUsers(props,{ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title>All Users</Title>
+                    <Title style={{marginBottom: '20px'}}>All Users</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
                         placeholder="Search"
                         onChangeText={onChangeSearch}
 		                value={searchQuery}
+                        style={{marginBottom: '20px'}}
                     />
                     <DataTable.Header>
                         <DataTable.Title>Email</DataTable.Title>
@@ -76,30 +77,13 @@ export default function AllUsers(props,{ navigation }) {
                                 <DataTable.Cell>{item.nick_name}</DataTable.Cell>
                                 
                                 <DataTable.Cell>{item.role}</DataTable.Cell>
-                                {roleas=="manager" ?
-                                    <DataTable.Cell numeric>
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edituser/"+item._id}>Details</Link></Button>
-                                    }
-                                    </DataTable.Cell>
-                                    :
-                                    <DataTable.Cell numeric>
+                                <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
                                         :
                                         <Button mode="contained" style={{width: '100%'}}><Link to={"/viewuser/"+item._id}>Details</Link></Button>
                                     }
-                                    </DataTable.Cell>
-                                }
-                                {/* <DataTable.Cell>
-                                    {Platform.OS=='android' ?
-                                        <Button mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditUser', {userId: item._id})}}>Details</Button>
-                                        :
-                                        <Button mode="contained" style={{width: '100%'}}><Link to={"/edituser/"+item._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell> */}
+                                </DataTable.Cell>
                             </DataTable.Row>
                         )
                         }
@@ -156,9 +140,8 @@ const styles = StyleSheet.create({
                 width: '90%',
             },
             default: {
-                width: '70%',
+                width: '75%',
                 border: '1px solid gray',
-                borderRadius: '2%',
                 boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
             }
         })

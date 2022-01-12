@@ -188,6 +188,8 @@ const create_update_delivery = require('./routes/update_delivery/create_update_d
 const retrive_update_delivery = require('./routes/update_delivery/retrive_update_delivery');
 const update_delivery = require('./routes/update_delivery/update_delivery');
 
+const image = require('./routes/image/image');
+
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
 });
@@ -331,6 +333,8 @@ app.use('/', update_delivery_assign);
 app.use('/', create_update_delivery);
 app.use('/', retrive_update_delivery);
 app.use('/', update_delivery);
+
+app.use('/', image);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");

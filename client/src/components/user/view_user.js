@@ -1,7 +1,7 @@
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Platform, ActivityIndicator, Image, Text } from 'react-native';
 import { TextInput, Card, Provider, DefaultTheme, Button } from 'react-native-paper';
 import { Link } from 'react-router-dom';
 import { users_by_id, user_address, user_bank, user_category} from '../../services/user_api';
@@ -67,9 +67,23 @@ export default function ViewUser(props, {route}) {
                             </Button>
                         </View>
                         <Card.Content>
-                            <TextInput style={styles.input} mode="outlined" label="User Category" value={user.role} />
-                            <TextInput style={styles.input} mode="outlined" label="Full Name" value={user.full_name} />
-                            <TextInput style={styles.input} mode="outlined" label="Email" value={user.email} />
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flex:1, marginTop: '2%', }}>
+                                    {user.image ?
+                                            <Image
+                                                style={{width: 200, height: 210, border: '1px solid black'}}
+                                                source={user.image}
+                                            />
+                                        :
+                                            <Text>No Image</Text>
+                                    }
+                                </View>
+                                <View style={{ flex:3, }}>
+                                    <TextInput style={styles.input} mode="outlined" label="User Category" value={user.role} />
+                                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={user.full_name} />
+                                    <TextInput style={styles.input} mode="outlined" label="Email" value={user.email} />
+                                </View>
+                            </View>
                             <TextInput style={styles.input} mode="outlined" label="Mobile No" value={user.mobile_no} />
                             <TextInput style={styles.input} mode="outlined" label="ID Type" value={user.idType} />
                             <TextInput style={styles.input} mode="outlined" label="ID Number" value={user.idNumber} />
@@ -108,11 +122,12 @@ export default function ViewUser(props, {route}) {
                             </Button>
                         </View>
                         <Card.Content>
-                                <TextInput style={styles.input} mode="outlined" label="IFSC Code" value={bank.ifsc_code} />
+                            <TextInput style={styles.input} mode="outlined" label="IFSC Code" value={bank.ifsc_code} />
                             <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bank.bank_name} />
                             <TextInput style={styles.input} mode="outlined" label="Branch" value={bank.branch_name} />
                             <TextInput style={styles.input} mode="outlined" label="Account No" value={bank.account_number} />
                             <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={bank.account_holder_name} />
+                            <TextInput style={styles.input} mode="outlined" label="Account Type" value={bank.account_type} />
                         </Card.Content>
                     </>
                     }

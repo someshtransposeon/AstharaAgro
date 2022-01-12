@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, Text, SafeAreaView, ScrollView} from 'react-native';
+import { View, StyleSheet, Platform, Text, SafeAreaView, ScrollView, Image} from 'react-native';
 import { Card, Provider, DefaultTheme, Button, TextInput } from 'react-native-paper';
 import { Link } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -121,10 +121,26 @@ export default function Profile({ navigation }) {
                             </Button>
                         </View>
                         <Card.Content>
-                            <TextInput style={styles.input} mode="outlined" label="User Category" value={user.role} />
-                            <TextInput style={styles.input} mode="outlined" label="Full Name" value={user.full_name} />
-                            <TextInput style={styles.input} mode="outlined" label="Email" value={user.email} />
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flex:1, marginTop: '2%', }}>
+                                    {user.image ?
+                                            <Image
+                                                style={{width: 200, height: 210, border: '1px solid black'}}
+                                                source={user.image}
+                                            />
+                                        :
+                                            <Text>No Image</Text>
+                                    }
+                                </View>
+                                <View style={{ flex:3, }}>
+                                    <TextInput style={styles.input} mode="outlined" label="User Category" value={user.role} />
+                                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={user.full_name} />
+                                    <TextInput style={styles.input} mode="outlined" label="Email" value={user.email} />
+                                </View>
+                            </View>
                             <TextInput style={styles.input} mode="outlined" label="Mobile No" value={user.mobile_no} />
+                            <TextInput style={styles.input} mode="outlined" label="ID Type" value={user.idType} />
+                            <TextInput style={styles.input} mode="outlined" label="ID Number" value={user.idNumber} />
                             <TextInput style={styles.input} mode="outlined" label="Gst No" value={user.gst_no} />
                         </Card.Content>
                     </>
@@ -139,8 +155,8 @@ export default function Profile({ navigation }) {
                                 <Link to={"/editaddress/"+address._id}>
                                     <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
                                 </Link>
-                                <Button onPress={()=>deleteaddress(address[0]._id)} >
-                                    <FontAwesomeIcon icon={ faTrash }color="red" size={25} />
+                                <Button onPress={()=>deleteaddress(address._id)} >
+                                    <FontAwesomeIcon icon={ faTrash } color="red" size={25} />
                                 </Button>
                             </Button>
                         </View>
@@ -174,7 +190,7 @@ export default function Profile({ navigation }) {
                                     <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
                                 </Link>
                             </Button>
-                            <Button onPress={()=>deletebank(bank[0]._id)} >
+                            <Button onPress={()=>deletebank(bank._id)} >
                                 <FontAwesomeIcon icon={ faTrash } color="red" size={25} />
                             </Button>
                         </View>
