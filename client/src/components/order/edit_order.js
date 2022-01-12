@@ -167,7 +167,7 @@ export default function EditOrder(props,{route}) {
                 <Card style={styles.card}>
                     <Card.Title title="Edit Order"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={name} onChangeText={name => setName(name)} />
+                    <TextInput style={styles.input} mode="outlined" label="Customer Name" value={name} onChangeText={name => setName(name)} />
                     <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile no" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
                     <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
@@ -178,7 +178,7 @@ export default function EditOrder(props,{route}) {
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
                     {items.map((it, index) => (
                         <View>
-                            <Menu
+                            {/* <Menu
                             visible={visible[index]}
                             onDismiss={()=>closeMenu(index)}
                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{it.itemName}</Button>}>
@@ -202,11 +202,12 @@ export default function EditOrder(props,{route}) {
                                     :
                                     <Menu.Item title="No items are available" />
                                 }
-                            </Menu>
-                            <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
+                            </Menu> */}
+                             <TextInput mode="outlined" label="Item Name" value={it.itemName} />
+                            <TextInput mode="outlined" label="Unit of each item" value={it.itemUnit} />
                             <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '')} />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Item Price" value={it.itemPrice} onChangeText={(text)=>ItemChange(index, "finalPrice", text, '')} />
-                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange(index, "itemNegotiatePrice", text, '')} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Per Unit Price" value={it.itemPrice} />
+                            <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price" value={it.itemNegotiatePrice} />
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>

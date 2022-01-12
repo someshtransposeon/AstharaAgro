@@ -8,7 +8,8 @@ import { all_users_by_role, users_by_id } from '../../services/user_api';
 import { item_grade } from  '../../services/item_api';
 import { Link } from "react-router-dom";
 import { all_customer_items_by_id, customer_address_by_id } from '../../services/customer_api';
-
+import { all_vendor_items } from '../../services/vendor_api';
+import {host} from '../../utils/host';
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -62,41 +63,30 @@ export default function CreateOrder({ navigation }) {
             })
         }
         fetchData();
-
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-
-        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
+        all_vendor_items()
         .then(item => {
             if(item){
                 const itemsnames=[...new Set(item.map(x=>x.item_name))];
                 setItem(itemsnames);
             }
-        });
-
+        })
+        // fetch(`http://${host}:5000/vendors_retrive_all_item`, {
+        //     method: 'GET'
+        // })
+        // .then(res => res.json())
+        // .catch(error => console.log(error))
+        // .then(item => {
+        //     if(item){
+        //         const itemsnames=[...new Set(item.map(x=>x.item_name))];
+        //         setItem(itemsnames);
+        //     }
+        // });
         all_users_by_role("customer")
         .then(result => {
             setCustomer(result);
+            setCategory(result._id);
+            setRole(result.category_name);
         })                     
-
-        fetch('http://localhost:5000/retrive_user_category_type/customer', {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data =>{
-            setCategory(data._id);
-            setRole(data.category_name);
-        });
-
         item_grade()
         .then(result => {
             setItemGrade(result);

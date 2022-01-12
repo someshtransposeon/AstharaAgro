@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
-import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
+import { TextInput, Card, Button, Provider, DefaultTheme ,Text} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useHistory } from 'react-router-dom';
+import {bank_url} from '../../utils/bank';
+import axios from 'axios';
 
 const theme = {
     ...DefaultTheme,
@@ -31,9 +33,13 @@ export default function AddBankDetails(props, {route}) {
     const [bankName, setBankName] = useState("");
     const [branchName, setBranchName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
+    const [confirm_AccountNumber, setConfirm_AccountNumber] = useState("");
     const [accountHolderName, setAccountHolderName] = useState("");
     const [ifsccode, setIfsccode] = useState("");
     const [host, setHost] = useState("");
+    const[flag,setFlag] = useState(false);
+    const[error,setError] = useState("");
+    const[account_error,setAccount_error] = useState(false);
     //fetch login user information for store corresponding the bank details data
     useEffect(() => {
 
@@ -47,8 +53,29 @@ export default function AddBankDetails(props, {route}) {
         else{
             setHost("localhost");
         }
+        if(ifsccode.length==11 && ifsccode)
+        {
+            axios.get(bank_url+ifsccode)
+            .then(result =>{
+                console.log(result.data);
+                setBankName(result.data.BANK);
+                setBranchName(result.data.BRANCH);
+                setFlag(true);
+                setError("");
+            })
+            .catch(err => {
+                console.log(err)
+                setError("Invalid IFSC Code");
+                
+            })
+        }
+        else{
+                setFlag(false);
+                setBankName("");
+                setBranchName("");
+        }
 
-    }, [host, userid]);
+    }, [host, userid,ifsccode,accountNumber,confirm_AccountNumber]);
     //define a function for sending the data in corresponding database
     function submitForm() {
         fetch(`http://${host}:5000/create_bank`, {
@@ -62,14 +89,19 @@ export default function AddBankDetails(props, {route}) {
                 branch_name: branchName,
                 account_number: accountNumber,
                 account_holder_name: accountHolderName,
+                confirm_AccountNumber:confirm_AccountNumber,
                 ifsc_code: ifsccode
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            if(data.bank!="")
+            {
+                alert(data.message);
+                history.push('/viewuser/'+userId);
+            }
             alert(data.message);
-            history.push('/viewuser/'+userId);
         }); 
     }
     //define all the required input fields
@@ -79,11 +111,22 @@ export default function AddBankDetails(props, {route}) {
                 <Card style={styles.card}>
                     <Card.Title title="Add Bank Details"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bankName} multiline onChangeText={bankName => setBankName(bankName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Branch Name" value={branchName} onChangeText={branchName => setBranchName(branchName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Account Number" value={accountNumber} onChangeText={accountNumber => setAccountNumber(accountNumber)} />
-                    <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={accountHolderName} onChangeText={accountHolderName => setAccountHolderName(accountHolderName)} />
                     <TextInput style={styles.input} mode="outlined" label="Ifsc Code" value={ifsccode} onChangeText={ifsccode => setIfsccode(ifsccode)} />
+                    { error && 
+                        <p id={1} style={{color:"red"}}>{error}</p>
+                    }
+                    { flag &&
+                        <>
+                            <TextInput style={styles.input} mode="outlined" label="Bank Name" value={bankName} />
+                            <TextInput style={styles.input} mode="outlined" label="Branch Name" value={branchName}  />
+                        </>
+                    }
+                    <TextInput style={styles.input} mode="outlined" label="Account Number" value={confirm_AccountNumber} onChangeText={confirm_AccountNumber => setConfirm_AccountNumber(confirm_AccountNumber)} secureTextEntry={true}/>
+                    <TextInput style={styles.input} mode="outlined" label="Confirm Account Number" value={accountNumber} onChangeText={accountNumber => setAccountNumber(accountNumber)} />
+                    { account_error && 
+                        <span id={2} style={{color:"red"}}>{account_error}</span>
+                    }
+                    <TextInput style={styles.input} mode="outlined" label="Account Holder Name" value={accountHolderName} onChangeText={accountHolderName => setAccountHolderName(accountHolderName)} />
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Bank Details</Button>
                     </Card.Content>
                 </Card>
