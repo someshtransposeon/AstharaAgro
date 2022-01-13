@@ -6,7 +6,7 @@ import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-ico
 import { Link, useHistory } from 'react-router-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {all_vendor_addresses, vendor_address_by_id} from '../../services/vendor_api';
-import { item_all_category, item_grade, item_unit } from '../../services/item_api';
+import { allitem, item_all_category, item_grade, item_unit } from '../../services/item_api';
 import axios from 'axios';
 import {url} from '../../utils/url';
 import { uploadImage } from '../../services/image';
@@ -27,6 +27,7 @@ export default function AddItem({ navigation }) {
     const [visible2, setVisible2] = useState(false);
     const [visible3, setVisible3] = useState(false);
     const [visible4, setVisible4] = useState(false);
+    const [visible5, setVisible5] = useState(false);
 
     const openMenu1 = () => setVisible1(true);
     const closeMenu1 = () => setVisible1(false);
@@ -36,10 +37,13 @@ export default function AddItem({ navigation }) {
     const closeMenu3 = () => setVisible3(false);
     const openMenu4 = () => setVisible4(true);
     const closeMenu4 = () => setVisible4(false);
+    const openMenu5 = () => setVisible5(true);
+    const closeMenu5 = () => setVisible5(false);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchQuery1, setSearchQuery1] = useState('');
     const [searchQuery2, setSearchQuery2] = useState('');
+    const [searchQuery3, setSearchQuery3] = useState('');
     const [searchQuery4, setSearchQuery4] = useState('');
 
     const [userId, setUserId] = useState('');
@@ -50,7 +54,6 @@ export default function AddItem({ navigation }) {
     const [categoryId, setCategoryId] = useState("");
     const [unitId, setUnitId] = useState("");
     const [gradeId, setGradeId] = useState("");
-    const [itemName, setItemName] = useState("");
     const [grade, setGrade] = useState("Choose Grade");
     const [itemDescription, setDescription,] = useState("");
     const [itemPrice,setItemPrice]=useState("");
@@ -67,6 +70,8 @@ export default function AddItem({ navigation }) {
     const [vendorAddress, setVendorAddress] = useState();
     const [file, setFile] = useState();
     const [img, setImg] = useState();
+    const [allItems, setAllItems] = useState();
+    const [item, setItem] = useState("Choose Item");
 
     let history = useHistory();
 
@@ -90,6 +95,12 @@ export default function AddItem({ navigation }) {
         else{
             setHost("localhost");
         }
+
+        //Retrieve all items
+        allitem()
+        .then(result => {
+            setAllItems(result);
+        })
 
         //Retrieve all item category
         item_all_category()
@@ -137,6 +148,11 @@ export default function AddItem({ navigation }) {
         closeMenu3();
     }
 
+    function chooseItem(id, name) {
+        setItem(name);
+        closeMenu5();
+    }
+
     function chooseAddress(addressId) {
         vendor_address_by_id(addressId)
         .then(result => {
@@ -157,7 +173,7 @@ export default function AddItem({ navigation }) {
                 unit: unitId,
                 grade: gradeId,
                 image: img,
-                item_name: itemName,
+                item_name: item,
                 category_name: category,
                 unit_name: unit,
                 grade_name: grade,
@@ -198,6 +214,7 @@ export default function AddItem({ navigation }) {
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch1 = query => setSearchQuery1(query);
     const onChangeSearch2 = query => setSearchQuery2(query);
+    const onChangeSearch3 = query => setSearchQuery3(query);
     const onChangeSearch4 = query => setSearchQuery4(query);
 
     return (
@@ -297,7 +314,34 @@ export default function AddItem({ navigation }) {
                             />
                             <Button mode="contained" style={styles.button, { flex: 1, marginTop: '2%',}} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
                         </View>
-                        <TextInput style={styles.input} mode="outlined" label="Item name"  value={itemName} onChangeText={itemName => setItemName(itemName)} />
+                        <Menu key={5}
+                        visible={visible5}
+                        onDismiss={closeMenu5}
+                        anchor={<Button style={styles.input} mode="outlined" onPress={openMenu5}>{item}</Button>}>
+                            <Searchbar
+                                icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                                clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                                placeholder="Search"
+                                onChangeText={onChangeSearch3}
+                                value={searchQuery3}
+                            />
+                            {Platform.OS=='android' ?
+                                <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemUnit')}}>Add Item</Button>
+                                :
+                                <Link to="/additem"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Item</Button></Link>
+                            }
+                            {allItems ?
+                                allItems.map((item)=>{
+                                    if(item.item_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
+                                        return (
+                                            <Menu.Item title={item.item_name} onPress={()=>chooseItem(item._id, item.item_name)} />
+                                        )
+                                    }
+                                })
+                                :
+                                <Menu.Item title="No items Available" />
+                            }
+                        </Menu>
                         <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
                         <TextInput style={styles.input} mode="outlined" label="Unit Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice)} />
