@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -24,6 +25,8 @@ export default function Add_vendor_Address({ navigation }) {
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('');
     const [host, setHost] = useState('');
+
+    let history = useHistory();
     //fetch login user information for store corresponding the address data
     useEffect(() => {
         async function fetchData() {
@@ -61,13 +64,7 @@ export default function Add_vendor_Address({ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
-            setAddress("");
-            setLandmark("");
-            setDistrict("");
-            setState("");
-            setCountry("");
-            setPincode("");
+            history.push('/vendors_additem');
         }); 
     }
     //define all the required input fields

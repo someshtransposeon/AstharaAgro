@@ -84,23 +84,13 @@ export default function VendorsAllItems(props,{ navigation }) {
                                         <DataTable.Cell>{item.unit_name}</DataTable.Cell>
                                         <DataTable.Cell>{item.item_quantity}</DataTable.Cell>
                                         <DataTable.Cell>{item.item_price}</DataTable.Cell>
-                                        {roleas=="vendor" ?
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('VendorsEditItem', {itemId: item._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/vendors_edititem/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                            :
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('VendorsViewItem', {itemId: item._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/vendors_view_item/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                        }
+                                        <DataTable.Cell>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('VendorsViewItem', {itemId: item._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/vendors_view_item/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
                                     </DataTable.Row>
                                 )
                             }

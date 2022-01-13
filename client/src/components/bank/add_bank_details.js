@@ -143,10 +143,6 @@ export default function AddBankDetails(props, {route}) {
                     anchor={<Button style={styles.input} mode="outlined" onPress={openMenu1}>{account_type}</Button>}>
                         <Menu.Item title="Current account" onPress={()=>chooseAccountType("Current account")} />
                         <Menu.Item title="Savings account" onPress={()=>chooseAccountType("Savings account")} />
-                        <Menu.Item title="Salary account" onPress={()=>chooseAccountType("Salary account")} />
-                        <Menu.Item title="Fixed deposit account" onPress={()=>chooseAccountType("Fixed deposit account")} />
-                        <Menu.Item title="Recurring deposit account" onPress={()=>chooseAccountType("Recurring deposit account")} />
-                        <Menu.Item title="NRI accounts" onPress={()=>chooseAccountType("NRI accounts")} />
                     </Menu>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Bank Details</Button>
                     </Card.Content>

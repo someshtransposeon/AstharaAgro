@@ -10,6 +10,7 @@ router.post('/vendors_create_item', (req, res)=>{
         grade: req.body.grade,
         unit: req.body.unit,
         added_by: req.body.added_by,
+        image: req.body.image,
         item_name: req.body.item_name,
         category_name: req.body.category_name,
         grade_name: req.body.grade_name,

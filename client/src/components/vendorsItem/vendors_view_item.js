@@ -1,6 +1,9 @@
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, ActivityIndicator} from 'react-native';
-import { TextInput, Card, Provider, DefaultTheme } from 'react-native-paper';
+import { View, StyleSheet, Platform, ActivityIndicator, Image, Text} from 'react-native';
+import { TextInput, Card, Provider, DefaultTheme, Button } from 'react-native-paper';
+import { Link } from 'react-router-dom';
 import { all_vendor_items_by_itemid } from '../../services/vendor_api';
 
 const theme = {
@@ -25,20 +28,8 @@ export default function VendorsViewItem(props,{route}) {
     }
 
     const [itemId, setItemId] = useState("");
-    const [category, setCategory] = useState("Choose Category");
-    const [itemName, setItemName] = useState("");
-    const [grade, setGrade] = useState("Choose Grade");
-    const [itemDescription, setDescription,] = useState("");
-    const [item_price,setItemPrice]=useState("");
-    const [unit,setUnit]=useState("Select unit of each item");
     const [host, setHost] = useState("");
-    const [flag, setFlag] = useState(true);
-    const [address, setAddress] = useState('');
-    const [landmark, setLandmark] = useState('');
-    const [district, setDistrict] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
-    const [pincode, setPincode] = useState('');
+    const [item, setItem] = useState();
 
     useEffect(() => {
 
@@ -54,43 +45,52 @@ export default function VendorsViewItem(props,{route}) {
         if(itemId){
             all_vendor_items_by_itemid(itemId)
             .then(result => {
-                setGrade(result[0].grade_name);
-                setUnit(result[0].unit_name);
-                setCategory(result[0].category_name);
-                setItemName(result[0].item_name);
-                setDescription(result[0].description);
-                setItemPrice(result[0].item_price);
-                setAddress(result[0].address);
-                setLandmark(result[0].landmark);
-                setDistrict(result[0].district);
-                setState(result[0].state);
-                setCountry(result[0].country);
-                setPincode(result[0].postal_code);
+                setItem(result[0]);
             });
         }
 
-    }, [host,itemId,id,itemid,flag]);
+    }, [host,itemId,id,itemid])
 
     return (
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {grade ?
+                {item ?
                 <Card style={styles.card}>
-                    <Card.Title title="VENDORS VIEW ITEM"/>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Card.Title style={{ flex: 2,}} title="VENDORS VIEW ITEM:-"/>
+                        <Button>
+                            <Link to={"/vendors_edititem/"+item._id}>
+                                <FontAwesomeIcon icon={ faEdit } color="blue" size={25} />
+                            </Link>
+                        </Button>
+                    </View>
                     <Card.Content>
-                        <TextInput style={styles.input} mode="outlined" label="Item Name" value={itemName} onChangeText={itemName => setItemName(itemName)} />
-                        <TextInput style={styles.input} mode="outlined" label="Item Category" value={category}/>
-                        <TextInput style={styles.input} mode="outlined" label="Item Grade" value={grade}/>
-                        <TextInput style={styles.input} mode="outlined" label="Item Unit" value={unit}/>
-                        <TextInput style={styles.input} mode="outlined" label="Item Price" value={item_price}/>
-                        <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription}/>
-                        <TextInput style={styles.input} mode="outlined" label="Item Price" value={item_price}/>
-                        <TextInput style={styles.input} mode="outlined" label="Address" value={address}/>
-                        <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark}/>
-                        <TextInput style={styles.input} mode="outlined" label="District" value={district}/>
-                        <TextInput style={styles.input} mode="outlined" label="State" value={state}/>
-                        <TextInput style={styles.input} mode="outlined" label="country" value={country}/>
-                        <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode}/>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex:1, marginTop: '2%', }}>
+                                {item.image ?
+                                        <Image
+                                            style={{width: 200, height: 210, border: '1px solid black'}}
+                                            source={item.image}
+                                        />
+                                    :
+                                        <Text>No Image</Text>
+                                }
+                            </View>
+                            <View style={{ flex:3, }}>
+                                <TextInput style={styles.input} mode="outlined" label="Item Name" value={item.item_name}/>
+                                <TextInput style={styles.input} mode="outlined" label="Item Category" value={item.category_name}/>
+                                <TextInput style={styles.input} mode="outlined" label="Item Grade" value={item.grade_name}/>
+                            </View>
+                        </View>
+                        <TextInput style={styles.input} mode="outlined" label="Item Unit" value={item.unit_name}/>
+                        <TextInput style={styles.input} mode="outlined" label="Item Price" value={item.item_price}/>
+                        <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={item.description}/>
+                        <TextInput style={styles.input} mode="outlined" label="Address" value={item.address}/>
+                        <TextInput style={styles.input} mode="outlined" label="Landmark" value={item.landmark}/>
+                        <TextInput style={styles.input} mode="outlined" label="District" value={item.district}/>
+                        <TextInput style={styles.input} mode="outlined" label="State" value={item.state}/>
+                        <TextInput style={styles.input} mode="outlined" label="country" value={item.country}/>
+                        <TextInput style={styles.input} mode="outlined" label="Pin Code" value={item.postal_code}/>
                     </Card.Content>
                 </Card>
                 :

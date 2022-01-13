@@ -9,6 +9,7 @@ import {all_vendor_addresses, vendor_address_by_id} from '../../services/vendor_
 import { item_all_category, item_grade, item_unit } from '../../services/item_api';
 import axios from 'axios';
 import {url} from '../../utils/url';
+import { uploadImage } from '../../services/image';
 
 const theme = {
     ...DefaultTheme,
@@ -64,6 +65,8 @@ export default function AddItem({ navigation }) {
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('Choose Address');
     const [vendorAddress, setVendorAddress] = useState();
+    const [file, setFile] = useState();
+    const [img, setImg] = useState();
 
     let history = useHistory();
 
@@ -153,6 +156,7 @@ export default function AddItem({ navigation }) {
                 category: categoryId,
                 unit: unitId,
                 grade: gradeId,
+                image: img,
                 item_name: itemName,
                 category_name: category,
                 unit_name: unit,
@@ -175,6 +179,20 @@ export default function AddItem({ navigation }) {
           .catch(function (error) {
             console.log(error);
           }); 
+    }
+
+    function getFiles(event){
+        setFile(event.target.files[0]);
+    }
+
+    function ImageSubmitForm(){
+
+        uploadImage(file)
+        .then(result => {
+            setImg(result);
+            alert("Image Uploaded successfully");
+        });
+        
     }
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -258,7 +276,7 @@ export default function AddItem({ navigation }) {
                             {Platform.OS=='android' ?
                                 <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemUnit')}}>Add Unit</Button>
                                 :
-                                <Link to="/additemgrades"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Vendor Address</Button></Link>
+                                <Link to="/additemunits"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Unit</Button></Link>
                             }
                             {itemUnit ?
                                 itemUnit.map((item)=>{
@@ -272,6 +290,13 @@ export default function AddItem({ navigation }) {
                                 <Menu.Item title="No item Unit Available" />
                             }
                         </Menu>
+                        <View style={{flexDirection: 'row'}}>
+                            <input type="file" name="file" placeholder="Image"
+                            style={{flex: 3, border: '1px solid gray', marginTop: '2%', padding: '1%', borderRadius: '1px'}}
+                            onChange={getFiles}
+                            />
+                            <Button mode="contained" style={styles.button, { flex: 1, marginTop: '2%',}} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
+                        </View>
                         <TextInput style={styles.input} mode="outlined" label="Item name"  value={itemName} onChangeText={itemName => setItemName(itemName)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
@@ -295,22 +320,19 @@ export default function AddItem({ navigation }) {
                             {vendorAddress ?
                                 vendorAddress.map((item)=>{
                                     return (
-                                        <Menu.Item title={item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
+                                        <Menu.Item style={{marginTop: '5%', padding: '1%',}} title={"Address: "+item.address+", Landmark: "+item.landmark+", \n District: "+item.district+", State: "+item.state+", \n Country: "+item.country+", Pin Code: "+item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
                                     )
                                 })
                                 :
                                 <Menu.Item title="No Address Available" />
                             }
                         </Menu>
-                        {pincode!=="Choose Address" && 
-                            <>
-                                <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
-                                <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
-                                <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
-                                <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
-                                <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
-                            </>
-                        }                        
+                            <TextInput style={styles.input} mode="outlined" label="Address" value={address} multiline onChangeText={address => setAddress(address)} />
+                            <TextInput style={styles.input} mode="outlined" label="Landmark" value={landmark} onChangeText={landmark => setLandmark(landmark)} />
+                            <TextInput style={styles.input} mode="outlined" label="District" value={district} onChangeText={district => setDistrict(district)} />
+                            <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
+                            <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />            
+                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />            
                         <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Add Item</Button>
                     </Card.Content>
                 </Card>

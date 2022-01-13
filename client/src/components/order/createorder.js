@@ -334,7 +334,7 @@ export default function CreateOrder({ navigation }) {
                                 {customerAddress ?
                                     customerAddress.map((item)=>{
                                         return (
-                                            <Menu.Item title={item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
+                                            <Menu.Item style={{marginTop: '5%', padding: '1%',}} title={"Address: "+item.address+", Landmark: "+item.landmark+", \n District: "+item.district+", State: "+item.state+", \n Country: "+item.country+", Pin Code: "+item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
                                         )
                                     })
                                     :

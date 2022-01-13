@@ -38,7 +38,7 @@ export default function Register(props,{ navigation }) {
     const [host, setHost] = useState("");
     const [file, setFile] = useState();
     const [img, setImg] = useState();
-    const [idType, setIdType] = useState("Choose ID Type");
+    const [idType, setIdType] = useState("Choose Govt. ID");
     const [idNumber, setIdNumber] = useState();
 
     useEffect(() => {
@@ -169,7 +169,7 @@ export default function Register(props,{ navigation }) {
                     </Menu>
                     <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
                     <TextInput style={styles.input} mode="outlined" label="Nick Name" value={nickName} onChangeText={nickName => setNickName(nickName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Email/Login Id" value={email} onChangeText={email => setEmail(email)} />
+                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
                     <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
                     <Menu
                     visible={visible2}
@@ -179,8 +179,9 @@ export default function Register(props,{ navigation }) {
                         <Menu.Item title="Pan Card" onPress={()=>chooseIdType("Pan Card")} />
                         <Menu.Item title="Voter Id" onPress={()=>chooseIdType("Voter Id")} />
                         <Menu.Item title="Driving License" onPress={()=>chooseIdType("Driving License")} />
+                        <Menu.Item title="Passport" onPress={()=>chooseIdType("Passport")} />
                     </Menu>
-                    <TextInput style={styles.input} mode="outlined" label="ID Number" value={idNumber} onChangeText={idNumber => setIdNumber(idNumber)}/>
+                    <TextInput style={styles.input} mode="outlined" label="Govt ID Number" value={idNumber} onChangeText={idNumber => setIdNumber(idNumber)}/>
                     <View style={{flexDirection: 'row'}}>
                         <input type="file" name="file" placeholder="Image"
                         style={{flex: 3, border: '1px solid gray', marginLeft: '2%', padding: '1%', borderRadius: '1px'}}
@@ -193,7 +194,7 @@ export default function Register(props,{ navigation }) {
                     }
                     <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
                     <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} secureTextEntry={true}/>
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Register & Add Address</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Save & Add Address</Button>
                     </Card.Content>
                 </Card>
             </View>

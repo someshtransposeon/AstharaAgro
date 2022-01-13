@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import { useHistory } from 'react-router-dom';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -35,6 +36,7 @@ export default function AddAddress(props, {route}) {
     const [country, setCountry] = useState('');
     const [pincode, setPincode] = useState('');
     const [host, setHost] = useState('');
+    const [role, setRole] = useState();
     //fetch login user information for store corresponding the address data
     useEffect(() => {
         if(userid){
@@ -48,9 +50,60 @@ export default function AddAddress(props, {route}) {
             setHost("localhost");
         }
 
+        users_by_id(userid)
+        .then(result => {
+            setRole(result[0].role);
+        })
+
     }, [host, userid]);
     //define a function for sending the data in corresponding database
     function submitForm() {
+
+        if(role=="vendor"){
+            fetch(`http://${host}:5000/create_vendor_address`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    vendorId: userId,
+                    address: address,
+                    landmark: landmark,
+                    district: district,
+                    state: state,
+                    country: country,
+                    postal_code: pincode,
+                })
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data => {
+                alert(data.message);
+            }); 
+        }
+
+        if(role=="customer"){
+            fetch(`http://${host}:5000/create_customer_address`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customerId: userId,
+                    address: address,
+                    landmark: landmark,
+                    district: district,
+                    state: state,
+                    country: country,
+                    postal_code: pincode,
+                })
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data => {
+            }); 
+        }
+
         fetch(`http://${host}:5000/create_address`, {
             method: 'POST',
             headers: {
@@ -86,7 +139,7 @@ export default function AddAddress(props, {route}) {
                     <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
                     <TextInput style={styles.input} mode="outlined" label="Country" value={country} onChangeText={country => setCountry(country)} />
                     <TextInput style={styles.input} mode="outlined" label="Pin Code" value={pincode} onChangeText={pincode => setPincode(pincode)} />
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Submit & Add Bank</Button>
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Save & Add Bank</Button>
                 </Card.Content>
                 </Card>
             </View>

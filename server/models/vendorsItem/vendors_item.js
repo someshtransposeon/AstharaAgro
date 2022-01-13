@@ -19,6 +19,9 @@ const vendorsItemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ItemUnit',
     },
+    image: {
+        type: String
+    },
     item_name: {
         type: String,
         required: true,
