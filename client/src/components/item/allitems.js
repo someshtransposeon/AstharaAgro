@@ -40,7 +40,7 @@ export default function AllItems(props,{ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title style={{marginBottom: '20px'}}>All Items</Title>
+                    <Title style={{marginBottom: '20px'}}>All Item Grades</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -49,12 +49,10 @@ export default function AllItems(props,{ navigation }) {
 		                value={searchQuery}
                         style={{marginBottom: '20px'}}
                     />
+
                     <DataTable.Header>
-                        <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title>Category</DataTable.Title>
-                        <DataTable.Title>unit</DataTable.Title>
-                        <DataTable.Title>image</DataTable.Title>
-                        <DataTable.Title>Action</DataTable.Title>
+                        <DataTable.Title>Item Grade</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
@@ -62,19 +60,7 @@ export default function AllItems(props,{ navigation }) {
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.category_name}</DataTable.Cell>
-                                <DataTable.Cell>{item.unit_name}</DataTable.Cell>
-                                {item.image ?
-                                    <DataTable.Cell>
-                                        <Image
-                                            style={{width: 50, height: 50}}
-                                            source={item.image}
-                                        />
-                                    </DataTable.Cell>
-                                :
-                                    <DataTable.Cell>No Image</DataTable.Cell>
-                                }
-                                <DataTable.Cell>
+                                <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                         :
@@ -87,7 +73,7 @@ export default function AllItems(props,{ navigation }) {
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>
-                }
+                    }
                 </DataTable>
             </View>
         </ScrollView>
@@ -95,8 +81,20 @@ export default function AllItems(props,{ navigation }) {
         </Provider>
     );
 }
-//define stylesheet for the component (IOS styles to be added)
+
 const styles = StyleSheet.create({
+    view: {
+        ...Platform.select({
+            ios: {
+                
+            },
+            android: {
+            },
+            default: {
+                
+            }
+        })
+    },
     card: {
         margin: '2%',
         alignSelf: 'center',

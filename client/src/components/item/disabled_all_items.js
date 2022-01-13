@@ -59,10 +59,8 @@ export default function Disabled_All_Items(props,{ navigation }) {
                     />
                     <DataTable.Header>
                         <DataTable.Title>Item</DataTable.Title>
-                        <DataTable.Title>Category</DataTable.Title>
-                        <DataTable.Title>unit</DataTable.Title>
                         <DataTable.Title>Status</DataTable.Title>
-                        <DataTable.Title>Action</DataTable.Title>
+                        <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
                     {allItems ?
@@ -71,10 +69,8 @@ export default function Disabled_All_Items(props,{ navigation }) {
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{item.item_name}</DataTable.Cell>
-                                        <DataTable.Cell>{item.category_name}</DataTable.Cell>
-                                        <DataTable.Cell>{item.unit_name}</DataTable.Cell>
                                         <DataTable.Cell>{item.status}</DataTable.Cell>
-                                        <DataTable.Cell>
+                                        <DataTable.Cell numeric>
                                             {Platform.OS=='android' ?
                                                 <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('DisabledEditItem', {itemId: item._id})}}>Details</Button>
                                                 :
