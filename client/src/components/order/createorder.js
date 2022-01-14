@@ -52,6 +52,7 @@ export default function CreateOrder({ navigation }) {
     const [flag2,setFlag2]=useState(true);
     const [itemGrade, setItemGrade]=useState();
     const [customerAddress, setCustomerAddress] = useState();
+    const [targetPrice,setTargetPrice]=useState("");
 
     useEffect(() => {
 
@@ -101,6 +102,8 @@ export default function CreateOrder({ navigation }) {
         .then(result => {
             setItemGrade(result);
         })
+
+
 
     }, [item, host, userId, flag2, itemGrade, address, landmark, district, state, country, pincode, role, category, customerId]);
 
@@ -271,6 +274,22 @@ export default function CreateOrder({ navigation }) {
     const onChangeSearch4 = query => setSearchQuery4(query);
     const onChangeSearch5 = query => setSearchQuery5(query);
 
+    const getColor = (itemNegotiatePrice,targetPrice) => {
+        let BackgroundColor = '';
+        if(targetPrice && itemNegotiatePrice){    
+            if(itemNegotiatePrice <= 0) {
+                BackgroundColor = '';
+            } else if(itemNegotiatePrice >= targetPrice) {
+                BackgroundColor = 'lightgreen';
+            } else if(itemNegotiatePrice >= ((targetPrice / 100) * 95)) {
+                BackgroundColor = 'yellow';
+            } else if(itemNegotiatePrice >= ((targetPrice / 100) * 85)) {
+                BackgroundColor = 'orange';
+            } else BackgroundColor = 'red';
+        }
+        return BackgroundColor;
+    };
+
     return (
         <Provider theme={theme}>
             <SafeAreaView>
@@ -282,7 +301,7 @@ export default function CreateOrder({ navigation }) {
                         <View style={styles.customer}>
                             <Button mode="outlined" style={styles.button} onPress={()=>setFlag(false)} >New Customer Order</Button>
                             <Button mode="outlined" style={styles.button} onPress={()=>setFlag(true)} >Existing Customer Order</Button>  
-                        </View>
+                        </View> 
                         {flag &&
                             <Menu
                                 visible={visible2}
@@ -405,7 +424,7 @@ export default function CreateOrder({ navigation }) {
                                 <TextInput mode="outlined" label="unit of each item" value={it.itemUnit} />
                                 <TextInput  keyboardType='numeric' mode="outlined" label="Quantity" value={it.quantity} onChangeText={(text)=>ItemChange(index, "quantity", text, '', "", "", "")} />
                                 <TextInput  keyboardType='numeric' mode="outlined" label="Target Price" value={it.targetPrice=(it.itemPrice / 100) * 30 +(it.itemPrice)} onChangeText={(text)=>ItemChange(index, "targetPrice", text, '', "", "", "")}/>
-                                <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price"     value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange(index, "itemNegotiatePrice", text, '', "", "", "")} />
+                                <TextInput  keyboardType='numeric' mode="outlined" label="Negotiate Price"   style={{ backgroundColor: getColor(it.itemNegotiatePrice,it.targetPrice) }}    value={it.itemNegotiatePrice} onChangeText={(text)=>ItemChange(index, "itemNegotiatePrice", text, '', "", "", "")} />
                                 <View style={{flexDirection: 'row'}}>
                                     {Platform.OS=="android" ?
                                         <>
