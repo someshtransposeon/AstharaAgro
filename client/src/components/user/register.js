@@ -6,6 +6,7 @@ import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-ico
 import { Link, useHistory } from 'react-router-dom';
 import { user_category } from '../../services/user_api';
 import { uploadImage } from '../../services/image';
+import emailjs from 'emailjs-com';
 
 const theme = {
     ...DefaultTheme,
@@ -27,19 +28,21 @@ export default function Register(props,{ navigation }) {
     const [userCategory, setUserCategory] = useState();
     const [category, setCategory] = useState("Choose Category");
     const [categoryId, setCategoryId] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [nickName, setNickName] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobileNo, setMobileNo] = useState("");
-    const [gstNo, setGstNo] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [roleas, setRoleas] = useState("");
     const [host, setHost] = useState("");
     const [file, setFile] = useState();
     const [img, setImg] = useState();
-    const [idType, setIdType] = useState("Choose Govt. ID");
-    const [idNumber, setIdNumber] = useState();
+    const [idType, setIdType] = useState("Choose ID Type");
+    const[values,setValues]=useState({
+        full_name:'',
+        nickname:'',
+        email:'',
+        mobileNo:'',
+        password:'',
+        confirmPassword:'',
+        gstNo:'',
+        idNumber:'',
+    });
 
     useEffect(() => {
         setHost(props.host);
@@ -72,24 +75,31 @@ export default function Register(props,{ navigation }) {
             },
             body: JSON.stringify({
                 category: categoryId,
-                role: category,
-                full_name: fullName,
-                nick_name: nickName,
-                email: email,
-                mobile_no: mobileNo,
+                role:roleas,
                 idType: idType,
-                idNumber: idNumber,
                 image: img,
-                gst_no:gstNo,
-                password: password,
-                confirm_password: confirmPassword,
+                full_name: values.full_name,
+                nick_name: values.nickName,
+                email: values.email,
+                mobile_no: values.mobileNo,
+                idNumber: values.idNumber,
+                gst_no:values.gstNo,
+                password: values.password,
+                confirm_password: values.confirmPassword,
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            if(data){
+            console.log(data);
+            if(data.data._id!=""){
+                emailjs.send('gmail', 'template_r2kqjja',values, 'user_tzfygekUd6AAYz72qWJrG')
+                .then((result) => {
+                    console.log(result); 
+                }, (error) => {
+                    console.log(error.text);
+                });
                 history.push("/addaddress/"+data.data._id);
             }
         })
@@ -116,7 +126,11 @@ export default function Register(props,{ navigation }) {
         setIdType(idType);
         closeMenu2();
     }
-
+    const handleChange = (mytextname) => {
+        return (val) => {
+            setValues({ ...values, [mytextname]: val })
+        }
+    }
     const onChangeSearch = query => setSearchQuery(query);
 
     return (
@@ -167,10 +181,10 @@ export default function Register(props,{ navigation }) {
                             <Menu.Item title="No User Category Available" />
                         }
                     </Menu>
-                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={fullName} onChangeText={fullName => setFullName(fullName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Nick Name" value={nickName} onChangeText={nickName => setNickName(nickName)} />
-                    <TextInput style={styles.input} mode="outlined" label="Email" value={email} onChangeText={email => setEmail(email)} />
-                    <TextInput style={styles.input} mode="outlined" label="Mobile No" value={mobileNo} onChangeText={mobileNo => setMobileNo(mobileNo)} />
+                    <TextInput style={styles.input} mode="outlined" label="Full Name" value={values.full_name} onChangeText={handleChange('full_name')} />
+                    <TextInput style={styles.input} mode="outlined" label="Nick Name" value={values.nickName} onChangeText={handleChange('nickName')} />
+                    <TextInput style={styles.input} mode="outlined" label="Email" value={values.email} onChangeText={handleChange('email')} />
+                    <TextInput style={styles.input} mode="outlined" label="Mobile No" value={values.mobileNo} onChangeText={handleChange('mobileNo')} />
                     <Menu
                     visible={visible2}
                     onDismiss={closeMenu2}
@@ -181,7 +195,7 @@ export default function Register(props,{ navigation }) {
                         <Menu.Item title="Driving License" onPress={()=>chooseIdType("Driving License")} />
                         <Menu.Item title="Passport" onPress={()=>chooseIdType("Passport")} />
                     </Menu>
-                    <TextInput style={styles.input} mode="outlined" label="Govt ID Number" value={idNumber} onChangeText={idNumber => setIdNumber(idNumber)}/>
+                    <TextInput style={styles.input} mode="outlined" label="Govt ID Number" value={values.idNumber} onChangeText={handleChange('idNumber')}/>
                     <View style={{flexDirection: 'row'}}>
                         <input type="file" name="file" placeholder="Image"
                         style={{flex: 3, border: '1px solid gray', marginLeft: '2%', padding: '1%', borderRadius: '1px'}}
@@ -190,10 +204,10 @@ export default function Register(props,{ navigation }) {
                         <Button mode="contained" style={styles.button, { flex: 1,}} onPress={()=>ImageSubmitForm()}>Upload Image</Button>
                     </View>
                     {(category=="vendor" || category=="customer") &&
-                        <TextInput style={styles.input} mode="outlined" label="GST No" value={gstNo} onChangeText={gstNo => setGstNo(gstNo)} />
+                        <TextInput style={styles.input} mode="outlined" label="GST No" value={values.gstNo} onChangeText={handleChange('gstNo')} />
                     }
-                    <TextInput style={styles.input} mode="outlined" label="Password" value={password} onChangeText={password => setPassword(password)} secureTextEntry={true}/>
-                    <TextInput style={styles.input} mode="outlined" label="Confirm Password" value={confirmPassword} onChangeText={confirmPassword => setConfirmPassword(confirmPassword)} secureTextEntry={true}/>
+                    <TextInput style={styles.input} mode="outlined" label="Password" value={values.password} onChangeText={handleChange('password')} secureTextEntry={true}/>
+                    <TextInput style={styles.input} mode="outlined" label="Confirm Password" alue={values.confirmPassword} onChangeText={handleChange('confirmPassword')} secureTextEntry={true}/>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Save & Add Address</Button>
                     </Card.Content>
                 </Card>

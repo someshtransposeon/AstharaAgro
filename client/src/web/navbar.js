@@ -555,6 +555,8 @@ const NavBar =()  => {
                             <Home />
                         </Route>                        
                         <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />} exact/>
+                        <Route path="/addaddress/:userid" render={(props) => <AddAddress {...props} />} exact />
+                        <Route path="/addbankdetails/:userid" render={(props) => <AddBankDetails {...props} />} exact />
                         <Route path="/login">
                             <Login />
                         </Route>
