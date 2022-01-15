@@ -342,9 +342,9 @@ export default function AddItem({ navigation }) {
                                 <Menu.Item title="No items Available" />
                             }
                         </Menu>
-                        <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
+                        <TextInput style={styles.input} mode="outlined" label="Item Quantity" numeric value={itemQuantity} onChangeText={itemQuantity => setItemQuantity(itemQuantity.replace(/[^0-9]/g, ''))} />
                         <TextInput style={styles.input} mode="outlined" label="Item Description" multiline value={itemDescription} onChangeText={itemDescription => setDescription(itemDescription)} />
-                        <TextInput style={styles.input} mode="outlined" label="Unit Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice)} />
+                        <TextInput style={styles.input} mode="outlined" label="Unit Item Price" numeric value={itemPrice} onChangeText={itemPrice => setItemPrice(itemPrice.replace(/[^0-9]/g, ''))} />
                         <Menu key={4}
                         visible={visible4}
                         onDismiss={closeMenu4}
