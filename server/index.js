@@ -200,6 +200,12 @@ const delete_customer_pool= require('./routes/customer_pool/delete_customer_pool
 const retrieve_customer_pool= require('./routes/customer_pool/retrieve_customer_pool');
 const update_customer_pool= require('./routes/customer_pool/update_customer_pool');
 
+// const create_vendor_customer_cross= require('./routes/cross_pool/create_vendor_customer_cross');
+// const delete_vendor_customer_cross= require('./routes/cross_pool/delete_vendor_customer_cross');
+// const retrieve_vendor_cumtomer_cross= require('./routes/cross_pool/etrieve_vendor_cumtomer_cross');
+// const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
+
+
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
 });
@@ -355,6 +361,11 @@ app.use('/',create_customer_pool);
 app.use('/', retrieve_customer_pool);
 app.use('/', update_customer_pool);
 app.use('/',delete_customer_pool);
+
+// app.use('/',create_vendor_customer_cross);
+// app.use('/', retrieve_vendor_customer_cross);
+// app.use('/', update_vendor_customer_cross);
+// app.use('/',delete_vendor_customer_cross);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");

@@ -5,9 +5,7 @@ const Vendor_pool = require('../../models/vendor_pool/vendor_pool');
 //Define route for create Vendor_pool
 router.put('/update_vendor_pool/:id',(req, res) =>{
     var vendor_pool = {
-        state: req.body.state,
-        region: req.body.region,
-        sub_region: req.body.sub_region,
+       pool_name: req.body.pool_name,
         postal_code: req.body.postal_code,
     }
     Vendor_pool.findOneAndUpdate({'_id':req.params.id}, vendor_pool)

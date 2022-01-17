@@ -1,15 +1,7 @@
 const mongoose = require('mongoose');
 
 const vendor_poolSchema = new mongoose.Schema({
-    state:{
-        type:String,
-        required:true,
-    },
-    region:{
-        type:String,
-        required:true,
-    },
-    sub_region:{
+    pool_name:{
         type:String,
         required:true,
     },

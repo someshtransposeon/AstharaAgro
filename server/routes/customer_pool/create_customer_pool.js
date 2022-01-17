@@ -5,9 +5,7 @@ const customer_pool = require('../../models/customer_pool/customer_pool');
 //Define route for create customer_pool
 router.post('/create_customer_pool', (req, res)=>{
     var newcustomer_pool = new customer_pool({
-        state: req.body.state,
-        region: req.body.region,
-        sub_region: req.body.sub_region,
+        pool_name : req.body.pool_name,
         postal_code: req.body.postal_code,
     })
     newcustomer_pool.save()

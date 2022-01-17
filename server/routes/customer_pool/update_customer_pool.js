@@ -5,9 +5,7 @@ const Customer_pool = require('../../models/customer_pool/customer_pool');
 //Define route for create customer_pool
 router.put('/update_customer_pool/:id', (req, res)=>{
     var customer_pool = {
-        state: req.body.state,
-        region: req.body.region,
-        sub_region: req.body.sub_region,
+        pool_name: req.body.pool_name,
         postal_code: req.body.postal_code,
     }
     Customer_pool.findOneAndUpdate({'_id':req.params.id},customer_pool)
