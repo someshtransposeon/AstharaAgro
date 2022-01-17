@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 /* Required Model for store in database*/
-const customer_pool = require('../../models/customer_pool/customer_pool');
+const Customer_pool = require('../../models/customer_pool/customer_pool');
 //Define route for create customer_pool
 router.put('/update_customer_pool/:id', (req, res)=>{
-    var newcustomer_pool = new customer_pool({
+    var customer_pool = {
         state: req.body.state,
         region: req.body.region,
         sub_region: req.body.sub_region,
         postal_code: req.body.postal_code,
-    })
-    customer_pool.findOneAndUpdate({'_id':req.params.id},newcustomer_pool)
+    }
+    Customer_pool.findOneAndUpdate({'_id':req.params.id},customer_pool)
     .then((customer_pool) => {
         if(customer_pool){
             var message = { message: "customer_pool sucessfully updated!" };
