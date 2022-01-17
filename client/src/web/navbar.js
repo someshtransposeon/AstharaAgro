@@ -144,9 +144,12 @@ import AddCustomerPool from '../components/pool/add_customer_pool';
 import AllCustomerPools from '../components/pool/all_customer_pools';
 import AddVendorPool from '../components/pool/add_vendor_pool';
 import AllVendorPools from '../components/pool/all_vendor_pools';
+import EditCustomerPool from '../components/pool/edit_customer_pool';
+import EditVendorPool from '../components/pool/edit_vendor_pool';
 
 import PageNotFound from '../components/pagenotfound/notfound';
 import {authHeader} from '../services/auth_header';
+
 const NavBar =()  => {
 
     const [email, setEmail] = useState("");
@@ -655,7 +658,8 @@ const NavBar =()  => {
                 <Route path="/editusercategory/:userCategoryid" render={(props) => <EditUserCategory {...props} />} exact />
                 <Route path="/forgotpassword" render={(props) => <Forgotpassword {...props} />}  exact/>
                 <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
-                <Route path="/edit_customer_address/:addressid" render={(props) => <CustomerEditAddress  {...props} />} exact />
+                <Route path="/edit_customer_pool/:id" render={(props) => <EditCustomerPool {...props} />} exact />
+                <Route path="/edit_vendor_pool/:id" render={(props) => <EditVendorPool {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>

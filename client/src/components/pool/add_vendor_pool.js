@@ -27,6 +27,7 @@ export default function AddVendorPool(props,{ navigation }) {
     const ItemChange = (index, fieldvalue) => {
         const values = [...items];
         values[index].postal_code = fieldvalue;
+        setItems(values);
     };
 
     const handleAddFields = () => {

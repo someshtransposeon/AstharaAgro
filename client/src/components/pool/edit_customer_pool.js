@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet,Platform, ScrollView, SafeAreaView} from 'react-native';
 import { Provider, DefaultTheme, Card, TextInput, Button } from 'react-native-paper';
 import { useHistory } from 'react-router-dom';
+import { customer_pool_by_id } from '../../services/pool';
 
 const theme = {
     ...DefaultTheme,
@@ -15,12 +16,27 @@ const theme = {
     },
 };
 
-export default function AddCustomerPool(props,{ navigation }) {
+export default function EditCustomerPool(props,{ navigation }) {
+
+    const id = props.match.params.id;
 
     const [state, setState] = useState("");
     const [region, setRegion] = useState("");
     const [subRegion, setSubRegion] = useState("");
     const [items, setItems] = useState([{ postal_code: ''}]);
+
+    useEffect(() => {
+
+        customer_pool_by_id(id)
+        .then(result => {
+            console.log(result);
+            setState(result[0].state);
+            setRegion(result[0].region);
+            setSubRegion(result[0].sub_region);
+            setItems(result[0].postal_code);
+        })
+
+    }, [id]);
 
     let history = useHistory();
 
@@ -43,8 +59,8 @@ export default function AddCustomerPool(props,{ navigation }) {
     };
 
     function submitForm() {
-        fetch(`http://localhost:5000/create_customer_pool`, {
-            method: 'POST',
+        fetch(`http://localhost:5000/update_customer_pool/${id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -59,7 +75,9 @@ export default function AddCustomerPool(props,{ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            history.push('/allcustomerpools');
+            if(!data.err){
+                history.push('/allcustomerpools');
+            }
         }); 
     }
 
@@ -69,7 +87,7 @@ export default function AddCustomerPool(props,{ navigation }) {
         <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card} >
-                    <Card.Title title="New Customer Pool"/>
+                    <Card.Title title="Edit Customer Pool"/>
                     <Card.Content>
                     <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
                     <TextInput style={styles.input} mode="outlined" label="Region" value={region} onChangeText={region => setRegion(region)} />
