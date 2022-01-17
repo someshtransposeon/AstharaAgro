@@ -190,6 +190,16 @@ const update_delivery = require('./routes/update_delivery/update_delivery');
 
 const image = require('./routes/image/image');
 
+const create_vendor_pool= require('./routes/vendor_pool/create_vendor_pool');
+const delete_vendor_pool= require('./routes/vendor_pool/delete_vendor_pool');
+const retrieve_vendor_pool= require('./routes/vendor_pool/retrieve_vendor_pool');
+const update_vendor_pool= require('./routes/vendor_pool/update_vendor_pool');
+
+const create_customer_pool= require('./routes/customer_pool/create_customer_pool');
+const delete_customer_pool= require('./routes/customer_pool/delete_customer_pool');
+const retrieve_customer_pool= require('./routes/customer_pool/retrieve_customer_pool');
+const update_customer_pool= require('./routes/customer_pool/update_customer_pool');
+
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
 });
@@ -335,6 +345,16 @@ app.use('/', retrive_update_delivery);
 app.use('/', update_delivery);
 
 app.use('/', image);
+
+app.use('/',create_vendor_pool);
+app.use('/', retrieve_vendor_pool);
+app.use('/', update_vendor_pool);
+app.use('/',delete_vendor_pool);
+
+app.use('/',create_customer_pool);
+app.use('/', retrieve_customer_pool);
+app.use('/', update_customer_pool);
+app.use('/',delete_customer_pool);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
