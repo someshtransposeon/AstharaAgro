@@ -26,7 +26,7 @@ export default function AddCustomerPool(props,{ navigation }) {
 
     const ItemChange = (index, fieldvalue) => {
         const values = [...items];
-        values[index].postal_code = fieldvalue;
+        values[index].postal_code = fieldvalue.replace(/[^0-9]/g, '');
         setItems(values);
     };
 

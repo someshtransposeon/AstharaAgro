@@ -29,7 +29,6 @@ export default function EditCustomerPool(props,{ navigation }) {
 
         customer_pool_by_id(id)
         .then(result => {
-            console.log(result);
             setState(result[0].state);
             setRegion(result[0].region);
             setSubRegion(result[0].sub_region);
@@ -42,7 +41,7 @@ export default function EditCustomerPool(props,{ navigation }) {
 
     const ItemChange = (index, fieldvalue) => {
         const values = [...items];
-        values[index].postal_code = fieldvalue;
+        values[index].postal_code = fieldvalue.replace(/[^0-9]/g, '');
         setItems(values);
     };
 
