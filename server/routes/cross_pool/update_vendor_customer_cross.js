@@ -7,8 +7,8 @@ router.put('/update_vendor_customer_cross_pool/:id', (req, res)=>{
     var cross_pool = {
         customer_pool_Id: req.body.customer_pool_Id,
         vendor_pool_Id: req.body.vendor_pool_Id,
-        customer_pool_name: req.body.customer_pool_Name,
-        vendor_pool_name: req.body.vendor_pool_Name
+        customer_pool_name: req.body.customer_pool_name,
+        vendor_pool_name: req.body.vendor_pool_name
     }
     vendor_cross_pool.findOneAndUpdate({'_id':req.params.id},cross_pool)
     .then((cross_pool) => {

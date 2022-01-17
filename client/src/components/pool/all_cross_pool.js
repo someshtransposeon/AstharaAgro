@@ -56,7 +56,7 @@ export default function AllCustomerVendorPools(props,{ navigation }) {
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
-                        if(item.state.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                        if(item.customer_pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.vendor_pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.customer_pool_name}</DataTable.Cell>
