@@ -21,5 +21,5 @@ const customer_poolSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const customer_pool = mongoose.model('customer_pool', customer_poolSchema);
+const customer_pool = mongoose.model('Customer_pool', customer_poolSchema);
 module.exports = customer_pool;
