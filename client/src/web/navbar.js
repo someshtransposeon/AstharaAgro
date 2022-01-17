@@ -140,6 +140,11 @@ import PendingOrders from '../components/order/pending_orders';
 import ViewOrder from '../components/order/view_order';
 import View_Purchase_Order from '../components/purchase_order/View_Purchase_Order';
 
+import AddCustomerPool from '../components/pool/add_customer_pool';
+import AllCustomerPools from '../components/pool/all_customer_pools';
+import AddVendorPool from '../components/pool/add_vendor_pool';
+import AllVendorPools from '../components/pool/all_vendor_pools';
+
 import PageNotFound from '../components/pagenotfound/notfound';
 import {authHeader} from '../services/auth_header';
 const NavBar =()  => {
@@ -273,6 +278,20 @@ const NavBar =()  => {
                             <NavDropdown title="Dashboard" id="collasible-nav-dropdown" style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 {(roleas == "manager") &&
                                 <>
+                                    <NavDropdown title="Pool Management" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                        <NavDropdown title="Customer Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addcustomerpool" as={Link}>Add Pool</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allcustomerpools" as={Link}>View Pools</NavDropdown.Item>
+                                        </NavDropdown>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown title="Vendor Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addvendorpool" as={Link}>Add Pool</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allvendorpools" as={Link}>View Pools</NavDropdown.Item>
+                                        </NavDropdown>
+                                    </NavDropdown>
+                                    <NavDropdown.Divider />
                                     <NavDropdown title="Inventory Management" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                         <NavDropdown title="Item" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                             <NavDropdown.Item to="/additem" as={Link}>Add Item</NavDropdown.Item>
@@ -606,6 +625,18 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/allitems">
                     <AllItems host={host} />
+                </Route>
+                <Route path="/addcustomerpool">
+                    <AddCustomerPool/>
+                </Route>
+                <Route path="/allcustomerpools">
+                    <AllCustomerPools/>
+                </Route>
+                <Route path="/addvendorpool">
+                    <AddVendorPool/>
+                </Route>
+                <Route path="/allvendorpools">
+                    <AllVendorPools/>
                 </Route>
                 <Route path="/allusers">
                     <AllUsers roleas={roleas}/>
