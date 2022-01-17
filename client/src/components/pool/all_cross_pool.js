@@ -4,7 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'rea
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
-import { all_vendor_pools } from '../../services/pool';
+import { all_customer_vendor_pools } from '../../services/pool';
 
 const theme = {
     ...DefaultTheme,
@@ -17,14 +17,14 @@ const theme = {
 };
 
 //define all item components
-export default function AllVendorPools(props,{ navigation }) {
+export default function AllCustomerVendorPools(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         //Retrieve all items
-        all_vendor_pools()
+        all_customer_vendor_pools()
         .then(result => {
             setAllItems(result);
         })
@@ -39,7 +39,7 @@ export default function AllVendorPools(props,{ navigation }) {
         <ScrollView>
             <View style={styles.view}>
                 <DataTable style={styles.datatable}>
-                    <Title style={{marginBottom: '20px'}}>All Vendor Pools</Title>
+                    <Title style={{marginBottom: '20px'}}>All Vendor Customer Cross Pools</Title>
                     <Searchbar
                         icon={() => <FontAwesomeIcon icon={ faSearch } />}
                         clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
@@ -50,15 +50,17 @@ export default function AllVendorPools(props,{ navigation }) {
                     />
 
                     <DataTable.Header>
-                        <DataTable.Title>Pool Name</DataTable.Title>
+                        <DataTable.Title>Customer Pool</DataTable.Title>
+                        <DataTable.Title>Vendor Pool</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
-                        if(item.pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                        if(item.state.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
-                                <DataTable.Cell>{item.pool_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.customer_pool_name}</DataTable.Cell>
+                                <DataTable.Cell>{item.vendor_pool_name}</DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>

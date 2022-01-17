@@ -142,10 +142,15 @@ import View_Purchase_Order from '../components/purchase_order/View_Purchase_Orde
 
 import AddCustomerPool from '../components/pool/add_customer_pool';
 import AllCustomerPools from '../components/pool/all_customer_pools';
+import EditCustomerPool from '../components/pool/edit_customer_pool';
+
 import AddVendorPool from '../components/pool/add_vendor_pool';
 import AllVendorPools from '../components/pool/all_vendor_pools';
-import EditCustomerPool from '../components/pool/edit_customer_pool';
 import EditVendorPool from '../components/pool/edit_vendor_pool';
+
+import AddCustomerVendorPool from '../components/pool/vendor_customer_cross';
+import AllCustomerVendorPools from '../components/pool/all_cross_pool';
+import EditCustomerVendorPool from '../components/pool/edit_cross_pool';
 
 import PageNotFound from '../components/pagenotfound/notfound';
 import {authHeader} from '../services/auth_header';
@@ -292,6 +297,12 @@ const NavBar =()  => {
                                             <NavDropdown.Item to="/addvendorpool" as={Link}>Add Pool</NavDropdown.Item>
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item to="/allvendorpools" as={Link}>View Pools</NavDropdown.Item>
+                                        </NavDropdown>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown title="Customer Vendor Cross Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addcustomervendorpool" as={Link}>Add Cross Pool</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allcustomervendorpools" as={Link}>View Vendor Pools</NavDropdown.Item>
                                         </NavDropdown>
                                     </NavDropdown>
                                     <NavDropdown.Divider />
@@ -641,6 +652,12 @@ const NavBar =()  => {
                 <Route path="/allvendorpools">
                     <AllVendorPools/>
                 </Route>
+                <Route path="/addcustomervendorpool">
+                    <AddCustomerVendorPool/>
+                </Route>
+                <Route path="/allcustomervendorpools">
+                    <AllCustomerVendorPools/>
+                </Route>
                 <Route path="/allusers">
                     <AllUsers roleas={roleas}/>
                 </Route>
@@ -660,6 +677,7 @@ const NavBar =()  => {
                 <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
                 <Route path="/edit_customer_pool/:id" render={(props) => <EditCustomerPool {...props} />} exact />
                 <Route path="/edit_vendor_pool/:id" render={(props) => <EditVendorPool {...props} />} exact />
+                <Route path="/edit_customer_vendor_pool/:id" render={(props) => <EditCustomerVendorPool {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>
                 </Route>

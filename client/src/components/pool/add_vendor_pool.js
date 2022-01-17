@@ -17,9 +17,7 @@ const theme = {
 
 export default function AddVendorPool(props,{ navigation }) {
 
-    const [state, setState] = useState("");
-    const [region, setRegion] = useState("");
-    const [subRegion, setSubRegion] = useState("");
+    const [poolName, setPoolName] = useState("");
     const [items, setItems] = useState([{ postal_code: ''}]);
 
     let history = useHistory();
@@ -49,9 +47,7 @@ export default function AddVendorPool(props,{ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                state: state,
-                region: region,
-                sub_region: subRegion,
+                pool_name: poolName,
                 postal_code: items
             })
         })
@@ -71,9 +67,7 @@ export default function AddVendorPool(props,{ navigation }) {
                 <Card style={styles.card} >
                     <Card.Title title="New Vendor Pool"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
-                    <TextInput style={styles.input} mode="outlined" label="Region" value={region} onChangeText={region => setRegion(region)} />
-                    <TextInput style={styles.input} mode="outlined" label="Sub Region" value={subRegion} onChangeText={subRegion => setSubRegion(subRegion)} />
+                    <TextInput style={styles.input} mode="outlined" label="Pool Name (RAJ_JPR_SANGANER)" value={poolName} onChangeText={poolName => setPoolName(poolName)} />
                     {items.map((it, index) => (
                         <View>
                             <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it.postal_code} onChangeText={(text)=>ItemChange(index, text)} />

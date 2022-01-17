@@ -50,19 +50,15 @@ export default function AllCustomerPools(props,{ navigation }) {
                     />
 
                     <DataTable.Header>
-                        <DataTable.Title>State</DataTable.Title>
-                        <DataTable.Title>Region</DataTable.Title>
-                        <DataTable.Title>Sub Region</DataTable.Title>
+                        <DataTable.Title>Pool Name</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
-                        if(item.state.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                        if(item.pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
-                                <DataTable.Cell>{item.state}</DataTable.Cell>
-                                <DataTable.Cell>{item.region}</DataTable.Cell>
-                                <DataTable.Cell>{item.sub_region}</DataTable.Cell>
+                                <DataTable.Cell>{item.pool_name}</DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>

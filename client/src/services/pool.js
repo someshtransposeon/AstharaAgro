@@ -31,3 +31,19 @@ export const vendor_pool_by_id = (id) => {
         return res.data;
     }).catch(err => console.log(err))
 }
+
+//retrive all customer vendor pools
+export const all_customer_vendor_pools = () => {
+    return axios.get(url + '/retrieve_vendor_customer_cross_pools')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+//retrive all customer vendor pool by id
+export const customer_vendor_pool_by_id = (id) => {
+    return axios.get(url + '/retrieve_vendor_custmer_cross_pool/' + id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}

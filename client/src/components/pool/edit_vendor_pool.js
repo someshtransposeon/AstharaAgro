@@ -20,18 +20,14 @@ export default function EditVendorPool(props,{ navigation }) {
 
     const id = props.match.params.id;
 
-    const [state, setState] = useState("");
-    const [region, setRegion] = useState("");
-    const [subRegion, setSubRegion] = useState("");
+    const [poolName, setPoolName] = useState("");
     const [items, setItems] = useState([{ postal_code: ''}]);
 
     useEffect(() => {
 
         vendor_pool_by_id(id)
         .then(result => {
-            setState(result[0].state);
-            setRegion(result[0].region);
-            setSubRegion(result[0].sub_region);
+            setPoolName(result[0].pool_name);
             setItems(result[0].postal_code);
         })
 
@@ -64,9 +60,7 @@ export default function EditVendorPool(props,{ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                state: state,
-                region: region,
-                sub_region: subRegion,
+                pool_name: poolName,
                 postal_code: items
             })
         })
@@ -88,9 +82,7 @@ export default function EditVendorPool(props,{ navigation }) {
                 <Card style={styles.card} >
                     <Card.Title title="Edit Customer Pool"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
-                    <TextInput style={styles.input} mode="outlined" label="Region" value={region} onChangeText={region => setRegion(region)} />
-                    <TextInput style={styles.input} mode="outlined" label="Sub Region" value={subRegion} onChangeText={subRegion => setSubRegion(subRegion)} />
+                    <TextInput style={styles.input} mode="outlined" label="Pool Name (RAJ_JPR_SANGANER)" value={poolName} onChangeText={poolName => setPoolName(poolName)} />
                     {items.map((it, index) => (
                         <View>
                             <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it.postal_code} onChangeText={(text)=>ItemChange(index, text)} />

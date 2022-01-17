@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet,Platform, ScrollView, SafeAreaView} from 'react-native';
 import { Provider, DefaultTheme, Card, TextInput, Button } from 'react-native-paper';
 import { useHistory } from 'react-router-dom';
-import { customer_pool_by_id } from '../../services/pool';
+import { vendor_pool_by_id } from '../../services/pool';
 
 const theme = {
     ...DefaultTheme,
@@ -16,18 +16,22 @@ const theme = {
     },
 };
 
-export default function EditCustomerPool(props,{ navigation }) {
+export default function EditCustomerVendorPool(props,{ navigation }) {
 
     const id = props.match.params.id;
 
-    const [poolName, setPoolName] = useState("");
+    const [state, setState] = useState("");
+    const [region, setRegion] = useState("");
+    const [subRegion, setSubRegion] = useState("");
     const [items, setItems] = useState([{ postal_code: ''}]);
 
     useEffect(() => {
 
-        customer_pool_by_id(id)
+        vendor_pool_by_id(id)
         .then(result => {
-            setPoolName(result[0].pool_name)
+            setState(result[0].state);
+            setRegion(result[0].region);
+            setSubRegion(result[0].sub_region);
             setItems(result[0].postal_code);
         })
 
@@ -54,13 +58,15 @@ export default function EditCustomerPool(props,{ navigation }) {
     };
 
     function submitForm() {
-        fetch(`http://localhost:5000/update_customer_pool/${id}`, {
+        fetch(`http://localhost:5000/update_vendor_pool/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                pool_name: poolName,
+                state: state,
+                region: region,
+                sub_region: subRegion,
                 postal_code: items
             })
         })
@@ -69,7 +75,7 @@ export default function EditCustomerPool(props,{ navigation }) {
         .then(data => {
             alert(data.message);
             if(!data.err){
-                history.push('/allcustomerpools');
+                history.push('/allvendorpools');
             }
         }); 
     }
@@ -80,9 +86,11 @@ export default function EditCustomerPool(props,{ navigation }) {
         <ScrollView>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card} >
-                    <Card.Title title="Edit Customer Pool"/>
+                    <Card.Title title="Edit Customer Vendor Cross Pool"/>
                     <Card.Content>
-                    <TextInput style={styles.input} mode="outlined" label="Pool Name (RAJ_JPR_SANGANER)" value={poolName} onChangeText={poolName => setPoolName(poolName)} />
+                    <TextInput style={styles.input} mode="outlined" label="State" value={state} onChangeText={state => setState(state)} />
+                    <TextInput style={styles.input} mode="outlined" label="Region" value={region} onChangeText={region => setRegion(region)} />
+                    <TextInput style={styles.input} mode="outlined" label="Sub Region" value={subRegion} onChangeText={subRegion => setSubRegion(subRegion)} />
                     {items.map((it, index) => (
                         <View>
                             <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it.postal_code} onChangeText={(text)=>ItemChange(index, text)} />
