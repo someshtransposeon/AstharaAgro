@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const customeraddressSchema = new mongoose.Schema({
+const vendor_customerSchema = new mongoose.Schema({
     customer_pool_Id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Customer_pool',
@@ -23,5 +23,5 @@ const customeraddressSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Customer_Address = mongoose.model('Customer_Address', customeraddressSchema);
-module.exports = Customer_Address;
+const Vendor_customer_cross = mongoose.model('Customer_vendor_cross', vendor_customerSchema);
+module.exports = Vendor_customer_cross;
