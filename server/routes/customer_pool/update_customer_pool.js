@@ -7,6 +7,26 @@ router.put('/update_customer_pool/:id', (req, res)=>{
     var customer_pool = {
         pool_name: req.body.pool_name,
         postal_code: req.body.postal_code,
+        flag_value:req.body.flag_value,
+    }
+    Customer_pool.findOneAndUpdate({'_id':req.params.id},customer_pool)
+    .then((customer_pool) => {
+        if(customer_pool){
+            var message = { message: "customer_pool sucessfully updated!" };
+            res.json(message);
+        }else{
+            var message = { message: "customer_pool not found!" };
+            res.json(message);
+        }
+    }).catch(err => {
+        console.log(err);
+        var message = { message:"Something wrong!",success: false, err: err };
+        res.json(message);
+    })
+});
+router.put('/updateflag_customer_pool/:id', (req, res)=>{
+    var customer_pool = {
+        flag_value:req.body.flag_value,
     }
     Customer_pool.findOneAndUpdate({'_id':req.params.id},customer_pool)
     .then((customer_pool) => {

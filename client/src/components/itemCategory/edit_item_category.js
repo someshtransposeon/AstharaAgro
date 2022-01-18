@@ -4,7 +4,7 @@ import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-pa
 import { item_category_by_id } from '../../services/item_api';
 import axios from 'axios';
 import {url} from '../../utils/url';
-
+import {useHistory} from "react-router-dom";
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -18,6 +18,7 @@ const theme = {
 export default function EditItemCategory(props,{route}) {
 
     var itemCategoryid = "";
+    let history=useHistory();
     if(Platform.OS=="android"){
         itemCategoryid = route.params.itemCategoryId;
     }
@@ -44,8 +45,11 @@ export default function EditItemCategory(props,{route}) {
             category_name: itemCategoryName,
           })
           .then(function (response) {
-              console.log(response);
             alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/allitemcategories')
+            }
           })
           .catch(function (error) {
             console.log(error);
@@ -61,6 +65,10 @@ export default function EditItemCategory(props,{route}) {
           })
           .then(function (response) {
             alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/disabled_all_item_categories')
+            }
           })
           .catch(function (error) {
             console.log(error);

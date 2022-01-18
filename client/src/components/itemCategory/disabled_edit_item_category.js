@@ -4,7 +4,7 @@ import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-pa
 import { item_category_by_id } from '../../services/item_api';
 import axios from 'axios';
 import {url} from '../../utils/url';
-
+import {useHistory}  from "react-router-dom";
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -19,6 +19,7 @@ export default function DisabledEditItemCategory(props,{route}) {
 
     var itemCategoryid = "";
     var id="";
+    let history = useHistory();
     if(Platform.OS=="android"){
         id = route.params.itemCategoryId;
     }
@@ -28,27 +29,24 @@ export default function DisabledEditItemCategory(props,{route}) {
 
     const [itemCategoryId, setItemCategoryId] = useState("");
     const [itemCategoryName, setItemCategoryName] = useState("");
-    const [host, setHost] = useState("");
 
     useEffect(() => {
 
         if(Platform.OS=="android"){
-            setHost("10.0.2.2");
             setItemCategoryId(id);
         }
         else{
-            setHost("localhost");
             setItemCategoryId(itemCategoryid);
         }
-        if(itemCategoryId && host){
+        if(itemCategoryId){
             //Retrieve item_category by itemCategoryId
-            item_category_by_id(host, itemCategoryId)
+            item_category_by_id(itemCategoryId)
             .then(function(result) {
                  setItemCategoryName(result[0].category_name);
             })
         }
         
-    }, [host,itemCategoryId,id,itemCategoryid, props.host]);
+    }, [itemCategoryId,id,itemCategoryid]);
 
     function submitForm() {
 
@@ -56,26 +54,15 @@ export default function DisabledEditItemCategory(props,{route}) {
             category_name: itemCategoryName,
           })
           .then(function (response) {
-              console.log(response);
             alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/disabled_all_item_categories')
+            }
           })
           .catch(function (error) {
             console.log(error);
           });
-        // fetch(`http://${host}:5000/update_item_category/${itemCategoryId}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         category_name: itemCategoryName,
-        //     })
-        // })
-        // .then(res => res.json())
-        // .catch(error => console.log(error))
-        // .then(data => {
-        //     alert(data.message);
-        // }); 
     }
 
     // function submitForm2() {
@@ -85,24 +72,14 @@ export default function DisabledEditItemCategory(props,{route}) {
           })
           .then(function (response) {
             alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/allitemcategories')
+            }
           })
           .catch(function (error) {
             console.log(error);
           });
-        // fetch(`http://${host}:5000/enabled_item_category/${itemCategoryId}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         status: s,
-        //     })
-        // })
-        // .then(res => res.json())
-        // .catch(error => console.log(error))
-        // .then(data => {
-        //     alert(data.message);
-        // });
     }
 
     return (

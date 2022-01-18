@@ -20,7 +20,6 @@ const theme = {
 export default function AllItems(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -30,7 +29,7 @@ export default function AllItems(props,{ navigation }) {
             setAllItems(result);
         })
 
-    }, [allItems, host, props.host]);
+    }, [allItems]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

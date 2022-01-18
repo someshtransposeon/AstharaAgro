@@ -55,7 +55,7 @@ export default function AllVendorPools(props,{ navigation }) {
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
-                        if(item.pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                        //if(item.pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{item.pool_name}</DataTable.Cell>
@@ -68,7 +68,6 @@ export default function AllVendorPools(props,{ navigation }) {
                                 </DataTable.Cell>
                             </DataTable.Row>
                         )
-                        }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>

@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import axios from 'axios';
 import {url} from '../../utils/url';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -17,6 +18,7 @@ const theme = {
 export default function AddItemCategory({ navigation }) {
 
     const [itemCategoryName, setItemCategoryName] = useState("");
+    let history = useHistory();
 
     function submitForm() {
         axios.post(url + '/create_item_category', {
@@ -24,6 +26,10 @@ export default function AddItemCategory({ navigation }) {
           })
           .then(function (response) {
             alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/allitemcategories')
+            }
             setItemCategoryName("");
           })
           .catch(function (error) {

@@ -26,7 +26,6 @@ export default function DisabledAllItemCategories(props,{ navigation }) {
         //Retrieve all disabled item category
         all_disabled_item_category()
         .then(result=> {
-            console.log(result);
             setAllItemCategories(result);
         })
 

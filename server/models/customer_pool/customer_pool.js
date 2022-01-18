@@ -8,8 +8,13 @@ const customer_poolSchema = new mongoose.Schema({
     postal_code: {
         type: mongoose.Schema.Types.Mixed,
         required: true,
+    },
+    flag_value:{
+        type:Number,
+        default:0,
     }
-    }, {
+    }, 
+    {
     timestamps: true
 });
 

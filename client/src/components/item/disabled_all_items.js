@@ -19,26 +19,16 @@ const theme = {
 export default function Disabled_All_Items(props,{ navigation }) {
     //initialize the all states variables
     const [allItems, setAllItems] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
-
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-
-        setHost(props.host);
         //Retrieve all disbaled items
-        all_disabled_item(host)
+        all_disabled_item()
         .then(function(result) {
             setAllItems(result);
         })
 
-    }, [allItems, host,props.host]);
+    }, [allItems]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

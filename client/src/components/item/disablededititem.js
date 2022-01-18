@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform, ActivityIndicator, } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import {host} from '../../utils/host';
+import axios from 'axios';
+import{ url} from '../../utils/url';
+import {useHistory} from 'react-router-dom';
+import {item_by_item_id} from '../../services/item_api';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -18,6 +19,7 @@ const theme = {
 export default function DisabledEditItem(props,{route}) {
 
     var itemid = "";
+    let history = useHistory();
     if(Platform.OS=="android"){
         itemid = route.params.itemId;
     }
@@ -32,50 +34,44 @@ export default function DisabledEditItem(props,{route}) {
     useEffect(() => {
 
         if(itemid && flag){
-            fetch(`http://${host}:5000/retrive_item/${itemid}`, {
-                method: 'GET'
+            item_by_item_id(itemid)
+            .then(result=> {
+                setItemName(result[0].item_name);
+                setFlag(false);
             })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(item => {
-                setItemName(item[0].item_name);
-            });
-            setFlag(false);
         }
     }, [itemid,flag]);
 
     //define submit function for sending the data into database
     function submitForm() {
-        fetch(`http://${host}:5000/update_item/${itemid}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                item_name: itemName,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
+        axios.put(url + '/update_item/'+itemid, {
+            item_name: itemName,
+          })
+          .then(function (response) {
+            alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/disabled_all_items');
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
         }); 
     }
 
     const StatusChange2 = (s) => {
-        fetch(`http://${host}:5000/enabled_item/${itemid}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
+        axios.put(url + '/enabled_item/'+itemid, {
+           status:s,
+          })
+          .then(function (response) {
+            alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/allitems');
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
         });
     }; 
 

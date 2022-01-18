@@ -83,6 +83,34 @@ export default function AddCustomerVendorPool(props,{ navigation }) {
             alert(data.message);
             history.push('/allcustomervendorpools');
         }); 
+        fetch(`http://localhost:5000/updateflag_vendor_pool/${vendorId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               flag_value:1
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            //alert(data.message);
+        });
+        fetch(`http://localhost:5000/updateflag_customer_pool/${customerId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               flag_value:1
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            //alert(data.message);
+        });       
     }
 
     const onChangeSearch1 = query => setSearchQuery1(query);
@@ -114,9 +142,11 @@ export default function AddCustomerVendorPool(props,{ navigation }) {
                             }
                             {customers ?
                                 customers.map((item)=>{
-                                    return (
-                                        <Menu.Item title={item.pool_name} onPress={()=>ChooseCustomer(item._id, item.pool_name)} />
-                                    )
+                                    if(item.flag_value === 0){
+                                        return (
+                                            <Menu.Item title={item.pool_name} onPress={()=>ChooseCustomer(item._id, item.pool_name)} />
+                                        )
+                                    }
                                 })
                                 :
                                 <Menu.Item title="No Customer Pool Available" />
@@ -140,9 +170,11 @@ export default function AddCustomerVendorPool(props,{ navigation }) {
                             }
                             {vendors ?
                                 vendors.map((item)=>{
-                                    return (
-                                        <Menu.Item title={item.pool_name} onPress={()=>ChooseVendor(item._id, item.pool_name)} />
-                                    )
+                                    if(item.flag_value === 0){
+                                        return (
+                                            <Menu.Item title={item.pool_name} onPress={()=>ChooseVendor(item._id, item.pool_name)} />
+                                        )
+                                    }
                                 })
                                 :
                                 <Menu.Item title="No Vendor Pool Available" />

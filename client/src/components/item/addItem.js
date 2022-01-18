@@ -1,6 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { View, StyleSheet, Platform,} from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme} from 'react-native-paper';
+import axios from 'axios';
+import {url} from '../../utils/url';
+import { useHistory } from 'react-router-dom';
+
 
 const theme = {
     ...DefaultTheme,
@@ -15,33 +19,22 @@ const theme = {
 export default function AddItem({ navigation }) {
    
     const [itemName, setItemName] = useState("");
-    const [host, setHost] = useState("");
-    useEffect(() => {
+    let history = useHistory();
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
-        }
-    }, [host]);
-
-    //define a function for sending the data in corresponding database
     function submitForm() {
-        fetch(`http://${host}:5000/create_item`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                item_name: itemName,
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-        });
+        axios.post(url + '/create_item', {
+            item_name: itemName,
+          })
+          .then(function (response) {
+            alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/allitems');
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          }); 
     }
 
     return (
