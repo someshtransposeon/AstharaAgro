@@ -4,6 +4,7 @@ import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-pa
 import { item_grade_by_grade_id } from '../../services/item_api';
 import axios from 'axios';
 import {url} from '../../utils/url';
+import {useHistory} from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -18,6 +19,7 @@ const theme = {
 export default function DisabledEditItemGrade(props,{route}) {
 
     var itemGradeid = "";
+    let history = useHistory();
     if(Platform.OS=="android"){
         itemGradeid = route.params.itemGradeId;
     }
@@ -45,7 +47,11 @@ export default function DisabledEditItemGrade(props,{route}) {
             grade_name: itemGradeName,
         })
           .then(function (response) {
-              console.log(response);
+              //console.log(response);
+              if(response){
+                  history.push('/disabled_all_item_grade');
+              }
+            
             alert(response.data.message);
           })
           .catch(function (error) {
@@ -59,6 +65,10 @@ export default function DisabledEditItemGrade(props,{route}) {
         })
           .then(function (response) {
               console.log(response);
+              if(response)
+              {
+                  history.push('/allitemgrades');
+              }
             alert(response.data.message);
           })
           .catch(function (error) {

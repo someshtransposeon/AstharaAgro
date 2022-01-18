@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform} from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme } from 'react-native-paper';
 import axios from 'axios';
 import {url} from '../../utils/url';
+import {useHistory} from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -17,13 +18,17 @@ const theme = {
 export default function AddItemGrade({ navigation }) {
 
     const [itemGradeName, setItemGradeName] = useState("");
-    
+    let history = useHistory();
     function submitForm() {
         axios.post(url + '/create_item_grade', {
             grade_name: itemGradeName,
           })
           .then(function (response) {
             alert(response.data.message);
+            if(response.data)
+            {
+                history.push('/allitemgrades')
+            }
             setItemGradeName("");
           })
           .catch(function (error) {
