@@ -52,7 +52,7 @@ export default function AllCustomerVendorPools(props,{ navigation }) {
                     <DataTable.Header>
                         <DataTable.Title>Customer Pool</DataTable.Title>
                         <DataTable.Title>Vendor Pool</DataTable.Title>
-                        <DataTable.Title numeric>Action</DataTable.Title>
+                        {/* <DataTable.Title numeric>Action</DataTable.Title> */}
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
@@ -61,13 +61,13 @@ export default function AllCustomerVendorPools(props,{ navigation }) {
                             <DataTable.Row>
                                 <DataTable.Cell>{item.customer_pool_name}</DataTable.Cell>
                                 <DataTable.Cell>{item.vendor_pool_name}</DataTable.Cell>
-                                <DataTable.Cell numeric>
+                                {/* <DataTable.Cell numeric>
                                     {Platform.OS=='android' ?
                                         <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
                                         :
                                         <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/edit_vendor_pool/"+item._id}>Details</Link></Button>
                                     }
-                                </DataTable.Cell>
+                                </DataTable.Cell> */}
                             </DataTable.Row>
                         )
                         }

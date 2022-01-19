@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
+const _ = require('underscore');
 
-const customer_poolSchema = new mongoose.Schema({
+let customer_poolSchema = new mongoose.Schema({
     pool_name:{
         type:String,
         required:true,
+        unique: true,
     },
-    postal_code: {
-        type: mongoose.Schema.Types.Mixed,
+    postal_code: [{
+        type: String,
         required: true,
-    },
+    }],
     flag_value:{
         type:Number,
         default:0,
@@ -17,6 +19,9 @@ const customer_poolSchema = new mongoose.Schema({
     {
     timestamps: true
 });
-
+customer_poolSchema.pre('save', function (next) {
+    this.postal_code = _.uniq(this.postal_code);
+    next();
+});
 const customer_pool = mongoose.model('Customer_pool', customer_poolSchema);
 module.exports = customer_pool;

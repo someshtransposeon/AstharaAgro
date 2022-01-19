@@ -1,7 +1,7 @@
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, Text} from 'react-native';
 import { Provider, DefaultTheme, Card, TextInput, Button } from 'react-native-paper';
 import { useHistory } from 'react-router-dom';
 
@@ -18,20 +18,39 @@ const theme = {
 export default function AddVendorPool(props,{ navigation }) {
 
     const [poolName, setPoolName] = useState("");
-    const [items, setItems] = useState([{ postal_code: ''}]);
+    const [items, setItems] = useState(['']);
+    const [pincodeError, setPincodeError] = useState(['']);
 
     let history = useHistory();
 
     const ItemChange = (index, fieldvalue) => {
+        const error = [...pincodeError];
         const values = [...items];
-        values[index].postal_code = fieldvalue.replace(/[^0-9]/g, '');
-        setItems(values);
+        const numberRegex = /^[0-9\b]+$/;
+        const minLengthRegex = /\d{6,}/;
+        if(!numberRegex.test(fieldvalue)){
+            error[index] = "Pin Code Only Should be Numeric";
+            setPincodeError(error);
+        }
+        else if(!minLengthRegex.test(fieldvalue)){
+            error[index] = "Pin Code Length should be 6";
+            setPincodeError(error);
+        }
+        else{
+            values[index] = fieldvalue.replace(/[^0-9]/g, '');
+            setItems(values);
+            error[index] = '';
+            setPincodeError(error);
+        }
     };
 
     const handleAddFields = () => {
         const values = [...items];
-        values.push({ postal_code: '' });
+        values.push('');
         setItems(values);
+        const error = [...pincodeError];
+        error.push('');
+        setPincodeError(error);
     };
     
     const handleRemoveFields = index => {
@@ -54,8 +73,22 @@ export default function AddVendorPool(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
-            history.push('/allvendorpools');
+            console.log(data);
+            if(data.message!="something wrong!"){
+                alert(data.message);
+                history.push('/allvendorpools');
+            }
+            else{
+                if(data.error.errors){
+                    alert("All Fields are required");
+                }
+                else if(data.error.keyPattern.postal_code){
+                    alert("Pin Code "+data.error.keyValue.postal_code+" is already available in another pool");
+                }
+                else if(data.error.keyPattern.pool_name){
+                    alert("Pool "+data.error.keyValue.pool_name+" is already created");
+                }
+            }
         }); 
     }
 
@@ -70,7 +103,10 @@ export default function AddVendorPool(props,{ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Pool Name (RAJ_JPR_SANGANER)" value={poolName} onChangeText={poolName => setPoolName(poolName)} />
                     {items.map((it, index) => (
                         <View>
-                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it.postal_code} onChangeText={(text)=>ItemChange(index, text)} />
+                            <TextInput style={styles.input} mode="outlined" label="Pin Code" maxLength={6} value={it.postal_code} onChangeText={(text)=>ItemChange(index, text)} />
+                            {pincodeError[index] &&
+                                <Text style={{color: "red"}}>{pincodeError[index]}</Text>
+                            }
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>
