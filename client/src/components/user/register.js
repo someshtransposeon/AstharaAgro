@@ -7,6 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { user_category } from '../../services/user_api';
 import { uploadImage } from '../../services/image';
 import emailjs from 'emailjs-com';
+import { all_customer_pools, all_vendor_pools } from '../../services/pool';
 
 const theme = {
     ...DefaultTheme,
@@ -22,6 +23,10 @@ export default function Register(props,{ navigation }) {
 
     let history = useHistory();
 
+    const [visible3, setVisible3] = useState(false);
+    const [visible4, setVisible4] = useState(false);
+    const [searchQuery3, setSearchQuery3] = useState('');
+    const [searchQuery4, setSearchQuery4] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
@@ -33,6 +38,11 @@ export default function Register(props,{ navigation }) {
     const [file, setFile] = useState();
     const [img, setImg] = useState();
     const [idType, setIdType] = useState("Choose ID Type");
+    const [customers, setCustomers] = useState();
+    const [vendors, setVendors] = useState();
+    const [pool_name, setPoolName] = useState("Choose Pool");
+    const [pool_id, setPoolId] = useState("");
+
     const[values,setValues]=useState({
         full_name:'',
         nickname:'',
@@ -53,6 +63,18 @@ export default function Register(props,{ navigation }) {
             setUserCategory(result);
         });
 
+        //Retrieve all customer list
+        all_customer_pools()
+        .then(result => {
+            setCustomers(result);
+        })
+
+        //Retrieve all vendor list
+        all_vendor_pools()
+        .then(result => {
+            setVendors(result);
+        })
+
     }, [userCategory, host, props.host, props.roleas]);
 
     const openMenu1 = () => setVisible1(true);
@@ -60,6 +82,12 @@ export default function Register(props,{ navigation }) {
 
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
+
+    const openMenu3 = () => setVisible3(true);
+    const closeMenu3 = () => setVisible3(false);
+
+    const openMenu4 = () => setVisible4(true);
+    const closeMenu4 = () => setVisible4(false);
 
     function chooseCategory(id, name) {
         setCategoryId(id);
@@ -84,6 +112,8 @@ export default function Register(props,{ navigation }) {
                 mobile_no: values.mobileNo,
                 idNumber: values.idNumber,
                 gst_no:values.gstNo,
+                pool_name: pool_name,
+                pool_id: pool_id,
                 password: values.password,
                 confirm_password: values.confirmPassword,
             })
@@ -126,12 +156,28 @@ export default function Register(props,{ navigation }) {
         setIdType(idType);
         closeMenu2();
     }
+
     const handleChange = (mytextname) => {
         return (val) => {
             setValues({ ...values, [mytextname]: val })
         }
     }
+
+    function ChooseCustomer(id, poolName){
+        setPoolId(id);
+        setPoolName(poolName);
+        closeMenu3();
+    }
+
+    function ChooseVendor(id, poolName){
+        setPoolId(id);
+        setPoolName(poolName);
+        closeMenu4();
+    }
+
     const onChangeSearch = query => setSearchQuery(query);
+    const onChangeSearch3 = query => setSearchQuery3(query);
+    const onChangeSearch4 = query => setSearchQuery4(query);
 
     return (
         <Provider theme={theme}>
@@ -205,6 +251,66 @@ export default function Register(props,{ navigation }) {
                     </View>
                     {(category=="vendor" || category=="customer") &&
                         <TextInput style={styles.input} mode="outlined" label="GST No" value={values.gstNo} onChangeText={handleChange('gstNo')} />
+                    }
+                    {category=="sales" &&
+                    <Menu
+                    visible={visible3}
+                    onDismiss={closeMenu3}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu3}>{pool_name}</Button>}>
+                        <Searchbar
+                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                            placeholder="Search"
+                            onChangeText={onChangeSearch3}
+                            value={searchQuery3}
+                        />
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemGrade')}}>Add Grade</Button>
+                            :
+                            <Link to="/addcustomerpool"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Customer Pool</Button></Link>
+                        }
+                        {customers ?
+                            customers.map((item)=>{
+                                if(item.flag_value === 0){
+                                    return (
+                                        <Menu.Item title={item.pool_name} onPress={()=>ChooseCustomer(item._id, item.pool_name)} />
+                                    )
+                                }
+                            })
+                            :
+                            <Menu.Item title="No Customer Pool Available" />
+                        }
+                    </Menu>
+                    }
+                    {category=="vendor" &&
+                    <Menu
+                    visible={visible4}
+                    onDismiss={closeMenu4}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu4}>{pool_name}</Button>}>
+                        <Searchbar
+                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                            placeholder="Search"
+                            onChangeText={onChangeSearch4}
+                            value={searchQuery4}
+                        />
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemGrade')}}>Add Grade</Button>
+                            :
+                            <Link to="/addvendorpool"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Vendor Pool</Button></Link>
+                        }
+                        {vendors ?
+                            vendors.map((item)=>{
+                                if(item.flag_value === 0){
+                                    return (
+                                        <Menu.Item title={item.pool_name} onPress={()=>ChooseVendor(item._id, item.pool_name)} />
+                                    )
+                                }
+                            })
+                            :
+                            <Menu.Item title="No Vendor Pool Available" />
+                        }
+                    </Menu>
                     }
                     <TextInput style={styles.input} mode="outlined" label="Password" value={values.password} onChangeText={handleChange('password')} secureTextEntry={true}/>
                     <TextInput style={styles.input} mode="outlined" label="Confirm Password" alue={values.confirmPassword} onChangeText={handleChange('confirmPassword')} secureTextEntry={true}/>

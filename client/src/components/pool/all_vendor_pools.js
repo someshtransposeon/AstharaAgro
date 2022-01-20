@@ -55,19 +55,20 @@ export default function AllVendorPools(props,{ navigation }) {
                     </DataTable.Header>
                 {allItems ?
                     allItems.map((item)=>{
-                        //if(item.pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
-                        return (
-                            <DataTable.Row>
-                                <DataTable.Cell>{item.pool_name}</DataTable.Cell>
-                                <DataTable.Cell numeric>
-                                    {Platform.OS=='android' ?
-                                        <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
-                                        :
-                                        <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/edit_vendor_pool/"+item._id}>Details</Link></Button>
-                                    }
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
+                        if(item.pool_name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.postal_code.indexOf(searchQuery.toUpperCase())!=-1){
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{item.pool_name}</DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {itemId: item._id})}}>Details</Button>
+                                            :
+                                            <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/edit_vendor_pool/"+item._id}>Details</Link></Button>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                        }
                     })
                     :
                     <ActivityIndicator color="#794BC4" size={60}/>

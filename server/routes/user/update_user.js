@@ -13,6 +13,8 @@ router.put('/update_user/:id',(req, res) =>{
         idNumber: req.body.idNumber,
         address: req.body.address,
         gst_no: req.body.gst_no,
+        pool_name: req.body.pool_name,
+        pool_id: req.body.pool_id,
         bank_details: req.body.bank_details,
     }
     User.findOneAndUpdate({'_id':req.params.id}, user_update)

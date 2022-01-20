@@ -87,6 +87,7 @@ export default function ViewUser(props, {route}) {
                             <TextInput style={styles.input} mode="outlined" label="Mobile No" value={user.mobile_no} />
                             <TextInput style={styles.input} mode="outlined" label="ID Type" value={user.idType} />
                             <TextInput style={styles.input} mode="outlined" label="ID Number" value={user.idNumber} />
+                            <TextInput style={styles.input} mode="outlined" label="Pool Name" value={user.pool_name} />
                             <TextInput style={styles.input} mode="outlined" label="Gst No" value={user.gst_no} />
                         </Card.Content>
                     </>

@@ -5,6 +5,7 @@ import { View, StyleSheet,Platform, ScrollView, SafeAreaView} from 'react-native
 import { Provider, DefaultTheme, Card, Button, Menu, Searchbar } from 'react-native-paper';
 import { Link, useHistory } from 'react-router-dom';
 import { all_customer_pools, all_vendor_pools } from '../../services/pool';
+import swal from '@sweetalert/with-react'
 
 const theme = {
     ...DefaultTheme,
@@ -80,7 +81,7 @@ export default function AddCustomerVendorPool(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
+            swal("Yeah!", data.message, "success");
             history.push('/allcustomervendorpools');
         }); 
         fetch(`http://localhost:5000/updateflag_vendor_pool/${vendorId}`, {

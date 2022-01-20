@@ -41,6 +41,12 @@ const userSchema = new mongoose.Schema({
     gst_no: {
         type: String,
     },
+    pool_name: {
+        type: String
+    },
+    pool_id: {
+        type: String
+    },
     password: {
         type: String,
         required: true,

@@ -16,8 +16,10 @@ router.post('/create_user', async (req, res)=>{
             const idNumber= req.body.idNumber;
             const image= req.body.image;
             const gst_no= req.body.gst_no;
+            const pool_name= req.body.pool_name;
+            const pool_id= req.body.pool_id;
             const password= hash;
-            var newUser = new User({category,role,full_name,nick_name,email,mobile_no,idNumber,idType,image,gst_no,password})
+            var newUser = new User({category,role,full_name,nick_name,email,mobile_no,idNumber,idType,image,gst_no,pool_name,pool_id,password})
             newUser.save()
             .then(user => {
                 var message={message:"successfully added!",data:user};

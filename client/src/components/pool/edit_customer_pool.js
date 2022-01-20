@@ -1,10 +1,11 @@
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, Text} from 'react-native';
 import { Provider, DefaultTheme, Card, TextInput, Button } from 'react-native-paper';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link, Router } from 'react-router-dom';
 import { customer_pool_by_id } from '../../services/pool';
+import swal from '@sweetalert/with-react'
 
 const theme = {
     ...DefaultTheme,
@@ -21,7 +22,8 @@ export default function EditCustomerPool(props,{ navigation }) {
     const id = props.match.params.id;
 
     const [poolName, setPoolName] = useState("");
-    const [items, setItems] = useState([{ postal_code: ''}]);
+    const [items, setItems] = useState([]);
+    const [pincodeError, setPincodeError] = useState(['']);
 
     useEffect(() => {
 
@@ -36,15 +38,33 @@ export default function EditCustomerPool(props,{ navigation }) {
     let history = useHistory();
 
     const ItemChange = (index, fieldvalue) => {
+        const error = [...pincodeError];
         const values = [...items];
-        values[index].postal_code = fieldvalue.replace(/[^0-9]/g, '');
+        const numberRegex = /^[0-9\b]+$/;
+        const minLengthRegex = /\d{6,}/;
+        if(!numberRegex.test(fieldvalue)){
+            error[index] = "Pin Code Only Should be Numeric";
+            setPincodeError(error);
+        }
+        else if(!minLengthRegex.test(fieldvalue)){
+            error[index] = "Pin Code Length should be 6";
+            setPincodeError(error);
+        }
+        else{
+            error[index] = '';
+            setPincodeError(error);
+        }
+        values[index] = fieldvalue.replace(/[^0-9]/g, '');
         setItems(values);
     };
 
     const handleAddFields = () => {
         const values = [...items];
-        values.push({ postal_code: '' });
+        values.push('');
         setItems(values);
+        const error = [...pincodeError];
+        error.push('');
+        setPincodeError(error);
     };
     
     const handleRemoveFields = index => {
@@ -67,11 +87,22 @@ export default function EditCustomerPool(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
-            if(!data.err){
+            if(data.message!="Something wrong!"){
+                swal("Yeah!", data.message, "success");
                 history.push('/allcustomerpools');
             }
-        }); 
+            else{
+                if(data.err.errors){
+                    swal("Oops!", "All Fields are required!", "error");
+                }
+                else if(data.err.keyPattern.postal_code){
+                    swal("Oops!", "Pin Code "+data.err.keyValue.postal_code+" is already available in another pool!", "error");
+                }
+                else if(data.err.keyPattern.pool_name){
+                    swal("Oops!", "Pool "+data.err.keyValue.pool_name+" is already created!", "error");
+                }
+            }
+        });
     }
 
     return (
@@ -85,7 +116,10 @@ export default function EditCustomerPool(props,{ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Pool Name (RAJ_JPR_SANGANER)" value={poolName} onChangeText={poolName => setPoolName(poolName)} />
                     {items.map((it, index) => (
                         <View>
-                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it.postal_code} onChangeText={(text)=>ItemChange(index, text)} />
+                            <TextInput style={styles.input} mode="outlined" maxLength={6} label="Pin Code" value={it} onChangeText={(text)=>ItemChange(index, text)} />
+                            {pincodeError[index] &&
+                                <Text style={{color: "red"}}>{pincodeError[index]}</Text>
+                            }
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?
                                     <>

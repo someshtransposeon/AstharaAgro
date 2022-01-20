@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet,Platform, ScrollView, SafeAreaView, Text} from 'react-native';
 import { Provider, DefaultTheme, Card, TextInput, Button } from 'react-native-paper';
 import { useHistory } from 'react-router-dom';
+import swal from '@sweetalert/with-react'
 
 const theme = {
     ...DefaultTheme,
@@ -37,11 +38,11 @@ export default function AddCustomerPool(props,{ navigation }) {
             setPincodeError(error);
         }
         else{
-            values[index] = fieldvalue.replace(/[^0-9]/g, '');
-            setItems(values);
             error[index] = '';
             setPincodeError(error);
         }
+        values[index] = fieldvalue.replace(/[^0-9]/g, '');
+        setItems(values);
     };
 
     const handleAddFields = () => {
@@ -73,23 +74,22 @@ export default function AddCustomerPool(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            console.log(data);
             if(data.message!="something wrong!"){
-                alert(data.message);
+                swal("Yeah!", data.message, "success");
                 history.push('/allcustomerpools');
             }
             else{
                 if(data.error.errors){
-                    alert("All Fields are required");
+                    swal("Oops!", "All Fields are required!", "error");
                 }
                 else if(data.error.keyPattern.postal_code){
-                    alert("Pin Code "+data.error.keyValue.postal_code+" is already available in another pool");
+                    swal("Oops!", "Pin Code "+data.error.keyValue.postal_code+" is already available in another pool!", "error");
                 }
                 else if(data.error.keyPattern.pool_name){
-                    alert("Pool "+data.error.keyValue.pool_name+" is already created");
+                    swal("Oops!", "Pool "+data.error.keyValue.pool_name+" is already created!", "error");
                 }
             }
-        }); 
+        });
     }
 
     return (
@@ -103,7 +103,7 @@ export default function AddCustomerPool(props,{ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Pool Name (RAJ_JPR_SANGANER)" value={poolName} onChangeText={poolName => setPoolName(poolName)} />
                     {items.map((it, index) => (
                         <View>
-                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it.postal_code} maxLength={6} onChangeText={(text)=>ItemChange(index, text)} />
+                            <TextInput style={styles.input} mode="outlined" label="Pin Code" value={it} maxLength={6} onChangeText={(text)=>ItemChange(index, text)} />
                             {pincodeError[index] &&
                                 <Text style={{color: "red"}}>{pincodeError[index]}</Text>
                             }
