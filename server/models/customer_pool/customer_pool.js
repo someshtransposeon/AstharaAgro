@@ -11,7 +11,7 @@ let customer_poolSchema = new mongoose.Schema({
     postal_code: [{
         type: String,
         required: true,
-        index: true,
+        unique: true,
     }],
     flag_value:{
         type:Number,

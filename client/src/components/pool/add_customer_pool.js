@@ -74,6 +74,7 @@ export default function AddCustomerPool(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            console.log(data);
             if(data.message!="something wrong!"){
                 swal("Yeah!", data.message, "success");
                 history.push('/allcustomerpools');
