@@ -4,7 +4,7 @@ const router = express.Router();
 const vendor_pool = require('../../models/vendor_pool/vendor_pool');
 //Define route for create Vendor_pool
 router.post('/create_vendor_pool', (req, res) => {
-    customer_pool.init()
+    vendor_pool.init()
         .then( async ()=>{
             var newvendor_pool = new vendor_pool({
                 pool_name : req.body.pool_name,

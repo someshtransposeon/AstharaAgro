@@ -74,6 +74,7 @@ export default function AddVendorPool(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
+            console.log(data);
             if(data.message!="something wrong!"){
                 swal("Yeah!", data.message, "success");
                 history.push('/allvendorpools');
@@ -87,6 +88,9 @@ export default function AddVendorPool(props,{ navigation }) {
                 }
                 else if(data.error.keyPattern.pool_name){
                     swal("Oops!", "Pool "+data.error.keyValue.pool_name+" is already created!", "error");
+                }
+                else{
+                    swal("Oops!", "something wrong!", "error");
                 }
             }
         });
