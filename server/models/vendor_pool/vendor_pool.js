@@ -6,10 +6,12 @@ let vendor_poolSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique: true,
+        index: true,
     },
     postal_code: [{
         type: String,
         required: true,
+        index: true,
     }],
     flag_value:{
         type:Number,

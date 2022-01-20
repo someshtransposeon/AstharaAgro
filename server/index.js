@@ -14,7 +14,8 @@ mongoose.connect("mongodb+srv://asthara_pankaj:asthara_pankaj@astharadb.8j9fd.mo
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    autoIndex: true, //make this also true
 })
 .then(() => console.log('Database Connected Successfully'))
 .catch((err) => console.error('Database Connection Failed'));
