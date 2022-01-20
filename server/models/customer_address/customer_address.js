@@ -6,6 +6,10 @@ const customeraddressSchema = new mongoose.Schema({
         ref:'User',
         required: true,
     },
+    customerEmail:{
+        type: String,
+        required: true,
+    },
     address: {
         type: String,
         required: true,

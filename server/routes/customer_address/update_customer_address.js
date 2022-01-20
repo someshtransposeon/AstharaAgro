@@ -4,7 +4,6 @@ const Address = require('../../models/customer_address/customer_address');
 
 router.put('/update_customer_address/:id',(req, res) =>{
     var address_update = {
-        customerId: req.body.customerId,
         address: req.body.address,
         landmark: req.body.landmark,
         district: req.body.district,

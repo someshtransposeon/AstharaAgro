@@ -18,6 +18,13 @@ export const users_by_id = (userId) => {
         return res.data;
     }).catch(err => console.log(err))
 }
+//retrive user by email
+export const users_by_email = (email) => {
+    return axios.get(url + '/retrive_user_by_email/' + email)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
 //retrive all disabled users
 export function disabled_users(host){
     return fetch(`http://${host}:5000/retrive_all_disabled_user`, {

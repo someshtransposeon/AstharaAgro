@@ -37,6 +37,7 @@ export default function AddAddress(props, {route}) {
     const [pincode, setPincode] = useState('');
     const [host, setHost] = useState('');
     const [role, setRole] = useState();
+    const [Email, setEmail] = useState('');
     //fetch login user information for store corresponding the address data
     useEffect(() => {
         if(userid){
@@ -53,6 +54,7 @@ export default function AddAddress(props, {route}) {
         users_by_id(userid)
         .then(result => {
             setRole(result[0].role);
+            setEmail(result[0].email);
         })
 
     }, [host, userid]);
@@ -90,6 +92,7 @@ export default function AddAddress(props, {route}) {
                 },
                 body: JSON.stringify({
                     customerId: userId,
+                    customerEmail: Email,
                     address: address,
                     landmark: landmark,
                     district: district,

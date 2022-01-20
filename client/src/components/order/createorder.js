@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle,faMinusCircle, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { all_users_by_role, users_by_id } from '../../services/user_api';
+import { users_by_email, users_by_id } from '../../services/user_api';
 import { item_grade } from  '../../services/item_api';
 import { Link } from "react-router-dom";
-import { all_customer_items_by_id, customer_address_by_id } from '../../services/customer_api';
+import { customer_address_by_id } from '../../services/customer_api';
 
 const theme = {
     ...DefaultTheme,
@@ -45,14 +45,11 @@ export default function CreateOrder({ navigation }) {
     const [flag, setFlag] = useState(true);
     const [customer, setCustomer] = useState();
     const [customerEmail, setCustomerEmail] = useState("Choose customer");
-    const [category,setCategory] = useState("");
-    const [role,setRole]=useState("");
     const [userId,setUserId]=useState("");
     const [customerId,setCustomerId]=useState("");
-    const [flag2,setFlag2]=useState(true);
     const [itemGrade, setItemGrade]=useState();
-    const [customerAddress, setCustomerAddress] = useState();
-    const [targetPrice,setTargetPrice]=useState("");
+    const [pool_id, setPoolId] = useState('');
+    const [addresses, setAddresses] = useState();
 
     useEffect(() => {
 
@@ -83,29 +80,35 @@ export default function CreateOrder({ navigation }) {
             }
         });
 
-        all_users_by_role("customer")
-        .then(result => {
-            setCustomer(result);
-        })                     
-
-        fetch('http://localhost:5000/retrive_user_category_type/customer', {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data =>{
-            setCategory(data._id);
-            setRole(data.category_name);
-        });
-
         item_grade()
         .then(result => {
             setItemGrade(result);
         })
 
+        if(userId){
+            users_by_id(userId)
+            .then(result=>{
+                setPoolId(result[0].pool_id);
+            })
+        }
 
+        if(userId && pool_id){
+            fetch(`http://localhost:5000/retrieve_customer_address_by_pool/${pool_id}`, {
+            method: 'GET',
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data => {
+                setAddresses(data);
+            });
+        }
 
-    }, [item, host, userId, flag2, itemGrade, address, landmark, district, state, country, pincode, role, category, customerId]);
+        if(addresses){
+            const itemsnames=[...new Set(addresses.map(x=>x.customerEmail))];
+            setCustomer(itemsnames);
+        }
+
+    }, [item, host, userId, pool_id, addresses, itemGrade, address, landmark, district, state, country, pincode, customerId]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -173,21 +176,16 @@ export default function CreateOrder({ navigation }) {
         setItems(values);
     };
 
-    const CustomerChange = (id, email) => {
+    const CustomerChange = (email) => {
         setCustomerEmail(email);
         
-        users_by_id(id)
+        users_by_email(email)
         .then(result => {
             setEmail(result[0].email);
             setNickName(result[0].nick_name);
             setName(result[0].full_name);
             setMobileNo(result[0].mobile_no);
-            setCustomerId(result[0].userId);
-        })
-
-        all_customer_items_by_id(id)
-        .then(result => {
-            setCustomerAddress(result);
+            setCustomerId(result[0]._id);
         })
 
         closeMenu2();
@@ -232,28 +230,6 @@ export default function CreateOrder({ navigation }) {
         .then(data => {
             alert(data.message);
         }); 
-
-        if(!flag) {
-            fetch('http://localhost:5000/create_user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    category:category,
-                    role:role,
-                    nick_name:nick_name,
-                    full_name:name,
-                    email:email,
-                    mobile_no:mobileNo,
-                })
-            })
-            .then(res => res.json())
-            .catch(error => console.log(error))
-            .then(data => {
-                Alert("Successfully user created");
-            });
-        }
     }
 
     function chooseAddress(addressId) {
@@ -316,12 +292,12 @@ export default function CreateOrder({ navigation }) {
                                 />
                                 {customer ?
                                     customer.map((item)=>{
-                                        if(item.email.toUpperCase().search(searchQuery2.toUpperCase())!=-1 || item.full_name.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
-                                        return (
-                                            <>
-                                            <Menu.Item title={item.email+" ( "+item.full_name+" ) "} onPress={()=>CustomerChange(item._id, item.email)}/>
-                                            </>
-                                        )
+                                        if(item.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
+                                            return (
+                                                <>
+                                                <Menu.Item title={item} onPress={()=>CustomerChange(item)}/>
+                                                </>
+                                            )
                                         }
                                     })
                                     :
@@ -350,11 +326,13 @@ export default function CreateOrder({ navigation }) {
                                     :
                                     <Link to="/customer_add_address"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Customer Address</Button></Link>
                                 }
-                                {customerAddress ?
-                                    customerAddress.map((item)=>{
-                                        return (
-                                            <Menu.Item style={{marginTop: '5%', padding: '1%',}} title={"Address: "+item.address+", Landmark: "+item.landmark+", \n District: "+item.district+", State: "+item.state+", \n Country: "+item.country+", Pin Code: "+item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
-                                        )
+                                {(customerId!='' && addresses) ?
+                                    addresses.map((item)=>{
+                                        if(item.customerId==customerId){
+                                            return (
+                                                <Menu.Item style={{marginTop: '5%', padding: '1%',}} title={"Address: "+item.address+", Landmark: "+item.landmark+", \n District: "+item.district+", State: "+item.state+", \n Country: "+item.country+", Pin Code: "+item.postal_code} onPress={()=>chooseAddress(item._id, item.postal_code)} />
+                                            )
+                                        }
                                     })
                                     :
                                     <Menu.Item title="No Address Available" />

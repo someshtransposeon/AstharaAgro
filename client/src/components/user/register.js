@@ -102,8 +102,8 @@ export default function Register(props,{ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                category: categoryId,
-                role:roleas,
+                category: category,
+                role:category,
                 idType: idType,
                 image: img,
                 full_name: values.full_name,

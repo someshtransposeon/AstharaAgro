@@ -60,6 +60,7 @@ export default function Add_customer_Address({ navigation }) {
             },
             body: JSON.stringify({
                 customerId: customerId,
+                customerEmail: customerEmail,
                 address: address,
                 landmark: landmark,
                 district: district,

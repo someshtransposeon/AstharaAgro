@@ -24,6 +24,17 @@ router.get('/retrive_user/:id',(req, res)=>{
     });
 });
 
+router.get('/retrive_user_by_email/:email',(req, res)=>{
+    User.find({'email':req.params.email}, function(err, user){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(user);
+        }
+    });
+});
+
 router.get('/retrive_user_by_role/:role',(req, res)=>{
     User.find({'role':req.params.role}, function(err, user){
         if(err){

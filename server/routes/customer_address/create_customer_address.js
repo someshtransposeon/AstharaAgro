@@ -6,6 +6,7 @@ const Address = require('../../models/customer_address/customer_address');
 router.post('/create_customer_address', (req, res)=>{
     var newAddress = new Address({
         customerId: req.body.customerId,
+        customerEmail: req.body.customerEmail,
         address: req.body.address,
         landmark: req.body.landmark,
         district: req.body.district,

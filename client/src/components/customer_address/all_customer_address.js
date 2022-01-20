@@ -112,24 +112,27 @@ export default function All_addresses({ navigation }) {
                     </Menu>
                     <DataTable.Header>
                         <DataTable.Title>Address</DataTable.Title>
+                        <DataTable.Title>Landmark</DataTable.Title>
                         <DataTable.Title>Pin code</DataTable.Title>
-                        <DataTable.Title>State</DataTable.Title>
-                        <DataTable.Title>Action</DataTable.Title>
+                        <DataTable.Title>State (District)</DataTable.Title>
+                        <DataTable.Title>Country</DataTable.Title>
                     </DataTable.Header>
                     { address  &&
                         address.map((address,index)=>{
                             return(
                                 <DataTable.Row>
                                     <DataTable.Cell>{address.address}</DataTable.Cell>
+                                    <DataTable.Cell>{address.landmark}</DataTable.Cell>
                                     <DataTable.Cell>{address.postal_code}</DataTable.Cell>
-                                    <DataTable.Cell>{address.state}</DataTable.Cell>
-                                    <DataTable.Cell>
+                                    <DataTable.Cell>{address.state+" ("+address.district+")"}</DataTable.Cell>
+                                    <DataTable.Cell>{address.country}</DataTable.Cell>
+                                    {/* <DataTable.Cell>
                                         {Platform.OS=='android' ?
                                             <Button color="red" icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}} onPress={() => {navigation.navigate('EditItem', {addressId: address._id})}}>Details</Button>
                                             :
                                             <Button icon={() => <FontAwesomeIcon icon={ faEye } />} mode="contained" style={{width: '100%'}}><Link to={"/edit_customer_address/"+address._id}>Details</Link></Button>
                                         }
-                                    </DataTable.Cell>
+                                    </DataTable.Cell> */}
                                 </DataTable.Row> 
                                 
                             )
