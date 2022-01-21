@@ -50,6 +50,7 @@ export default function CreateOrder({ navigation }) {
     const [itemGrade, setItemGrade]=useState();
     const [pool_id, setPoolId] = useState('');
     const [addresses, setAddresses] = useState();
+    const [vendor_pool_id, setVendorPoolId] = useState();
 
     useEffect(() => {
 
@@ -69,17 +70,19 @@ export default function CreateOrder({ navigation }) {
             setHost("localhost");
         }
 
-        fetch(`http://${host}:5000/vendors_retrive_all_item`, {
-            method: 'GET'
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(item => {
-            if(item){
-                const itemsnames=[...new Set(item.map(x=>x.item_name))];
-                setItem(itemsnames);
-            }
-        });
+        if(vendor_pool_id){
+            fetch(`http://${host}:5000/vendors_retrive_all_item_by_vendor_pool/${vendor_pool_id}`, {
+                method: 'GET'
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(item => {
+                if(item){
+                    const itemsnames=[...new Set(item.map(x=>x.item_name))];
+                    setItem(itemsnames);
+                }
+            });
+        }
 
         item_grade()
         .then(result => {
@@ -107,12 +110,23 @@ export default function CreateOrder({ navigation }) {
             });
         }
 
+        if(pool_id){
+            fetch(`http://localhost:5000/retrieve_cross_pool_by_customer_pool/${pool_id}`, {
+            method: 'GET',
+            })
+            .then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data => {
+                setVendorPoolId(data[0].vendor_pool_Id);
+            });
+        }
+
         if(addresses){
             const itemsnames=[...new Set(addresses.map(x=>x.customerEmail))];
             setCustomer(itemsnames);
         }
 
-    }, [item, host, userId, pool_id, addresses, itemGrade, address, landmark, district, state, country, pincode, customerId]);
+    }, [item, host, userId, pool_id, vendor_pool_id, addresses, itemGrade, address, landmark, district, state, country, pincode, customerId]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -152,7 +166,7 @@ export default function CreateOrder({ navigation }) {
         }
         else if (fieldname=="grade") {
             values[index].Grade=grade;
-            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade/${values[index].itemName}/${grade}`, {
+            fetch(`http://localhost:5000/retrive_vendor_item_by_name_grade/${values[index].itemName}/${grade}/${vendor_pool_id}`, {
                 method: 'GET'
             })
             .then(res => res.json())

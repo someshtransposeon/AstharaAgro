@@ -102,8 +102,8 @@ export default function Register(props,{ navigation }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                category: category,
-                role:category,
+                category: categoryId,
+                role: category,
                 idType: idType,
                 image: img,
                 full_name: values.full_name,
@@ -271,11 +271,9 @@ export default function Register(props,{ navigation }) {
                         }
                         {customers ?
                             customers.map((item)=>{
-                                if(item.flag_value === 0){
-                                    return (
-                                        <Menu.Item title={item.pool_name} onPress={()=>ChooseCustomer(item._id, item.pool_name)} />
-                                    )
-                                }
+                                return (
+                                    <Menu.Item title={item.pool_name} onPress={()=>ChooseCustomer(item._id, item.pool_name)} />
+                                )
                             })
                             :
                             <Menu.Item title="No Customer Pool Available" />
@@ -301,11 +299,9 @@ export default function Register(props,{ navigation }) {
                         }
                         {vendors ?
                             vendors.map((item)=>{
-                                if(item.flag_value === 0){
-                                    return (
-                                        <Menu.Item title={item.pool_name} onPress={()=>ChooseVendor(item._id, item.pool_name)} />
-                                    )
-                                }
+                                return (
+                                    <Menu.Item title={item.pool_name} onPress={()=>ChooseVendor(item._id, item.pool_name)} />
+                                )
                             })
                             :
                             <Menu.Item title="No Vendor Pool Available" />

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 /* Required Model for store in database*/
 const VendorsItem = require('../../models/vendorsItem/vendors_item');
+const vendor_pool = require('../../models/vendor_pool/vendor_pool');
 //DEfine Route to retrive all items
 router.get('/vendors_retrive_all_item',(req, res)=>{
     VendorsItem.find({status:"enabled"}, function(err, items){
@@ -41,18 +42,25 @@ router.get('/vendors_retrive_all_disabled_items',(req, res)=>{
             console.log(err);
         }
         else {
-            res.json(items);0.2
+            res.json(items);
         }
     });
 });
 
-router.get('/retrive_vendor_item_by_name_grade/:itemname/:grade',(req, res)=>{
-    VendorsItem.find({'item_name':req.params.itemname, 'grade_name':req.params.grade}).sort({"item_price":-1}).exec(function(err, item){
+router.get('/retrive_vendor_item_by_name_grade/:itemname/:grade/:id',(req, res)=>{
+    vendor_pool.find({_id:req.params.id}, function(err, vendor_pool){
         if(err){
             console.log(err);
         }
         else {
-            res.json(item);
+            VendorsItem.find({'postal_code': { "$in" : vendor_pool[0].postal_code}, 'item_name':req.params.itemname, 'grade_name':req.params.grade}).sort({"item_price":-1}).exec(function(err, item){
+                if(err){
+                    console.log(err);
+                }
+                else {
+                    res.json(item);
+                }
+            });
         }
     });
 });
@@ -64,7 +72,24 @@ router.get('/retrive_vendor_item_by_name_grade_lower_price/:itemname/:grade',(re
         }
         else {
             res.json(item);
-            console.log(item.nick_name);
+        }
+    });
+});
+
+router.get('/vendors_retrive_all_item_by_vendor_pool/:id',(req, res)=>{
+    vendor_pool.find({_id:req.params.id}, function(err, vendor_pool){
+        if(err){
+            console.log(err);
+        }
+        else {
+            VendorsItem.find({'postal_code': { "$in" : vendor_pool[0].postal_code}}, function(err, item){
+                if(err){
+                    console.log(err);
+                }
+                else {
+                    res.json(item);
+                }
+            });
         }
     });
 });
