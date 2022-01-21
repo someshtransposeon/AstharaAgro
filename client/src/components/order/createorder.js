@@ -58,6 +58,7 @@ export default function CreateOrder({ navigation }) {
             .then((userid) => {
                 setUserId(userid);
             })
+            .catch((error) => {console.error(error);})
         }
         fetchData();
 
@@ -84,12 +85,15 @@ export default function CreateOrder({ navigation }) {
         .then(result => {
             setItemGrade(result);
         })
+        .catch(error => console.log(error))
 
         if(userId){
             users_by_id(userId)
             .then(result=>{
                 setPoolId(result[0].pool_id);
             })
+            .catch(error => console.log(error))
+            
         }
 
         if(userId && pool_id){
