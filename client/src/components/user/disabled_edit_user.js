@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { users_by_id, user_category} from '../../services/user_api';
+import {url} from '../../utils/url';
+import axios from 'axios';
 
 const theme = {
     ...DefaultTheme,
@@ -55,16 +57,16 @@ export default function DisabledEditUser(props, {route}) {
 
         if(flag){
             //Retrieve all user category
-            user_category(host)
+            user_category()
             .then(function(result) {
-                setUserCategory(userCategory);
+                setUserCategory(result);
                 setFlag(false);
             })
         }
 
         if(userId){
             //Retrieve user by userId
-            users_by_id(host, userId)
+            users_by_id(userId)
             .then(function(result) {
                 setFullName(result[0].full_name);
                 setEmail(result[0].email);
@@ -82,43 +84,33 @@ export default function DisabledEditUser(props, {route}) {
     }
 
     function submitForm() {
-        fetch(`http://${host}:5000/update_user/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                category: categoryId,
-                role: category,
-                full_name: fullName,
-                email: email,
-                mobile_no: mobileNo,
-            })
+        axios.put(url + '/update_user/'+userId, {
+            category: categoryId,
+            role: category,
+            full_name: fullName,
+            email: email,
+            mobile_no: mobileNo,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        }); 
+        .then(function (response) {
+            console.log(response.data);
+            alert(response.data.message);
+        })
+        .catch(function (error) {
+            console.log(error);
+         }); 
     }
       const StatusChange = (s) => {
-        fetch(`http://${host}:5000/enabled_user/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: s,
-            })
+        axios.put(url + '/enabled_user/'+userId, {
+            status: s,
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            alert(data.message);
-            console.log(data);
-        });
-        // closeMenu(index);
+        .then(function (response) {
+            console.log(response.data);
+            alert(response.data.message);
+        })
+        .catch(function (error) {
+            console.log(error);
+            
+          });
     }; 
 
     const onChangeSearch = query => setSearchQuery(query);

@@ -3,6 +3,8 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useHistory, Link } from 'react-router-dom';
+import axios from 'axios';
+import {url} from '../../utils/url';
 
 const theme = {
     ...DefaultTheme,
@@ -33,30 +35,19 @@ export default function Login({ navigation }) {
     }, [host]);
 
     function submitForm() {
-        fetch(`http://${host}:5000/login_user`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email:email,
-                password:password,
-            })
-        })
-        .then(res => res.json())
-        .catch(error =>{
-            alert(error);
-            console.log(error);
-        })
-        .then(data => {
-            console.log(data);
-            alert(data.message);
-            if(data.token){
-                AsyncStorage.setItem('token', data.token);
-                AsyncStorage.setItem('loginuserid', data.user_id);
-                AsyncStorage.setItem('loginemail', data.email);
-                AsyncStorage.setItem('nick_name', data.nick_name);
-                AsyncStorage.setItem('role', data.role);
+        axios.post(url + '/login_user', {
+            email:email,
+            password:password,
+          })
+          .then(function (response) {
+            console.log(response.data);
+            alert(response.data.message);
+            if(response.data.token){
+                AsyncStorage.setItem('token', response.data.token);
+                AsyncStorage.setItem('loginuserid', response.data.user_id);
+                AsyncStorage.setItem('loginemail', response.data.email);
+                AsyncStorage.setItem('nick_name', response.data.nick_name);
+                AsyncStorage.setItem('role', response.data.role);
                 setEmail("");
                 setPassword("");
                 if(Platform.OS=='android'){
@@ -69,7 +60,10 @@ export default function Login({ navigation }) {
                     window.location.reload(false);
                 }
             }
-        }); 
+          })
+          .catch(function (error) {
+            console.log(error);
+         });
     }
 
     return (
