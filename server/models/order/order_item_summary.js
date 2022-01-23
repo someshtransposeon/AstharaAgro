@@ -20,6 +20,12 @@ const orderSummarySchema = new mongoose.Schema({
         type:String,
         default:"Full Order",
     },
+    customerPoolId: {
+        type: String,
+    },
+    vendorPoolId: {
+        type: String,
+    },
     vendor_rejected: [],
     date:{
         type:Date,

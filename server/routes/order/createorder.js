@@ -19,6 +19,8 @@ router.post('/create_order', (req, res)=>{
         country: req.body.country,
         postal_code: req.body.postal_code,
         items: req.body.items,
+        customerPoolId: req.body.customerPoolId,
+        vendorPoolId: req.body.vendorPoolId,
         order_date:req.body.order_date,
         order_time:req.body.order_time,
     })
@@ -38,6 +40,8 @@ router.post('/create_order_item_summary', (req, res)=>{
         userId: req.body.userId,
         orderId: req.body.orderId,
         custom_orderId: req.body.custom_orderId,
+        customerPoolId: req.body.customerPoolId,
+        vendorPoolId: req.body.vendorPoolId,
         item: req.body.item,
     })
     newOrder.save()

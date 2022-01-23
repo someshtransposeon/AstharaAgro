@@ -6,7 +6,7 @@ import { TextInput, Card, Button, Menu, Provider, DefaultTheme, Searchbar } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { users_by_email, users_by_id } from '../../services/user_api';
 import { item_grade } from  '../../services/item_api';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { customer_address_by_id } from '../../services/customer_api';
 
 const theme = {
@@ -51,6 +51,14 @@ export default function CreateOrder({ navigation }) {
     const [pool_id, setPoolId] = useState('');
     const [addresses, setAddresses] = useState();
     const [vendor_pool_id, setVendorPoolId] = useState();
+    const [flag3, setFlag3] = useState(true);
+    const [flag2, setFlag2] = useState(true);
+    const [flag4, setFlag4] = useState(true);
+    const [flag5, setFlag5] = useState(true);
+    const [flag6, setFlag6] = useState(true);
+    const [flag7, setFlag7] = useState(true);
+
+    let history = useHistory();
 
     useEffect(() => {
 
@@ -70,7 +78,7 @@ export default function CreateOrder({ navigation }) {
             setHost("localhost");
         }
 
-        if(vendor_pool_id){
+        if(flag2 && vendor_pool_id){
             fetch(`http://${host}:5000/vendors_retrive_all_item_by_vendor_pool/${vendor_pool_id}`, {
                 method: 'GET'
             })
@@ -80,26 +88,30 @@ export default function CreateOrder({ navigation }) {
                 if(item){
                     const itemsnames=[...new Set(item.map(x=>x.item_name))];
                     setItem(itemsnames);
+                    setFlag2(false);
                 }
             });
         }
 
-        item_grade()
-        .then(result => {
-            setItemGrade(result);
-        })
-        .catch(error => console.log(error))
+        if(flag4){
+            item_grade()
+            .then(result => {
+                setItemGrade(result);
+                setFlag4(false);
+            })
+            .catch(error => console.log(error))
+        }
 
-        if(userId){
+        if(flag5 && userId){
             users_by_id(userId)
             .then(result=>{
                 setPoolId(result[0].pool_id);
+                setFlag5(false);
             })
             .catch(error => console.log(error))
-            
         }
 
-        if(userId && pool_id){
+        if(flag6 && userId && pool_id){
             fetch(`http://localhost:5000/retrieve_customer_address_by_pool/${pool_id}`, {
             method: 'GET',
             })
@@ -107,10 +119,11 @@ export default function CreateOrder({ navigation }) {
             .catch(error => console.log(error))
             .then(data => {
                 setAddresses(data);
+                setFlag6(false);
             });
         }
 
-        if(pool_id){
+        if(pool_id && flag3){
             fetch(`http://localhost:5000/retrieve_cross_pool_by_customer_pool/${pool_id}`, {
             method: 'GET',
             })
@@ -118,15 +131,17 @@ export default function CreateOrder({ navigation }) {
             .catch(error => console.log(error))
             .then(data => {
                 setVendorPoolId(data[0].vendor_pool_Id);
+                setFlag3(false);
             });
         }
 
-        if(addresses){
+        if(flag7 && addresses){
             const itemsnames=[...new Set(addresses.map(x=>x.customerEmail))];
             setCustomer(itemsnames);
+            setFlag7(false);
         }
 
-    }, [item, host, userId, pool_id, vendor_pool_id, addresses, itemGrade, address, landmark, district, state, country, pincode, customerId]);
+    }, [item, host, userId, pool_id, vendor_pool_id, flag3, flag2, flag4, flag5, flag6, flag7, addresses, itemGrade, address, landmark, district, state, country, pincode, customerId]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -177,8 +192,8 @@ export default function CreateOrder({ navigation }) {
                 values[index].itemId = obj._id;
                 values[index].itemUnit=obj.unit_name;
                 values[index].itemPrice=obj.item_price;
-                const itemsnames=[...new Set(data.map(x=>x.item_name))];
-                setItem(itemsnames);
+                // const itemsnames=[...new Set(data.map(x=>x.item_name))];
+                // setItem(itemsnames);
             });
             closeMenu4(index);
         }
@@ -241,12 +256,15 @@ export default function CreateOrder({ navigation }) {
                 country: country,
                 postal_code: pincode,
                 items: items,
+                customerPoolId: pool_id,
+                vendorPoolId: vendor_pool_id,
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
+            history.push('/allorders');
         }); 
     }
 

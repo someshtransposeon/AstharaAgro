@@ -67,7 +67,7 @@ export default function PendingOrders(props, { navigation }) {
         setVisible(values);
     };
 
-    const StatusChange = (s, id, index, items, custom_orderId) => {
+    const StatusChange = (s, id, index, items, custom_orderId, customerPoolId, vendorPoolId) => {
 
         if(s=="approved"){
             items.forEach(myFunction);
@@ -84,6 +84,8 @@ export default function PendingOrders(props, { navigation }) {
                         custom_orderId: custom_orderId,
                         item: item,
                         vendor_rejected: vendorsid,
+                        customerPoolId: customerPoolId,
+                        vendorPoolId: vendorPoolId,
                     })
                 })
                 .then(res => res.json())
@@ -154,8 +156,8 @@ export default function PendingOrders(props, { navigation }) {
                                                 visible={visible[index]}
                                                 onDismiss={()=>closeMenu(index)}
                                                 anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
-                                                    <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId)}/>
-                                                    <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId)}/>
+                                                    <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
+                                                    <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
                                             </Menu>
                                             :
                                             <Text>{item.status}</Text>

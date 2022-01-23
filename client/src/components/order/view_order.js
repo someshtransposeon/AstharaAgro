@@ -82,7 +82,7 @@ export default function ViewOrder(props,{route}) {
                                                 <DataTable.Cell>{it.itemName}</DataTable.Cell>
                                                 <DataTable.Cell>{it.itemUnit}</DataTable.Cell>
                                                 <DataTable.Cell>{it.quantity}</DataTable.Cell>
-                                                <DataTable.Cell>{it.finalPrice}</DataTable.Cell>
+                                                <DataTable.Cell>{it.targetPrice}</DataTable.Cell>
                                                 <DataTable.Cell>{it.itemNegotiatePrice}</DataTable.Cell>
                                             </DataTable.Row>
                                         </>

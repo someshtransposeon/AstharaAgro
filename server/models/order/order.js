@@ -58,6 +58,12 @@ const orderSchema = new mongoose.Schema({
         type:String,
         default:"new",
     },
+    customerPoolId: {
+        type: String,
+    },
+    vendorPoolId: {
+        type: String,
+    },
     order_date:{
         type:Date,
         default: Date.now,
