@@ -54,3 +54,10 @@ export const purchase_order_conformed_by_id = (id) => {
         return res.data;
     }).catch(err => console.log(err))
 }
+
+export const all_pickup_orders_conformed = () => {
+    return axios.get(url + '/retrive_all_pickup_assignment_confirm')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}

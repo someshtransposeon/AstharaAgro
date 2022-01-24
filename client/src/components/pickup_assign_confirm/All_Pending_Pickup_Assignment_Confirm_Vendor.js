@@ -23,6 +23,7 @@ export default function All_Pending_Pickup_Assignment_Confirm_Vendor(props,{ nav
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
     const [roleas, setRoleas] = useState("");
+    
     useEffect(() => {
 
         setRoleas(props.roleas);
@@ -59,7 +60,6 @@ export default function All_Pending_Pickup_Assignment_Confirm_Vendor(props,{ nav
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         });
         closeMenu(index);
     };    

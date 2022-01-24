@@ -41,6 +41,8 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [custom_orderId, setCustomId] = useState("");
     const [custom_vendorId, setCustomVendorId] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
+    const [vendorPoolId, setVendorPoolId] = useState("");
+    const [customerPoolId, setCustomerPoolId] = useState("");
     
     useEffect(() => {
 
@@ -68,10 +70,12 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 setOrderId(result[0].orderId);
                 setCustomId(result[0].custom_orderId);
                 setCustomVendorId(result[0].custom_vendorId);
+                setVendorPoolId(result[0].vendorPoolId);
+                setCustomerPoolId(result[0].customerPoolId);
             })
         }
 
-    }, [host, purchaseconfirmid]);
+    }, [host, purchaseconfirmid, vendorPoolId]);
   
     //chooseBuyer() function for select the Buyer   
     function chooseBuyer(id, email){
@@ -97,6 +101,8 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 vendor_id:vendor_id,
                 buyer_id:buyer_id, 
                 status:status,
+                vendorPoolId: vendorPoolId,
+                customerPoolId: customerPoolId,
             })
         })
         .then(res => res.json())
@@ -154,6 +160,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                             />
                             {buyer ?
                                 buyer.map((item)=>{
+                                    if(item.pool_id==vendorPoolId)
                                     if(item.nick_name.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                         return (
                                             <Menu.Item title={item.nick_name} onPress={()=>chooseBuyer(item._id, item.email)} />

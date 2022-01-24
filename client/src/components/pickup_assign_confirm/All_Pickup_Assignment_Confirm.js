@@ -4,6 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 're
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
+import { all_pickup_orders_conformed } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -31,14 +32,12 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
             setHost("localhost");
         }
 
-        fetch(`http://${host}:5000/retrive_all_pickup_assignment_confirm`, {
-            method: 'GET'
+        all_pickup_orders_conformed()
+        .then(result=>{
+            setAllPickupAssignment(result);
         })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(allPickupAssignmentConfirm => setAllPickupAssignment(allPickupAssignmentConfirm));
 
-    }, [allPickupAssignmentConfirm, host]);
+    }, [host]);
 
     const onChangeSearch = query => setSearchQuery(query);
 

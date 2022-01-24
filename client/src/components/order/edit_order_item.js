@@ -42,6 +42,8 @@ export default function EditOrderItem(props,{route}) {
     const [orderId, setOrderId] = useState("");
     const [custom_vendorId, setCustomVendorId] = useState('Choose Vendor');
     const [searchQuery, setSearchQuery] = useState('');
+    const [vendorPoolId, setVendorPoolId] = useState("");
+    const [customerPoolId, setCustomerPoolId] = useState("");
 
     useEffect(() => {
 
@@ -76,19 +78,21 @@ export default function EditOrderItem(props,{route}) {
                 setQuantity(result[0].item.quantity);
                 setCustomId(result[0].custom_orderId);
                 setOrderId(result[0].orderId);
+                setVendorPoolId(result[0].vendorPoolId);
+                setCustomerPoolId(result[0].customerPoolId);
                 setFlag(false);
             });
         }
 
         if(items){
             // fetch all vendors
-            vendor_by_low_price(items.itemName,items.Grade)
+            vendor_by_low_price(items.itemName,items.Grade,vendorPoolId)
             .then(result =>{
                 setVendors(result);
             })
         }
 
-    }, [vendors, host, order_id, items, orderid, flag, custom_orderId, vendorsid]);
+    }, [vendors, host, order_id, items, orderid, flag, custom_orderId, vendorsid, vendorPoolId]);
 
     //submitForm() for sending the data in corresponding database
     function submitForm(){
@@ -130,6 +134,8 @@ export default function EditOrderItem(props,{route}) {
                 user_id:user_id,
                 vendor_id:vendor_id,
                 custom_vendorId: custom_vendorId,
+                vendorPoolId: vendorPoolId,
+                customerPoolId: customerPoolId,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

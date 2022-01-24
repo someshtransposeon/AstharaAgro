@@ -12,7 +12,8 @@ router.post('/pickup_assignment', (req, res)=>{
         address_id: req.body.address_id,
         address_location:req.body.address_location,
         status: req.body.status,
-
+        customerPoolId: req.body.customerPoolId,
+        vendorPoolId: req.body.vendorPoolId,
     })
     newPickup.save()
     .then(pickup_assignment => {

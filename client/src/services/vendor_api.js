@@ -47,8 +47,8 @@ export const all_vendor_items = () => {
     }).catch(err => console.log(err))
 }
 
-export const vendor_by_low_price = (itemname,grade) => {
-    return axios.get(url + '/retrive_vendor_item_by_name_grade_lower_price/'+itemname + "/" + grade)
+export const vendor_by_low_price = (itemname,grade,vendorPoolId) => {
+    return axios.get(url + '/retrive_vendor_item_by_name_grade_lower_price/'+itemname + "/" + grade + "/" + vendorPoolId)
     .then(res => {
         return res.data;
     }).catch(err => console.log(err))

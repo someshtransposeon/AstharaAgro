@@ -41,6 +41,12 @@ const purchaseorderConfirmSchema = new mongoose.Schema({
         type: String,
         default:"pending for manager acceptance",
     },
+    customerPoolId: {
+        type: String,
+    },
+    vendorPoolId: {
+        type: String,
+    },
     }, {
     timestamps: true
 });

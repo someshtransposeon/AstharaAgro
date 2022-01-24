@@ -280,7 +280,7 @@ export default function Register(props,{ navigation }) {
                         }
                     </Menu>
                     }
-                    {category=="vendor" &&
+                    {category=="buyer" &&
                     <Menu
                     visible={visible4}
                     onDismiss={closeMenu4}

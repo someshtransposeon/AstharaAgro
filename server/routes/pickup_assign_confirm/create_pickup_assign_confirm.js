@@ -15,6 +15,8 @@ router.post('/create_pickup_assign_confirm', (req, res)=>{
         pickupAssignId:req.body.pickupAssignId,
         pickup_assign_confirm_date:req.body.pickup_assign_confirm_date,
         pickup_assign_confirm_time:req.body.pickup_assign_confirm_time,
+        customerPoolId: req.body.customerPoolId,
+        vendorPoolId: req.body.vendorPoolId,
     })
     newPickupAssignConfirm.save()
     .then(post => {

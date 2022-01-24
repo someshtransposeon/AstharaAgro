@@ -14,6 +14,8 @@ router.post('/create_pickup_assign', (req, res)=>{
         buyer_id:req.body.buyer_id,
         pickup_assign_date:req.body.pickup_assign_date,
         pickup_assign_time:req.body.pickup_assign_time,
+        customerPoolId: req.body.customerPoolId,
+        vendorPoolId: req.body.vendorPoolId,
     })
     newPickupAssign.save()
     .then(post => {

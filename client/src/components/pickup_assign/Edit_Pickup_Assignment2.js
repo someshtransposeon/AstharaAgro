@@ -43,6 +43,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [orderId, setOrderId] = useState("");
     const [custom_orderId, setCustomId] = useState("");
     const [custom_vendorId, setCustomVendorId] = useState();
+    const [vendorPoolId, setVendorPoolId] = useState("");
+    const [customerPoolId, setCustomerPoolId] = useState("");
 
     useEffect(() => {
 
@@ -68,6 +70,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setOrderId(result[0].orderId);
                 setCustomId(result[0].custom_orderId);
                 setCustomVendorId(result[0].custom_vendorId);
+                setVendorPoolId(result[0].vendorPoolId);
+                setCustomerPoolId(result[0].customerPoolId);
             })
         }
 
@@ -134,6 +138,8 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 buyer_id:buyer_id,
                 pickupAssignId:pickupAssignId, 
                 status:status,   
+                vendorPoolId: vendorPoolId,
+                customerPoolId: customerPoolId,
             })
         })
         .then(res => res.json())

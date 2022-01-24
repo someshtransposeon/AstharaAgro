@@ -36,7 +36,13 @@ const purchaseorderSchema = new mongoose.Schema({
     status: {
         type: String,
         default:"pending for vendor acceptance",
-    }
+    },
+    customerPoolId: {
+        type: String,
+    },
+    vendorPoolId: {
+        type: String,
+    },
     }, {
         timestamps: true
     });

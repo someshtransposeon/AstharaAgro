@@ -4,7 +4,7 @@ import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu  } fr
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
-import { all_accepted_pickup_assignment } from '../../services/pickup_api';
+import { all_accepted_pickup_assignment_confirmed } from '../../services/pickup_api';
 
 const theme = {
     ...DefaultTheme,
@@ -24,7 +24,7 @@ export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ na
     useEffect(() => {
 
         setRoleas(props.roleas);
-        all_accepted_pickup_assignment()
+        all_accepted_pickup_assignment_confirmed()
         .then(result=>{
             setAllPickupAssignment(result);
         })

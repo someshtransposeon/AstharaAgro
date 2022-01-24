@@ -45,6 +45,12 @@ const pickup_assignmentSchema = new mongoose.Schema({
         type: String,
         default:"pending",
     },
+    customerPoolId: {
+        type: String,
+    },
+    vendorPoolId: {
+        type: String,
+    },
 },
 {
     timestamps: true

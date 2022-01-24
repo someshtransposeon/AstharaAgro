@@ -27,6 +27,7 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
         all_accepted_pickup_assignment_confirmed()  
         .then(result => {
             setAllPickupAssignment(result);
+            console.log(result);
         })
 
     }, [allPickupAssignmentConfirm,roleas,props.roleas]);

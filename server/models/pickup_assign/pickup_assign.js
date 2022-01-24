@@ -45,6 +45,12 @@ const pickupAssignSchema = new mongoose.Schema({
         type: String,
         default:"pending for buyer acceptance",
     },
+    customerPoolId: {
+        type: String,
+    },
+    vendorPoolId: {
+        type: String,
+    },
     }, {
     timestamps: true
 });

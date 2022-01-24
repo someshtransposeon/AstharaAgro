@@ -11,6 +11,8 @@ router.post('/create_purchase_order', (req, res)=>{
         user_id:req.body.user_id,
         vendor_id:req.body.vendor_id,
         order_id:req.body.order_id,
+        customerPoolId: req.body.customerPoolId,
+        vendorPoolId: req.body.vendorPoolId,
     })
     newPurchaseOrder.save()
     .then(post => {
