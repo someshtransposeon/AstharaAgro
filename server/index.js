@@ -206,6 +206,13 @@ const delete_vendor_customer_cross= require('./routes/cross_pool/delete_vendor_c
 const retrieve_vendor_customer_cross= require('./routes/cross_pool/retrieve_vendor_customer_cross');
 const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
 
+const create_manager_pool= require('./routes/manager_pool/create_manager_pool');
+const retrieve_manager_pool= require('./routes/manager_pool/retrieve_manager_pool');
+const update_manager_pool= require('./routes/manager_pool/update_manager_pool');
+// const delete_vendor_customer_cross= require('./routes/cross_pool/delete_vendor_customer_cross');
+// const retrieve_vendor_customer_cross= require('./routes/cross_pool/retrieve_vendor_customer_cross');
+// const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
+
 
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
@@ -362,6 +369,11 @@ app.use('/',create_customer_pool);
 app.use('/', retrieve_customer_pool);
 app.use('/', update_customer_pool);
 app.use('/',delete_customer_pool);
+
+app.use('/',create_manager_pool);
+app.use('/', retrieve_manager_pool);
+app.use('/', update_manager_pool);
+// app.use('/',delete_manager_pool);
 
 app.use('/',create_vendor_customer_cross);
 app.use('/', retrieve_vendor_customer_cross);
