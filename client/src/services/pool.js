@@ -47,3 +47,19 @@ export const customer_vendor_pool_by_id = (id) => {
         return res.data;
     }).catch(err => console.log(err))
 }
+
+//retrive all manager pools
+export const all_manager_pools = () => {
+    return axios.get(url + '/retrieve_manager_pools')
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}
+
+//retrive all manager pool by id
+export const manager_pool_by_id = (id) => {
+    return axios.get(url + '/retrieve_manager_pool/' + id)
+    .then(res => {
+        return res.data;
+    }).catch(err => console.log(err))
+}

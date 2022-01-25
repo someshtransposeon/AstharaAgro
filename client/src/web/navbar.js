@@ -152,6 +152,10 @@ import AddCustomerVendorPool from '../components/pool/vendor_customer_cross';
 import AllCustomerVendorPools from '../components/pool/all_cross_pool';
 import EditCustomerVendorPool from '../components/pool/edit_cross_pool';
 
+import AddManagerPool from '../components/pool/add_manager_pool';
+import AllManagerPools from '../components/pool/all_manager_pools';
+import EditManagerPool from '../components/pool/edit_manager_pool';
+
 import PageNotFound from '../components/pagenotfound/notfound';
 import {authHeader} from '../services/auth_header';
 
@@ -297,6 +301,11 @@ const NavBar =()  => {
                                             <NavDropdown.Item to="/addvendorpool" as={Link}>Add Pool</NavDropdown.Item>
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item to="/allvendorpools" as={Link}>View Pools</NavDropdown.Item>
+                                        </NavDropdown>
+                                        <NavDropdown title="Manager Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addmanagerpool" as={Link}>Add Pool</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allmanagerpools" as={Link}>View Pools</NavDropdown.Item>
                                         </NavDropdown>
                                         <NavDropdown.Divider />
                                         <NavDropdown title="Customer Vendor Cross Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
@@ -658,6 +667,12 @@ const NavBar =()  => {
                 <Route path="/allcustomervendorpools">
                     <AllCustomerVendorPools/>
                 </Route>
+                <Route path="/addmanagerpool">
+                    <AddManagerPool/>
+                </Route>
+                <Route path="/allmanagerpools">
+                    <AllManagerPools/>
+                </Route>
                 <Route path="/allusers">
                     <AllUsers roleas={roleas}/>
                 </Route>
@@ -677,6 +692,7 @@ const NavBar =()  => {
                 <Route path="/edit_vendor_address/:addressid" render={(props) => <VendorEditAddress  {...props} />} exact />
                 <Route path="/edit_customer_pool/:id" render={(props) => <EditCustomerPool {...props} />} exact />
                 <Route path="/edit_vendor_pool/:id" render={(props) => <EditVendorPool {...props} />} exact />
+                <Route path="/edit_manager_pool/:id" render={(props) => <EditManagerPool {...props} />} exact />
                 <Route path="/edit_customer_vendor_pool/:id" render={(props) => <EditCustomerVendorPool {...props} />} exact />
                 <Route path="/createorder">
                     <CreateOrder/>

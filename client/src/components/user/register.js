@@ -7,7 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { user_category } from '../../services/user_api';
 import { uploadImage } from '../../services/image';
 import emailjs from 'emailjs-com';
-import { all_customer_pools, all_vendor_pools } from '../../services/pool';
+import { all_customer_pools, all_manager_pools, all_vendor_pools } from '../../services/pool';
 
 const theme = {
     ...DefaultTheme,
@@ -25,8 +25,10 @@ export default function Register(props,{ navigation }) {
 
     const [visible3, setVisible3] = useState(false);
     const [visible4, setVisible4] = useState(false);
+    const [visible5, setVisible5] = useState(false);
     const [searchQuery3, setSearchQuery3] = useState('');
     const [searchQuery4, setSearchQuery4] = useState('');
+    const [searchQuery5, setSearchQuery5] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
@@ -40,6 +42,7 @@ export default function Register(props,{ navigation }) {
     const [idType, setIdType] = useState("Choose ID Type");
     const [customers, setCustomers] = useState();
     const [vendors, setVendors] = useState();
+    const [managers, setManagers] = useState();
     const [pool_name, setPoolName] = useState("Choose Pool");
     const [pool_id, setPoolId] = useState("");
 
@@ -75,6 +78,12 @@ export default function Register(props,{ navigation }) {
             setVendors(result);
         })
 
+        //Retrieve all manager list
+        all_manager_pools()
+        .then(result => {
+            setManagers(result);
+        })
+
     }, [userCategory, host, props.host, props.roleas]);
 
     const openMenu1 = () => setVisible1(true);
@@ -88,6 +97,9 @@ export default function Register(props,{ navigation }) {
 
     const openMenu4 = () => setVisible4(true);
     const closeMenu4 = () => setVisible4(false);
+
+    const openMenu5 = () => setVisible5(true);
+    const closeMenu5 = () => setVisible5(false);
 
     function chooseCategory(id, name) {
         setCategoryId(id);
@@ -175,9 +187,16 @@ export default function Register(props,{ navigation }) {
         closeMenu4();
     }
 
+    function ChooseManager(id, poolName){
+        setPoolId(id);
+        setPoolName(poolName);
+        closeMenu5();
+    }
+
     const onChangeSearch = query => setSearchQuery(query);
     const onChangeSearch3 = query => setSearchQuery3(query);
     const onChangeSearch4 = query => setSearchQuery4(query);
+    const onChangeSearch5 = query => setSearchQuery5(query);
 
     return (
         <Provider theme={theme}>
@@ -305,6 +324,34 @@ export default function Register(props,{ navigation }) {
                             })
                             :
                             <Menu.Item title="No Vendor Pool Available" />
+                        }
+                    </Menu>
+                    }
+                    {category=="manager" &&
+                    <Menu
+                    visible={visible5}
+                    onDismiss={closeMenu5}
+                    anchor={<Button style={styles.input} mode="outlined" onPress={openMenu5}>{pool_name}</Button>}>
+                        <Searchbar
+                            icon={() => <FontAwesomeIcon icon={ faSearch } />}
+                            clearIcon={() => <FontAwesomeIcon icon={ faTimes } />}
+                            placeholder="Search"
+                            onChangeText={onChangeSearch5}
+                            value={searchQuery5}
+                        />
+                        {Platform.OS=='android' ?
+                            <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddItemGrade')}}>Add Grade</Button>
+                            :
+                            <Link to="/addmanagerpool"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Manager Pool</Button></Link>
+                        }
+                        {managers ?
+                            managers.map((item)=>{
+                                return (
+                                    <Menu.Item title={item.pool_name} onPress={()=>ChooseManager(item._id, item.pool_name)} />
+                                )
+                            })
+                            :
+                            <Menu.Item title="No Manager Pool Available" />
                         }
                     </Menu>
                     }
