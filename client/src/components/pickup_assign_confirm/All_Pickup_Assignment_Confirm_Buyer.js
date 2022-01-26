@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_accepted_pickup_assignment_confirmed } from '../../services/pickup_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,17 +22,23 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
 
     const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
     const [searchQuery, setSearchQuery] = useState('');
-    const [roleas, setRoleas] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState('');
+
     useEffect(() => {
 
-        setRoleas(props.roleas);  
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
+
         all_accepted_pickup_assignment_confirmed()  
         .then(result => {
             setAllPickupAssignment(result);
-            console.log(result);
         })
 
-    }, [allPickupAssignmentConfirm,roleas,props.roleas]);
+    }, [allPickupAssignmentConfirm]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -57,37 +65,47 @@ export default function All_Pickup_Assignment_Confirm_Buyer(props,{ navigation }
                             <DataTable.Title>Action</DataTable.Title>
                         </DataTable.Header>
                                                                               
-                        {allPickupAssignmentConfirm ?
+                        {(role=="manager" && allPickupAssignmentConfirm) &&
                             allPickupAssignmentConfirm.map((pickupAssignmentConfirm)=>{
+                                if(pickupAssignmentConfirm.managerPoolId==managerPoolId)
                                 if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell >{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
                                         <DataTable.Cell >{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
                                         <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
-                                        {roleas=="buyer" ?
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/Edit_Pickup_Assignment_Confirm_Buyer/"+pickupAssignmentConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                            :
-                                            <DataTable.Cell>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/View_Pickup_Assignment_Confirm_Buyer/"+pickupAssignmentConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                        }
+                                        <DataTable.Cell>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/View_Pickup_Assignment_Confirm_Buyer/"+pickupAssignmentConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
                                     </DataTable.Row>
                                 )
                                 }
                             })
-                            :
-                            <ActivityIndicator color="#794BC4" size={60}/>
+                        }
+                        {(role=="buyer" && allPickupAssignmentConfirm) &&
+                            allPickupAssignmentConfirm.map((pickupAssignmentConfirm)=>{
+                                if(pickupAssignmentConfirm.buyer_id==userId)
+                                if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell >{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell >{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
+                                        <DataTable.Cell>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/Edit_Pickup_Assignment_Confirm_Buyer/"+pickupAssignmentConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                                }
+                            })
                         }
                 </DataTable>
             </View>

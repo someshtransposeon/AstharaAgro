@@ -47,6 +47,9 @@ const purchaseorderConfirmSchema = new mongoose.Schema({
     vendorPoolId: {
         type: String,
     },
+    managerPoolId: {
+        type: String,
+    },
     }, {
     timestamps: true
 });

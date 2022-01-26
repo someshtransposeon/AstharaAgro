@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { OrderSummary } from '../../services/order_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,9 +22,17 @@ export default function OrderItemsSummary(props, { navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     useEffect(() => {
 
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
+        
         OrderSummary()
         .then(result=> {
             setAllOrders(result);
@@ -55,7 +65,8 @@ export default function OrderItemsSummary(props, { navigation }) {
                     </DataTable.Header>
                     {allOrders ?
                         allOrders.map((order) => { 
-                            if(order.item.quantity>0){
+                            if(order.item.quantity>0){ 
+                                if(order.managerPoolId==managerPoolId)
                                 if(order.item.itemName.toUpperCase().search(searchQuery.toUpperCase())!=-1 || order.item._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                     return(
                                         <DataTable.Row>

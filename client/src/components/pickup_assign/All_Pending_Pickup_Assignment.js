@@ -6,6 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_pending_pickup_assignment } from '../../services/pickup_api';
 import {host} from '../../utils/host';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -21,16 +24,23 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
     const [allPickupAssignment, setAllPickupAssignment] = useState();
     const [searchQuery, setSearchQuery] = useState('');
     const [visible, setVisible] = useState([]);
-    const [roleas, setRoleas] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState('');
+
     useEffect(() => {
 
-        setRoleas(props.roleas);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
+        
         all_pending_pickup_assignment()
         .then(result => {
             setAllPickupAssignment(result);
         })
 
-    }, [allPickupAssignment,roleas,props.roleas]);
+    }, [allPickupAssignment]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -89,8 +99,9 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
                                                                     
-                {allPickupAssignment ?
+                {(role=="manager" && allPickupAssignment) &&
                     allPickupAssignment.map((pickupAssignment,index)=>{
+                        if(pickupAssignment.managerPoolId==managerPoolId)
                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                             return (
                                 <DataTable.Row>
@@ -98,14 +109,7 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                                     <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
                                     <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
                                     <DataTable.Cell  numeric>
-                                    {roleas=="buyer" ?
-                                        <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
-                                            <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
-                                            <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
-                                        </Menu>
-                                        :
-                                        <Text>{pickupAssignment.status}</Text>
-                                    }
+                                    <Text>{pickupAssignment.status}</Text>
                                     </DataTable.Cell>   
                                     <DataTable.Cell numeric>
                                         {Platform.OS=='android' ?
@@ -118,8 +122,33 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
                             )
                         }
                     })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
+                }
+                {(role=="buyer" && allPickupAssignment) &&
+                    allPickupAssignment.map((pickupAssignment,index)=>{
+                        if(pickupAssignment.buyer_id==userId)
+                        if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
+                                    <DataTable.Cell  numeric>
+                                    <Menu  visible={visible[index]} onDismiss={()=>closeMenu(index)} anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{pickupAssignment.status}</Button>}>
+                                        <Menu.Item title="Accept" onPress={()=>StatusChange("accepted",  pickupAssignment._id, index)}/>
+                                        <Menu.Item title="Decline" onPress={()=>StatusChange("decline",  pickupAssignment._id, index)}/>
+                                    </Menu>
+                                    </DataTable.Cell>   
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                            :
+                                            <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                        }
+                    })
                 }
             </DataTable>
             </View>

@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_pickup_assignment } from '../../services/pickup_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,8 +22,16 @@ export default function All_Pickup_Assignment({ navigation }) {
 
     const [allPickupAssignment, setAllPickupAssignment] = useState();
     const [searchQuery, setSearchQuery] = useState('');
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     useEffect(() => {
+
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
 
         all_pickup_assignment()
         .then(result => {
@@ -56,8 +66,9 @@ export default function All_Pickup_Assignment({ navigation }) {
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
 
-                {allPickupAssignment ?
+                {(role=="manager" && allPickupAssignment) &&
                     allPickupAssignment.map((pickupAssignment,index)=>{
+                        if(pickupAssignment.managerPoolId==managerPoolId)
                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                             return (
                                 <DataTable.Row>
@@ -76,8 +87,28 @@ export default function All_Pickup_Assignment({ navigation }) {
                             )
                         }
                     })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
+                }
+                {(role=="buyer" && allPickupAssignment) &&
+                    allPickupAssignment.map((pickupAssignment,index)=>{
+                        if(pickupAssignment.buyer_id==userId)
+                        if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignment.status}</DataTable.Cell>
+                                    <DataTable.Cell numeric> 
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {pickupId: pickupAssignment._id})}}>Details</Button>
+                                            :
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}>Details</Link></Button>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                        }
+                    })
                 }
             </DataTable>
             </View>

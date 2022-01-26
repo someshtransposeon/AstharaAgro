@@ -7,6 +7,7 @@ import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_pending_confirm_purchase_order } from '../../services/order_api';
 import { all_vendor_items_by_id_pincode } from '../../services/vendor_api';
 import { users_by_id } from '../../services/user_api';
+import { role, userId } from '../../utils/user';
 
 const theme = {
     ...DefaultTheme,
@@ -22,24 +23,29 @@ export default function All_Purchase_Order_Confirm(props,{ navigation }) {
 
     const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
     const [searchQuery, setSearchQuery] = useState('');
-    const [roleas, setRoleas] = useState("");
     const [visible, setVisible] = useState(false);
     const [vendor, setVendor] = useState();
     const [address, setAddress] = useState();
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
     useEffect(() => {
         
-        setRoleas(props.roleas);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
 
         all_pending_confirm_purchase_order()
         .then(result=>{
             setAllPurchaseOrderConfirm(result);
         })
         
-    }, [allPurchaseOrderConfirm,roleas,props.roleas]);
+    }, [allPurchaseOrderConfirm]);
 
     function VendorDetails(id, customid) {
         users_by_id(id)
@@ -111,37 +117,26 @@ export default function All_Purchase_Order_Confirm(props,{ navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
-                    {allPurchaseOrderConfirm ?
+                    {(role=="manager" && allPurchaseOrderConfirm) &&
                         allPurchaseOrderConfirm.map((purchaseOrderConfirm,index)=>{
+                            if(purchaseOrderConfirm.managerPoolId==managerPoolId)
                             if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell>{purchaseOrderConfirm.custom_orderId}</DataTable.Cell>
                                         <DataTable.Cell onPress={() => VendorDetails(purchaseOrderConfirm.vendor_id, purchaseOrderConfirm.custom_vendorId)}>{purchaseOrderConfirm.custom_vendorId}</DataTable.Cell>
                                         <DataTable.Cell>{purchaseOrderConfirm.items.itemName+" ("+purchaseOrderConfirm.items.Grade+")"}</DataTable.Cell>
-                                        {roleas=="manager" ?
-                                            <DataTable.Cell numeric>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                            :
-                                            <DataTable.Cell numeric>
-                                                {Platform.OS=='android' ?
-                                                    <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
-                                                    :
-                                                    <Link to={"/View_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                                }
-                                            </DataTable.Cell>
-                                        }
+                                        <DataTable.Cell numeric>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order_Confirm3', {purchaseId: purchaseOrderConfirm._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/Edit_Purchase_Order_Confirm3/"+purchaseOrderConfirm._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
                                     </DataTable.Row>
                                 )
                             }
                         })
-                        :
-                        <ActivityIndicator color="#794BC4" size={60}/>
                     }
                 </DataTable>
             </View>

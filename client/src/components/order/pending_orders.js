@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Order_by_status } from '../../services/order_api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {host} from '../../utils/host';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
+import { manager_pool_by_id } from '../../services/pool';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -23,21 +26,25 @@ export default function PendingOrders(props, { navigation }) {
     const [allOrders, setAllOrders] = useState();
     const [visible, setVisible] = useState([]);
     const [flag, setFlag] = useState(false);
-    const [roleas, setRoleas] = useState("");
-    const [userId, setUserId] = useState("");
     const [vendorsid, setVendorsid] = useState([]);
+    const [managerPoolId, setManagerPoolId] = useState('');
+    const [managerPinCodes, setManagerPinCodes] = useState('');
 
     useEffect(() => {
 
-        async function fetchData() {
-            await AsyncStorage.getItem('loginuserid')
-            .then((userid) => {
-                setUserId(userid);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
             })
         }
-        fetchData();
 
-        setRoleas(props.roleas);
+        if(managerPoolId){
+            manager_pool_by_id(managerPoolId)
+            .then(result=>{
+                setManagerPinCodes(result[0].postal_code);
+            })
+        }
 
         Order_by_status("pending")
         .then(result=> {
@@ -53,7 +60,7 @@ export default function PendingOrders(props, { navigation }) {
             setFlag(true);
         }
 
-    }, [allOrders,  visible, flag, roleas, props.roleas]);
+    }, [allOrders,  visible, flag, managerPinCodes, managerPoolId]);
 
     const openMenu = (index) => {
         const values = [...visible];
@@ -86,6 +93,7 @@ export default function PendingOrders(props, { navigation }) {
                         vendor_rejected: vendorsid,
                         customerPoolId: customerPoolId,
                         vendorPoolId: vendorPoolId,
+                        managerPoolId: managerPoolId,
                     })
                 })
                 .then(res => res.json())
@@ -137,8 +145,9 @@ export default function PendingOrders(props, { navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
-                    {allOrders ?
+                    {(role=="manager" && allOrders) &&
                         allOrders.map((item, index)=>{
+                            if(managerPinCodes.includes(String(item.postal_code)))
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                 var date=item.order_date.substring(0,10);
                                 var d=new Date(item.order_date);
@@ -151,17 +160,13 @@ export default function PendingOrders(props, { navigation }) {
                                         <DataTable.Cell>{custom_orderId}</DataTable.Cell>
                                         <DataTable.Cell>{item.name}</DataTable.Cell>
                                         <DataTable.Cell>
-                                        {roleas=="manager" ?
-                                            <Menu
-                                                visible={visible[index]}
-                                                onDismiss={()=>closeMenu(index)}
-                                                anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
-                                                    <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
-                                                    <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
-                                            </Menu>
-                                            :
-                                            <Text>{item.status}</Text>
-                                        }
+                                        <Menu
+                                            visible={visible[index]}
+                                            onDismiss={()=>closeMenu(index)}
+                                            anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
+                                                <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
+                                                <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
+                                        </Menu>
                                         </DataTable.Cell>
                                         <DataTable.Cell numeric>
                                             {Platform.OS=='android' ?
@@ -174,8 +179,35 @@ export default function PendingOrders(props, { navigation }) {
                                 )
                             }
                         })
-                        :
-                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
+                    {(role=="sales" && allOrders) &&
+                        allOrders.map((item, index)=>{
+                            // if(item.userId==userId)
+                            if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                var date=item.order_date.substring(0,10);
+                                var d=new Date(item.order_date);
+                                d.toTimeString();
+                                d=String(d);
+                                var hour=d.substring(16,18);
+                                var custom_orderId=item.nick_name+"_"+item.postal_code+"_"+date+"_"+hour;
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{item.name}</DataTable.Cell>
+                                        <DataTable.Cell>
+                                        <Text>{item.status}</Text>
+                                        </DataTable.Cell>
+                                        <DataTable.Cell numeric>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/editorder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
                     }
                 </DataTable>
             </View>

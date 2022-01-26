@@ -3,6 +3,7 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -42,6 +43,9 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [custom_vendorId, setCustomVendorId] = useState();
     const [vendorPoolId, setVendorPoolId] = useState("");
     const [customerPoolId, setCustomerPoolId] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState("");
+
+    let history = useHistory();
 
     useEffect(() => {
 
@@ -72,6 +76,7 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setCustomVendorId(item[0].custom_vendorId);
                 setVendorPoolId(item[0].vendorPoolId);
                 setCustomerPoolId(item[0].customerPoolId);
+                setManagerPoolId(item[0].managerPoolId);
             });
         }
 
@@ -161,12 +166,14 @@ export default function Edit_Purchase_Order(props, {route}) {
                 status:status,
                 vendorPoolId: vendorPoolId,
                 customerPoolId: customerPoolId,
+                managerPoolId:managerPoolId,
             })
         }) 
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             // alert(data.message);
+            history.push('/All_Pending_Purchase_Order_Confirm');
         });   
 
         //for change the status

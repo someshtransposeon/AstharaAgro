@@ -14,6 +14,7 @@ router.post('/create_purchase_confirm', (req, res)=>{
         purchaseId:req.body.purchaseId,
         customerPoolId: req.body.customerPoolId,
         vendorPoolId: req.body.vendorPoolId,
+        managerPoolId: req.body.managerPoolId,
         purchase_order_date:req.body.purchase_order_date,
         purchase_order_time:req.body.purchase_order_tiem,
     })

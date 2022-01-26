@@ -7,6 +7,7 @@ import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { users_by_id } from '../../services/user_api';
 import { all_confirm_purchase_order, purchase_order } from '../../services/order_api';
 import { all_vendor_items_by_id_pincode } from '../../services/vendor_api';
+import { role, userId } from '../../utils/user';
 
 const theme = {
     ...DefaultTheme,
@@ -25,11 +26,19 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
     const [visible, setVisible] = useState(false);
     const [vendor, setVendor] = useState();
     const [address, setAddress] = useState();
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
     useEffect(() => {
+
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
 
         all_confirm_purchase_order()
         .then(result=>{
@@ -109,8 +118,9 @@ export default function All_Purchase_Order_Confirm({ navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
-                    {allPurchaseOrderConfirm ?
+                    {role=="manager" && allPurchaseOrderConfirm ?
                         allPurchaseOrderConfirm.map((purchaseOrderConfirm)=>{
+                            if(purchaseOrderConfirm.managerPoolId==managerPoolId)
                             if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>

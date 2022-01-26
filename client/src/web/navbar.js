@@ -302,6 +302,7 @@ const NavBar =()  => {
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item to="/allvendorpools" as={Link}>View Pools</NavDropdown.Item>
                                         </NavDropdown>
+                                        <NavDropdown.Divider />
                                         <NavDropdown title="Manager Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                             <NavDropdown.Item to="/addmanagerpool" as={Link}>Add Pool</NavDropdown.Item>
                                             <NavDropdown.Divider />
@@ -372,6 +373,10 @@ const NavBar =()  => {
                                                 <NavDropdown.Item to="/createorder" as={Link}>Create Order</NavDropdown.Item>
                                                 <NavDropdown.Divider />
                                                 <NavDropdown.Item to="/allorders" as={Link}>View Orders</NavDropdown.Item>
+                                                <NavDropdown.Divider />
+                                                <NavDropdown.Item to="/approvedorders" as={Link}>View Approved Orders</NavDropdown.Item>
+                                                <NavDropdown.Divider />
+                                                <NavDropdown.Item to="/pendingorders" as={Link}>View Pending Orders</NavDropdown.Item>
                                             </NavDropdown>
                                             </>
                                         }
@@ -412,6 +417,10 @@ const NavBar =()  => {
                                             <>
                                                 <NavDropdown title="Purchase Order" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                                     <NavDropdown.Item to="/All_Purchase_Orders" as={Link}>View Purchase Orders</NavDropdown.Item>
+                                                    <NavDropdown.Divider />
+                                                    <NavDropdown.Item to="/All_Pending_Purchase_Orders" as={Link}>View Pending Purchase orders</NavDropdown.Item>
+                                                    <NavDropdown.Divider />
+                                                    <NavDropdown.Item to="/All_Accepted_Purchase_Orders" as={Link}>View Accepted Purchase orders </NavDropdown.Item>
                                                     <NavDropdown.Divider />
                                                     <NavDropdown.Item to="/All_Purchase_Order_Confirm" as={Link}>View Purchase Order Confirm</NavDropdown.Item>
                                                     <NavDropdown.Divider />
@@ -528,32 +537,26 @@ const NavBar =()  => {
                                 {(roleas=="buyer" || roleas=="manager" || roleas=="vendor") &&
                                     <> 
                                     <NavDropdown drop="right" title="Pickup Assignment" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%'}}>
-                                    {(roleas=="buyer") &&
+                                    {(roleas=="buyer" || roleas=="manager") &&
                                         <> 
-                                            <NavDropdown title="Pickup" drop="right" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
-                                                <NavDropdown.Item to="/all_pickup_assignment" as={Link}>View Pickup Assignment</NavDropdown.Item>        
-                                                <NavDropdown.Divider />
-                                                <NavDropdown.Item to="/all_pending_pickup_assignment" as={Link}>View Pending Pickup Assignment</NavDropdown.Item>        
-                                                <NavDropdown.Divider />
-                                                <NavDropdown.Item to="/all_accepted_pickup_assignment" as={Link}>View Accepted Pickup Assignment</NavDropdown.Item>        
-                                                <NavDropdown.Divider />
-                                                <NavDropdown.Item to="/all_pickup_assignment_confirm_buyer" as={Link}>View Pickup Confirmed by Buyer</NavDropdown.Item> 
-                                            </NavDropdown>
+                                            <NavDropdown.Item to="/all_pickup_assignment" as={Link}>View Pickup Assignment</NavDropdown.Item>        
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/all_pending_pickup_assignment" as={Link}>View Pending Pickup Assignment</NavDropdown.Item>        
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/all_accepted_pickup_assignment" as={Link}>View Accepted Pickup Assignment</NavDropdown.Item>        
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/all_pickup_assignment_confirm_buyer" as={Link}>View Pickup Confirmed by Buyer</NavDropdown.Item>
+                                            <NavDropdown.Divider /> 
                                         </>
                                         }
                                         {(roleas=="vendor" || roleas=="manager" ) &&
                                             <> 
+                                                <NavDropdown.Item to="/all_pickup_assignment_confirm" as={Link}>All Pickup Assignment Confirm</NavDropdown.Item> 
+                                                <NavDropdown.Divider /> 
                                                 <NavDropdown.Item to="/all_pending_pickup_assignment_confirm_vendor" as={Link}>All Pending Pickup Assignment Confirm Vendor</NavDropdown.Item> 
                                                 <NavDropdown.Divider />
                                                 <NavDropdown.Item to="/all_accepted_pickup_assignment_confirm_vendor" as={Link}>All Accepted Pickup Assignment Confirm Vendor</NavDropdown.Item>        
-                                                <NavDropdown.Divider />
-                                                <NavDropdown.Item to="/all_pickup_assignment_confirm" as={Link}>View Pickup Assignment Confirm</NavDropdown.Item> 
-                                                <NavDropdown.Divider />       
-                                            </>
-                                        }
-                                        {(roleas=="manager") &&
-                                            <> 
-                                                <NavDropdown.Item to="/all_pickup_assignment_confirm_buyer" as={Link}>All Pickup Assignment Confirm Buyer</NavDropdown.Item>        
+                                                <NavDropdown.Divider />      
                                             </>
                                         }
                                         </NavDropdown>

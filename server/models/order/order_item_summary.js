@@ -26,6 +26,9 @@ const orderSummarySchema = new mongoose.Schema({
     vendorPoolId: {
         type: String,
     },
+    managerPoolId: {
+        type: String,
+    },
     vendor_rejected: [],
     date:{
         type:Date,

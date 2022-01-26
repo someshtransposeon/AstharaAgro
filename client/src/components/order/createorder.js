@@ -123,7 +123,7 @@ export default function CreateOrder({ navigation }) {
             });
         }
 
-        if(pool_id && flag3){
+        if(flag3 && pool_id){
             fetch(`http://localhost:5000/retrieve_cross_pool_by_customer_pool/${pool_id}`, {
             method: 'GET',
             })

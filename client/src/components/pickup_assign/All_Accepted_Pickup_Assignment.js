@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_accepted_pickup_assignment } from '../../services/pickup_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -19,19 +21,24 @@ const theme = {
 export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
 
     const [allPickupAssignment, setAllPickupAssignment] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
-    const [roleas, setRoleas] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     useEffect(() => {
 
-        setRoleas(props.roleas);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
+
         all_accepted_pickup_assignment()
         .then(result => {
             setAllPickupAssignment(result);
         })
 
-    }, [allPickupAssignment,roleas,props.roleas]);
+    }, [allPickupAssignment]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -58,37 +65,47 @@ export default function All_Accepted_Pickup_Assignment(props,{ navigation }) {
                     <DataTable.Title>Action</DataTable.Title>
                 </DataTable.Header>
 
-                {allPickupAssignment ?
+                {(role=="manager" && allPickupAssignment) &&
                     allPickupAssignment.map((pickupAssignment,index)=>{
+                        if(pickupAssignment.managerPoolId==managerPoolId)
                         if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                         return (
                             <DataTable.Row>
                                 <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
                                 <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
                                 <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
-                                {roleas=="buyer" ?
-                                    <DataTable.Cell>
-                                        {Platform.OS=='android' ?
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
-                                            :
-                                            <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                        }
-                                    </DataTable.Cell>
-                                    :
-                                    <DataTable.Cell>
-                                        {Platform.OS=='android' ?
-                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
-                                            :
-                                            <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                        }
-                                    </DataTable.Cell>
-                                }
+                                <DataTable.Cell>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                        :
+                                        <Link to={"/View_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                    }
+                                </DataTable.Cell>
                             </DataTable.Row>
                         )
                         }
                     })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
+                } 
+                {(role=="buyer" && allPickupAssignment) &&
+                    allPickupAssignment.map((pickupAssignment,index)=>{
+                        if(pickupAssignment.buyer_id==userId)
+                        if(pickupAssignment._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                        return (
+                            <DataTable.Row>
+                                <DataTable.Cell>{pickupAssignment.custom_orderId}</DataTable.Cell>
+                                <DataTable.Cell>{pickupAssignment.custom_vendorId}</DataTable.Cell>
+                                <DataTable.Cell>{pickupAssignment.items.itemName+" ("+pickupAssignment.items.Grade+")"}</DataTable.Cell>
+                                <DataTable.Cell>
+                                    {Platform.OS=='android' ?
+                                        <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Pickup_Assignment2', {purchaseId: pickupAssignment._id})}}>Details</Button>
+                                        :
+                                        <Link to={"/Edit_Pickup_Assignment2/"+pickupAssignment._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                    }
+                                </DataTable.Cell>
+                            </DataTable.Row>
+                        )
+                        }
+                    })
                 } 
                 </DataTable>
             </View>

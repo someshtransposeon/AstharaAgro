@@ -42,6 +42,7 @@ router.post('/create_order_item_summary', (req, res)=>{
         custom_orderId: req.body.custom_orderId,
         customerPoolId: req.body.customerPoolId,
         vendorPoolId: req.body.vendorPoolId,
+        managerPoolId: req.body.managerPoolId,
         item: req.body.item,
     })
     newOrder.save()

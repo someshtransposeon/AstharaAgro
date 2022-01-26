@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_pickup_orders_conformed } from '../../services/pickup_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,16 +22,16 @@ const theme = {
 export default function All_Pickup_Assignment_Confirm({ navigation }) {
 
     const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
-    const [host, setHost] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     useEffect(() => {
 
-        if(Platform.OS=="android"){
-            setHost("10.0.2.2");
-        }
-        else{
-            setHost("localhost");
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
         }
 
         all_pickup_orders_conformed()
@@ -37,7 +39,7 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
             setAllPickupAssignment(result);
         })
 
-    }, [host]);
+    }, []);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -65,8 +67,9 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
                     
-                    {allPickupAssignmentConfirm ?
+                    {(role=="manager" && allPickupAssignmentConfirm) &&
                         allPickupAssignmentConfirm.map((pickupAssignmentConfirm,index)=>{
+                            if(pickupAssignmentConfirm.managerPoolId==managerPoolId)
                             if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
@@ -85,8 +88,28 @@ export default function All_Pickup_Assignment_Confirm({ navigation }) {
                                 )
                             }
                         })
-                        :
-                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
+                    {(role=="vendor" && allPickupAssignmentConfirm) &&
+                        allPickupAssignmentConfirm.map((pickupAssignmentConfirm,index)=>{
+                            if(pickupAssignmentConfirm.vendor_id==userId)
+                            if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
+                                        <DataTable.Cell>{pickupAssignmentConfirm.status}</DataTable.Cell>
+                                        <DataTable.Cell numeric> 
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
+                                                :
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Pickup_Assignment_Confirm/"+pickupAssignmentConfirm._id}>Details</Link></Button>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
                     }
                 </DataTable>
             </View>

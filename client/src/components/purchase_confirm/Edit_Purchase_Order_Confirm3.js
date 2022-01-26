@@ -5,6 +5,7 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable, Searchbar } from 'react-native-paper';
 import { all_confirm_purchase_order_by_id } from '../../services/order_api';
 import  {all_users_by_role} from '../../services/user_api';
+
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -43,6 +44,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [searchQuery, setSearchQuery] = useState('');
     const [vendorPoolId, setVendorPoolId] = useState("");
     const [customerPoolId, setCustomerPoolId] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState('');
     
     useEffect(() => {
 
@@ -72,6 +74,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 setCustomVendorId(result[0].custom_vendorId);
                 setVendorPoolId(result[0].vendorPoolId);
                 setCustomerPoolId(result[0].customerPoolId);
+                setManagerPoolId(result[0].managerPoolId);
             })
         }
 
@@ -103,6 +106,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
                 status:status,
                 vendorPoolId: vendorPoolId,
                 customerPoolId: customerPoolId,
+                managerPoolId: managerPoolId,
             })
         })
         .then(res => res.json())

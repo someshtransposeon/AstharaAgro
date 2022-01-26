@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_accepted_pickup_assignment_confirmed } from '../../services/pickup_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,16 +22,23 @@ export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ na
 
     const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
     const [searchQuery, setSearchQuery] = useState('');
-    const [roleas, setRoleas] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState('');
+
     useEffect(() => {
 
-        setRoleas(props.roleas);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
+
         all_accepted_pickup_assignment_confirmed()
         .then(result=>{
             setAllPickupAssignment(result);
         })
 
-    }, [allPickupAssignmentConfirm,roleas, props.roleas]);
+    }, [allPickupAssignmentConfirm]);
 
     
     const onChangeSearch = query => setSearchQuery(query);
@@ -57,8 +66,9 @@ export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ na
                         <DataTable.Title>Action</DataTable.Title>
                     </DataTable.Header>
                                                                         
-                    {allPickupAssignmentConfirm ?
+                    {(role=="manager" && allPickupAssignmentConfirm) &&
                         allPickupAssignmentConfirm.map((pickupAssignmentConfirm,index)=>{
+                            if(pickupAssignmentConfirm.managerPoolId==managerPoolId)
                             if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                             return (
                                 <DataTable.Row>
@@ -76,8 +86,27 @@ export default function All_Accepted_Pickup_Assignment_Confirm_Vendor(props,{ na
                             )
                             }
                         })
-                        :
-                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
+                    {(role=="vendor" && allPickupAssignmentConfirm) &&
+                        allPickupAssignmentConfirm.map((pickupAssignmentConfirm,index)=>{
+                            if(pickupAssignmentConfirm.vendor_id==userId)
+                            if(pickupAssignmentConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{pickupAssignmentConfirm.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignmentConfirm.custom_vendorId}</DataTable.Cell>
+                                    <DataTable.Cell>{pickupAssignmentConfirm.items.itemName+" ("+pickupAssignmentConfirm.items.Grade+")"}</DataTable.Cell>
+                                    <DataTable.Cell> 
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm', {pickupConfirmId: pickupAssignmentConfirm._id})}}>Details</Button>
+                                            :
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} ><Link to={"/View_Pickup_Assignment_Confirm/"+pickupAssignmentConfirm._id}>Details</Link></Button>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                            }
+                        })
                     }
                 </DataTable>
             </View>

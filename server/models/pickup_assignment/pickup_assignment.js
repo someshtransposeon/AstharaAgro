@@ -51,6 +51,9 @@ const pickup_assignmentSchema = new mongoose.Schema({
     vendorPoolId: {
         type: String,
     },
+    managerPoolId: {
+        type: String,
+    },
 },
 {
     timestamps: true

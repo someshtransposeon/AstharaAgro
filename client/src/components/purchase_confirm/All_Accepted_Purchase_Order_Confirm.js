@@ -7,6 +7,7 @@ import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_accepted_confirm_purchase_order } from '../../services/order_api';
 import { all_vendor_items_by_id_pincode } from '../../services/vendor_api';
 import { users_by_id } from '../../services/user_api';
+import { role, userId } from '../../utils/user';
 
 const theme = {
     ...DefaultTheme,
@@ -22,24 +23,29 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
 
     const [allPurchaseOrderConfirm, setAllPurchaseOrderConfirm] = useState();
     const [searchQuery, setSearchQuery] = useState('');
-    const [roleas, setRoleas] = useState("");
     const [visible, setVisible] = useState(false);
     const [vendor, setVendor] = useState();
     const [address, setAddress] = useState();
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
     useEffect(() => {
 
-        setRoleas(props.roleas);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
 
         all_accepted_confirm_purchase_order()
         .then(result=>{
             setAllPurchaseOrderConfirm(result);
         })
 
-    }, [allPurchaseOrderConfirm,roleas,props.roleas]);
+    }, [allPurchaseOrderConfirm]);
 
     function VendorDetails(id, customid) {
         users_by_id(id)
@@ -111,8 +117,9 @@ export default function All_Accepted_Purchase_Order_Confirm(props,{ navigation }
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
-                    {allPurchaseOrderConfirm ?
+                    {role=="manager" && allPurchaseOrderConfirm ?
                         allPurchaseOrderConfirm.map((purchaseOrderConfirm,index)=>{
+                            if(purchaseOrderConfirm.managerPoolId==managerPoolId)
                             if(purchaseOrderConfirm._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>

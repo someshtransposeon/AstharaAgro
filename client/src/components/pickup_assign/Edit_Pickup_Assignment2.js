@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { pickup_assignment_by_id } from '../../services/pickup_api';
 import { order_item_summary_quantity } from '../../services/order_api';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -45,6 +46,9 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [custom_vendorId, setCustomVendorId] = useState();
     const [vendorPoolId, setVendorPoolId] = useState("");
     const [customerPoolId, setCustomerPoolId] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState("");
+
+    let history = useHistory();
 
     useEffect(() => {
 
@@ -72,6 +76,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setCustomVendorId(result[0].custom_vendorId);
                 setVendorPoolId(result[0].vendorPoolId);
                 setCustomerPoolId(result[0].customerPoolId);
+                setManagerPoolId(result[0].managerPoolId);
             })
         }
 
@@ -122,6 +127,21 @@ export default function Edit_Pickup_Assignment(props, {route}) {
         values.quantity = quantity;
         setItems(values);
 
+        fetch(`http://${host}:5000/update_pickup_assign_status/${pickupAssignId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: "Buyer Accepted from Vendor",
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });
+
         fetch(`http://${host}:5000/create_pickup_assign_confirm`, {
             method: 'POST',
             headers: {
@@ -140,28 +160,15 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 status:status,   
                 vendorPoolId: vendorPoolId,
                 customerPoolId: customerPoolId,
+                managerPoolId: managerPoolId,
             })
         })
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
             // alert(data.message);
+            history.push('/all_accepted_pickup_assignment');
         });   
-
-        fetch(`http://${host}:5000/update_pickup_assign_status/${pickupAssignId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: "Buyer Accepted from Vendor",
-            })
-        })
-        .then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            // alert(data.message);
-        });
 
         alert("Successfully Accepted From vendor");
     }

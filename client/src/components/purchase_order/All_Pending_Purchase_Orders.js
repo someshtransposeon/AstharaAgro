@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Menu  } from 'react-native-paper';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView } from 'react-native';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_pending_purchase_order } from '../../services/order_api';
+import { role, userId } from '../../utils/user';
+import { users_by_id } from '../../services/user_api';
 
 const theme = {
     ...DefaultTheme,
@@ -20,18 +22,23 @@ export default function All_Pending_Purchase_Orders(props,{ navigation }) {
 
     const [allPurchaseOrders, setAllPurchaseOrders] = useState();
     const [searchQuery, setSearchQuery] = useState('');
-    const [roleas, setRoleas] = useState("");
+    const [managerPoolId, setManagerPoolId] = useState('');
 
     useEffect(() => {
 
-        setRoleas(props.roleas);
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        };
 
         all_pending_purchase_order()
         .then(result =>{
             setAllPurchaseOrders(result);
         })
 
-    }, [allPurchaseOrders,roleas,props.roleas]);
+    }, [allPurchaseOrders]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -58,37 +65,47 @@ export default function All_Pending_Purchase_Orders(props,{ navigation }) {
                     <DataTable.Title numeric>Action</DataTable.Title>
                 </DataTable.Header>
 
-                {allPurchaseOrders ?
+                {role=="manager" && allPurchaseOrders &&
                     allPurchaseOrders.map((purchaseOrder,index)=>{
+                        if(purchaseOrder.managerPoolId==managerPoolId)
                         if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{purchaseOrder.custom_orderId}</DataTable.Cell>
                                     <DataTable.Cell>{purchaseOrder.custom_vendorId}</DataTable.Cell>
                                     <DataTable.Cell>{purchaseOrder.items.itemName} ({purchaseOrder.items.Grade})</DataTable.Cell>
-                                    {roleas=="vendor" ?
-                                        <DataTable.Cell numeric>
-                                            {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                                :
-                                                <Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                            }
-                                        </DataTable.Cell>
-                                        :
-                                        <DataTable.Cell numeric>
-                                            {Platform.OS=='android' ?
-                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
-                                                :
-                                                <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
-                                            }
-                                        </DataTable.Cell>
-                                    }   
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
+                                            :
+                                            <Link to={"/View_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>
                                 </DataTable.Row>
                             )
                         }
                     })
-                    :
-                    <ActivityIndicator color="#794BC4" size={60}/>
+                }
+                {role=="vendor" && allPurchaseOrders &&
+                    allPurchaseOrders.map((purchaseOrder,index)=>{
+                        if(purchaseOrder.vendor_id==userId)
+                        if(purchaseOrder._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
+                            return (
+                                <DataTable.Row>
+                                    <DataTable.Cell>{purchaseOrder.custom_orderId}</DataTable.Cell>
+                                    <DataTable.Cell>{purchaseOrder.custom_vendorId}</DataTable.Cell>
+                                    <DataTable.Cell>{purchaseOrder.items.itemName} ({purchaseOrder.items.Grade})</DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        {Platform.OS=='android' ?
+                                            <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('Edit_Purchase_Order', {purchaseId: purchaseOrder._id})}}>Details</Button>
+                                            :
+                                            <Link to={"/Edit_Purchase_Order/"+purchaseOrder._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                        }
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            )
+                        }
+                    })
                 }
             </DataTable>
             </View>

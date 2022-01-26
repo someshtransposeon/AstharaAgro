@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { allOrder } from '../../services/order_api';
+import { manager_pool_by_id } from '../../services/pool';
+import { users_by_id } from '../../services/user_api';
+import { role, userId } from '../../utils/user';
 
 const theme = {
     ...DefaultTheme,
@@ -20,15 +23,31 @@ export default function AllOrders(props, { navigation }) {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [allOrders, setAllOrders] = useState();
+    const [managerPoolId, setManagerPoolId] = useState('');
+    const [managerPinCodes, setManagerPinCodes] = useState('');
 
     useEffect(() => {
         
+        if(role=='manager' && userId){
+            users_by_id(userId)
+            .then(result=>{
+                setManagerPoolId(result[0].pool_id);
+            })
+        }
+
+        if(managerPoolId){
+            manager_pool_by_id(managerPoolId)
+            .then(result=>{
+                setManagerPinCodes(result[0].postal_code);
+            })
+        }
+
         allOrder()
         .then(result=> {
             setAllOrders(result);
         })
 
-    }, [allOrders]);
+    }, [allOrders, managerPoolId, managerPinCodes]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -54,8 +73,9 @@ export default function AllOrders(props, { navigation }) {
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
 
-                    {allOrders ?
+                    {(role=="sales"  && allOrders) &&
                         allOrders.map((item, index)=>{
+                            if(item.userId==userId)
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                 var date=item.order_date.substring(0,10);
                                 var d=new Date(item.order_date);
@@ -79,8 +99,33 @@ export default function AllOrders(props, { navigation }) {
                                 )
                             }
                         })
-                        :
-                        <ActivityIndicator color="#794BC4" size={60}/>
+                    }
+                    {(role=="manager"  && allOrders && managerPinCodes) &&
+                        allOrders.map((item, index)=>{
+                            if(managerPinCodes.includes(String(item.postal_code)))
+                            if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                var date=item.order_date.substring(0,10);
+                                var d=new Date(item.order_date);
+                                d.toTimeString();
+                                d=String(d);
+                                var hour=d.substring(16,18);
+                                var custom_orderId=item.nick_name+"_"+item.postal_code+"_"+date+"_"+hour;
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{item.name}</DataTable.Cell>
+                                        <DataTable.Cell>{item.status}</DataTable.Cell>
+                                        <DataTable.Cell numeric>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/vieworder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
                     }
                 </DataTable>
             </View>
