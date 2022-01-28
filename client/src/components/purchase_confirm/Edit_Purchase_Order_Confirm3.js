@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable, Searchbar } from 'react-native-paper';
+import { useHistory } from 'react-router-dom';
 import { all_confirm_purchase_order_by_id } from '../../services/order_api';
 import  {all_users_by_role} from '../../services/user_api';
 
@@ -46,6 +47,8 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
     const [customerPoolId, setCustomerPoolId] = useState("");
     const [managerPoolId, setManagerPoolId] = useState('');
     
+    let history = useHistory();
+
     useEffect(() => {
 
         if(Platform.OS=="android"){
@@ -113,6 +116,7 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
+            history.push('/All_Pending_Purchase_Order_Confirm');
         });
 
         //for change the status

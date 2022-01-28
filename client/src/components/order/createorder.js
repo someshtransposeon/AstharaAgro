@@ -326,6 +326,11 @@ export default function CreateOrder({ navigation }) {
                                     onChangeText={onChangeSearch2}
                                     value={searchQuery2}
                                 />
+                                {Platform.OS=='android' ?
+                                    <Button icon={() => <FontAwesomeIcon icon={ faPlusCircle } />} mode="outlined" onPress={() => {navigation.navigate('AddCustomer')}}>Add customer</Button>
+                                    :
+                                    <Link to="/register"><Button mode="outlined" icon={() => <FontAwesomeIcon icon={ faPlusCircle } />}>Add Customer</Button></Link>
+                                }
                                 {customer ?
                                     customer.map((item)=>{
                                         if(item.toUpperCase().search(searchQuery2.toUpperCase())!=-1){
