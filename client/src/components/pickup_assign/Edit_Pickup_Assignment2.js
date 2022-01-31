@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Platform, } from 'react-native';
-import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
+import { View, StyleSheet, Platform, Image} from 'react-native';
+import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable, Text } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { pickup_assignment_by_id } from '../../services/pickup_api';
 import { order_item_summary_quantity } from '../../services/order_api';
 import { useHistory } from 'react-router-dom';
+import { all_vendor_items_by_itemid } from '../../services/vendor_api';
 
 const theme = {
     ...DefaultTheme,
@@ -47,6 +48,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [vendorPoolId, setVendorPoolId] = useState("");
     const [customerPoolId, setCustomerPoolId] = useState("");
     const [managerPoolId, setManagerPoolId] = useState("");
+    const [image,setImage]=useState("");
 
     let history = useHistory();
 
@@ -88,11 +90,19 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setFlag3(false);
             })
         }
+
+        if(items){
+            all_vendor_items_by_itemid(items.itemId)
+            .then(result=>{
+                setImage(result[0].image);
+            })
+        }
+
         if(vendorsid == null) {
             setVendorsid([]);
         }
 
-    }, [host,pickupAssignId,pickupId,id, order_id,flag2,vendorsid,flag3]);
+    }, [host,pickupAssignId,items, pickupId,id, order_id,flag2,vendorsid,flag3]);
 
     function submitForm() {
 
@@ -224,13 +234,27 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 <Card style={styles.card}>
                     <Card.Title title="Edit Pickup Assignment2"/>
                     <Card.Content>
-                        {buyer_id &&
-                            <TextInput style={styles.input} mode="outlined" label="Buyer Id" value={buyer_id} />
-                        }
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex:1, marginTop: '2%', }}>
+                                {image ?
+                                        <Image
+                                            style={{width: 200, height: 160, border: '1px solid black'}}
+                                            source={image}
+                                        />
+                                    :
+                                        <Text>No Image</Text>
+                                }
+                            </View>
+                            <View style={{ flex:3, }}>
+                            {buyer_id &&
+                                <TextInput style={styles.input} mode="outlined" label="Buyer Id" value={buyer_id} />
+                            }
 
-                        {vendor_id &&
-                            <TextInput style={styles.input} mode="outlined" label="Vendor Id" value={vendor_id} />
-                        }
+                            {vendor_id &&
+                                <TextInput style={styles.input} mode="outlined" label="Vendor Id" value={vendor_id} />
+                            }
+                            </View>
+                        </View>
 
                         {items &&
                             <DataTable style={styles.datatable}>

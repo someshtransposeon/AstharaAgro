@@ -69,9 +69,9 @@ export default function EditOrderItem(props,{route}) {
         }
 
         if(order_id){
-            order_item_summary_quantity()
+            order_item_summary_quantity(order_id)
             .then(result =>{
-                setVendorsid(result);
+                setVendorsid(result.vendor_rejected);
             })
         }
 
