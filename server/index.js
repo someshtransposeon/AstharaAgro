@@ -213,6 +213,11 @@ const update_manager_pool= require('./routes/manager_pool/update_manager_pool');
 // const retrieve_vendor_customer_cross= require('./routes/cross_pool/retrieve_vendor_customer_cross');
 // const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
 
+const create_transport_labour = require('./routes/transport_labour/create_transport_labour');
+// const update_transport = require('./routes/transport_labour/update_transport_labour');
+// const create_transport = require('./routes/transport_labour/create_transport_labour');
+// const create_transport = require('./routes/transport_labour/create_transport_labour');
+
 
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
@@ -261,23 +266,9 @@ app.use('/', update_vendor_address);
 app.use('/', delete_vendor_address);
 
 app.use('/', create_customer_address);
-app.use('/', retrive_customer_address);
-app.use('/', update_customer_address);
-app.use('/', delete_customer_address);
-
-app.use('/', create_bank);
-app.use('/', delete_bank);
-app.use('/', retrive_bank);
-app.use('/', update_bank);
-
-app.use('/', create_inventoryType);
-app.use('/', delete_inventoryType);
-app.use('/', retrive_inventoryType);
-app.use('/', update_inventoryType);
-
-app.use('/', create_indent);
-app.use('/', delete_indent);
-app.use('/', retrive_indent);
+app.use('/', retrive_customer_address);const update_transport = require('./routes/transport_labour/update_transport_labour');
+// const create_transport = require('./routes/transport_labour/create_transport_labour');
+// co
 app.use('/', update_indent);
 
 app.use('/', create_invoice);
@@ -379,6 +370,8 @@ app.use('/',create_vendor_customer_cross);
 app.use('/', retrieve_vendor_customer_cross);
 app.use('/', update_vendor_customer_cross);
 app.use('/',delete_vendor_customer_cross);
+
+app.use('/',create_transport_labour);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
