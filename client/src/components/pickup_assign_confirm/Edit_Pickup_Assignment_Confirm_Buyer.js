@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Card, Button, Menu, Provider, DefaultTheme,DataTable } from 'react-native-paper';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faMinusCircle, faEdit,faStore } from '@fortawesome/free-solid-svg-icons';
+import { faEdit,faStore } from '@fortawesome/free-solid-svg-icons';
 import { pickup_assignment_confirm_by_id } from '../../services/pickup_api';
+import { useHistory } from 'react-router-dom';
 
 const theme = {
     ...DefaultTheme,
@@ -39,11 +40,14 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
     const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [host, setHost] = useState(""); 
+    const [purchaseOrder, setPurchaseOrder] = useState();
 
     function chooseOrder(order_id) {
         setOrderId(order_id);
         closeMenu2();
     }
+
+    let history = useHistory();
 
     useEffect(() => {
 
@@ -66,13 +70,29 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
                 setVendorId(result[0].vendor_id);
                 setBuyerId(result[0].buyer_id);
                 setStatus(result[0].status);
+                setPurchaseOrder(result[0]);
             })
         }
 
     }, [host,pickupAssignId,order_id,pickupConfirmId,id]);
 
     function submitForm3(){
-        alert("Payment in progress!");
+        alert("Payment Success!");
+        fetch(`http://${host}:5000/create_completed_purchase_order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                purchase_order: purchaseOrder,               
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+        });   
+        history.push("/all_pickup_assignment_confirm_buyer");
     };
    
     function submitForm2() {
@@ -95,7 +115,6 @@ export default function Edit_Pickup_Assignment_Confirm_Buyer(props, {route}) {
         .catch(error => console.log(error))
         .then(data => {
             alert(data.message);
-            console.log(data);
         });   
     }
 

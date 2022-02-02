@@ -156,8 +156,13 @@ import AddManagerPool from '../components/pool/add_manager_pool';
 import AllManagerPools from '../components/pool/all_manager_pools';
 import EditManagerPool from '../components/pool/edit_manager_pool';
 
+import AddTransportLabour from '../components/transport_labour/transport_labour_for_sales/transport_labour';
+import AddTransportLabourFromVendor from '../components/transport_labour/transport_labour_from_vendor/transport_labour_from_vendor';
+
+import All_Completed_Purchase_Orders from '../components/reports/completed_purchase_order/all_completed_purchase_orders';
+import View_Completed_Purchase_Order from '../components/reports/completed_purchase_order/view_completed_purchase_order';
+
 import PageNotFound from '../components/pagenotfound/notfound';
-import {authHeader} from '../services/auth_header';
 
 const NavBar =()  => {
 
@@ -345,6 +350,23 @@ const NavBar =()  => {
 
                                 </>
                                 }   
+                                 {(roleas == "buyer") &&
+                                <>
+                                    <NavDropdown title="Transport Labour" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                        <NavDropdown title="Transport Labour from Vendor" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addtransportlabourfromvendor" as={Link}>Add Transport Labour</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allcustomerpools" as={Link}>View Transport Labour</NavDropdown.Item>
+                                        </NavDropdown>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown title="Transport Labour for Sales" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addtransportlabourforsales" as={Link}>Add Transport Labour</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allcustomerpools" as={Link}>View Transport Labour</NavDropdown.Item>
+                                        </NavDropdown>
+                                    </NavDropdown>
+                                </>
+                                }   
                                 {( roleas == "vendor") &&
                                     <>
                                     <NavDropdown title="Inventory Management" drop="right" id="collasible-nav-dropdown"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
@@ -518,6 +540,12 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                {( roleas=="manager" || roleas=="buyer") &&
+                                    <>
+                                        <NavDropdown.Item to="/allcompletedpurchaseorders" as={Link}>All Completed Purchase Orders</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                                 {( roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/customer_account_delete_requests" as={Link}>Delete Account Requests</NavDropdown.Item>
@@ -678,6 +706,12 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/allusers">
                     <AllUsers roleas={roleas}/>
+                </Route>
+                <Route path="/addtransportlabourforsales">
+                    <AddTransportLabour/>
+                </Route>
+                <Route path="/addtransportlabourfromvendor">
+                    <AddTransportLabourFromVendor/>
                 </Route>
                 <Route path="/vieworder/:orderid" render={(props) => <ViewOrder roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/editorder/:orderid" render={(props) => <EditOrder roleas={roleas} host={host} {...props} />} exact />
@@ -899,6 +933,10 @@ const NavBar =()  => {
                 <Route path="/All_Confirm_Delivery">
                     <All_Confirm_Delivery/>
                 </Route>    
+                <Route path="/allcompletedpurchaseorders">
+                    <All_Completed_Purchase_Orders/>
+                </Route>
+                <Route path="/View_Completed_Purchase_Order/:id" render={(props) => <View_Completed_Purchase_Order {...props} />} exact />
                 <Route path="/Edit_Accepted_Delivery/:deliveryid" render={(props) => <Edit_Accepted_Delivery {...props} />} exact />
                 <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
                 <Route component={PageNotFound}  />
