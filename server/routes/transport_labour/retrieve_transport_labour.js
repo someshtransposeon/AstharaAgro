@@ -3,24 +3,24 @@ const router = express.Router();
 /* Required Model for store in database*/
 const Transport= require('../../models/transport_labour/transport_labour');
 //Define ROute to  retrive all orders 
-router.get('/retrive_transport_labour',(req, res)=>{
-    Transport.find(function(err, orders){
+router.get('/retrieve_transport_labour',(req, res)=>{
+    Transport.find(function(err, transport){
         if(err){
             console.log(err);
         }
         else {
-            res.json(orders);
+            res.json(transport);
         }
     });
 });
 
-router.get('/retrive_order/:id',(req, res)=>{
-    Order.find({'_id':req.params.id}, function(err, order){
+router.get('/retrieve_transport_labour_by_Id/:id',(req, res)=>{
+    Transport.find({'_id':req.params.id}, function(err, transport){
        if(err){
            console.log(err);
        }
        else {
-           res.json(order);
+           res.json(transport);
        }
    });
 });

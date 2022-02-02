@@ -214,9 +214,9 @@ const update_manager_pool= require('./routes/manager_pool/update_manager_pool');
 // const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
 
 const create_transport_labour = require('./routes/transport_labour/create_transport_labour');
-// const update_transport = require('./routes/transport_labour/update_transport_labour');
-// const create_transport = require('./routes/transport_labour/create_transport_labour');
-// const create_transport = require('./routes/transport_labour/create_transport_labour');
+const update_transport_labour = require('./routes/transport_labour/update_transport_labour');
+const retrieve_transport_labour = require('./routes/transport_labour/retrieve_transport_labour');
+const delete_transport_labour = require('./routes/transport_labour/delete_transport_labour');
 
 
 app.get('/', (req, res)=>{
@@ -372,6 +372,9 @@ app.use('/', update_vendor_customer_cross);
 app.use('/',delete_vendor_customer_cross);
 
 app.use('/',create_transport_labour);
+app.use('/',retrieve_transport_labour);
+app.use('/',delete_transport_labour);
+app.use('/',update_transport_labour);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");

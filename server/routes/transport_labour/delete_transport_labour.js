@@ -4,7 +4,7 @@ const router = express.Router();
 const Transport= require('../../models/transport_labour/transport_labour');
 
 //Define Route to create order 
-router.get('/delete_Transport/:id',(req, res) =>{ 
+router.get('/delete_transport_labour/:id',(req, res) =>{ 
     Transport.findOneAndRemove({'_id':req.params.id})
     .then((transport) => {
         if(transport){
