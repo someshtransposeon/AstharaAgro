@@ -218,6 +218,8 @@ const update_transport_labour = require('./routes/transport_labour/update_transp
 const retrieve_transport_labour = require('./routes/transport_labour/retrieve_transport_labour');
 const delete_transport_labour = require('./routes/transport_labour/delete_transport_labour');
 
+const create_completed_purchase_oredr = require('./routes/report/completed_purchase_order/create_completed_purchase_order');
+const retrieve_completed_purchase_oredr = require('./routes/report/completed_purchase_order/retrieve_completed_purchase_order');
 
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
@@ -375,6 +377,9 @@ app.use('/',create_transport_labour);
 app.use('/',retrieve_transport_labour);
 app.use('/',delete_transport_labour);
 app.use('/',update_transport_labour);
+
+app.use('/',create_completed_purchase_oredr);
+app.use('/',retrieve_completed_purchase_oredr);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");
