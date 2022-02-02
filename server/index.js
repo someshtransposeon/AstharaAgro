@@ -213,10 +213,15 @@ const update_manager_pool= require('./routes/manager_pool/update_manager_pool');
 // const retrieve_vendor_customer_cross= require('./routes/cross_pool/retrieve_vendor_customer_cross');
 // const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
 
-const create_transport_labour = require('./routes/transport_labour/create_transport_labour');
-const update_transport_labour = require('./routes/transport_labour/update_transport_labour');
-const retrieve_transport_labour = require('./routes/transport_labour/retrieve_transport_labour');
-const delete_transport_labour = require('./routes/transport_labour/delete_transport_labour');
+const create_transport_labour_for_sales = require('./routes/transport_labour/transport_labour_for_sales/create_transport_labour');
+const update_transport_labour_for_sales = require('./routes/transport_labour/transport_labour_for_sales/update_transport_labour');
+const retrieve_transport_labour_for_sales = require('./routes/transport_labour/transport_labour_for_sales/retrieve_transport_labour');
+const delete_transport_labour_for_sales = require('./routes/transport_labour/transport_labour_for_sales/delete_transport_labour');
+
+const create_transport_labour_from_vendor = require('./routes/transport_labour/transport_labour_from_vendor/create_transport_labour');
+const update_transport_labour_from_vendor = require('./routes/transport_labour/transport_labour_from_vendor/update_transport_labour');
+const retrieve_transport_labour_from_vendor = require('./routes/transport_labour/transport_labour_from_vendor/retrieve_transport_labour');
+const delete_transport_labour_from_vendor = require('./routes/transport_labour/transport_labour_from_vendor/delete_transport_labour');
 
 const create_completed_purchase_oredr = require('./routes/report/completed_purchase_order/create_completed_purchase_order');
 const retrieve_completed_purchase_oredr = require('./routes/report/completed_purchase_order/retrieve_completed_purchase_order');
@@ -268,9 +273,8 @@ app.use('/', update_vendor_address);
 app.use('/', delete_vendor_address);
 
 app.use('/', create_customer_address);
-app.use('/', retrive_customer_address);const update_transport = require('./routes/transport_labour/update_transport_labour');
-// const create_transport = require('./routes/transport_labour/create_transport_labour');
-// co
+app.use('/', retrive_customer_address);
+
 app.use('/', update_indent);
 
 app.use('/', create_invoice);
@@ -373,10 +377,16 @@ app.use('/', retrieve_vendor_customer_cross);
 app.use('/', update_vendor_customer_cross);
 app.use('/',delete_vendor_customer_cross);
 
-app.use('/',create_transport_labour);
-app.use('/',retrieve_transport_labour);
-app.use('/',delete_transport_labour);
-app.use('/',update_transport_labour);
+app.use('/',create_transport_labour_for_sales);
+app.use('/',retrieve_transport_labour_for_sales);
+app.use('/',delete_transport_labour_for_sales);
+app.use('/',update_transport_labour_for_sales);
+
+app.use('/',create_transport_labour_from_vendor);
+app.use('/',retrieve_transport_labour_from_vendor);
+app.use('/',delete_transport_labour_from_vendor);
+app.use('/',update_transport_labour_from_vendor);
+
 
 app.use('/',create_completed_purchase_oredr);
 app.use('/',retrieve_completed_purchase_oredr);

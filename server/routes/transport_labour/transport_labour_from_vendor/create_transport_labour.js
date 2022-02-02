@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 /* Required Model for store in database*/
-const Transport= require('../../models/transport_labour/transport_labour');
+const Transport= require('../../../models/transport_labour/transport_labour_from_vendor/transport_labour_from_vendor');
 
 //Define Route to create order 
-router.post('/create_transport_labour', (req, res)=>{
+router.post('/create_transport_labour_from_vendor', (req, res)=>{
     var newTransport = new Transport({
         buyerId: req.body.buyerId,
         vehicle_number: req.body.vehicle_number,
