@@ -387,7 +387,6 @@ app.use('/',retrieve_transport_labour_from_vendor);
 app.use('/',delete_transport_labour_from_vendor);
 app.use('/',update_transport_labour_from_vendor);
 
-
 app.use('/',create_completed_purchase_oredr);
 app.use('/',retrieve_completed_purchase_oredr);
 

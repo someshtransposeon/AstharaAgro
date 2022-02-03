@@ -57,16 +57,16 @@ export default function AddTransportLabourFromVendor(props,{ navigation }) {
         .catch(error => console.log(error))
         .then(data => {
             console.log(data);
-            if(data.message!="something wrong!"){
+            if(data.message!="Something went wrong!"){
                 swal("Yeah!", data.message, "success");
-                history.push('/allcustomerpools');
+                history.push('/alltransportlabourfromvendor');
             }
             else{
                 if(data.error.errors){
                     swal("Oops!", "All Fields are required!", "error");
                 }
                 else{
-                    swal(data.message);
+                    swal("Oops!", "You Have Already Added Transport and Labour Charge", "error");
                 }
             }
         });

@@ -157,7 +157,12 @@ import AllManagerPools from '../components/pool/all_manager_pools';
 import EditManagerPool from '../components/pool/edit_manager_pool';
 
 import AddTransportLabour from '../components/transport_labour/transport_labour_for_sales/transport_labour';
+import AllTransportLabourForSales from '../components/transport_labour/transport_labour_for_sales/all_transport_labour_for_sales';
+import ViewTransportLabourForSales from '../components/transport_labour/transport_labour_for_sales/view_transport_labour_for_sales';
+
 import AddTransportLabourFromVendor from '../components/transport_labour/transport_labour_from_vendor/transport_labour_from_vendor';
+import AllTransportLabourFromVendor from '../components/transport_labour/transport_labour_from_vendor/all_transport_labour_from_vendor';
+import ViewTransportLabourFromVendor from '../components/transport_labour/transport_labour_from_vendor/view_transport_labour_from_vendor';
 
 import All_Completed_Purchase_Orders from '../components/reports/completed_purchase_order/all_completed_purchase_orders';
 import View_Completed_Purchase_Order from '../components/reports/completed_purchase_order/view_completed_purchase_order';
@@ -356,13 +361,13 @@ const NavBar =()  => {
                                         <NavDropdown title="Transport Labour from Vendor" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                             <NavDropdown.Item to="/addtransportlabourfromvendor" as={Link}>Add Transport Labour</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item to="/allcustomerpools" as={Link}>View Transport Labour</NavDropdown.Item>
+                                            <NavDropdown.Item to="/alltransportlabourfromvendor" as={Link}>View Transport Labour</NavDropdown.Item>
                                         </NavDropdown>
                                         <NavDropdown.Divider />
                                         <NavDropdown title="Transport Labour for Sales" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                             <NavDropdown.Item to="/addtransportlabourforsales" as={Link}>Add Transport Labour</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item to="/allcustomerpools" as={Link}>View Transport Labour</NavDropdown.Item>
+                                            <NavDropdown.Item to="/alltransportlabourforsales" as={Link}>View Transport Labour</NavDropdown.Item>
                                         </NavDropdown>
                                     </NavDropdown>
                                 </>
@@ -710,9 +715,17 @@ const NavBar =()  => {
                 <Route path="/addtransportlabourforsales">
                     <AddTransportLabour/>
                 </Route>
+                <Route path="/alltransportlabourforsales">
+                    <AllTransportLabourForSales/>
+                </Route>
                 <Route path="/addtransportlabourfromvendor">
                     <AddTransportLabourFromVendor/>
                 </Route>
+                <Route path="/alltransportlabourfromvendor">
+                    <AllTransportLabourFromVendor/>
+                </Route>
+                <Route path="/viewtransportlabourforsales/:id" render={(props) => <ViewTransportLabourForSales roleas={roleas} host={host} {...props} />} exact />
+                <Route path="/viewtransportlabourfromvendor/:id" render={(props) => <ViewTransportLabourFromVendor roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/vieworder/:orderid" render={(props) => <ViewOrder roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/editorder/:orderid" render={(props) => <EditOrder roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/edititem/:itemid" render={(props) => <EditItem {...props} />} exact />

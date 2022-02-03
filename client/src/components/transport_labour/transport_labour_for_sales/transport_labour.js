@@ -21,6 +21,7 @@ const theme = {
 export default function AddTransportLabour(props,{ navigation }) {
 
     const [visible2, setVisible2] = useState(false);
+    const [visible, setVisible] = useState([]);
     const [vNumber, setVNumber] = useState("");
     const [vType, setVType] = useState("Choose Vehicle Type");
     const [charge, setCharge] = useState("");
@@ -28,8 +29,7 @@ export default function AddTransportLabour(props,{ navigation }) {
     const [driverMobileNumber, setDriverMobileNumber] = useState("");
     const [labourName, setLabourName] = useState("");
     const [labourMobileNumber, setLabourMobileNumber] = useState("");
-    const [items, setItems] = useState(['']);
-    const [pincodeError, setPincodeError] = useState(['']);
+    const [items, setItems] = useState([{orderId: "Choose Order", itemName: "", Grade: "", quantity: ""}]);
     const [flag, setFlag] = useState(true);
     const [acpo, setACPO] = useState();
 
@@ -47,34 +47,20 @@ export default function AddTransportLabour(props,{ navigation }) {
 
     })
 
-    const ItemChange = (index, fieldvalue) => {
-        const error = [...pincodeError];
+    const ItemChange = (index, item) => {
         const values = [...items];
-        const numberRegex = /^[0-9\b]+$/;
-        const minLengthRegex = /\d{6,}/;
-        if(!numberRegex.test(fieldvalue)){
-            error[index] = "Pin Code Only Should be Numeric";
-            setPincodeError(error);
-        }
-        else if(!minLengthRegex.test(fieldvalue)){
-            error[index] = "Pin Code Length should be 6";
-            setPincodeError(error);
-        }
-        else{
-            error[index] = '';
-            setPincodeError(error);
-        }
-        values[index] = fieldvalue.replace(/[^0-9]/g, '');
+        values[index].orderId = item._id;
+        values[index].itemName = item.purchase_order.items.itemName;
+        values[index].Grade = item.purchase_order.items.Grade;
+        values[index].quantity = item.purchase_order.items.quantity;
         setItems(values);
+        closeMenu(index);
     };
 
     const handleAddFields = () => {
         const values = [...items];
-        values.push('');
+        values.push({orderId: "Choose Order", itemName: "", Grade: "", quantity: ""});
         setItems(values);
-        const error = [...pincodeError];
-        error.push('');
-        setPincodeError(error);
     };
     
     const handleRemoveFields = index => {
@@ -104,10 +90,9 @@ export default function AddTransportLabour(props,{ navigation }) {
         .then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            console.log(data);
             if(data.message!="something wrong!"){
                 swal("Yeah!", data.message, "success");
-                history.push('/allcustomerpools');
+                history.push('/alltransportlabourforsales');
             }
             else{
                 if(data.error.errors){
@@ -122,6 +107,18 @@ export default function AddTransportLabour(props,{ navigation }) {
 
     const openMenu2 = () => setVisible2(true);
     const closeMenu2 = () => setVisible2(false);
+
+    const openMenu = (index) => {
+        const values = [...visible];
+        values[index]=true;
+        setVisible(values);
+    }
+    
+    const closeMenu = (index) => {
+        const values = [...visible];
+        values[index]=false;
+        setVisible(values);
+    };
 
     function choose_v_type(type){
         setVType(type);
@@ -156,12 +153,14 @@ export default function AddTransportLabour(props,{ navigation }) {
                     {items.map((it, index) => (
                         <View>
                             <Menu
-                            visible={visible2}
-                            onDismiss={closeMenu2}
-                            anchor={<Button style={styles.input} mode="outlined"  onPress={openMenu2}>{vType} </Button>}>
-                                {acpo && acpo.map((item) => (
-                                    <Menu.Item title="Truck" onPress={()=>choose_v_type("Truck")} />
-                                ))}
+                            visible={visible[index]}
+                            onDismiss={()=>closeMenu(index)}
+                            anchor={<Button style={styles.input} mode="outlined"  onPress={()=>openMenu(index)}>{it.orderId} </Button>}>
+                                {acpo && acpo.map((item) => {
+                                    return (
+                                        <Menu.Item style={{marginTop: '10%', padding: '1%',}} title={item.purchase_order.custom_orderId+"\n"+item.purchase_order.custom_vendorId+"\n"+item.purchase_order.items.itemName+"("+item.purchase_order.items.Grade+"), QTY: "+item.purchase_order.items.quantity+"\n\n"} onPress={()=>ItemChange(index, item)} />
+                                    )
+                                })}
                             </Menu>
                             <View style={{flexDirection: 'row'}}>
                                 {Platform.OS=="android" ?

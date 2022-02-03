@@ -26,6 +26,10 @@ const tranport_from_vendorSchema = new mongoose.Schema({
     charge:{
         type:Number,
     },
+    date: {
+        type: Object,
+        unique:true,
+    },
     }, {
     timestamps: true
 });
