@@ -28,12 +28,16 @@ const transport_from_vendorSchema = new mongoose.Schema({
     },
     date: {
         type: Object,
-        required:true,
+        
     },
     },
-    {timestamps:true},
-    { "strict": false });
+    {
+        timestamps:true
+    },
+    { 
+        "strict": false 
+    });
 
-transport_from_vendorSchema.index({  "BuyerId": 1,"date": 1}, { "unique": true });
+transport_from_vendorSchema.index({ BuyerId: 1, date: 1}, { unique: true });
 const Transport_from_vendor = mongoose.model('Transport_from_vendor', transport_from_vendorSchema);
 module.exports = Transport_from_vendor;
