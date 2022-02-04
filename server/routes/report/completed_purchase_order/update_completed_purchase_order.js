@@ -8,10 +8,10 @@ router.put('/update_flag_completed_purchase_order/:id',(req, res) =>{
     Purchase_order.findOneAndUpdate({'_id':req.params.id},update)
     .then((user) => {
         if(user){
-            var message = { message: "user sucessfully updated" };
+            var message = { message: "order item added sucessfully" };
             res.json(message);
         }else{
-            var message = { message: "user not found" };
+            var message = { message: "order item  not found" };
             res.json(message);
         }
     }).catch(err => {
