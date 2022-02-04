@@ -5,8 +5,8 @@ const all_comp_purchase_order = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
     },
     flag:{
-        type:Number,
-        default:0,
+        type: Number,
+        default: 0,
     }
     }, {
     timestamps: true

@@ -12,12 +12,14 @@ router.put('/update_flag_completed_purchase_order/:id', (req, res)=>{
             var message = {message: "all completed Purchase Order sucessfully updated"};
             res.json(message);
         }else{
-            var message = { messageerror: "Record not found" };
+            var message = { message: "Record not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = { success: false, err: err };
+        var message = { message: "Somthing Went Wrong!", success: false, err: err };
         res.json(message);
     })
 });
+
+module.exports = router;

@@ -37,13 +37,10 @@ export default function AddTransportLabour(props,{ navigation }) {
 
     useEffect(() => {
 
-        if(flag){
-            all_completed_purchase_orders()  
-            .then(result => {
-                setACPO(result);
-                setFlag(false);
-            })
-        }
+        all_completed_purchase_orders()  
+        .then(result => {
+            setACPO(result);
+        })
 
     })
 
@@ -54,6 +51,21 @@ export default function AddTransportLabour(props,{ navigation }) {
         values[index].Grade = item.purchase_order.items.Grade;
         values[index].quantity = item.purchase_order.items.quantity;
         setItems(values);
+        console.log(item);
+        fetch(`http://localhost:5000/update_flag_completed_purchase_order/${item._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                flag:1,
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            alert(data.message);
+            console.log(data);
+        });
         closeMenu(index);
     };
 
@@ -157,6 +169,7 @@ export default function AddTransportLabour(props,{ navigation }) {
                             onDismiss={()=>closeMenu(index)}
                             anchor={<Button style={styles.input} mode="outlined"  onPress={()=>openMenu(index)}>{it.orderId} </Button>}>
                                 {acpo && acpo.map((item) => {
+                                    if(item.flag === 0)
                                     return (
                                         <Menu.Item style={{marginTop: '10%', padding: '1%',}} title={item.purchase_order.custom_orderId+"\n"+item.purchase_order.custom_vendorId+"\n"+item.purchase_order.items.itemName+"("+item.purchase_order.items.Grade+"), QTY: "+item.purchase_order.items.quantity+"\n\n"} onPress={()=>ItemChange(index, item)} />
                                     )
