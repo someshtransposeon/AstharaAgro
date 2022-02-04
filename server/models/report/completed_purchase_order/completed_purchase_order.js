@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const all_comp_purchase_order = new mongoose.Schema({
     purchase_order:{
         type: mongoose.Schema.Types.Mixed,
+    },
+    flag:{
+        type:Number,
+        default:0,
     }
     }, {
     timestamps: true

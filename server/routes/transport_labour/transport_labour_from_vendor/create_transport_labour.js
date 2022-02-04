@@ -15,7 +15,6 @@ router.post('/create_transport_labour_from_vendor', (req, res)=>{
         labour_mobile_no:req.body.labour_mobile_no,
         charge: req.body.charge,
         date: new Date().toISOString().substring(0, 10),
-
     })
     newTransport.save()
     .then(transport=> {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('@mongoosejs/double');
-const tranport_from_vendorSchema = new mongoose.Schema({
+const transport_from_vendorSchema = new mongoose.Schema({
     buyerId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
@@ -28,10 +28,12 @@ const tranport_from_vendorSchema = new mongoose.Schema({
     },
     date: {
         type: Object,
-        unique:true,
+        required:true,
     },
-    }, {
-    timestamps: true
-});
-const Transport_from_vendor = mongoose.model('Transport_from_vendor', tranport_from_vendorSchema);
+    },
+    {timestamps:true},
+    { "strict": false });
+
+transport_from_vendorSchema.index({  "BuyerId": 1,"date": 1}, { "unique": true });
+const Transport_from_vendor = mongoose.model('Transport_from_vendor', transport_from_vendorSchema);
 module.exports = Transport_from_vendor;
