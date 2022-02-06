@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { transport_labour_for_sales } from '../../../services/transport_labour/transport_labout_for_sales';
+import { userId } from '../../../utils/user';
 
 const theme = {
     ...DefaultTheme,
@@ -57,6 +58,7 @@ export default function AllTransportLabourForSales(props, { navigation }) {
                     </DataTable.Header>
                     {allOrders &&
                         allOrders.map((item, index)=>{
+                            if(item.buyerId==userId)
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{item.createdAt.substring(0,10)}</DataTable.Cell>

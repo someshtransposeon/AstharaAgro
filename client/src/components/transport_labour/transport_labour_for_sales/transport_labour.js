@@ -30,7 +30,6 @@ export default function AddTransportLabour(props,{ navigation }) {
     const [labourName, setLabourName] = useState("");
     const [labourMobileNumber, setLabourMobileNumber] = useState("");
     const [items, setItems] = useState([{orderId: "Choose Order", itemName: "", Grade: "", quantity: ""}]);
-    const [flag, setFlag] = useState(true);
     const [acpo, setACPO] = useState();
 
     let history = useHistory();
@@ -63,8 +62,8 @@ export default function AddTransportLabour(props,{ navigation }) {
         }).then(res => res.json())
         .catch(error => console.log(error))
         .then(data => {
-            alert(data.message);
-            console.log(data);
+            // alert(data.message);
+            // console.log(data);
         });
         closeMenu(index);
     };
@@ -169,7 +168,7 @@ export default function AddTransportLabour(props,{ navigation }) {
                             onDismiss={()=>closeMenu(index)}
                             anchor={<Button style={styles.input} mode="outlined"  onPress={()=>openMenu(index)}>{it.orderId} </Button>}>
                                 {acpo && acpo.map((item) => {
-                                    if(item.flag === 0)
+                                    if(item.flag === 0 && item.purchase_order.buyer_id==userId)
                                     return (
                                         <Menu.Item style={{marginTop: '10%', padding: '1%',}} title={item.purchase_order.custom_orderId+"\n"+item.purchase_order.custom_vendorId+"\n"+item.purchase_order.items.itemName+"("+item.purchase_order.items.Grade+"), QTY: "+item.purchase_order.items.quantity+"\n\n"} onPress={()=>ItemChange(index, item)} />
                                     )

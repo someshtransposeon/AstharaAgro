@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { transport_labour_from_vendor } from '../../../services/transport_labour/transport_labour_from_vendor';
+import { userId } from '../../../utils/user';
 
 const theme = {
     ...DefaultTheme,
@@ -26,8 +27,6 @@ export default function AllTransportLabourFromVendor(props, { navigation }) {
         transport_labour_from_vendor()
         .then(result=> {
             setAllOrders(result);
-            console.log(result);
-            console.log("ok");
         })
 
     }, []);
@@ -57,6 +56,7 @@ export default function AllTransportLabourFromVendor(props, { navigation }) {
                     </DataTable.Header>
                     {allOrders &&
                         allOrders.map((item, index)=>{
+                            if(item.buyerId==userId)
                             return (
                                 <DataTable.Row>
                                     <DataTable.Cell>{item.date}</DataTable.Cell>
