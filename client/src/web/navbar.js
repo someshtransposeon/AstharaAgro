@@ -127,6 +127,9 @@ import All_Delivery_Assignment from '../components/delivery_assign/All_Delivery_
 import All_Pending_Delivery_Assignment from '../components/delivery_assign/All_Pending_Delivery_Assignment';
 import All_Accepted_Delivery_Assignment from '../components/delivery_assign/All_Accepted_Delivery_Assignment';
 
+import Alldispatchitems from '../components/reports/all_dispatch_order_items/all_dispatch_order_items';
+import View_dispatch_order_items from '../components/reports/all_dispatch_order_items/view_all_dispatch_order_items';
+
 import Edit_Accepted_Delivery_Assignment from '../components/delivery_assign/Edit_Accepted_Delivery_Assignment';
 import Edit_Delivery_Assignment from '../components/delivery_assign/Edit_Delivery_Assignment';
 import All_Delivery from '../components/update_delivery/All_Delivery';
@@ -551,6 +554,12 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                {( roleas=="manager" || roleas=="sales") &&
+                                    <>
+                                        <NavDropdown.Item to="/alldispatchitems" as={Link}>All Dispatch order items</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                                 {( roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/customer_account_delete_requests" as={Link}>Delete Account Requests</NavDropdown.Item>
@@ -924,6 +933,9 @@ const NavBar =()  => {
                 
                 <Route path="/allcompletedorders">
                     <AllCompletedOrders/>
+                </Route>    
+                <Route path="/alldispatchitems">
+                    <Alldispatchitems/>
                 </Route>        
                 <Route path="/editCompletedorder/:orderid" render={(props) => <EditCompletedOrder {...props} />} exact />    
                     
@@ -949,6 +961,7 @@ const NavBar =()  => {
                 <Route path="/allcompletedpurchaseorders">
                     <All_Completed_Purchase_Orders/>
                 </Route>
+                <Route path="/View_Dispatch_order_items/:id" render={(props) => <View_dispatch_order_items {...props} />} exact />
                 <Route path="/View_Completed_Purchase_Order/:id" render={(props) => <View_Completed_Purchase_Order {...props} />} exact />
                 <Route path="/Edit_Accepted_Delivery/:deliveryid" render={(props) => <Edit_Accepted_Delivery {...props} />} exact />
                 <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
