@@ -36,7 +36,6 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
         all_completed_purchase_orders()  
         .then(result => {
             setAllPickupAssignment(result);
-            console.log(result);
         })
 
     }, [allPickupAssignmentConfirm]);
@@ -61,18 +60,18 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
 
                         <DataTable.Header>
                             <DataTable.Title >Order ID</DataTable.Title>
-                            <DataTable.Title >Vendor ID</DataTable.Title>
+                            <DataTable.Title >Vehicle Number</DataTable.Title>
                             <DataTable.Title>Item</DataTable.Title>
                             <DataTable.Title>Action</DataTable.Title>
                         </DataTable.Header>
                             {allPickupAssignmentConfirm &&
                             allPickupAssignmentConfirm.map((item)=>{
-                                if(item.flag==1)
+                                if(item.flag==1 && item.purchase_order.sales_id==userId)
                                 if(item._id.toUpperCase().search(searchQuery.toUpperCase())!=-1){              
                                 return (
                                     <DataTable.Row>
                                         <DataTable.Cell >{item.purchase_order.custom_orderId}</DataTable.Cell>
-                                        <DataTable.Cell >{item.purchase_order.custom_vendorId}</DataTable.Cell>
+                                        <DataTable.Cell >{item.vehicle_number}</DataTable.Cell>
                                         <DataTable.Cell>{item.purchase_order.items.itemName+" ("+item.purchase_order.items.Grade+")"}</DataTable.Cell>
                                         <DataTable.Cell>
                                             {Platform.OS=='android' ?

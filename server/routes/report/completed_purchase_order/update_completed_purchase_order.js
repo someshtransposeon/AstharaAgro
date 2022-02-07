@@ -4,6 +4,9 @@ const Purchase_order = require('../../../models/report/completed_purchase_order/
 router.put('/update_flag_completed_purchase_order/:id',(req, res) =>{
     var update = {
         flag:req.body.flag,
+        driver_mobile_no: req.body.driver_mobile_no,
+        driver_name: req.body.driver_name,
+        vehicle_number: req.body.vehicle_number,
     }
     Purchase_order.findOneAndUpdate({'_id':req.params.id},update)
     .then((user) => {

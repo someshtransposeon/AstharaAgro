@@ -44,6 +44,7 @@ export default function Edit_Purchase_Order(props, {route}) {
     const [vendorPoolId, setVendorPoolId] = useState("");
     const [customerPoolId, setCustomerPoolId] = useState("");
     const [managerPoolId, setManagerPoolId] = useState("");
+    const [sales_id, setSalesId] = useState("");
 
     let history = useHistory();
 
@@ -77,6 +78,7 @@ export default function Edit_Purchase_Order(props, {route}) {
                 setVendorPoolId(item[0].vendorPoolId);
                 setCustomerPoolId(item[0].customerPoolId);
                 setManagerPoolId(item[0].managerPoolId);
+                setSalesId(item[0].sales_id);
             });
         }
 
@@ -161,6 +163,7 @@ export default function Edit_Purchase_Order(props, {route}) {
                 orderId:orderId,
                 custom_orderId:custom_orderId,
                 custom_vendorId:custom_vendorId,
+                sales_id:sales_id,
                 items:items,   
                 vendor_id:vendor_id, 
                 status:status,

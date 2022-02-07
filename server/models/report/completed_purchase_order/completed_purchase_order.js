@@ -7,6 +7,15 @@ const all_comp_purchase_order = new mongoose.Schema({
     flag:{
         type: Number,
         default: 0,
+    },
+    vehicle_number:{
+        type: String,
+    },
+    driver_name:{
+        type: String,
+    },
+    driver_mobile_no:{
+        type: String,
     }
     }, {
     timestamps: true

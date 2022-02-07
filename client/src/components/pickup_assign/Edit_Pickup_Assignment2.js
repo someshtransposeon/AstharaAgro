@@ -49,6 +49,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
     const [customerPoolId, setCustomerPoolId] = useState("");
     const [managerPoolId, setManagerPoolId] = useState("");
     const [image,setImage]=useState("");
+    const [sales_id, setSalesId] = useState("");
 
     let history = useHistory();
 
@@ -79,6 +80,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 setVendorPoolId(result[0].vendorPoolId);
                 setCustomerPoolId(result[0].customerPoolId);
                 setManagerPoolId(result[0].managerPoolId);
+                setSalesId(result[0].sales_id);
             })
         }
 
@@ -163,6 +165,7 @@ export default function Edit_Pickup_Assignment(props, {route}) {
                 orderId:orderId,
                 custom_orderId:custom_orderId,
                 custom_vendorId:custom_vendorId,
+                sales_id: sales_id,
                 items:items,   
                 vendor_id:vendor_id,
                 buyer_id:buyer_id,

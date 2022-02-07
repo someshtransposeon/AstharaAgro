@@ -74,7 +74,7 @@ export default function PendingOrders(props, { navigation }) {
         setVisible(values);
     };
 
-    const StatusChange = (s, id, index, items, custom_orderId, customerPoolId, vendorPoolId) => {
+    const StatusChange = (s, id, index, items, custom_orderId, customerPoolId, vendorPoolId, sales_id) => {
 
         if(s=="approved"){
             items.forEach(myFunction);
@@ -94,6 +94,7 @@ export default function PendingOrders(props, { navigation }) {
                         customerPoolId: customerPoolId,
                         vendorPoolId: vendorPoolId,
                         managerPoolId: managerPoolId,
+                        sales_id: sales_id,
                     })
                 })
                 .then(res => res.json())
@@ -164,8 +165,8 @@ export default function PendingOrders(props, { navigation }) {
                                             visible={visible[index]}
                                             onDismiss={()=>closeMenu(index)}
                                             anchor={<Button style={{flex: 1, marginTop: '2%'}} mode="outlined" onPress={()=>openMenu(index)}>{item.status}</Button>}>
-                                                <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
-                                                <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId)}/>
+                                                <Menu.Item title="Approve" onPress={()=>StatusChange("approved", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId, item.userId)}/>
+                                                <Menu.Item title="Reject" onPress={()=>StatusChange("rejected", item._id, index, item.items, custom_orderId, item.customerPoolId, item.vendorPoolId, item.userId)}/>
                                         </Menu>
                                         </DataTable.Cell>
                                         <DataTable.Cell numeric>

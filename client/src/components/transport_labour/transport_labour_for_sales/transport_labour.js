@@ -58,6 +58,9 @@ export default function AddTransportLabour(props,{ navigation }) {
             },
             body: JSON.stringify({
                 flag:1,
+                vehicle_number: vNumber,
+                driver_name: driverName,
+                driver_mobile_no: driverMobileNumber,
             })
         }).then(res => res.json())
         .catch(error => console.log(error))

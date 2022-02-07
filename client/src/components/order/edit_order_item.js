@@ -47,6 +47,7 @@ export default function EditOrderItem(props,{route}) {
     const [vendorPoolId, setVendorPoolId] = useState("");
     const [customerPoolId, setCustomerPoolId] = useState("");
     const [managerPoolId, setManagerPoolId] = useState('');
+    const [sales_id, setSalesId] = useState("");
 
     let history = useHistory();
 
@@ -84,6 +85,7 @@ export default function EditOrderItem(props,{route}) {
                 setOrderId(result[0].orderId);
                 setVendorPoolId(result[0].vendorPoolId);
                 setCustomerPoolId(result[0].customerPoolId);
+                setSalesId(result[0].sales_id);
                 setFlag(false);
             });
         }
@@ -136,7 +138,7 @@ export default function EditOrderItem(props,{route}) {
                 orderId: orderId,
                 items:items,
                 user_id:userId,
-                vendor_id:vendor_id,
+                sales_id: sales_id,                vendor_id:vendor_id,
                 custom_vendorId: custom_vendorId,
                 vendorPoolId: vendorPoolId,
                 customerPoolId: customerPoolId,

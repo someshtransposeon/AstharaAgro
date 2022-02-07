@@ -30,12 +30,13 @@ export default function View_Completed_Purchase_Order(props, {route}) {
 
     const [pickupAssignId, setPickupAssignId] = useState("");
     const [order_id, setOrderId] = useState("")
-    const [indent_id, setIndentId] = useState("Choose Indent");
     const [buyer_id,setBuyerId] = useState("Choose Buyer");
-    const [status,setStatus] = useState("");
     const [items, setItems] = useState();
     const [vendor_id,setVendorId] = useState("Choose Vendor");
     const [host, setHost] = useState(""); 
+    const [vNumber, setVNumber] = useState("");
+    const [driverName, setDriverName] = useState("");
+    const [driverMobileNumber, setDriverMobileNumber] = useState("");
 
     useEffect(() => {
 
@@ -60,6 +61,10 @@ export default function View_Completed_Purchase_Order(props, {route}) {
                 setItems(item[0].purchase_order.items);
                 setVendorId(item[0].purchase_order.custom_vendorId);
                 setBuyerId(item[0].purchase_order.buyer_id);
+                setVNumber(item[0].vehicle_number);
+                setDriverName(item[0].driver_name);
+                setDriverMobileNumber(item[0].driver_mobile_no);
+                console.log(item[0]);
             });
         }
 
@@ -108,6 +113,18 @@ export default function View_Completed_Purchase_Order(props, {route}) {
                         {buyer_id &&
                             <TextInput style={styles.input} mode="outlined" label="Buyer ID" value={buyer_id} />
                         }
+
+                        {vNumber &&
+                            <TextInput style={styles.input} mode="outlined" label="Vehicle Number" value={vNumber} />
+                        }
+
+                        {driverName &&
+                            <TextInput style={styles.input} mode="outlined" label="Driver Name" value={driverName} />
+                        }
+
+                        {driverMobileNumber &&
+                            <TextInput style={styles.input} mode="outlined" label="Driver Number" value={driverMobileNumber} />
+                        }   
 
                         {items &&
                             <DataTable style={styles.datatable}>
