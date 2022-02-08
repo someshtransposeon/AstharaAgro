@@ -171,6 +171,7 @@ import All_Completed_Purchase_Orders from '../components/reports/completed_purch
 import View_Completed_Purchase_Order from '../components/reports/completed_purchase_order/view_completed_purchase_order';
 
 import PageNotFound from '../components/pagenotfound/notfound';
+import Scanner from '../components/barcode/scanner';
 
 const NavBar =()  => {
 
@@ -659,6 +660,9 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/profile">
                     <Profile/>
+                </Route>
+                <Route path="/scanner">
+                    <Scanner/>
                 </Route>
                 <Route path="/allorders">
                     <AllOrders roleas={roleas} host={host}/>

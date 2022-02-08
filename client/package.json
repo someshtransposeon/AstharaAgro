@@ -41,6 +41,7 @@
     "react-native-web": "^0.17.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "react-webcam-barcode-scanner": "0.0.2-rc2",
     "sweetalert": "^2.1.2"
   },
   "devDependencies": {
