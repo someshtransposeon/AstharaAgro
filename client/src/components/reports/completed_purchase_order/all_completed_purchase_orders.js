@@ -46,8 +46,22 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
-    function BarCodeGen(data){
+    function BarCodeGen(data, id){
         setBarcode(data);
+        fetch(`http://localhost:5000/update_barcode_completed_purchase_order/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                barcode: data,
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            // alert(data.message);
+            // console.log(data);
+        });
         showModal();
     }
 
@@ -127,7 +141,7 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: item._id})}}>Details</Button>
                                                 :
-                                                <Button mode="contained" onPress={() => BarCodeGen(item.purchase_order.orderId+"_"+item.purchase_order.buyer_id+"_"+item.purchase_order.custom_vendorId.split('_')[0]+"_"+item.purchase_order.custom_orderId.split('_')[0]+"_"+item.purchase_order.items.itemName+"_"+item.purchase_order.items.Grade+"_"+item.purchase_order.items.quantity)} style={{width: '100%'}}>BarCode</Button>
+                                                <Button mode="contained" onPress={() => BarCodeGen(localStorage.getItem('nick_name')+"_"+item.purchase_order.custom_vendorId.split('_')[0]+"_"+item.purchase_order.custom_orderId.split('_')[0]+"_"+item.purchase_order.items.itemName+"_"+item.purchase_order.items.Grade+"_"+item.purchase_order.items.quantity, item._id)} style={{width: '100%'}}>BarCode</Button>
                                             }
                                         </DataTable.Cell>
                                     </DataTable.Row>

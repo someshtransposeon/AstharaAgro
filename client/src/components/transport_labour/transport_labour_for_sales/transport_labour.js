@@ -1,12 +1,14 @@
-import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView, Text} from 'react-native';
-import { Provider, DefaultTheme, Card, TextInput, Button, Menu } from 'react-native-paper';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, Text, Alert} from 'react-native';
+import { Provider, DefaultTheme, Card, TextInput, Button, Menu, Modal } from 'react-native-paper';
 import { useHistory } from 'react-router-dom';
 import swal from '@sweetalert/with-react';
 import { userId } from '../../../utils/user';
 import { all_completed_purchase_orders } from '../../../services/pickup_api';
+import Scanner from '../../barcode/scanner';
+import BarcodeScannerComponent from "react-webcam-barcode-scanner";
 
 const theme = {
     ...DefaultTheme,
@@ -29,8 +31,11 @@ export default function AddTransportLabour(props,{ navigation }) {
     const [driverMobileNumber, setDriverMobileNumber] = useState("");
     const [labourName, setLabourName] = useState("");
     const [labourMobileNumber, setLabourMobileNumber] = useState("");
-    const [items, setItems] = useState([{orderId: "Choose Order", itemName: "", Grade: "", quantity: ""}]);
+    const [items, setItems] = useState([]);
     const [acpo, setACPO] = useState();
+    const [visible3, setVisible3] = useState(false);
+    const [ data, setData ] = useState('Not Found');
+    const [msg, setMsg] = useState(2);
 
     let history = useHistory();
 
@@ -44,43 +49,37 @@ export default function AddTransportLabour(props,{ navigation }) {
     })
 
     const ItemChange = (index, item) => {
-        const values = [...items];
-        values[index].orderId = item._id;
-        values[index].itemName = item.purchase_order.items.itemName;
-        values[index].Grade = item.purchase_order.items.Grade;
-        values[index].quantity = item.purchase_order.items.quantity;
-        setItems(values);
-        console.log(item);
-        fetch(`http://localhost:5000/update_flag_completed_purchase_order/${item._id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                flag:1,
-                vehicle_number: vNumber,
-                driver_name: driverName,
-                driver_mobile_no: driverMobileNumber,
-            })
-        }).then(res => res.json())
-        .catch(error => console.log(error))
-        .then(data => {
-            // alert(data.message);
-            // console.log(data);
-        });
-        closeMenu(index);
-    };
 
-    const handleAddFields = () => {
-        const values = [...items];
-        values.push({orderId: "Choose Order", itemName: "", Grade: "", quantity: ""});
-        setItems(values);
-    };
-    
-    const handleRemoveFields = index => {
-        const values = [...items];
-        values.splice(index, 1);
-        setItems(values);
+        var val=acpo.find(o => o.barcode === data);
+        if(val==undefined){
+            setMsg(1);
+        }
+        else{
+            setMsg(3);
+            const values = [...items];
+            values.push({orderId: val.purchase_order.orderId, itemName: val.purchase_order.items.itemName, Grade: val.purchase_order.items.Grade, quantity: val.purchase_order.items.quantity});
+            setItems(values);
+            fetch(`http://localhost:5000/update_flag_completed_purchase_order/${val._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    flag:1,
+                    vehicle_number: vNumber,
+                    driver_name: driverName,
+                    driver_mobile_no: driverMobileNumber,
+                    labour_name: labourName,
+                    labour_mobile_no: labourMobileNumber,
+                })
+            }).then(res => res.json())
+            .catch(error => console.log(error))
+            .then(data => {
+                // alert(data.message);
+                // console.log(data);
+            });
+        }
+        setData('Not Found');
     };
 
     function submitForm() {
@@ -139,6 +138,15 @@ export default function AddTransportLabour(props,{ navigation }) {
         closeMenu2();
     }
 
+    const showModal = () => setVisible3(true);
+    const hideModal = () => setVisible3(false);
+
+    function scan() {
+        showModal();
+    }
+
+    const containerStyle = {backgroundColor: 'white',width: '35%', alignSelf: 'center'};
+
     return (
         <Provider theme={theme}>
         <SafeAreaView>
@@ -170,31 +178,39 @@ export default function AddTransportLabour(props,{ navigation }) {
                             visible={visible[index]}
                             onDismiss={()=>closeMenu(index)}
                             anchor={<Button style={styles.input} mode="outlined"  onPress={()=>openMenu(index)}>{it.orderId} </Button>}>
-                                {acpo && acpo.map((item) => {
-                                    if(item.flag === 0 && item.purchase_order.buyer_id==userId)
-                                    return (
-                                        <Menu.Item style={{marginTop: '10%', padding: '1%',}} title={item.purchase_order.custom_orderId+"\n"+item.purchase_order.custom_vendorId+"\n"+item.purchase_order.items.itemName+"("+item.purchase_order.items.Grade+"), QTY: "+item.purchase_order.items.quantity+"\n\n"} onPress={()=>ItemChange(index, item)} />
-                                    )
-                                })}
                             </Menu>
-                            <View style={{flexDirection: 'row'}}>
-                                {Platform.OS=="android" ?
-                                    <>
-                                        <FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30} onPress={() => handleRemoveFields(index)}/>
-                                        <FontAwesomeIcon icon={ faPlusCircle } onPress={() => handleAddFields()} color={ 'green' } size={30} />
-                                    </>
-                                    :
-                                    <>
-                                        <Button onPress={() => handleRemoveFields(index)} mode="outlined"><FontAwesomeIcon icon={ faMinusCircle } color={ 'red' } size={30}/></Button>
-                                        <Button  onPress={() => handleAddFields()}  mode="outlined"><FontAwesomeIcon icon={ faPlusCircle } color={ 'green' } size={30} /></Button>
-                                    </>
-                                }
-                            </View>
                         </View>
                     ))}
+
+                    <Button mode="contained" style={styles.button} onPress={() => scan()} icon={() => <FontAwesomeIcon icon={ faCamera } />}>Scan</Button>
                     <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Submit</Button>
                     </Card.Content>
                 </Card>
+                <Modal visible={visible3} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                    <>
+                        <BarcodeScannerComponent
+                            width="100%"
+                            height="100%"
+                            onUpdate={(err, result) => {
+                                if (result) setData(result.text)
+                            }}
+                        />
+                        <View style={{padding: '5px'}}>
+                            <TextInput style={styles.input} mode="outlined" label="Data" value={data} onChangeText={data => setData(data)} />
+                            {msg && msg==3 &&
+                                <Text style={{color:"green"}}>Successfully Added!!</Text>
+                            }
+                            {msg && msg==1 &&
+                                <Text style={{color:"red"}}>Order Not Found</Text>
+                            }
+                            {data && data!="Not Found" &&
+                                <>
+                                    <Button onPress={()=>ItemChange()}>Add</Button>
+                                </>
+                            }
+                        </View>
+                    </>
+                </Modal>
             </View>
         </ScrollView>
         </SafeAreaView>
