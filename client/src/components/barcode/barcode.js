@@ -16,82 +16,32 @@ const theme = {
     },
 };
 
-export default function Barcode(){
+export default function Barcode(props){
 
-    const [barcode,setBarcode] = useState("");
-    
     const { inputRef } = useBarcode({
-        value: 'Lucky kumari',
+        value: props.barcode,
         format: "CODE128",
-        
-        options: {
-          background: '#ccffff',
-          width:2,
-          displayValue: false,
-        },
-       
+    });
 
-      });
-
-      function DownlaodBarcode(){
-          console.log("barcode");
-      }
-      
+    function DownlaodBarcode(){
+        window.print();
+        // var divContents = document.getElementById("printable").innerHTML;
+        // console.log(divContents);
+        // var a = window.open();
+        // a.document.write(divContents);
+        // a.document.close();
+        // a.print();
+    }
 
     return (
         <Provider theme={theme}>
             <ScrollView keyboardDismissMode="interactive" >
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Card style={styles.card}>
-                        <Card.Title title="Barcode for your item"/>
-                        <Card.Content>
-                            <img style={{width: '40mm',height: '60mm'}} ref={inputRef} />
-                            <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} style={styles.button} onPress={()=>{DownlaodBarcode()}}>Print  Barcode</Button> 
-                        </Card.Content>
-                    </Card>
+                <View style={{padding: '20px'}}>
+                    <img style={{width: '100%',height: '30mm'}} id="printable" ref={inputRef} />
+                    <Button  mode="contained" icon={() => <FontAwesomeIcon icon={ faStore } />} onPress={()=>{DownlaodBarcode()}}>Print  Barcode</Button> 
                 </View>
             </ScrollView>
         </Provider>
     );
 };
 //define stylesheet for the component (IOS styles to be added)
-const styles = StyleSheet.create({
-    card: {
-        alignSelf: 'center',
-        padding: '1%',
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-                marginTop: '10%',
-                marginBottom: '10%',
-                width: '90%',
-            },
-            default: {
-                boxShadow: '0 4px 8px 0 gray, 0 6px 20px 0 gray',
-                marginTop: '4%',
-                marginBottom: '4%',
-                width: '50%',
-            }
-        })
-    },
-    input: {
-        marginTop: '2%',
-        width: '100%',
-        ...Platform.select({
-            ios: {
-                
-            },
-            android: {
-                
-            },
-            default: {
-                
-            }
-        })
-    },
-    button: {
-        marginTop: '2%',
-    }
-}); 

@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet,Platform, ScrollView, SafeAreaView, ActivityIndicator  } from 'react-native';
-import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar  } from 'react-native-paper';
+import { View, StyleSheet,Platform, ScrollView, SafeAreaView, Text  } from 'react-native';
+import { Provider, DefaultTheme, Button, Title, DataTable, Searchbar, Portal, Modal  } from 'react-native-paper';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { all_completed_purchase_orders } from '../../../services/pickup_api';
 import { role, userId } from '../../../utils/user';
 import { users_by_id } from '../../../services/user_api';
+import BarCode from '../../barcode/barcode';
 
 const theme = {
     ...DefaultTheme,
@@ -23,6 +24,8 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
     const [allPickupAssignmentConfirm, setAllPickupAssignment] = useState();
     const [searchQuery, setSearchQuery] = useState('');
     const [managerPoolId, setManagerPoolId] = useState('');
+    const [visible, setVisible] = useState(false);
+    const [barcode, setBarcode] = useState("");
 
     useEffect(() => {
 
@@ -40,13 +43,30 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
 
     }, [allPickupAssignmentConfirm]);
 
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+    function BarCodeGen(data){
+        setBarcode(data);
+        showModal();
+    }
+
     const onChangeSearch = query => setSearchQuery(query);
+
+    const containerStyle = {backgroundColor: 'white',width: '30%', alignSelf: 'center'};
 
     return (
         <Provider theme={theme}>
         <SafeAreaView>
         <ScrollView>
             <View style={styles.view}>
+                <Portal>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                        <>
+                            <BarCode barcode={barcode} />
+                        </>
+                    </Modal>
+                </Portal>
                 <DataTable style={styles.datatable}>
                         <Title style={{marginBottom: '20px'}}>All Completed Purchase Orders</Title>
                         <Searchbar
@@ -63,6 +83,7 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
                             <DataTable.Title >Vendor ID</DataTable.Title>
                             <DataTable.Title>Item</DataTable.Title>
                             <DataTable.Title>Action</DataTable.Title>
+                            <DataTable.Title>BarCode</DataTable.Title>
                         </DataTable.Header>
                                                                               
                         {(role=="manager" && allPickupAssignmentConfirm) &&
@@ -100,6 +121,13 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: item._id})}}>Details</Button>
                                                 :
                                                 <Link to={"/View_Completed_Purchase_Order/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
+                                        <DataTable.Cell>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('View_Pickup_Assignment_Confirm_Buyer', {pickupConfirmId: item._id})}}>Details</Button>
+                                                :
+                                                <Button mode="contained" onPress={() => BarCodeGen(item.purchase_order.orderId+"_"+item.purchase_order.buyer_id+"_"+item.purchase_order.custom_vendorId.split('_')[0]+"_"+item.purchase_order.custom_orderId.split('_')[0]+"_"+item.purchase_order.items.itemName+"_"+item.purchase_order.items.Grade+"_"+item.purchase_order.items.quantity)} style={{width: '100%'}}>BarCode</Button>
                                             }
                                         </DataTable.Cell>
                                     </DataTable.Row>
