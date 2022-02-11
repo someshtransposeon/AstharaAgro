@@ -171,22 +171,9 @@ export default function AddTransportLabour(props,{ navigation }) {
                     <TextInput style={styles.input} mode="outlined" label="Labour Name" value={labourName} onChangeText={labourName => setLabourName(labourName)} />
                     <TextInput style={styles.input} mode="outlined" label="Labour Mobile Number" value={labourMobileNumber} onChangeText={labourMobileNumber => setLabourMobileNumber(labourMobileNumber)} />
                     <TextInput style={styles.input} mode="outlined" label="Charge" value={charge} onChangeText={charge => setCharge(charge)} />
-                    
-                    {items.map((it, index) => (
-                        <View>
-                            <Menu
-                            visible={visible[index]}
-                            onDismiss={()=>closeMenu(index)}
-                            anchor={<Button style={styles.input} mode="outlined"  onPress={()=>openMenu(index)}>{it.orderId} </Button>}>
-                            </Menu>
-                        </View>
-                    ))}
-
-                    <Button mode="contained" style={styles.button} onPress={() => scan()} icon={() => <FontAwesomeIcon icon={ faCamera } />}>Scan</Button>
-                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Submit</Button>
-                    </Card.Content>
-                </Card>
-                <Modal visible={visible3} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                    <Button mode="contained" style={styles.button} onPress={() => scan()} icon={() => <FontAwesomeIcon icon={ faCamera } />}>Start Scan</Button>
+                    {/* <Modal visible={visible3} onDismiss={hideModal} contentContainerStyle={containerStyle}> */}
+                    { visible3 &&
                     <>
                         <BarcodeScannerComponent
                             width="100%"
@@ -210,7 +197,22 @@ export default function AddTransportLabour(props,{ navigation }) {
                             }
                         </View>
                     </>
-                </Modal>
+                    }
+                {/* </Modal> */}
+                    {items.map((it, index) => (
+                        <View>
+                            <Menu
+                            visible={visible[index]}
+                            onDismiss={()=>closeMenu(index)}
+                            anchor={<Button style={styles.input} mode="outlined"  onPress={()=>openMenu(index)}>{it.orderId} </Button>}>
+                            </Menu>
+                        </View>
+                    ))}
+
+                    <Button mode="contained" style={styles.button} onPress={()=>submitForm()}>Submit</Button>
+                    </Card.Content>
+                </Card>
+                
             </View>
         </ScrollView>
         </SafeAreaView>
