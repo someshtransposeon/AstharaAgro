@@ -97,7 +97,9 @@ export default function All_Completed_Purchase_Orders(props,{ navigation }) {
                             <DataTable.Title >Vendor ID</DataTable.Title>
                             <DataTable.Title>Item</DataTable.Title>
                             <DataTable.Title>Action</DataTable.Title>
-                            <DataTable.Title>BarCode</DataTable.Title>
+                            {role=='buyer' &&
+                                <DataTable.Title>BarCode</DataTable.Title>
+                            }
                         </DataTable.Header>
                                                                               
                         {(role=="manager" && allPickupAssignmentConfirm) &&

@@ -130,6 +130,9 @@ import All_Accepted_Delivery_Assignment from '../components/delivery_assign/All_
 import Alldispatchitems from '../components/reports/all_dispatch_order_items/all_dispatch_order_items';
 import View_dispatch_order_items from '../components/reports/all_dispatch_order_items/view_all_dispatch_order_items';
 
+import AllReceiveditems from '../components/reports/received_items_from_buyer/all_received_items_from_buyer';
+import EditReceivedOrder from '../components/reports/received_items_from_buyer/view_received_item_from_buyer';
+
 import Edit_Accepted_Delivery_Assignment from '../components/delivery_assign/Edit_Accepted_Delivery_Assignment';
 import Edit_Delivery_Assignment from '../components/delivery_assign/Edit_Delivery_Assignment';
 import All_Delivery from '../components/update_delivery/All_Delivery';
@@ -169,6 +172,10 @@ import ViewTransportLabourFromVendor from '../components/transport_labour/transp
 
 import All_Completed_Purchase_Orders from '../components/reports/completed_purchase_order/all_completed_purchase_orders';
 import View_Completed_Purchase_Order from '../components/reports/completed_purchase_order/view_completed_purchase_order';
+
+import AddDispatchForDelivery from '../components/delivery/dispatch_for_delivery';
+import AllDispatchForDelivery from '../components/delivery/all_dispatch_for_delivery';
+import ViewDispatchForDelivery from '../components/delivery/view_dispatch_for_delivery_orders';
 
 import PageNotFound from '../components/pagenotfound/notfound';
 import Scanner from '../components/barcode/scanner';
@@ -463,9 +470,21 @@ const NavBar =()  => {
                                             </>
                                         }
                                         </NavDropdown>
-                                </>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown title="Delivery Management" id="collasible-nav-dropdown" drop="right"  style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                        {(roleas=="sales") &&
+                                            <>
+                                            <NavDropdown title="Dispatch For Delivery" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                                <NavDropdown.Item to="/adddispatchfordelivery" as={Link}>Create Dispatch For Delivery</NavDropdown.Item>
+                                                <NavDropdown.Divider />
+                                                <NavDropdown.Item to="/alldispatchfordelivery" as={Link}>All Dispatch For Delivery</NavDropdown.Item>
+                                            </NavDropdown>
+                                            </>
+                                        }
+                                        </NavDropdown>
+                                    </>
                                 }
-                              </NavDropdown>
+                            </NavDropdown>
                             <NavDropdown title="User Management" id="collasible-nav-dropdown"  style={{border: '1px solid gray', borderRadius: '10px',backgroundColor: 'white', marginLeft: '2%', marginRight: '2%'}}>
                                 {roleas=="manager" &&
                                     <>
@@ -559,6 +578,12 @@ const NavBar =()  => {
                                 {( roleas=="manager" || roleas=="sales") &&
                                     <>
                                         <NavDropdown.Item to="/alldispatchitems" as={Link}>All Dispatch order items</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
+                                {( roleas=="manager" || roleas=="sales" || roleas=="buyer") &&
+                                    <>
+                                        <NavDropdown.Item to="/allreceiveditems" as={Link}>All Received order items</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>
                                 }
@@ -947,6 +972,19 @@ const NavBar =()  => {
                 </Route>        
                 <Route path="/editCompletedorder/:orderid" render={(props) => <EditCompletedOrder {...props} />} exact />    
                     
+                <Route path="/allreceiveditems">
+                    <AllReceiveditems/>
+                </Route>        
+                <Route path="/editreceivedorder/:id" render={(props) => <EditReceivedOrder {...props} />} exact />
+
+                <Route path="/adddispatchfordelivery">
+                    <AddDispatchForDelivery/>
+                </Route>   
+                <Route path="/alldispatchfordelivery">
+                    <AllDispatchForDelivery/>
+                </Route>        
+                <Route path="/viewdispatchfordelivery/:id" render={(props) => <ViewDispatchForDelivery {...props} />} exact />
+                
                 <Route path="/All_Delivery_Assignment">
                     <All_Delivery_Assignment/>
                 </Route>    

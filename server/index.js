@@ -229,6 +229,10 @@ const update_completed_purchase_order = require('./routes/report/completed_purch
 
 const create_rfb = require('./routes/report/Recieved_from_buyer/create_rfb');
 const retrieve_rfb = require('./routes/report/Recieved_from_buyer/retrieve_rfb');
+
+const create_delivery = require('./routes/delivery/create_transport_labour');
+const retrieve_delivery = require('./routes/delivery/retrieve_transport_labour');
+
 app.get('/', (req, res)=>{
     res.send("Welcome to Asthara Agro Server");
 });
@@ -396,6 +400,9 @@ app.use('/',update_completed_purchase_order);
 
 app.use('/',create_rfb);
 app.use('/',retrieve_rfb);
+
+app.use('/',create_delivery);
+app.use('/',retrieve_delivery);
 
 app.listen(5000, ()=>{
     console.log("Asthara Agro server running on port 5000");

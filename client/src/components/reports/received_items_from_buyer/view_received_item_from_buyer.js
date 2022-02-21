@@ -12,21 +12,15 @@ const theme = {
     },
 };
 
-export default function View_Completed_Purchase_Order(props, {route}) {
+export default function View_Received_Order_From_Buyer(props, {route}) {
 
     var id="";
-    var pickupConfirmId = ""; 
     if(Platform.OS=="android"){
         id = route.params.id;
     }
     else{
-        pickupConfirmId = props.match.params.id;
+        id = props.match.params.id;
     }
-
-    const [visible2, setVisible2] = useState(false);
-
-    const openMenu2 = () => setVisible2(true);
-    const closeMenu2 = () => setVisible2(false);
 
     const [pickupAssignId, setPickupAssignId] = useState("");
     const [order_id, setOrderId] = useState("")
@@ -48,12 +42,12 @@ export default function View_Completed_Purchase_Order(props, {route}) {
         }
         else{
             setHost("localhost");
-            setPickupAssignId(pickupConfirmId);
+            setPickupAssignId(id);
             setOrderId(order_id);
         }
 
         if(pickupAssignId){
-            fetch(`http://${host}:5000/retrive_completed_purchase_order/${pickupConfirmId}`, {
+            fetch(`http://${host}:5000/retrive_rfb_by_id/${id}`, {
                 method: 'GET'
             })
             .then(res => res.json())
@@ -71,7 +65,7 @@ export default function View_Completed_Purchase_Order(props, {route}) {
             });
         }
 
-    }, [host,pickupAssignId,order_id,pickupConfirmId,id]);
+    }, [host,pickupAssignId,order_id,id]);
 
     const ItemChange = (index, fieldname, fieldvalue, itemId,unit) => {
         const values = [...items];
@@ -103,8 +97,9 @@ export default function View_Completed_Purchase_Order(props, {route}) {
         <Provider theme={theme}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Card style={styles.card}>
-                    <Card.Title title="View Details of dispatch Order items"/>
+                    <Card.Title title="View Details of Received Order item"/>
                     <Card.Content>
+
                         {order_id &&
                            <TextInput style={styles.input} mode="outlined" label="Order Id" value={order_id} />
                         }
