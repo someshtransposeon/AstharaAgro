@@ -206,6 +206,11 @@ const delete_vendor_customer_cross= require('./routes/cross_pool/delete_vendor_c
 const retrieve_vendor_customer_cross= require('./routes/cross_pool/retrieve_vendor_customer_cross');
 const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
 
+const create_manager_customer_cross= require('./routes/customer_manager_pool/create_customer_manager_pool');
+const delete_manager_customer_cross= require('./routes/customer_manager_pool/delete_customer_manager_pool');
+const retrieve_manager_customer_cross= require('./routes/customer_manager_pool/retrieve_customer_manager_pool');
+const update_manager_customer_cross= require('./routes/customer_manager_pool/update_customer_manager_pool');
+
 const create_manager_pool= require('./routes/manager_pool/create_manager_pool');
 const retrieve_manager_pool= require('./routes/manager_pool/retrieve_manager_pool');
 const update_manager_pool= require('./routes/manager_pool/update_manager_pool');
@@ -383,6 +388,11 @@ app.use('/',create_vendor_customer_cross);
 app.use('/', retrieve_vendor_customer_cross);
 app.use('/', update_vendor_customer_cross);
 app.use('/',delete_vendor_customer_cross);
+
+app.use('/',create_manager_customer_cross);
+app.use('/', retrieve_manager_customer_cross);
+app.use('/', update_manager_customer_cross);
+app.use('/',delete_manager_customer_cross);
 
 app.use('/',create_transport_labour_for_sales);
 app.use('/',retrieve_transport_labour_for_sales);

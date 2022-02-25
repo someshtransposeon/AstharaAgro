@@ -158,6 +158,10 @@ import AddCustomerVendorPool from '../components/pool/vendor_customer_cross';
 import AllCustomerVendorPools from '../components/pool/all_cross_pool';
 import EditCustomerVendorPool from '../components/pool/edit_cross_pool';
 
+import AddCustomerManagerPool from '../components/pool/add_manager_customer_pool';
+import AllCustomerManagerPools from '../components/pool/all_manager_customer_pool';
+import EditCustomerManagerPool from '../components/pool/edit_manager_customer_pool';
+
 import AddManagerPool from '../components/pool/add_manager_pool';
 import AllManagerPools from '../components/pool/all_manager_pools';
 import EditManagerPool from '../components/pool/edit_manager_pool';
@@ -176,6 +180,8 @@ import View_Completed_Purchase_Order from '../components/reports/completed_purch
 import AddDispatchForDelivery from '../components/delivery/dispatch_for_delivery';
 import AllDispatchForDelivery from '../components/delivery/all_dispatch_for_delivery';
 import ViewDispatchForDelivery from '../components/delivery/view_dispatch_for_delivery_orders';
+
+import OrderSummary from '../components/reports/order_summary/order_summary';
 
 import PageNotFound from '../components/pagenotfound/notfound';
 import Scanner from '../components/barcode/scanner';
@@ -334,7 +340,13 @@ const NavBar =()  => {
                                         <NavDropdown title="Customer Vendor Cross Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
                                             <NavDropdown.Item to="/addcustomervendorpool" as={Link}>Add Cross Pool</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item to="/allcustomervendorpools" as={Link}>View Vendor Pools</NavDropdown.Item>
+                                            <NavDropdown.Item to="/allcustomervendorpools" as={Link}>View Customer Vendor Pools</NavDropdown.Item>
+                                        </NavDropdown>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown title="Manager Customer Cross Pool" drop="right" id="collasible-nav-dropdown" style={{backgroundColor: 'white', marginLeft: '2%',}}>
+                                            <NavDropdown.Item to="/addcustomermanagerpool" as={Link}>Add Manager Customer Pool</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item to="/allcustomermanagerpools" as={Link}>View Manager Customer Pools</NavDropdown.Item>
                                         </NavDropdown>
                                     </NavDropdown>
                                     <NavDropdown.Divider />
@@ -587,6 +599,12 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
+                                {(roleas=="manager") &&
+                                    <>
+                                        <NavDropdown.Item to="/ordersummary" as={Link}>Order Summary</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </>
+                                }
                                 {( roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/customer_account_delete_requests" as={Link}>Delete Account Requests</NavDropdown.Item>
@@ -744,6 +762,12 @@ const NavBar =()  => {
                 </Route>
                 <Route path="/allcustomervendorpools">
                     <AllCustomerVendorPools/>
+                </Route>
+                <Route path="/addcustomermanagerpool">
+                    <AddCustomerManagerPool/>
+                </Route>
+                <Route path="/allcustomermanagerpools">
+                    <AllCustomerManagerPools/>
                 </Route>
                 <Route path="/addmanagerpool">
                     <AddManagerPool/>
@@ -1011,6 +1035,9 @@ const NavBar =()  => {
                 <Route path="/View_Completed_Purchase_Order/:id" render={(props) => <View_Completed_Purchase_Order {...props} />} exact />
                 <Route path="/Edit_Accepted_Delivery/:deliveryid" render={(props) => <Edit_Accepted_Delivery {...props} />} exact />
                 <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
+                <Route path="/ordersummary">
+                    <OrderSummary/>
+                </Route>
                 <Route component={PageNotFound}  />
                 </Switch>
             }
