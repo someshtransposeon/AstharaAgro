@@ -59,11 +59,11 @@ export default function All_order_status(props,{ navigation }) {
                         allOrderStatus.map((item)=>{        
                             return (
                                 <DataTable.Row>
-                                    <DataTable.Cell >{item.vehicle_number}</DataTable.Cell>
-                                    <DataTable.Cell >{item.vehicle_number}</DataTable.Cell>
-                                    <DataTable.Cell >{item.vehicle_number}</DataTable.Cell>
-                                    <DataTable.Cell >{item.vehicle_number}</DataTable.Cell>
-                                    <DataTable.Cell >{item.vehicle_number}</DataTable.Cell>
+                                    <DataTable.Cell >{item.orderId}</DataTable.Cell>
+                                    <DataTable.Cell >{item.item_name+" ("+item.item_grade+")"}</DataTable.Cell>
+                                    <DataTable.Cell >{item.quantity}</DataTable.Cell>
+                                    <DataTable.Cell >{item.split_status}</DataTable.Cell>
+                                    <DataTable.Cell >{item.status}</DataTable.Cell>
                                 </DataTable.Row>
                             ) 
                         })

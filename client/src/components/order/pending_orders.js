@@ -103,6 +103,30 @@ export default function PendingOrders(props, { navigation }) {
                     // alert(data.message);
                 });
             }
+
+            items.forEach(myFunction1);
+
+            function myFunction1(item) {
+                fetch(`http://${host}:5000/create_order_status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        orderId: custom_orderId,
+                        item_name: item.itemName,
+                        item_grade: item.Grade,
+                        quantity: item.quantity,
+                        status: "Pending for Vendor Assignment",
+                        split_status: "Full"
+                    })
+                })
+                .then(res => res.json())
+                .catch(error => console.log(error))
+                .then(data => {
+                    // alert(data.message);
+                });
+            }
         }
 
         fetch(`http://${host}:5000/update_status/${id}`, {

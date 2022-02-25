@@ -179,7 +179,9 @@ export default function OrderSummary(props, { navigation }) {
                                     <DataTable.Row>
                                         <DataTable.Cell>{custom_orderId}</DataTable.Cell>
                                         <DataTable.Cell>{item.name}</DataTable.Cell>
-                                        <DataTable.Cell>{item.status}</DataTable.Cell>
+                                        {(item.status=="pending" || item.status=="approved") &&
+                                            <DataTable.Cell>pending</DataTable.Cell>
+                                        }
                                         <DataTable.Cell numeric>
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>

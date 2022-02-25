@@ -47,7 +47,7 @@ export default function AllOrders(props, { navigation }) {
             setAllOrders(result);
         })
 
-    }, [allOrders, managerPoolId, managerPinCodes]);
+    }, [managerPoolId]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
