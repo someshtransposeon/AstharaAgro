@@ -183,6 +183,8 @@ import ViewDispatchForDelivery from '../components/delivery/view_dispatch_for_de
 
 import OrderSummary from '../components/reports/order_summary/order_summary';
 
+import All_order_status from '../components/reports/order_status/all_order_status';
+
 import PageNotFound from '../components/pagenotfound/notfound';
 import Scanner from '../components/barcode/scanner';
 import Barcode from '../components/barcode/barcode';
@@ -602,6 +604,8 @@ const NavBar =()  => {
                                 {(roleas=="manager") &&
                                     <>
                                         <NavDropdown.Item to="/ordersummary" as={Link}>Order Summary</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item to="/allorderstatus" as={Link}>All Order Status</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>
                                 }
@@ -1037,6 +1041,9 @@ const NavBar =()  => {
                 <Route path="/Edit_Confirm_Delivery/:deliveryid" render={(props) => <Edit_Confirm_Delivery {...props} />} exact />
                 <Route path="/ordersummary">
                     <OrderSummary/>
+                </Route>
+                <Route path="/allorderstatus">
+                    <All_order_status/>
                 </Route>
                 <Route component={PageNotFound}  />
                 </Switch>

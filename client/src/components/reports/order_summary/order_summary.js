@@ -32,7 +32,6 @@ export default function OrderSummary(props, { navigation }) {
     const [managerPoolId, setManagerPoolId] = useState('');
     const [managerPinCodes, setManagerPinCodes] = useState('');
     const [isPending, setIsPending] = useState(true);
-    const [isApproved, setIsApproved] = useState(true);
     const [isRejected, setIsRejected] = useState(true);
     const [isDelivered, setIsDelivered] = useState(true);
     const [startDate, setStartDate] = useState("2021-01-01");
@@ -111,14 +110,6 @@ export default function OrderSummary(props, { navigation }) {
                             </View>
                             <View style={styles.checkboxContainer}>
                                 <CheckBox
-                                    value={isApproved}
-                                    onValueChange={setIsApproved}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Approved</Text>
-                            </View>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
                                     value={isRejected}
                                     onValueChange={setIsRejected}
                                     style={styles.checkbox}
@@ -174,7 +165,7 @@ export default function OrderSummary(props, { navigation }) {
                     {(role=="manager"  && allOrders && managerPinCodes) &&
                         allOrders.map((item, index)=>{
                             if(managerPinCodes.includes(String(item.postal_code)))
-                            if((isPending && item.status=="pending") || (isApproved && item.status=="approved") || (isRejected && item.status=="rejected") || (isDelivered && item.status=="delivered"))
+                            if((isPending && (item.status=="pending" || item.status=="approved")) || (isRejected && item.status=="rejected") || (isDelivered && item.status=="delivered"))
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                 var date=item.order_date.substring(0,10);
                                 var d=new Date(item.order_date);
@@ -219,7 +210,7 @@ export default function OrderSummary(props, { navigation }) {
                         <div style={{display: 'flex', justifyContent: 'space-around'}}>
                             <h6>Start Date: {startDate}</h6>
                             <h6>End Date: {endDate}</h6>
-                            <h6>Status: {isPending && "Pending, "}{isApproved && "Approved, "}{isRejected && "Rejected, "}{isDelivered && "Delivered, "}</h6>
+                            <h6>Status: {isPending && "Pending, "}{isRejected && "Rejected, "}{isDelivered && "Delivered, "}</h6>
                         </div>
                         <center>
                             <div style={{width: '80%'}}>
@@ -232,7 +223,7 @@ export default function OrderSummary(props, { navigation }) {
                                     {(role=="manager"  && allOrders && managerPinCodes) &&
                                     allOrders.map((item, index)=>{
                                         if(managerPinCodes.includes(String(item.postal_code)))
-                                        if((isPending && item.status=="pending") || (isApproved && item.status=="approved") || (isRejected && item.status=="rejected") || (isDelivered && item.status=="delivered"))
+                                        if((isPending && (item.status=="pending" || item.status=="approved")) || (isRejected && item.status=="rejected") || (isDelivered && item.status=="delivered"))
                                         if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                             var date=item.order_date.substring(0,10);
                                             var d=new Date(item.order_date);

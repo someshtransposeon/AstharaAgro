@@ -214,9 +214,6 @@ const update_manager_customer_cross= require('./routes/customer_manager_pool/upd
 const create_manager_pool= require('./routes/manager_pool/create_manager_pool');
 const retrieve_manager_pool= require('./routes/manager_pool/retrieve_manager_pool');
 const update_manager_pool= require('./routes/manager_pool/update_manager_pool');
-// const delete_vendor_customer_cross= require('./routes/cross_pool/delete_vendor_customer_cross');
-// const retrieve_vendor_customer_cross= require('./routes/cross_pool/retrieve_vendor_customer_cross');
-// const update_vendor_customer_cross= require('./routes/cross_pool/update_vendor_customer_cross');
 
 const create_transport_labour_for_sales = require('./routes/transport_labour/transport_labour_for_sales/create_transport_labour');
 const update_transport_labour_for_sales = require('./routes/transport_labour/transport_labour_for_sales/update_transport_labour');
