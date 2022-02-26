@@ -82,11 +82,11 @@ router.put('/update_order_quantity/:orderid/:item_name/:item_grade/:quantity',(r
     })
 });
 
-router.put('/update_order_item_status/:orderid/:item_name/:item_grade',(req, res) =>{
+router.put('/update_order_item_status/:orderid/:item_name/:item_grade/:quantity',(req, res) =>{
     var update = {
         status: req.body.status,
     }
-    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade},update)
+    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade,'quantity':req.params.quantity},update)
     .then((order) => {
         if(order){
             var message = { message: "order status quantity updated sucessfully" };
@@ -101,11 +101,11 @@ router.put('/update_order_item_status/:orderid/:item_name/:item_grade',(req, res
         res.json(message);
     })
 });
-router.put('/update_order_item_split_status/:orderid/:item_name/:item_grade',(req, res) =>{
+router.put('/update_order_item_split_status/:orderid/:item_name/:item_grade/:quantity',(req, res) =>{
     var update = {
         split_status: req.body.split_status,
     }
-    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade},update)
+    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade,'quantity':req.params.quantity},update)
     .then((order) => {
         if(order){
             var message = { message: "order status quantity updated sucessfully" };
