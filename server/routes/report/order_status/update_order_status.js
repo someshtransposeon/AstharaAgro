@@ -65,8 +65,9 @@ router.put('/update_order_item_quantity/:id',(req, res) =>{
 router.put('/update_order_quantity/:orderid/:item_name/:item_grade/:quantity',(req, res) =>{
     var update = {
         quantity: req.body.quantity,
+        split_status: req.body.split_status,
     }
-    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade,'quantity':req.params.quantity},update)
+    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_grade':req.params.item_grade,'quantity':req.params.quantity},update)
     .then((order) => {
         if(order){
             var message = { message: "order status quantity updated sucessfully" };
@@ -86,10 +87,10 @@ router.put('/update_order_item_status/:orderid/:item_name/:item_grade/:quantity'
     var update = {
         status: req.body.status,
     }
-    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade,'quantity':req.params.quantity},update)
+    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_grade':req.params.item_grade,'quantity':req.params.quantity},update)
     .then((order) => {
         if(order){
-            var message = { message: "order status quantity updated sucessfully" };
+            var message = { message: "order status updated sucessfully" };
             res.json(message);
         }else{
             var message = { message: "order not found" };
@@ -101,14 +102,15 @@ router.put('/update_order_item_status/:orderid/:item_name/:item_grade/:quantity'
         res.json(message);
     })
 });
+
 router.put('/update_order_item_split_status/:orderid/:item_name/:item_grade/:quantity',(req, res) =>{
     var update = {
         split_status: req.body.split_status,
     }
-    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_garde':req.params.item_grade,'quantity':req.params.quantity},update)
+    order_status.findOneAndUpdate({'orderId':req.params.orderid,'item_name':req.params.item_name,'item_grade':req.params.item_grade,'quantity':req.params.quantity},update)
     .then((order) => {
         if(order){
-            var message = { message: "order status quantity updated sucessfully" };
+            var message = { message: "order split status updated sucessfully" };
             res.json(message);
         }else{
             var message = { message: "order not found" };

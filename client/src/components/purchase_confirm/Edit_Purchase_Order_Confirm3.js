@@ -137,6 +137,20 @@ export default function Edit_Purchase_Order_Confirm3(props, {route}) {
         .then(data => {
             // alert(data.message);
         });  
+
+        fetch(`http://${host}:5000/update_order_item_status/${custom_orderId}/${items.itemName}/${items.Grade}/${items.quantity}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status:"Buyer Assigned",
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            //  alert(data.message);
+        });
     }
 
     const PriceChange = (value) => {

@@ -55,6 +55,21 @@ export default function All_Pending_Pickup_Assignment(props,{ navigation }) {
     };
 
     const StatusChange = (s, id, index) => {
+
+        fetch(`http://${host}:5000/update_order_item_status/${allPickupAssignment[index].custom_orderId}/${allPickupAssignment[index].items.itemName}/${allPickupAssignment[index].items.Grade}/${allPickupAssignment[index].items.quantity}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status:"Out for Pickup",
+            })
+        }).then(res => res.json())
+        .catch(error => console.log(error))
+        .then(data => {
+            //  alert(data.message);
+        });
+
         fetch(`http://${host}:5000/update_pickup_assign_status/${id}`, {
             method: 'PUT',
             headers: {

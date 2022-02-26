@@ -11,7 +11,7 @@ const orderstatusSchema = new mongoose.Schema({
         type:String,
     },
     quantity:{
-        type:Number,
+        type:String,
     },
     status:{
         type:String,
