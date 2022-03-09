@@ -89,6 +89,20 @@ export default function AddTransportLabour(props,{ navigation }) {
                     // alert(data.message);
                     // console.log(data);
                 });
+
+                fetch(`http://localhost:5000/update_order_item_status/${val.purchase_order.custom_orderId}/${val.purchase_order.items.itemName}/${val.purchase_order.items.Grade}/${val.purchase_order.items.quantity}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status:"Dispatched for Sales",
+                    })
+                }).then(res => res.json())
+                .catch(error => console.log(error))
+                .then(data => {
+                    //  alert(data.message);
+                });
                 setMsg("Success!! Added");
             }
         }

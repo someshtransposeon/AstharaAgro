@@ -24,5 +24,16 @@ router.get('/retrive_order_status_by_id/:id',(req, res)=>{
    });
 });
 
+router.get('/retrive_order_status_by_orderId/:id',(req, res)=>{
+    order_status.find({'orderId':req.params.id}, function(err, order){
+        if(err){
+            console.log(err);
+        }
+        else {
+            res.json(order);
+        }
+    });
+ });
+
 
 module.exports = router;

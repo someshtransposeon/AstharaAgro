@@ -37,6 +37,9 @@ export default function OrderSummary(props, { navigation }) {
     const [startDate, setStartDate] = useState("2021-01-01");
     const [endDate, setEndDate] = useState(adate);
     const [customerPools, setCustomerPools] = useState();
+    const [isPool, setIsPool] = useState([]);
+    const [flag, setFlag] = useState(true);
+    const [customerPoolId, setCustomerPoolId] = useState([]);
 
     useEffect(() => {
         
@@ -61,12 +64,24 @@ export default function OrderSummary(props, { navigation }) {
             })
         }
 
+        if(flag && customerPools){
+            const values = [...isPool];
+            const values1 = [...customerPoolId];
+            for(let i=0; i<customerPools.length; i++) {
+                values.push(true);
+                values1.push(customerPools[i].customer_pool_Id);   
+            }
+            setIsPool(values);
+            setCustomerPoolId(values1);
+            setFlag(false);
+        }
+
         allOrder()
         .then(result=> {
             setAllOrders(result);
         })
 
-    }, [managerPoolId]);
+    }, [managerPoolId, customerPools, isPool, flag, customerPoolId]);
 
     function printPageArea(){
         var printContent = document.getElementById("print").innerHTML;
@@ -75,6 +90,16 @@ export default function OrderSummary(props, { navigation }) {
         WinPrint.document.close();
         WinPrint.focus();
         WinPrint.print();
+    }
+
+    function changePoolCheck(index){
+        const values = [...isPool];
+        values[index]=!values[index];
+        setIsPool(values);
+
+        // const values = [...isPool];
+        // values[index]=!values[index];
+        // setIsPool(values);
     }
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -125,16 +150,17 @@ export default function OrderSummary(props, { navigation }) {
                                 <Text style={styles.label}>Delivered</Text>
                             </View>
                         </View>
+                        {role=="manager"  && 
                         <View>
                             <Text style={{color: 'gray', fontSize: '20px', fontWeight: 'bold', fontStyle: 'italic', textDecorationLine: 'underline'}}>Customer Pool</Text>
                             <ScrollView style={{height: '50px'}}>
-                            {customerPools &&
-                                customerPools.map((item)=>{
+                            {isPool && customerPools &&
+                                customerPools.map((item, index)=>{
                                     return(
                                         <View style={styles.checkboxContainer}>
                                             <CheckBox
-                                                value={isPending}
-                                                onValueChange={setIsPending}
+                                                value={isPool[index]}
+                                                onValueChange={()=>changePoolCheck(index)}
                                                 style={styles.checkbox}
                                             />
                                             <Text style={styles.label}>{item.customer_pool_name}</Text>
@@ -144,6 +170,7 @@ export default function OrderSummary(props, { navigation }) {
                             }
                             </ScrollView>
                         </View>
+                        }
                         <View>
                             <Text style={{color: 'gray', fontSize: '20px', fontWeight: 'bold', fontStyle: 'italic', textDecorationLine: 'underline'}}>Date Range</Text>
                             <View>
@@ -162,9 +189,10 @@ export default function OrderSummary(props, { navigation }) {
                         <DataTable.Title>Status</DataTable.Title>
                         <DataTable.Title numeric>Action</DataTable.Title>
                     </DataTable.Header>
-                    {(role=="manager"  && allOrders && managerPinCodes) &&
+                    {(role=="manager"  && allOrders && managerPinCodes && customerPoolId) &&
                         allOrders.map((item, index)=>{
                             if(managerPinCodes.includes(String(item.postal_code)))
+                            if(customerPoolId.includes(String(item.customerPoolId)))
                             if((isPending && (item.status=="pending" || item.status=="approved")) || (isRejected && item.status=="rejected") || (isDelivered && item.status=="delivered"))
                             if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
                                 var date=item.order_date.substring(0,10);
@@ -186,7 +214,39 @@ export default function OrderSummary(props, { navigation }) {
                                             {Platform.OS=='android' ?
                                                 <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
                                                 :
-                                                <Link to={"/vieworder/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                                <Link to={"/viewordersummary/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
+                                            }
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            }
+                        })
+                    }
+                    {(role=="sales"  && allOrders) &&
+                        allOrders.map((item, index)=>{
+                            if(item.userId==userId)
+                            if((isPending && (item.status=="pending" || item.status=="approved")) || (isRejected && item.status=="rejected") || (isDelivered && item.status=="delivered"))
+                            if(item.email.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.name.toUpperCase().search(searchQuery.toUpperCase())!=-1 || item.status.toUpperCase().search(searchQuery.toUpperCase())!=-1){
+                                var date=item.order_date.substring(0,10);
+                                var d=new Date(item.order_date);
+                                d.toTimeString();
+                                d=String(d);
+                                var hour=d.substring(16,18);
+                                var custom_orderId=item.nick_name+"_"+item.postal_code+"_"+date+"_"+hour;
+
+                                if(date>=startDate && date<=endDate)
+                                return (
+                                    <DataTable.Row>
+                                        <DataTable.Cell>{custom_orderId}</DataTable.Cell>
+                                        <DataTable.Cell>{item.name}</DataTable.Cell>
+                                        {(item.status=="pending" || item.status=="approved") &&
+                                            <DataTable.Cell>pending</DataTable.Cell>
+                                        }
+                                        <DataTable.Cell numeric>
+                                            {Platform.OS=='android' ?
+                                                <Button mode="contained" style={{width: '100%'}} icon={() => <FontAwesomeIcon icon={ faEye } />} onPress={() => {navigation.navigate('EditOrder', {itemId: item._id})}}>Details</Button>
+                                                :
+                                                <Link to={"/viewordersummary/"+item._id}><Button mode="contained" icon={() => <FontAwesomeIcon icon={ faEye } />} style={{width: '100%'}}>Details</Button></Link>
                                             }
                                         </DataTable.Cell>
                                     </DataTable.Row>

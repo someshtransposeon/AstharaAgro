@@ -182,6 +182,7 @@ import AllDispatchForDelivery from '../components/delivery/all_dispatch_for_deli
 import ViewDispatchForDelivery from '../components/delivery/view_dispatch_for_delivery_orders';
 
 import OrderSummary from '../components/reports/order_summary/order_summary';
+import ViewOrderSummary from '../components/reports/order_summary/view_order_summary';
 
 import All_order_status from '../components/reports/order_status/all_order_status';
 
@@ -601,7 +602,7 @@ const NavBar =()  => {
                                         <NavDropdown.Divider />
                                     </>
                                 }
-                                {(roleas=="manager") &&
+                                {(roleas=="manager" || roleas=="sales") &&
                                     <>
                                         <NavDropdown.Item to="/ordersummary" as={Link}>Order Summary</NavDropdown.Item>
                                         <NavDropdown.Divider />
@@ -1042,6 +1043,7 @@ const NavBar =()  => {
                 <Route path="/ordersummary">
                     <OrderSummary/>
                 </Route>
+                <Route path="/viewordersummary/:orderid" render={(props) => <ViewOrderSummary roleas={roleas} host={host} {...props} />} exact />
                 <Route path="/allorderstatus">
                     <All_order_status/>
                 </Route>
